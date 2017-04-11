@@ -1,0 +1,2 @@
+export TINDTOK="token"
+

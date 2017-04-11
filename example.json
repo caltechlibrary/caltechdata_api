@@ -1,0 +1,126 @@
+{
+    "alternateIdentifiers": [
+        {
+            "alternateIdentifier": "Alt_Identifier",
+            "alternateIdentifierType": "Alt_Identifier_Type"
+        }
+    ],
+    "contributors": [
+        {
+            "affiliations": [ "Affiliation"  ],
+            "contributorName": "Contributor Name",
+            "contributorType": "Contributor TYpe",
+            "nameIdentifiers": [
+                {
+                    "nameIdentifier": "Contributor Identifier",
+                    "nameIdentifierScheme": "GRID",
+                    "schemeURI": "https://www.grid.ac/institutes/"
+                }
+            ]
+        }
+    ],
+    "creators": [
+        {
+            "affiliations": [
+                "Affiliation"
+            ],
+            "creatorName": "Name",
+            "familyName": "Family Name",
+            "givenName": "Given Name",
+            "nameIdentifiers": [
+                {
+                    "nameIdentifier": "Name Identifier",
+                    "nameIdentifierScheme": "ORCID",
+                    "schemeURI": "http://orcid.org/"
+                }
+            ]
+        }
+    ],
+    "dates": [
+        {
+            "date": "2014-10-01",
+            "dateType": "Created"
+        },
+        {
+            "date": "2017-03-01",
+            "dateType": "Updated"
+        },
+        {
+            "date": "2012-05-22/2016-12-21",
+            "dateType": "Collected"
+        }
+    ],
+    "descriptions": [
+        {
+            "description": "Description",
+            "descriptionType": "Abstract"
+        }
+    ],
+    "formats": [
+        "format"
+    ],
+    "fundingReferences": [
+        {
+            "funderIdentifier": {
+                "funderIdentifier": "Funding Identifier",
+                "funderIdentifierType": "GRID"
+            },
+            "funderName": "Funder Name"
+        }
+    ],
+    "geoLocations": [
+        {
+            "geoLocationPlace": "Place Name",
+            "geoLocationPoint": {
+                "pointLatitude": "0.000",
+                "pointLongitude": "0.000"
+            }
+        }
+    ],
+    "identifier": {
+        "identifier": "10.0",
+        "identifierType": "DOI"
+    },
+    "language": "en",
+    "publicationYear": "2017",
+    "publisher": "Publisher",
+    "relatedIdentifiers": [
+        {
+            "relatedIdentifier": "http://url/",
+            "relatedIdentifierType": "URL",
+            "relationType": "IsPartOf"
+        },
+        {
+            "relatedIdentifier": "10.0",
+            "relatedIdentifierType": "DOI",
+            "relationType": "IsDocumentedBy"
+        }
+    ],
+    "resourceType": {
+        "resourceTypeGeneral": "Dataset"
+    },
+    "rightsList": [
+        {
+            "rights": "Rights Name",
+            "rightsURI": "Rights List"
+        }
+    ],
+    "subjects": [
+        {
+            "subject": "subject1"
+        },
+        {
+            "subject": "subject2"
+        }
+    ],
+    "titles": [
+        {
+            "title": "Title"
+        },
+        {
+            "title": "Alternative Title",
+            "titleType": "AlternativeTitle"
+        }
+    ],
+    "version": "0"
+}
