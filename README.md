@@ -4,6 +4,8 @@ Write files and a DataCite 4 standard json record to CaltechDATA repository
 
 In development-Only usable by staff. Requires python requests library. 
 
+Final Actions (New DOI Generation) not yet implemented
+
 ## Usage
 
 You need to acquire a personal access token from your CaltechDATA account
