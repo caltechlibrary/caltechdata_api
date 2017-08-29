@@ -56,6 +56,28 @@ def send_s3(filename,token):
 
     return(fileinfo)
 
+def write_record(metadata,token,files=[]):
+
+    fileinfo=[]
+
+    for f in files:
+        fileinfo.append(send_s3(f,token))
+
+    url = "https://cd-sandbox.tind.io/submit/api/create/"
+
+    headers = { 'Authorization' : 'Bearer %s' % token }
+
+    metaf = open(metadata,'r')
+    data = json.load(metaf)
+    
+    newdata = customize_schema(data)
+    newdata['files']=fileinfo
+
+    dat = { 'record': json.dumps(newdata) }
+
+    c = session()
+    response = c.post(url,headers=headers,data=dat)
+    print(response.text)
 
 if  __name__ == "__main__":
 
@@ -70,26 +92,4 @@ if  __name__ == "__main__":
     #Get access token from TIND sed as environment variable with source token.bash
     token = os.environ['TINDTOK']
 
-    fileinfo=[]
-
-    if args.fnames:
-        for f in args.fnames:
-            fileinfo.append(send_s3(f,token))
-
-    url = "https://cd-sandbox.tind.io/submit/api/create/"
-
-    headers = { 'Authorization' : 'Bearer %s' % token }
-
-    infile = open(args.json_file[0],'r')
-    data = json.load(infile)
-    newdata = customize_schema(data)
-
-    newdata['files']=fileinfo
-     
-    dat = { 'record': json.dumps(newdata) }
-
-    c = session()
-
-    response = c.post(url,headers=headers,data=dat)
-    print(response.text)
-
+    write_record(args.json_file[0],token,args.fnames)

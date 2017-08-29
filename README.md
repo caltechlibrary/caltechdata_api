@@ -1,4 +1,4 @@
-# caltechdata_read
+# caltechdata_write
 
 Write files and a DataCite 4 standard json record to CaltechDATA repository
 
