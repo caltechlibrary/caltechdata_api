@@ -1,5 +1,5 @@
 from requests import session
-from customize_schema import customize_schema
+from caltechdata_write.customize_schema import customize_schema
 import json
 import argparse
 import os
@@ -45,10 +45,8 @@ def send_s3(filename,token):
     if(response.text):
         raise Exception(response.text)
 
-    #print(chkurl+'/'+bucket+'/'+key)
     response = c.get(chkurl+'/'+bucket+'/'+key,headers=headers)
     md5 = response.json()["md5"]
-    #print(size)
 
     fileinfo = { "url" : key,\
             "filename" : filename,\
@@ -56,7 +54,11 @@ def send_s3(filename,token):
 
     return(fileinfo)
 
-def write_record(metadata,token,files=[]):
+def Caltechdata_write(metadata,token,files=[]):
+
+    #If files is a string - change to single value array
+    if isinstance(files, str) == True:
+        files = [files]
 
     fileinfo=[]
 
@@ -67,13 +69,12 @@ def write_record(metadata,token,files=[]):
 
     headers = { 'Authorization' : 'Bearer %s' % token }
 
-    metaf = open(metadata,'r')
-    data = json.load(metaf)
-    
-    newdata = customize_schema(data)
+    newdata = customize_schema(metadata)
     newdata['files']=fileinfo
 
     dat = { 'record': json.dumps(newdata) }
+
+    print(dat)
 
     c = session()
     response = c.post(url,headers=headers,data=dat)
@@ -92,4 +93,7 @@ if  __name__ == "__main__":
     #Get access token from TIND sed as environment variable with source token.bash
     token = os.environ['TINDTOK']
 
-    write_record(args.json_file[0],token,args.fnames)
+    metaf = open(args.json_file[0],'r')
+    metadata = json.load(metaf)
+
+    Caltechdata_write(metadata,token,args.fnames)

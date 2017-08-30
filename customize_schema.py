@@ -55,13 +55,20 @@ def customize_schema(json_record):
     #Only transfers first license
     
     #Funding
-    funding = json_record['fundingReferences']
-    for f in funding:
-        f['fundingName']=f.pop('funderName')
-        if 'awardNumber' in f:
-            f['fundingAwardNumber']=f.pop('awardNumber')
-    json_record['fundings']=json_record.pop('fundingReferences')
-    #Some fields not preserved
+    if 'fundingReferences' in json_record:
+        funding = json_record['fundingReferences']
+        newf = []
+        for f in funding:
+            frec = {}
+            if 'funderName' in f:
+                frec['fundingName'] = f['funderName']
+            #f['fundingName']=f.pop('funderName')
+            if 'awardNumber' in f:
+                frec['fundingAwardNumber']=f['awardNumber']['awardNumber']
+            newf.append(frec)
+        print(newf)
+        json_record['fundings']=newf
+        #Some fields not preserved
 
     #Geo
     json_record['geographicCoverage'] = json_record.pop('geoLocations')
