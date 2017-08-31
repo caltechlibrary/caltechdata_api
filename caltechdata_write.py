@@ -4,7 +4,7 @@ import json
 import argparse
 import os
 
-def send_s3(filename,token):
+def send_s3(filepath,token):
     s3surl = "https://cd-sandbox.tind.io/tindfiles/sign_s3/"
     chkurl = "https://cd-sandbox.tind.io/tindfiles/md5_s3"
 
@@ -16,7 +16,6 @@ def send_s3(filename,token):
     jresp = response.json()
     data = jresp['data']
 
-    fname = 'logo.gif' #Hard coding  
     bucket = jresp['bucket']
     key = data['fields']['key']
     policy = data['fields']['policy']
@@ -24,7 +23,7 @@ def send_s3(filename,token):
     signature = data['fields']['signature']
     url = data['url']
 
-    infile = open(filename,'rb')
+    infile = open(filepath,'rb')
     size = infile.seek(0,2)
     infile.seek(0,0) #reset at beginning
 
@@ -47,6 +46,7 @@ def send_s3(filename,token):
 
     response = c.get(chkurl+'/'+bucket+'/'+key,headers=headers)
     md5 = response.json()["md5"]
+    filename = filepath.split('/')[-1]
 
     fileinfo = { "url" : key,\
             "filename" : filename,\

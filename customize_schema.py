@@ -33,26 +33,45 @@ def customize_schema(json_record):
         listing['relatedIdentifierScheme'] = listing.pop('relatedIdentifierType')
 
     #change author formatting
+    #We're only supporting ORCIDS, and losing all URIs
     authors = json_record['creators']
+    newa = []
     for a in authors:
-        a['authorAffiliation'] = a.pop('affiliations')
-        a['authorName'] = a.pop('creatorName')
-    json_record['authors']=json_record.pop('creators')
+        new = {}
+        new['authorAffiliation'] = a['affiliations']
+        new['authorName'] = a['creatorName']
+        if 'nameIdentifiers' in a:
+            for n in a['nameIdentifiers']:
+                if n['nameIdentifierScheme']=="ORCID":
+                    new['nameIdentifiers']={"nameIdentifier":n["nameIdentifier"],
+                            "NameIdentifierScheme": "ORCID"}
+        newa.append(new)
+    json_record['authors']=newa
+
+    #strip creator URI
+    for c in json_record['contributors']:
+        if 'nameIdentifiers' in c:
+            for d in c['nameIdentifiers']:
+                if "schemeURI" in d:
+                    d.pop("schemeURI")
 
     #format
-    json_record['format']=json_record.pop('formats')
+    if "formats" in json_record:
+        json_record['format']=json_record.pop('formats')
 
     #dates
-    dates = json_record['dates']
-    for d in dates:
-        d['relevantDateValue']=d.pop('date')
-        d['relevantDateType']=d.pop('dateType')
-    json_record['relevantDates']=json_record.pop('dates')
+    if "dates" in json_record:
+        dates = json_record['dates']
+        for d in dates:
+            d['relevantDateValue']=d.pop('date')
+            d['relevantDateType']=d.pop('dateType')
+        json_record['relevantDates']=json_record.pop('dates')
 
     #license
-    licenses = json_record['rightsList']
-    json_record['license']=licenses[0]['rights']
-    #Only transfers first license
+    if 'rightsList' in json_record:
+        licenses = json_record['rightsList']
+        json_record['license']=licenses[0]['rights']
+        #Only transfers first license
     
     #Funding
     if 'fundingReferences' in json_record:
@@ -71,7 +90,8 @@ def customize_schema(json_record):
         #Some fields not preserved
 
     #Geo
-    json_record['geographicCoverage'] = json_record.pop('geoLocations')
+    if 'geographicCoverage' in json_record:
+        json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
     publisher = {}
