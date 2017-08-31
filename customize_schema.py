@@ -85,7 +85,6 @@ def customize_schema(json_record):
             if 'awardNumber' in f:
                 frec['fundingAwardNumber']=f['awardNumber']['awardNumber']
             newf.append(frec)
-        print(newf)
         json_record['fundings']=newf
         #Some fields not preserved
 
