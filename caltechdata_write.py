@@ -74,8 +74,6 @@ def Caltechdata_write(metadata,token,files=[]):
 
     dat = { 'record': json.dumps(newdata) }
 
-    print(dat)
-
     c = session()
     response = c.post(url,headers=headers,data=dat)
     print(response.text)
