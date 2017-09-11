@@ -9,7 +9,7 @@
         {
             "affiliations": [ "Affiliation"  ],
             "contributorName": "Contributor Name",
-            "contributorType": "Contributor TYpe",
+            "contributorType": "ContactPerson",
             "nameIdentifiers": [
                 {
                     "nameIdentifier": "Contributor Identifier",
@@ -72,13 +72,13 @@
         {
             "geoLocationPlace": "Place Name",
             "geoLocationPoint": {
-                "pointLatitude": "0.000",
-                "pointLongitude": "0.000"
+                "pointLatitude": 0.000,
+                "pointLongitude": 0.000
             }
         }
     ],
     "identifier": {
-        "identifier": "10.0",
+        "identifier": "10.5072/FK2",
         "identifierType": "DOI"
     },
     "language": "en",
@@ -86,12 +86,12 @@
     "publisher": "Publisher",
     "relatedIdentifiers": [
         {
-            "relatedIdentifier": "http://url/",
+            "relatedIdentifier": "http://www.url.org/",
             "relatedIdentifierType": "URL",
             "relationType": "IsPartOf"
         },
         {
-            "relatedIdentifier": "10.0",
+            "relatedIdentifier": "10.5072/FK2",
             "relatedIdentifierType": "DOI",
             "relationType": "IsDocumentedBy"
         }

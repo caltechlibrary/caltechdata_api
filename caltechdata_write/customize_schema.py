@@ -6,54 +6,64 @@ import argparse
 def customize_schema(json_record):
 
     #Extract subjects to single string
-    subjects = json_record['subjects']
-    substr = ''
-    for s in subjects:
-        if substr != '':
-            substr = substr + ', '
-        substr = substr+s['subject']
-    json_record['subjects']=substr
+    if "subjects" in json_record:
+        subjects = json_record['subjects']
+        substr = ''
+        for s in subjects:
+            if substr != '':
+                substr = substr + ', '
+            substr = substr+s['subject']
+        json_record['subjects']=substr
 
     #Extract identifier and label as DOI
-    identifier = json_record['identifier']['identifier']
-    #Cound check identifierType for validation
-    json_record['doi'] = identifier
-    del json_record['identifier']
-    #will delete other ideintifiers in file
+    if "identifier" in json_record:
+        identifier = json_record['identifier']['identifier']
+        #Cound check identifierType for validation
+        json_record['doi'] = identifier
+        del json_record['identifier']
+        #will delete other ideintifiers in file
 
     #Extract title
-    titles = json_record['titles']
-    for t in titles:
-        if 'titleType' not in t:
-            json_record['title']=t['title']
+    if "titles" in json_record:
+        titles = json_record['titles']
+        for t in titles:
+            if 'titleType' not in t:
+                json_record['title']=t['title']
 
     #Change related identifier labels
-    for listing in json_record['relatedIdentifiers']:
-        listing['relatedIdentifierRelation'] = listing.pop('relationType')
-        listing['relatedIdentifierScheme'] = listing.pop('relatedIdentifierType')
+    if "relatedIdentifiers" in json_record:
+        for listing in json_record['relatedIdentifiers']:
+            listing['relatedIdentifierRelation'] = listing.pop('relationType')
+            listing['relatedIdentifierScheme'] = listing.pop('relatedIdentifierType')
 
     #change author formatting
     #We're only supporting ORCIDS, and losing all URIs
-    authors = json_record['creators']
-    newa = []
-    for a in authors:
-        new = {}
-        new['authorAffiliation'] = a['affiliations']
-        new['authorName'] = a['creatorName']
-        if 'nameIdentifiers' in a:
-            for n in a['nameIdentifiers']:
-                if n['nameIdentifierScheme']=="ORCID":
-                    new['nameIdentifiers']={"nameIdentifier":n["nameIdentifier"],
+    if "creators" in json_record:
+        authors = json_record['creators']
+        newa = []
+        for a in authors:
+            new = {}
+            if 'affiliations' in a:
+                new['authorAffiliation'] = a['affiliations']
+            new['authorName'] = a['creatorName']
+            if 'nameIdentifiers' in a:
+                for n in a['nameIdentifiers']:
+                    if n['nameIdentifierScheme']=="ORCID":
+                        new['nameIdentifiers']={"nameIdentifier":n["nameIdentifier"],
                             "NameIdentifierScheme": "ORCID"}
-        newa.append(new)
-    json_record['authors']=newa
+            newa.append(new)
+        json_record['authors']=newa
 
     #strip creator URI
-    for c in json_record['contributors']:
-        if 'nameIdentifiers' in c:
-            for d in c['nameIdentifiers']:
-                if "schemeURI" in d:
-                    d.pop("schemeURI")
+    if "contributors" in json_record:
+        for c in json_record['contributors']:
+            if 'nameIdentifiers' in c:
+                for d in c['nameIdentifiers']:
+                    if "schemeURI" in d:
+                        d.pop("schemeURI")
+            if 'familyName' in c:
+                c.pop('familyName')
+                c.pop('givenName')
 
     #format
     if "formats" in json_record:
@@ -93,9 +103,10 @@ def customize_schema(json_record):
         json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
-    publisher = {}
-    publisher['publisherName'] = json_record['publisher']
-    json_record['publishers'] = publisher
+    if "publisher" in json_record:
+        publisher = {}
+        publisher['publisherName'] = json_record['publisher']
+        json_record['publishers'] = publisher
 
     #print(json.dumps(json_record))
     return json_record

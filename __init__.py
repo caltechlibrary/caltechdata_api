@@ -1,1 +1,0 @@
-from caltechdata_write.caltechdata_write import Caltechdata_write

@@ -1,7 +1,6 @@
 from requests import session
-from caltechdata_write.customize_schema import customize_schema
+from caltechdata_write import customize_schema
 import json
-import argparse
 import os
 
 def send_s3(filepath,token):
@@ -69,7 +68,7 @@ def Caltechdata_write(metadata,token,files=[]):
 
     headers = { 'Authorization' : 'Bearer %s' % token }
 
-    newdata = customize_schema(metadata)
+    newdata = customize_schema.customize_schema(metadata)
     newdata['files']=fileinfo
 
     dat = { 'record': json.dumps(newdata) }
@@ -78,20 +77,3 @@ def Caltechdata_write(metadata,token,files=[]):
     response = c.post(url,headers=headers,data=dat)
     print(response.text)
 
-if  __name__ == "__main__":
-
-    parser = argparse.ArgumentParser(description=\
-        "Write files and a DataCite 4 standard json record\
-        to CaltechDATA repository")
-    parser.add_argument('json_file',nargs=1, help=\
-            'file name for json DataCite metadata file')
-    parser.add_argument('-fnames',nargs='+', help='files to attach')
-    args = parser.parse_args()
-
-    #Get access token from TIND sed as environment variable with source token.bash
-    token = os.environ['TINDTOK']
-
-    metaf = open(args.json_file[0],'r')
-    metadata = json.load(metaf)
-
-    Caltechdata_write(metadata,token,args.fnames)
