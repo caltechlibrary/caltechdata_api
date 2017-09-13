@@ -8,6 +8,10 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
     #Currently only replaces files
     #There are more file operations that could be implemented
 
+    #If files is a string - change to single value array
+    if isinstance(ids, int) == True:
+        files = [ids]
+
     url = "https://cd-sandbox.tind.io/submit/api/edit/"
     api_url = "https://cd-sandbox.tind.io/api/record/"
 
