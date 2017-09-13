@@ -19,7 +19,7 @@ Successfully created record https://cd-sandbox.tind.io/records/352.
 
 Edit a record (make changes to the example.json file to see a change)
 ```
-python edit.py example.json -ids 352
+python edit.py example.json -ids 352 -fnames logo.gif
 Successfully modified record https://cd-sandbox.tind.io/records/352
 ```
 
