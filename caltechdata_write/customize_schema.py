@@ -100,6 +100,12 @@ def customize_schema(json_record):
 
     #Geo
     if 'geoLocations' in json_record:
+        info = {}
+        for g in json_record['geoLocations']:
+            if 'geoLocationPoint' in g:
+                info.append('geoLocationPoint':[g['geoLocationPoint']])
+            else:
+                info.append(g)
         json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
@@ -109,7 +115,6 @@ def customize_schema(json_record):
         json_record['publishers'] = publisher
 
     print(json.dumps(json_record))
-    exit()
     return json_record
 
 if __name__ == "__main__":
