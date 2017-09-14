@@ -108,7 +108,8 @@ def customize_schema(json_record):
         publisher['publisherName'] = json_record['publisher']
         json_record['publishers'] = publisher
 
-    #print(json.dumps(json_record))
+    print(json.dumps(json_record))
+    exit()
     return json_record
 
 if __name__ == "__main__":
