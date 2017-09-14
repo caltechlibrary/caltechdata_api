@@ -99,7 +99,7 @@ def customize_schema(json_record):
         #Some fields not preserved
 
     #Geo
-    if 'geographicLocations' in json_record:
+    if 'geoLocations' in json_record:
         json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
