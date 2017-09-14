@@ -103,7 +103,7 @@ def customize_schema(json_record):
         info = {}
         for g in json_record['geoLocations']:
             if 'geoLocationPoint' in g:
-                info['geoLocationPoint'] = [g['geoLocationPoint']]
+                info['geoLocationPoint'] = [str(g['geoLocationPoint'])]
             else:
                 info.update(g)
         json_record['geographicCoverage'] = info
