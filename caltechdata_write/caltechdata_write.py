@@ -62,18 +62,20 @@ def Caltechdata_write(metadata,token,files=[]):
     fileinfo=[]
 
     for f in files:
-        fileinfo.append(send_s3(f,token))
+        fileinfo.append(send_s3(f, token))
 
     url = "https://cd-sandbox.tind.io/submit/api/create/"
 
-    headers = { 'Authorization' : 'Bearer %s' % token }
+    headers = {
+        'Authorization' : 'Bearer %s' % token,
+        'Content-type': 'application/json'
+    }
 
     newdata = customize_schema.customize_schema(metadata)
-    newdata['files']=fileinfo
+    newdata['files'] = fileinfo
 
-    dat = { 'record': json.dumps(newdata) }
+    dat = json.dumps({'record': newdata})
 
     c = session()
     response = c.post(url,headers=headers,data=dat)
     print(response.text)
-

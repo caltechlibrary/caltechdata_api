@@ -9,49 +9,41 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
     #There are more file operations that could be implemented
 
     #If files is a string - change to single value array
-    if isinstance(ids, int) == True:
+    if isinstance(ids, int):
         ids = [ids]
 
     url = "https://cd-sandbox.tind.io/submit/api/edit/"
     api_url = "https://cd-sandbox.tind.io/api/record/"
 
-    headers = { 'Authorization' : 'Bearer %s' % token }
+    headers = {
+        'Authorization' : 'Bearer %s' % token,
+        'Content-type': 'application/json'
+    }
 
-    if metadata != {}:
+    if metadata:
         metadata = customize_schema.customize_schema(metadata)
 
     for idv in ids:
+        metadata['id'] = idv
 
-        if files != {}:
+        if files:
+            # Files to delete
             fids = []
             c = session()
-            existing = c.get(api_url+idv)
+            existing = c.get(api_url + idv)
             file_info = existing.json()["metadata"]
             if "files" in file_info:
-                file_info = file_info["files"]
-                for f in file_info:
-                    fids.append(f["id"])
-                metadata['files']={'delete':fids}
+                fids = [f["id"] for f in file_info["files"]]
+                metadata['files'] = {'delete': fids}
 
+            # upload new
+            fileinfo = [send_s3(f, token) for f in files]
 
-        metadata['id']=idv
+            metadata['files'] = {'new': fileinfo}
 
-        dat = { 'record': json.dumps(metadata) }
+        dat = json.dumps({'record': metadata})
 
+        print(dat)
         c = session()
-        response = c.post(url,headers=headers,data=dat)
+        response = c.post(url, headers=headers, data=dat)
         print(response.text)
-
-        if files != {}:
-            #upload new
-            fileinfo = []
-            for f in files:
-                fileinfo.append(send_s3(f,token))
-
-            metadata['files'] = {'new':fileinfo}
-            dat = { 'record': json.dumps(metadata) }
-
-            c = session()
-            response = c.post(url,headers=headers,data=dat)
-
-
