@@ -28,18 +28,19 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
 
         if files:
             # Files to delete
-            fids = []
+            fjson = {}
             c = session()
             existing = c.get(api_url + idv)
             file_info = existing.json()["metadata"]
             if "files" in file_info:
                 fids = [f["id"] for f in file_info["files"]]
-                metadata['files'] = {'delete': fids}
+                fjson = {'delete': fids}
 
             # upload new
             fileinfo = [send_s3(f, token) for f in files]
 
-            metadata['files'] = {'new': fileinfo}
+            fjson['new'] = fileinfo
+            metadata['files'] = fjson
 
         dat = json.dumps({'record': metadata})
 
