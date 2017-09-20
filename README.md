@@ -44,4 +44,6 @@ the command line to load the token.
 Only test your application on the test repository.  Testing the API on the public 
 repository will generate junk records that are annoying to delete.
 
+## TODO
 
+Handle incorrect token on file upload
