@@ -30,7 +30,7 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
             # Files to delete
             fjson = {}
             c = session()
-            existing = c.get(api_url + idv)
+            existing = c.get(api_url + str(idv))
             file_info = existing.json()["metadata"]
             if "files" in file_info:
                 fids = [f["id"] for f in file_info["files"]]
