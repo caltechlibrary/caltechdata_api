@@ -23,6 +23,11 @@ def customize_schema(json_record):
         del json_record['identifier']
         #will delete other ideintifiers in file
 
+    #Extract description
+    if "descriptions" in json_record:
+        for d in json_record["descriptions"]:
+            d['descriptionValue']=d['description']
+
     #Extract title
     if "titles" in json_record:
         titles = json_record['titles']
@@ -44,7 +49,10 @@ def customize_schema(json_record):
         for a in authors:
             new = {}
             if 'affiliations' in a:
-                new['authorAffiliation'] = a['affiliations']
+                astr = '' 
+                for afname in a['affiliations']:
+                    astr= astr + afname
+                new['authorAffiliation'] = astr
             new['authorName'] = a['creatorName']
             if 'nameIdentifiers' in a:
                 for n in a['nameIdentifiers']:
