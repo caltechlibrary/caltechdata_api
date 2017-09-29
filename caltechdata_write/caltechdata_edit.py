@@ -10,6 +10,8 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
 
     #If files is a string - change to single value array
     if isinstance(ids, int):
+        ids = [str(ids)]
+    if isinstance(ids, str):
         ids = [ids]
 
     url = "https://cd-sandbox.tind.io/submit/api/edit/"
@@ -30,11 +32,16 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
             # Files to delete
             fjson = {}
             c = session()
-            existing = c.get(api_url + str(idv))
+            existing = c.get(api_url + idv)
             file_info = existing.json()["metadata"]
             if "files" in file_info:
-                fids = [f["id"] for f in file_info["files"]]
+                fids = []
+                for f in file_info["files"]:
+                    if 'id' in f:
+                        fids.append(f["id"])
                 fjson = {'delete': fids}
+                metadata['files'] = fjson
+                met = {'files': fjson}
 
             # upload new
             fileinfo = [send_s3(f, token) for f in files]
@@ -43,6 +50,9 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
             metadata['files'] = fjson
 
         dat = json.dumps({'record': metadata})
+
+        outf = open('out.json','w')
+        outf.write(dat)
 
         print(dat)
         c = session()
