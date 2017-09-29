@@ -27,6 +27,7 @@ def customize_schema(json_record):
     if "descriptions" in json_record:
         for d in json_record["descriptions"]:
             d['descriptionValue']=d['description']
+            del d['description']
 
     #Extract title
     if "titles" in json_record:
