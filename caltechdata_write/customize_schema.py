@@ -36,6 +36,11 @@ def customize_schema(json_record):
             if 'titleType' not in t:
                 json_record['title']=t['title']
 
+    #Language - only translating english
+    if "language" in json_record:
+        if json_record["language"] == 'en':
+            json_record["language"] = 'eng'
+
     #Change related identifier labels
     if "relatedIdentifiers" in json_record:
         for listing in json_record['relatedIdentifiers']:
@@ -58,21 +63,32 @@ def customize_schema(json_record):
             if 'nameIdentifiers' in a:
                 for n in a['nameIdentifiers']:
                     if n['nameIdentifierScheme']=="ORCID":
-                        new['nameIdentifiers']={"nameIdentifier":n["nameIdentifier"],
-                            "NameIdentifierScheme": "ORCID"}
+                        new['authorIdentifiers']={"authorIdentifier":n["nameIdentifier"],
+                            "authorIdentifierScheme": "ORCID"}
             newa.append(new)
         json_record['authors']=newa
 
     #strip creator URI
     if "contributors" in json_record:
+        newc = []
         for c in json_record['contributors']:
+            new = {}
             if 'nameIdentifiers' in c:
-                for d in c['nameIdentifiers']:
-                    if "schemeURI" in d:
-                        d.pop("schemeURI")
-            if 'familyName' in c:
-                c.pop('familyName')
-                c.pop('givenName')
+                for n in c['nameIdentifiers']:
+                    if n['nameIdentifierScheme']=="ORCID":
+                        new['contributorIdentifiers']={"contributorIdentifier":n["nameIdentifier"],
+                        "contributorIdentifierScheme":"ORCID"}
+            if 'affiliations' in c:
+                astr = ''
+                for afname in c['affiliations']:
+                    astr= astr + afname
+                new['contributorAffiliation'] = astr
+            new['contributorName'] = c['contributorName']
+            new['contributorType'] = c['contributorType']
+            if 'contributorEmail' in c:
+                new['contributorEmail'] = c['contributorEmail']
+            newc.append(new)
+        json_record['contributors'] = newc
 
     #format
     if "formats" in json_record:
@@ -89,7 +105,11 @@ def customize_schema(json_record):
     #license
     if 'rightsList' in json_record:
         licenses = json_record['rightsList']
-        json_record['license']=licenses[0]['rights']
+        #Should check acceptable licenses
+        if licenses[0]['rights'] == 'TCCON Data Use Policy':
+            json_record['license'] = 'other-license'
+        else:
+            json_record['license']=licenses[0]['rights']
         #Only transfers first license
     
     #Funding

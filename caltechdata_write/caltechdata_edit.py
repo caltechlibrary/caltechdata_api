@@ -3,7 +3,7 @@ import json
 from caltechdata_write import customize_schema
 from caltechdata_write import send_s3
 
-def Caltechdata_edit(token,ids,metadata={},files={}):
+def Caltechdata_edit(token,ids,metadata={},files={},delete={}):
 
     #Currently only replaces files
     #There are more file operations that could be implemented
@@ -34,14 +34,19 @@ def Caltechdata_edit(token,ids,metadata={},files={}):
             c = session()
             existing = c.get(api_url + idv)
             file_info = existing.json()["metadata"]
-            if "files" in file_info:
-                fids = []
-                for f in file_info["files"]:
-                    if 'id' in f:
-                        fids.append(f["id"])
+            fids = []
+            for f in files: #Check if new files match existing
+                for ex in file_info["electronic_location_and_access"]:
+                    if 'electronic_name' in ex:
+                        name = ex['electronic_name'][0]
+                        fu = ex['uniform_resource_identifier'].split('/')[-2]
+                        if name == f:
+                            fids.append(fu)
+                        for d in delete:
+                            if name.split('.')[-1] == d:
+                                fids.append(fu)
+            if len(fids) > 0:
                 fjson = {'delete': fids}
-                metadata['files'] = fjson
-                met = {'files': fjson}
 
             # upload new
             fileinfo = [send_s3(f, token) for f in files]
