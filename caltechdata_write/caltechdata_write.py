@@ -91,7 +91,7 @@ def Caltechdata_add(token,ids,metadata={},files={}):
         outf = open('out.json','w')
         outf.write(dat)
 
-        print(dat)
+        #print(dat)
         c = session()
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
@@ -122,4 +122,4 @@ def Caltechdata_write(metadata,token,files=[]):
 
     c = session()
     response = c.post(url,headers=headers,data=dat)
-    print(response.text)
+    return response.text
