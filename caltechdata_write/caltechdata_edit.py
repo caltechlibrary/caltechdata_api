@@ -3,7 +3,7 @@ import json
 from caltechdata_write import customize_schema
 from caltechdata_write import send_s3
 
-def Caltechdata_edit(token,ids,metadata={},files={},delete={}):
+def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
     #Currently only replaces files
     #There are more file operations that could be implemented
@@ -14,8 +14,12 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={}):
     if isinstance(ids, str):
         ids = [ids]
 
-    url = "https://cd-sandbox.tind.io/submit/api/edit/"
-    api_url = "https://cd-sandbox.tind.io/api/record/"
+    if production == True:
+        url = "https://data.caltech.edu/submit/api/edit/"
+        api_url = "https://data.caltech.edu/api/record/"
+    else:
+        url = "https://cd-sandbox.tind.io/submit/api/edit/"
+        api_url = "https://cd-sandbox.tind.io/api/record/"
 
     headers = {
         'Authorization' : 'Bearer %s' % token,
@@ -49,7 +53,7 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={}):
                 fjson = {'delete': fids}
 
             # upload new
-            fileinfo = [send_s3(f, token) for f in files]
+            fileinfo = [send_s3(f, token, production) for f in files]
 
             fjson['new'] = fileinfo
             metadata['files'] = fjson

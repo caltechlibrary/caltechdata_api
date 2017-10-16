@@ -3,9 +3,14 @@ from caltechdata_write import customize_schema
 import json
 import os
 
-def send_s3(filepath,token):
-    s3surl = "https://cd-sandbox.tind.io/tindfiles/sign_s3/"
-    chkurl = "https://cd-sandbox.tind.io/tindfiles/md5_s3"
+def send_s3(filepath,token,production=False):
+    
+    if production == True:
+        s3surl = "https://data.caltech.edu/tindfiles/sign_s3/"
+        chkurl = "https://data.caltech.edu/tindfiles/md5_s3"
+    else:
+        s3surl = "https://cd-sandbox.tind.io/tindfiles/sign_s3/"
+        chkurl = "https://cd-sandbox.tind.io/tindfiles/md5_s3"
 
     headers = { 'Authorization' : 'Bearer %s' % token }
 
@@ -53,7 +58,7 @@ def send_s3(filepath,token):
 
     return(fileinfo)
 
-def Caltechdata_add(token,ids,metadata={},files={}):
+def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
     #Adds file
 
@@ -62,9 +67,13 @@ def Caltechdata_add(token,ids,metadata={},files={}):
         ids = [str(ids)]
     if isinstance(ids, str):
         ids = [ids]
-
-    url = "https://data.caltech.edu/submit/api/edit/"
-    api_url = "https://data.caltech.edu/api/record/"
+    
+    if production == True:
+        url = "https://data.caltech.edu/submit/api/edit/"
+        api_url = "https://data.caltech.edu/api/record/"
+    else:
+        url = "https://cd-sandbox.tind.io/submit/api/edit/"
+        api_url = "https://cd-sandbox.tind.io/api/record/"
 
     headers = {
         'Authorization' : 'Bearer %s' % token,
@@ -81,7 +90,7 @@ def Caltechdata_add(token,ids,metadata={},files={}):
 
         if files:
             # upload new
-            fileinfo = [send_s3(f, token) for f in files]
+            fileinfo = [send_s3(f, token, production) for f in files]
 
             fjson['new'] = fileinfo
             metadata['files'] = fjson
@@ -97,7 +106,7 @@ def Caltechdata_add(token,ids,metadata={},files={}):
         print(response.text)
         return fjson['new'][0]['url']
 
-def Caltechdata_write(metadata,token,files=[]):
+def Caltechdata_write(metadata,token,files=[],production=False):
 
     #If files is a string - change to single value array
     if isinstance(files, str) == True:
@@ -106,9 +115,12 @@ def Caltechdata_write(metadata,token,files=[]):
     fileinfo=[]
 
     for f in files:
-        fileinfo.append(send_s3(f, token))
+        fileinfo.append(send_s3(f, token, production))
 
-    url = "https://cd-sandbox.tind.io/submit/api/create/"
+    if production == True:
+        url = "https://data.caltech.edu/submit/api/create/"
+    else:
+        url = "https://cd-sandbox.tind.io/submit/api/create/"
 
     headers = {
         'Authorization' : 'Bearer %s' % token,
