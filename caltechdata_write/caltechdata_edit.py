@@ -81,7 +81,7 @@ def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
     if production == True:
         url = "https://data.caltech.edu/submit/api/edit/"
-        api_url = "https://data.caltech.edu/api/record/"
+        api_url = "https://data.caltech.edu/api/record/"    
     else:
         url = "https://cd-sandbox.tind.io/submit/api/edit/"
         api_url = "https://cd-sandbox.tind.io/api/record/"
@@ -116,3 +116,4 @@ def Caltechdata_add(token,ids,metadata={},files={},production=False):
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
         return fjson['new'][0]['url']
+
