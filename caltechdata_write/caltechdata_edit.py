@@ -67,7 +67,6 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
         c = session()
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
-        return fjson['new'][0]['url']
 
 def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
@@ -115,5 +114,4 @@ def Caltechdata_add(token,ids,metadata={},files={},production=False):
         c = session()
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
-        return fjson['new'][0]['url']
 
