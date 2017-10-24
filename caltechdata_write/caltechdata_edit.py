@@ -69,7 +69,7 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
         print(response.text)
 	return fjson['new'][0]['url']
 
-Caltechdata_add(token,ids,metadata={},files={},production=False):
+def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
     #Adds file
 
