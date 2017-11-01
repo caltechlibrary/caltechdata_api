@@ -22,6 +22,9 @@ def customize_schema(json_record):
         json_record['doi'] = identifier
         del json_record['identifier']
         #will delete other ideintifiers in file
+    else: #We want tind to generate the identifier
+        json_record['final_actions'] = [{"type":"create_doi",\
+                "parameters":{"type":"records","field":"doi"}}]
 
     #Extract description
     if "descriptions" in json_record:

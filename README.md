@@ -6,8 +6,6 @@ In development.
 
 Requires: Python 3, python requests library. 
 
-Final Actions (New DOI Generation) not yet implemented
-
 ## Examples
 
 Create a record:
