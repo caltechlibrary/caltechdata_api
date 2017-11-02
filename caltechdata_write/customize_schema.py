@@ -105,6 +105,9 @@ def customize_schema(json_record):
             d['relevantDateType']=d.pop('dateType')
         json_record['relevantDates']=json_record.pop('dates')
 
+    if "publicationYear" in json_record:
+        json_record["publicationDate"]=json_record["publicationYear"]
+
     #license
     if 'rightsList' in json_record:
         licenses = json_record['rightsList']
