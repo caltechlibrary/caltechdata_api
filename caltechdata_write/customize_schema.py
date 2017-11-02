@@ -66,8 +66,8 @@ def customize_schema(json_record):
             if 'nameIdentifiers' in a:
                 for n in a['nameIdentifiers']:
                     if n['nameIdentifierScheme']=="ORCID":
-                        new['authorIdentifiers']={"authorIdentifier":n["nameIdentifier"],
-                            "authorIdentifierScheme": "ORCID"}
+                        new['authorIdentifiers']=[{"authorIdentifier":n["nameIdentifier"],
+                            "authorIdentifierScheme": "ORCID"}]
             newa.append(new)
         json_record['authors']=newa
 
@@ -79,8 +79,8 @@ def customize_schema(json_record):
             if 'nameIdentifiers' in c:
                 for n in c['nameIdentifiers']:
                     if n['nameIdentifierScheme']=="ORCID":
-                        new['contributorIdentifiers']={"contributorIdentifier":n["nameIdentifier"],
-                        "contributorIdentifierScheme":"ORCID"}
+                        new['contributorIdentifiers']=[{"contributorIdentifier":n["nameIdentifier"],
+                        "contributorIdentifierScheme":"ORCID"}]
             if 'affiliations' in c:
                 astr = ''
                 for afname in c['affiliations']:
