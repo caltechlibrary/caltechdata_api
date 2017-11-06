@@ -9,11 +9,14 @@ def customize_schema(json_record):
     if "subjects" in json_record:
         subjects = json_record['subjects']
         substr = ''
+        #subs = []
         for s in subjects:
+            #subs.append(s['subject'])
             if substr != '':
                 substr = substr + ', '
             substr = substr+s['subject']
-        json_record['subjects']=substr
+        json_record['keywords']=substr
+        del json_record['subjects']
 
     #Extract identifier and label as DOI
     if "identifier" in json_record:
@@ -64,10 +67,11 @@ def customize_schema(json_record):
                 new['authorAffiliation'] = astr
             new['authorName'] = a['creatorName']
             if 'nameIdentifiers' in a:
+                idn = []
                 for n in a['nameIdentifiers']:
-                    if n['nameIdentifierScheme']=="ORCID":
-                        new['authorIdentifiers']=[{"authorIdentifier":n["nameIdentifier"],
-                            "authorIdentifierScheme": "ORCID"}]
+                    idn.append({"authorIdentifier":n["nameIdentifier"],
+                        "authorIdentifierScheme": n["nameIdentifierScheme"]})
+                new['authorIdentifiers'] = idn
             newa.append(new)
         json_record['authors']=newa
 
@@ -77,10 +81,11 @@ def customize_schema(json_record):
         for c in json_record['contributors']:
             new = {}
             if 'nameIdentifiers' in c:
+                idn = []
                 for n in c['nameIdentifiers']:
-                    if n['nameIdentifierScheme']=="ORCID":
-                        new['contributorIdentifiers']=[{"contributorIdentifier":n["nameIdentifier"],
-                        "contributorIdentifierScheme":"ORCID"}]
+                    idn.append({"contributorIdentifier":n["nameIdentifier"],
+                    "contributorIdentifierScheme":n['nameIdentifierScheme']})
+                new['contributorIdentifiers'] = idn
             if 'affiliations' in c:
                 astr = ''
                 for afname in c['affiliations']:
