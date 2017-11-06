@@ -16,7 +16,8 @@ def customize_schema(json_record):
                 substr = substr + ', '
             substr = substr+s['subject']
         json_record['subjects']=substr
-        del json_record['subjects']
+        #print(substr)
+        #del json_record['subjects']
 
     #Extract identifier and label as DOI
     if "identifier" in json_record:
@@ -145,6 +146,12 @@ def customize_schema(json_record):
                 g['geoLocationPoint']['pointLatitude'] = str(g['geoLocationPoint']['pointLatitude'])
                 g['geoLocationPoint']['pointLongitude'] = str(g['geoLocationPoint']['pointLongitude'])
                 g['geoLocationPoint'] = [g['geoLocationPoint']]
+            if 'geoLocationBox' in g:
+                g['geoLocationBox']['northBoundLatitude']=str(g['geoLocationBox']['northBoundLatitude'])
+                g['geoLocationBox']['southBoundLatitude']=str(g['geoLocationBox']['southBoundLatitude'])
+                g['geoLocationBox']['eastBoundLongitude']=str(g['geoLocationBox']['eastBoundLongitude'])
+                g['geoLocationBox']['westBoundLongitude']=str(g['geoLocationBox']['westBoundLongitude'])
+                g['geoLocationBox'] = [g['geoLocationBox']]
         json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
