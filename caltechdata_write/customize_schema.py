@@ -15,7 +15,7 @@ def customize_schema(json_record):
             if substr != '':
                 substr = substr + ', '
             substr = substr+s['subject']
-        json_record['keywords']=substr
+        json_record['subjects']=substr
         del json_record['subjects']
 
     #Extract identifier and label as DOI
