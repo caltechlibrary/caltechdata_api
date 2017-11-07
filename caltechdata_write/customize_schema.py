@@ -8,14 +8,14 @@ def customize_schema(json_record):
     #Extract subjects to single string
     if "subjects" in json_record:
         subjects = json_record['subjects']
-        substr = ''
-        #subs = []
+        #substr = ''
+        subs = []
         for s in subjects:
-            #subs.append(s['subject'])
-            if substr != '':
-                substr = substr + ', '
-            substr = substr+s['subject']
-        json_record['subjects']=substr
+            subs.append(s['subject'])
+            #if substr != '':
+            #    substr = substr + ', '
+            #substr = substr+s['subject']
+        json_record['subjects']=subs#tr
         #print(substr)
         #del json_record['subjects']
 
