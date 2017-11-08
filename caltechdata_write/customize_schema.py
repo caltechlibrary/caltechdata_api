@@ -36,6 +36,7 @@ def customize_schema(json_record):
         for t in titles:
             if 'titleType' not in t:
                 json_record['title']=t['title']
+        del json_record['titles']
 
     #Language - only translating english
     if "language" in json_record:
@@ -69,6 +70,7 @@ def customize_schema(json_record):
                 new['authorIdentifiers'] = idn
             newa.append(new)
         json_record['authors']=newa
+        del json_record['creators']
 
     #strip creator URI
     if "contributors" in json_record:
@@ -106,7 +108,7 @@ def customize_schema(json_record):
         json_record['relevantDates']=json_record.pop('dates')
 
     if "publicationYear" in json_record:
-        json_record["publicationDate"]=str(json_record["publicationYear"])
+        json_record["publicationDate"]=str(json_record.pop("publicationYear"))
 
     #license
     if 'rightsList' in json_record:
@@ -119,19 +121,19 @@ def customize_schema(json_record):
         #Only transfers first license
     
     #Funding
-    if 'fundingReferences' in json_record:
-        funding = json_record['fundingReferences']
-        newf = []
-        for f in funding:
-            frec = {}
-            if 'funderName' in f:
-                frec['fundingName'] = f['funderName']
-            #f['fundingName']=f.pop('funderName')
-            if 'awardNumber' in f:
-                frec['fundingAwardNumber']=f['awardNumber']['awardNumber']
-            newf.append(frec)
-        json_record['fundings']=newf
-        #Some fields not preserved
+    #if 'fundingReferences' in json_record:
+    #    funding = json_record['fundingReferences']
+    #    newf = []
+    #    for f in funding:
+    #        frec = {}
+    #        if 'funderName' in f:
+    #            frec['fundingName'] = f['funderName']
+    #        #f['fundingName']=f.pop('funderName')
+    #        if 'awardNumber' in f:
+    #            frec['fundingAwardNumber']=f['awardNumber']['awardNumber']
+    #        newf.append(frec)
+    #    json_record['fundings']=newf
+    #    #Some fields not preserved
 
     #Geo
     if 'geoLocations' in json_record:
@@ -149,7 +151,7 @@ def customize_schema(json_record):
     #Publisher
     if "publisher" in json_record:
         publisher = {}
-        publisher['publisherName'] = json_record['publisher']
+        publisher['publisherName'] = json_record.pop('publisher')
         json_record['publishers'] = publisher
 
     #print(json.dumps(json_record))
