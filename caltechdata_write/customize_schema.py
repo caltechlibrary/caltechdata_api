@@ -8,16 +8,10 @@ def customize_schema(json_record):
     #Extract subjects to single string
     if "subjects" in json_record:
         subjects = json_record['subjects']
-        #substr = ''
         subs = []
         for s in subjects:
             subs.append(s['subject'])
-            #if substr != '':
-            #    substr = substr + ', '
-            #substr = substr+s['subject']
-        json_record['subjects']=subs#tr
-        #print(substr)
-        #del json_record['subjects']
+        json_record['subjects']=subs
 
     #Extract identifier and label as DOI
     if "identifier" in json_record:
@@ -63,9 +57,9 @@ def customize_schema(json_record):
             new = {}
             if 'affiliations' in a:
                 if isinstance(a['affiliations'], list):
-                    new['contributorAffiliation'] = a['affiliations']
+                    new['authorAffiliation'] = a['affiliations']
                 else:
-                    new['contributorAffiliation'] = [a['affiliations']]
+                    new['authorAffiliation'] = [a['affiliations']]
             new['authorName'] = a['creatorName']
             if 'nameIdentifiers' in a:
                 idn = []
@@ -107,12 +101,12 @@ def customize_schema(json_record):
     if "dates" in json_record:
         dates = json_record['dates']
         for d in dates:
-            d['relevantDateValue']=d.pop('date')
+            d['relevantDateValue']=str(d.pop('date'))
             d['relevantDateType']=d.pop('dateType')
         json_record['relevantDates']=json_record.pop('dates')
 
     if "publicationYear" in json_record:
-        json_record["publicationDate"]=json_record["publicationYear"]
+        json_record["publicationDate"]=str(json_record["publicationYear"])
 
     #license
     if 'rightsList' in json_record:
@@ -145,13 +139,11 @@ def customize_schema(json_record):
             if 'geoLocationPoint' in g:
                 g['geoLocationPoint']['pointLatitude'] = str(g['geoLocationPoint']['pointLatitude'])
                 g['geoLocationPoint']['pointLongitude'] = str(g['geoLocationPoint']['pointLongitude'])
-                g['geoLocationPoint'] = g['geoLocationPoint']
             if 'geoLocationBox' in g:
                 g['geoLocationBox']['northBoundLatitude']=str(g['geoLocationBox']['northBoundLatitude'])
                 g['geoLocationBox']['southBoundLatitude']=str(g['geoLocationBox']['southBoundLatitude'])
                 g['geoLocationBox']['eastBoundLongitude']=str(g['geoLocationBox']['eastBoundLongitude'])
                 g['geoLocationBox']['westBoundLongitude']=str(g['geoLocationBox']['westBoundLongitude'])
-                g['geoLocationBox'] = [g['geoLocationBox']]
         json_record['geographicCoverage'] = json_record.pop('geoLocations')
 
     #Publisher
