@@ -62,10 +62,10 @@ def customize_schema(json_record):
         for a in authors:
             new = {}
             if 'affiliations' in a:
-                astr = '' 
-                for afname in a['affiliations']:
-                    astr= astr + afname
-                new['authorAffiliation'] = astr
+                if isinstance(a['affiliations'], list):
+                    new['contributorAffiliation'] = a['affiliations']
+                else:
+                    new['contributorAffiliation'] = [a['affiliations']]
             new['authorName'] = a['creatorName']
             if 'nameIdentifiers' in a:
                 idn = []
@@ -88,10 +88,10 @@ def customize_schema(json_record):
                     "contributorIdentifierScheme":n['nameIdentifierScheme']})
                 new['contributorIdentifiers'] = idn
             if 'affiliations' in c:
-                astr = ''
-                for afname in c['affiliations']:
-                    astr= astr + afname
-                new['contributorAffiliation'] = astr
+                if isinstance(c['affiliations'], list):
+                    new['contributorAffiliation'] = c['affiliations']
+                else:
+                    new['contributorAffiliation'] = [c['affiliations']]
             new['contributorName'] = c['contributorName']
             new['contributorType'] = c['contributorType']
             if 'contributorEmail' in c:
@@ -145,7 +145,7 @@ def customize_schema(json_record):
             if 'geoLocationPoint' in g:
                 g['geoLocationPoint']['pointLatitude'] = str(g['geoLocationPoint']['pointLatitude'])
                 g['geoLocationPoint']['pointLongitude'] = str(g['geoLocationPoint']['pointLongitude'])
-                g['geoLocationPoint'] = [g['geoLocationPoint']]
+                g['geoLocationPoint'] = g['geoLocationPoint']
             if 'geoLocationBox' in g:
                 g['geoLocationBox']['northBoundLatitude']=str(g['geoLocationBox']['northBoundLatitude'])
                 g['geoLocationBox']['southBoundLatitude']=str(g['geoLocationBox']['southBoundLatitude'])
