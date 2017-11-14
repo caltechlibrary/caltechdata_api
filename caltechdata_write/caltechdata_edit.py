@@ -60,10 +60,9 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
         dat = json.dumps({'record': metadata})
 
-        outf = open('out.json','w')
-        outf.write(dat)
+        #outf = open('out.json','w')
+        #outf.write(dat)
 
-        print(dat)
         c = session()
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
@@ -107,10 +106,9 @@ def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
         dat = json.dumps({'record': metadata})
 
-        outf = open('out.json','w')
-        outf.write(dat)
+        #outf = open('out.json','w')
+        #outf.write(dat)
 
-        #print(dat)
         c = session()
         response = c.post(url, headers=headers, data=dat)
         print(response.text)
