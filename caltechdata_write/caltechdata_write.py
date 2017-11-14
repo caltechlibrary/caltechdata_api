@@ -81,6 +81,10 @@ def Caltechdata_write(metadata,token,files=[],production=False):
 
     newdata = customize_schema.customize_schema(metadata)
     newdata['files'] = fileinfo
+    if 'doi' not in newdata:
+        #We want tind to generate the identifier
+        newdata['final_actions'] = [{"type":"create_doi",\
+                "parameters":{"type":"records","field":"doi"}}]
 
     dat = json.dumps({'record': newdata})
 
