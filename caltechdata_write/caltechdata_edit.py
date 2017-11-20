@@ -40,8 +40,8 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
             file_info = existing.json()["metadata"]
             fids = []
             for f in files: #Check if new files match existing
-                for ex in file_info["electronic_location_and_access"]:
-                    if 'electronic_name' in ex:
+                if 'electronic_location_and_access' in file_info:
+                    for ex in file_info["electronic_location_and_access"]:
                         name = ex['electronic_name'][0]
                         fu = ex['uniform_resource_identifier'].split('/')[-2]
                         if name == f:
