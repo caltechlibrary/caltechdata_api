@@ -5,7 +5,9 @@ from caltechdata_write import send_s3
 
 def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
-    #Currently only replaces files
+    #Including files will only replaces files if they have the same name
+    #The delete option will delete any existing files with a given file
+    #extension
     #There are more file operations that could be implemented
 
     #If files is a string - change to single value array
@@ -65,7 +67,7 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
         c = session()
         response = c.post(url, headers=headers, data=dat)
-        print(response.text)
+        return response.text
 
 def Caltechdata_add(token,ids,metadata={},files={},production=False):
 

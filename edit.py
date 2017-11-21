@@ -16,4 +16,5 @@ token = os.environ['TINDTOK']
 metaf = open(args.json_file[0], 'r')
 metadata = json.load(metaf)
 
-Caltechdata_edit(token, args.ids, metadata, args.fnames, {}, False)
+response = Caltechdata_edit(token, args.ids, metadata, args.fnames, {}, False)
+print(response)
