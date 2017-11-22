@@ -4,7 +4,7 @@ Python library for using the CaltechDATA API
 
 - caltechdata_write write files and a DataCite 4 standard json record to CaltechDATA repository
 - caltechdata_edit edits records in CaltechDATA
-- get_metadata gets metadata for CaltechDATA records
+- get_metadata gets metadata from CaltechDATA records
 
 In development. 
 
