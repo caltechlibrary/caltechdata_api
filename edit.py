@@ -1,5 +1,5 @@
 import argparse, os, json
-from caltechdata_write import Caltechdata_edit
+from caltechdata_api import caltechdata_edit
 
 parser = argparse.ArgumentParser(description=\
         "Write files and a DataCite 4 standard json record\
@@ -16,5 +16,5 @@ token = os.environ['TINDTOK']
 metaf = open(args.json_file[0], 'r')
 metadata = json.load(metaf)
 
-response = Caltechdata_edit(token, args.ids, metadata, args.fnames, {}, False)
+response = caltechdata_edit(token, args.ids, metadata, args.fnames, {}, False)
 print(response)

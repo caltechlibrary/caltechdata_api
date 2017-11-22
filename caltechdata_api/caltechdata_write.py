@@ -1,5 +1,5 @@
 from requests import session
-from caltechdata_write import customize_schema
+from caltechdata_api import customize_schema
 import json
 import os
 
@@ -58,7 +58,7 @@ def send_s3(filepath,token,production=False):
 
     return(fileinfo)
 
-def Caltechdata_write(metadata,token,files=[],production=False):
+def caltechdata_write(metadata,token,files=[],production=False):
 
     #If files is a string - change to single value array
     if isinstance(files, str) == True:

@@ -1,9 +1,9 @@
 from requests import session
 import json
-from caltechdata_write import customize_schema
-from caltechdata_write import send_s3
+from caltechdata_api import customize_schema
+from caltechdata_api import send_s3
 
-def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
+def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
     #Including files will only replaces files if they have the same name
     #The delete option will delete any existing files with a given file
@@ -69,7 +69,7 @@ def Caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
         response = c.post(url, headers=headers, data=dat)
         return response.text
 
-def Caltechdata_add(token,ids,metadata={},files={},production=False):
+def caltechdata_add(token,ids,metadata={},files={},production=False):
 
     #Adds file
 
@@ -113,5 +113,5 @@ def Caltechdata_add(token,ids,metadata={},files={},production=False):
 
         c = session()
         response = c.post(url, headers=headers, data=dat)
-        print(response.text)
+        return response.text
 

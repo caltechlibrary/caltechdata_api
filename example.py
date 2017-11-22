@@ -1,6 +1,6 @@
 import argparse
 import os,json
-from caltechdata_write import Caltechdata_write
+from caltechdata_api import caltechdata_write
 
 parser = argparse.ArgumentParser(description=\
         "Write files and a DataCite 4 standard json record\
@@ -20,5 +20,5 @@ files = args.fnames
 if files == None:
     files={}
 
-response = Caltechdata_write(metadata,token,files,False)
+response = caltechdata_write(metadata,token,files,False)
 print(response)
