@@ -3,7 +3,7 @@ import requests
 from datacite import DataCiteMDSClient, schema40
 from caltechdata_api import decustomize_schema
 
-def get_metadata(ids,production=True):
+def get_metadata(idv,production=True):
 
     if production==True:
         api_url = "https://data.caltech.edu/api/record/"
