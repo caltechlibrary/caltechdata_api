@@ -8,7 +8,7 @@ def get_metadata(idv,production=True):
     if production==True:
         api_url = "https://data.caltech.edu/api/record/"
     else:
-        api_url = "https://cd-sandbox.tind.io/api/record"
+        api_url = "https://cd-sandbox.tind.io/api/record/"
 
     r = requests.get(api_url+str(idv))
     metadata = r.json()['metadata']
@@ -31,11 +31,15 @@ if __name__ == "__main__":
     and returns DataCite-compatable metadata")
     parser.add_argument('ids', metavar='ID', type=int, nargs='+',\
     help='The CaltechDATA ID for each record of interest')
+    parser.add_argument('--test',dest='production', action='store_false')
 
     args = parser.parse_args()
 
     for idv in args.ids:
-        metadata = get_metadata(idv)
+        if args.production == False:
+            metadata = get_metadata(idv,args.production)
+        else:
+            metadata = get_metadata(idv)
         outfile = open(str(idv)+'.json','w')
         outfile.write(json.dumps(metadata))
         outfile.close()

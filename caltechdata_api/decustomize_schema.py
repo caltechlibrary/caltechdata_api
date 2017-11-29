@@ -34,6 +34,19 @@ def decustomize_schema(json_record):
         for listing in json_record['relatedIdentifiers']:
             listing['relationType'] = listing.pop('relatedIdentifierRelation') 
             listing['relatedIdentifierType'] = listing.pop('relatedIdentifierScheme')
+    
+    #Publication is effectivly a related identifier
+    if "publications" in json_record:
+        if 'publicationIDs' in json_record['publications']:
+            relation = {"relatedIdentifier":
+                json_record['publications']['publicationsIDs']['publicationIDNumber'],
+                "relatedIdentifierType": "DOI",
+                "relatedIdentifierRelation": "IsSupplementTo"}
+            if 'relatedIdentifiers' in json_record:
+                json_record['relatedIdentifiers'].append(relation)
+            else:
+                json_record['relatedIdentifiers'] = [relation]
+        del json_record['publications']
 
     #change author formatting
     #Could do better with multiple affiliations
@@ -44,6 +57,17 @@ def decustomize_schema(json_record):
             new = {}
             if 'authorAffiliation' in a:
                 new['affiliations'] = [a['authorAffiliation']]
+            if 'authorIdentifiers' in a:
+                idv = []
+                for cid in a['authorIdentifiers']:
+                    nid = {}
+                    nid['nameIdentifier'] =\
+                        cid.pop('authorIdentifier')
+                    nid['nameIdentifierScheme'] =\
+                        cid.pop('authorIdentifierScheme')
+                    idv.append(nid)
+                new['nameIdentifiers']=idv
+                del a['authorIdentifiers']
             new['creatorName'] = a['authorName']
             newa.append(new)
         json_record['creators']=newa
@@ -55,11 +79,23 @@ def decustomize_schema(json_record):
             if 'contributorAffiliation' in c:
                 c['affiliations'] = [c.pop('contributorAffiliation')]
             if 'contributorIdentifiers' in c:
-                c['contributorIdentifiers']['nameIdentifier'] =\
-                c['contributorIdentifiers'].pop('contributorIdentifier')
-                c['contributorIdentifiers']['nameIdentifierScheme'] =\
-                c['contributorIdentifiers'].pop('contributorIdentifierScheme')
-                c['nameIdentifiers'] = [c.pop('contributorIdentifiers')]
+                if isinstance(c['contributorIdentifiers'],list):
+                    newa = []
+                    for cid in c['contributorIdentifiers']:
+                        new = {}
+                        new['nameIdentifier'] =\
+                                cid.pop('contributorIdentifier')
+                        new['nameIdentifierScheme'] =\
+                                cid.pop('contributorIdentifierScheme')
+                        newa.append(new)
+                    c['nameIdentifiers']=newa
+                    del c['contributorIdentifiers']
+                else:
+                    c['contributorIdentifiers']['nameIdentifier'] =\
+                    c['contributorIdentifiers'].pop('contributorIdentifier')
+                    c['contributorIdentifiers']['nameIdentifierScheme'] =\
+                    c['contributorIdentifiers'].pop('contributorIdentifierScheme')
+                    c['nameIdentifiers'] = [c.pop('contributorIdentifiers')]
             if 'contributorEmail' in c:
                 del c['contributorEmail']
     #format
@@ -130,7 +166,7 @@ def decustomize_schema(json_record):
 
     #Publisher
     if "publishers" in json_record:
-        if isinstance(json_record['publisher'],list):
+        if isinstance(json_record['publishers'],list):
             json_record['publisher'] = json_record['publishers'][0]['publisherName']
         else:
             json_record['publisher'] = json_record['publishers']['publisherName']
@@ -143,7 +179,8 @@ def decustomize_schema(json_record):
                 d["description"] = d.pop("descriptionValue")
 
     others = ['files', 'id', 'owners', 'pid_value', 'control_number', '_oai',
-            '_form_uuid', 'electronic_location_and_access', 'access_right']
+            '_form_uuid', 'electronic_location_and_access', 'access_right',
+            'embargo_date']
     for v in others:
         if v in json_record:
             del json_record[v]
