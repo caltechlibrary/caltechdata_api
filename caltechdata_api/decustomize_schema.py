@@ -56,7 +56,7 @@ def decustomize_schema(json_record):
         for a in authors:
             new = {}
             if 'authorAffiliation' in a:
-                new['affiliations'] = [a['authorAffiliation']]
+                new['affiliations'] = a['authorAffiliation']
             if 'authorIdentifiers' in a:
                 idv = []
                 for cid in a['authorIdentifiers']:
@@ -77,25 +77,25 @@ def decustomize_schema(json_record):
     if "contributors" in json_record:
         for c in json_record['contributors']:
             if 'contributorAffiliation' in c:
-                c['affiliations'] = [c.pop('contributorAffiliation')]
+                c['affiliations'] = c.pop('contributorAffiliation')
             if 'contributorIdentifiers' in c:
-                if isinstance(c['contributorIdentifiers'],list):
-                    newa = []
-                    for cid in c['contributorIdentifiers']:
-                        new = {}
-                        new['nameIdentifier'] =\
+                #if isinstance(c['contributorIdentifiers'],list):
+                newa = []
+                for cid in c['contributorIdentifiers']:
+                    new = {}
+                    new['nameIdentifier'] =\
                                 cid.pop('contributorIdentifier')
-                        new['nameIdentifierScheme'] =\
+                    new['nameIdentifierScheme'] =\
                                 cid.pop('contributorIdentifierScheme')
-                        newa.append(new)
-                    c['nameIdentifiers']=newa
-                    del c['contributorIdentifiers']
-                else:
-                    c['contributorIdentifiers']['nameIdentifier'] =\
-                    c['contributorIdentifiers'].pop('contributorIdentifier')
-                    c['contributorIdentifiers']['nameIdentifierScheme'] =\
-                    c['contributorIdentifiers'].pop('contributorIdentifierScheme')
-                    c['nameIdentifiers'] = [c.pop('contributorIdentifiers')]
+                    newa.append(new)
+                c['nameIdentifiers']=newa
+                del c['contributorIdentifiers']
+                #else:
+                #    c['contributorIdentifiers']['nameIdentifier'] =\
+                        #    c['contributorIdentifiers'].pop('contributorIdentifier')
+                #    c['contributorIdentifiers']['nameIdentifierScheme'] =\
+                        #    c['contributorIdentifiers'].pop('contributorIdentifierScheme')
+                #    c['nameIdentifiers'] = [c.pop('contributorIdentifiers')]
             if 'contributorEmail' in c:
                 del c['contributorEmail']
     #format
@@ -131,38 +131,48 @@ def decustomize_schema(json_record):
     del json_record['publicationDate']
 
     #license - no url available
-    if 'license' in json_record:
-        json_record['rightsList']=[{"rights":json_record.pop('license')}]
+    if 'rightsList' not in json_record:
+        if 'license' in json_record:
+            json_record['rightsList']=[{"rights":json_record.pop('license')}]
     
     #Funding
     if 'fundings' in json_record:
-        funding = json_record['fundings']
-        newf = []
-        for f in funding:
-            frec = {}
-            if 'fundingName' in f:
-                frec['funderName'] = f['fundingName']
-            #f['fundingName']=f.pop('funderName')
-            if 'fundingAwardNumber' in f:
-                frec['awardNumber']={'awardNumber':f['fundingAwardNumber']}
-            newf.append(frec)
-        json_record['fundingReferences']=newf
+        #funding = json_record['fundings']
+        #newf = []
+        #for f in funding:
+        #    frec = {}
+        #    if 'fundingName' in f:
+        #        frec['funderName'] = f['fundingName']
+        #    #f['fundingName']=f.pop('funderName')
+        #    if 'fundingAwardNumber' in f:
+        #        frec['awardNumber']={'awardNumber':f['fundingAwardNumber']}
+        #    newf.append(frec)
+        #json_record['fundingReferences']=newf
         del json_record['fundings']
 
     #Geo
     if 'geographicCoverage' in json_record:
         geo = json_record['geographicCoverage']
-        newgeo = {}
-        if 'geoLocationPlace' in geo:
-            newgeo['geoLocationPlace'] = geo['geoLocationPlace'] 
-        if 'geoLocationPoint' in geo:
-            pt = geo['geoLocationPoint'][0]
-            newpt = {}
-            newpt['pointLatitude'] = float(pt['pointLatitude'])
-            newpt['pointLongitude'] = float(pt['pointLongitude'])
-            newgeo['geoLocationPoint'] = newpt
-        json_record['geoLocations'] = [newgeo]
-        del json_record['geographicCoverage']
+        if isinstance(geo,list):
+            #We have the correct formatting
+            for g in geo:
+                if 'geoLocationPoint' in g:
+                    pt = g['geoLocationPoint']
+                    pt['pointLatitude'] = float(pt['pointLatitude'])
+                    pt['pointLongitude'] = float(pt['pointLongitude'])
+            json_record['geoLocations']=json_record.pop('geographicCoverage')
+        else:
+            newgeo = {}
+            if 'geoLocationPlace' in geo:
+                newgeo['geoLocationPlace'] = geo['geoLocationPlace'] 
+            if 'geoLocationPoint' in geo:
+                pt = geo['geoLocationPoint'][0]
+                newpt = {}
+                newpt['pointLatitude'] = float(pt['pointLatitude'])
+                newpt['pointLongitude'] = float(pt['pointLongitude'])
+                newgeo['geoLocationPoint'] = newpt
+            json_record['geoLocations'] = [newgeo]
+            del json_record['geographicCoverage']
 
     #Publisher
     if "publishers" in json_record:
@@ -180,7 +190,7 @@ def decustomize_schema(json_record):
 
     others = ['files', 'id', 'owners', 'pid_value', 'control_number', '_oai',
             '_form_uuid', 'electronic_location_and_access', 'access_right',
-            'embargo_date']
+            'embargo_date','license']
     for v in others:
         if v in json_record:
             del json_record[v]

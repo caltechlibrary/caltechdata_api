@@ -47,7 +47,7 @@ def customize_schema(json_record):
             listing['relatedIdentifierScheme'] = listing.pop('relatedIdentifierType')
 
     #change author formatting
-    #We're only supporting ORCIDS, and losing all URIs
+    #We're dropping URIs
     if "creators" in json_record:
         authors = json_record['creators']
         newa = []

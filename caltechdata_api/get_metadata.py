@@ -13,7 +13,7 @@ def get_metadata(idv,production=True):
     r = requests.get(api_url+str(idv))
     metadata = r.json()['metadata']
     metadata = decustomize_schema(metadata)
-
+    
     try: 
         assert schema40.validate(metadata)
     except AssertionError:
