@@ -56,7 +56,7 @@ def decustomize_schema(json_record):
         for a in authors:
             new = {}
             if 'authorAffiliation' in a:
-                if isinstance(c['contributorAffiliation'],list):
+                if isinstance(a['authorAffiliation'],list):
                     new['affiliations'] = a['authorAffiliation']
                 else:
                     new['affiliations'] = [a['authorAffiliation']]
