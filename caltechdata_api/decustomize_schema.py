@@ -56,7 +56,10 @@ def decustomize_schema(json_record):
         for a in authors:
             new = {}
             if 'authorAffiliation' in a:
-                new['affiliations'] = a['authorAffiliation']
+                if isinstance(c['contributorAffiliation'],list):
+                    new['affiliations'] = a['authorAffiliation']
+                else:
+                    new['affiliations'] = [a['authorAffiliation']]
             if 'authorIdentifiers' in a:
                 idv = []
                 for cid in a['authorIdentifiers']:
@@ -77,7 +80,10 @@ def decustomize_schema(json_record):
     if "contributors" in json_record:
         for c in json_record['contributors']:
             if 'contributorAffiliation' in c:
-                c['affiliations'] = c.pop('contributorAffiliation')
+                if isinstance(c['contributorAffiliation'],list):
+                    c['affiliations'] = c.pop('contributorAffiliation')
+                else:
+                    c['affiliations'] = [c.pop('contributorAffiliation')]
             if 'contributorIdentifiers' in c:
                 #if isinstance(c['contributorIdentifiers'],list):
                 newa = []
