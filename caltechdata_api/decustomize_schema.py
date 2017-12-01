@@ -164,8 +164,14 @@ def decustomize_schema(json_record):
             for g in geo:
                 if 'geoLocationPoint' in g:
                     pt = g['geoLocationPoint']
-                    pt['pointLatitude'] = float(pt['pointLatitude'])
-                    pt['pointLongitude'] = float(pt['pointLongitude'])
+                    if isinstance(pt,list):
+                        newp = {}
+                        newp['pointLatitude'] = float(pt[0]['pointLatitude'])
+                        newp['pointLongitude'] = float(pt[0]['pointLongitude'])
+                        g['geoLocationPoint'] = newp
+                    else:
+                        pt['pointLatitude'] = float(pt['pointLatitude'])
+                        pt['pointLongitude'] = float(pt['pointLongitude'])
             json_record['geoLocations']=json_record.pop('geographicCoverage')
         else:
             newgeo = {}
