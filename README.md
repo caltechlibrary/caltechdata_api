@@ -1,5 +1,7 @@
 # caltechdata_api
 
+[![DOI](https://data.caltech.edu/badge/87960443.svg)](https://data.caltech.edu/badge/latestdoi/87960443)
+
 Python library for using the CaltechDATA API
 
 - caltechdata_write write files and a DataCite 4 standard json record to CaltechDATA repository
