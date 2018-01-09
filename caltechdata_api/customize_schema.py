@@ -97,15 +97,19 @@ def customize_schema(json_record):
         json_record['format']=json_record.pop('formats')
 
     #dates
+    if "publicationYear" in json_record:
+        json_record["publicationDate"]=str(json_record.pop("publicationYear"))
+
     if "dates" in json_record:
         dates = json_record['dates']
         for d in dates:
+            #If metadata has Submitted date, we can get a full date in TIND
+            if d['dateType']=='Submitted':
+                json_record["publicationDate"]=d['date']
             d['relevantDateValue']=str(d.pop('date'))
             d['relevantDateType']=d.pop('dateType')
         json_record['relevantDates']=json_record.pop('dates')
 
-    if "publicationYear" in json_record:
-        json_record["publicationDate"]=str(json_record.pop("publicationYear"))
 
     #license
     if 'rightsList' in json_record:

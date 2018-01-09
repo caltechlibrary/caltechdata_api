@@ -125,15 +125,15 @@ def decustomize_schema(json_record):
     #set publicationYear
     year = json_record['publicationDate'].split('-')[0]
     json_record['publicationYear'] = year
-    #If "Issued' date type was not manually set in metadata
+    #If "Submitted' date type was not manually set in metadata
     #We want to save the entire publicationDate
-    if 'Issued' not in datetypes:
+    if 'Submitted' not in datetypes:
         if 'dates' in json_record:
             json_record['dates'].append({"date":json_record['publicationDate'],\
-                "dateType": "Issued"})
+                "dateType": "Submitted"})
         else:
             json_record['dates']=[{"date":json_record['publicationDate'],\
-                "dateType": "Issued"}]
+                "dateType": "Submitted"}]
     del json_record['publicationDate']
 
     #license - no url available
@@ -143,17 +143,9 @@ def decustomize_schema(json_record):
     
     #Funding
     if 'fundings' in json_record:
-        #funding = json_record['fundings']
-        #newf = []
-        #for f in funding:
-        #    frec = {}
-        #    if 'fundingName' in f:
-        #        frec['funderName'] = f['fundingName']
-        #    #f['fundingName']=f.pop('funderName')
-        #    if 'fundingAwardNumber' in f:
-        #        frec['awardNumber']={'awardNumber':f['fundingAwardNumber']}
-        #    newf.append(frec)
-        #json_record['fundingReferences']=newf
+        #Metadata changes and all should all be DataCite standard
+        #Clean out any residual issues
+        print("Check funding information")
         del json_record['fundings']
 
     #Geo
