@@ -126,8 +126,11 @@ def decustomize_schema(json_record):
     year = json_record['publicationDate'].split('-')[0]
     json_record['publicationYear'] = year
     #If "Submitted' date type was not manually set in metadata
+    #Or 'Issued was not manually set
     #We want to save the entire publicationDate
-    if 'Submitted' not in datetypes:
+    if 'Submitted' in datetypes or 'Issued' in datetypes:
+        print("Custom Dates Present-Dropping TIND Publication Date")
+    else:
         if 'dates' in json_record:
             json_record['dates'].append({"date":json_record['publicationDate'],\
                 "dateType": "Submitted"})
