@@ -11,6 +11,8 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
     #There are more file operations that could be implemented
 
     #If files is a string - change to single value array
+    if isinstance(files, str) == True:
+        files = [files]
     if isinstance(ids, int):
         ids = [str(ids)]
     if isinstance(ids, str):
