@@ -86,7 +86,8 @@ def customize_schema(json_record):
                 else:
                     new['contributorAffiliation'] = [c['affiliations']]
             new['contributorName'] = c['contributorName']
-            new['contributorType'] = c['contributorType']
+            if 'contributorType' in c:
+                new['contributorType'] = c['contributorType']
             if 'contributorEmail' in c:
                 new['contributorEmail'] = c['contributorEmail']
             newc.append(new)
