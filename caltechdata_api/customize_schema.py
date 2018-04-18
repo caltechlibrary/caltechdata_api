@@ -116,10 +116,12 @@ def customize_schema(json_record):
     if 'rightsList' in json_record:
         licenses = json_record['rightsList']
         #Should check acceptable licenses
-        if licenses[0]['rights'] == 'TCCON Data Use Policy':
-            json_record['license'] = 'other-license'
-        else:
-            json_record['license']=licenses[0]['rights']
+        #if licenses[0]['rights'] == 'TCCON Data Use Policy':
+        #    json_record['license'] = 'other-license'
+        #else:
+        #if licenses[0]['rights'] == 'public-domain':
+        #    licenses[0]['rights'] = 'other'
+        json_record['rightsList']=licenses[0]
         #Only transfers first license
     
     #Geo

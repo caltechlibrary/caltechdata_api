@@ -90,10 +90,9 @@ def decustomize_schema(json_record):
                 for cid in c['contributorIdentifiers']:
                     new = {}
                     new['nameIdentifier'] =\
-                                cid.pop('contributorIdentifier')
-                    if 'nameIdentifierScheme' in new:
-                        new['nameIdentifierScheme'] =\
-                                cid.pop('contributorIdentifierScheme')
+                        cid.pop('contributorIdentifier')
+                    new['nameIdentifierScheme'] =\
+                        cid.pop('contributorIdentifierScheme')
                     newa.append(new)
                 c['nameIdentifiers']=newa
                 del c['contributorIdentifiers']
@@ -144,7 +143,10 @@ def decustomize_schema(json_record):
     if 'rightsList' not in json_record:
         if 'license' in json_record:
             json_record['rightsList']=[{"rights":json_record.pop('license')}]
-    
+    if 'rightsList' in json_record:
+        if not isinstance(json_record['rightsList'],list):
+            json_record['rightsList']=[json_record['rightsList']]
+
     #Funding
     if 'fundings' in json_record:
         #Metadata changes and all should all be DataCite standard
