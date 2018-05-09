@@ -11,7 +11,12 @@ def get_metadata(idv,production=True):
         api_url = "https://cd-sandbox.tind.io/api/record/"
 
     r = requests.get(api_url+str(idv))
-    metadata = r.json()['metadata']
+    r_data = r.json()
+    if 'message' in r_data:
+        raise AssertionError(f'id {idv} expected http status 200, got {r_data.status} {r_data.message}')
+    if not 'metadata' in r_data:
+        raise AssertionError(f'expected as metadata property in response, got {r_data}')
+    metadata = r_data['metadata']
     metadata = decustomize_schema(metadata)
     
     try: 
