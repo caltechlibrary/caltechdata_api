@@ -39,9 +39,9 @@ def decustomize_schema(json_record):
     if "publications" in json_record:
         if 'publicationIDs' in json_record['publications']:
             relation = {"relatedIdentifier":
-                json_record['publications']['publicationsIDs']['publicationIDNumber'],
+                json_record['publications']['publicationIDs']['publicationIDNumber'],
                 "relatedIdentifierType": "DOI",
-                "relatedIdentifierRelation": "IsSupplementTo"}
+                "relationType": "IsSupplementTo"}
             if 'relatedIdentifiers' in json_record:
                 json_record['relatedIdentifiers'].append(relation)
             else:
@@ -213,7 +213,7 @@ def decustomize_schema(json_record):
         if v in json_record:
             del json_record[v]
 
-    #print(json.dumps(json_record))
+    print(json.dumps(json_record))
     return json_record
 
 if __name__ == "__main__":

@@ -51,12 +51,15 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
                         if name == f:
                             fids.append(fu)
                         for d in delete:
+                            if name == d:
+                                fids.append(fu)
                             if name.split('.')[-1] == d:
                                 fids.append(fu)
             if len(fids) > 0:
                 fjson = {'delete': fids}
 
             # upload new
+            print(files)
             fileinfo = [send_s3(f, token, production) for f in files]
 
             fjson['new'] = fileinfo
