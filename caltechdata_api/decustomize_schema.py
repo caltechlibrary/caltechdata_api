@@ -213,7 +213,7 @@ def decustomize_schema(json_record):
         if v in json_record:
             del json_record[v]
 
-    print(json.dumps(json_record))
+    #print(json.dumps(json_record)) # DEBUG, commented out by RSD,2018-05-23
     return json_record
 
 if __name__ == "__main__":
