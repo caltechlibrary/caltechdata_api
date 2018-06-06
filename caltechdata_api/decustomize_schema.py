@@ -91,8 +91,9 @@ def decustomize_schema(json_record):
                     new = {}
                     new['nameIdentifier'] =\
                         cid.pop('contributorIdentifier')
-                    new['nameIdentifierScheme'] =\
-                        cid.pop('contributorIdentifierScheme')
+                    if 'contributorIdentifierScheme' in cid:
+                        new['nameIdentifierScheme'] =\
+                            cid.pop('contributorIdentifierScheme')
                     newa.append(new)
                 c['nameIdentifiers']=newa
                 del c['contributorIdentifiers']
