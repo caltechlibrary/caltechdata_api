@@ -36,7 +36,8 @@ if __name__ == "__main__":
     and returns DataCite-compatable metadata")
     parser.add_argument('ids', metavar='ID', type=int, nargs='+',\
     help='The CaltechDATA ID for each record of interest')
-    parser.add_argument('--test',dest='production', action='store_false')
+    parser.add_argument('-test',dest='production', action='store_false')
+    parser.add_argument('-xml',dest='save_xml', action='store_true')
 
     args = parser.parse_args()
 
@@ -48,3 +49,8 @@ if __name__ == "__main__":
         outfile = open(str(idv)+'.json','w')
         outfile.write(json.dumps(metadata))
         outfile.close()
+        if args.save_xml == True:
+            xml = schema40.tostring(metadata)
+            outfile = open(str(idv)+'.xml','w',encoding='utf8')
+            outfile.write(xml)
+
