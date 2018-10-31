@@ -2,7 +2,7 @@
 import json
 import argparse
 
-def decustomize_schema(json_record):
+def decustomize_schema(json_record,pass_emails=False):
 
     #Extract subjects to single string
     if "subjects" in json_record:
@@ -62,14 +62,17 @@ def decustomize_schema(json_record):
                     new['affiliations'] = [a['authorAffiliation']]
             if 'authorIdentifiers' in a:
                 idv = []
-                for cid in a['authorIdentifiers']:
-                    nid = {}
-                    nid['nameIdentifier'] =\
-                        cid.pop('authorIdentifier')
-                    nid['nameIdentifierScheme'] =\
-                        cid.pop('authorIdentifierScheme')
-                    idv.append(nid)
-                new['nameIdentifiers']=idv
+                if isinstance(a['authorIdentifiers'],list):
+                    for cid in a['authorIdentifiers']:
+                        nid = {}
+                        nid['nameIdentifier'] =\
+                            cid.pop('authorIdentifier')
+                        nid['nameIdentifierScheme'] =\
+                            cid.pop('authorIdentifierScheme')
+                        idv.append(nid)
+                    new['nameIdentifiers']=idv
+                else:
+                    print("Author identifiers not an array - please check")
                 del a['authorIdentifiers']
             new['creatorName'] = a['authorName']
             newa.append(new)
@@ -85,26 +88,23 @@ def decustomize_schema(json_record):
                 else:
                     c['affiliations'] = [c.pop('contributorAffiliation')]
             if 'contributorIdentifiers' in c:
-                #if isinstance(c['contributorIdentifiers'],list):
-                newa = []
-                for cid in c['contributorIdentifiers']:
-                    new = {}
-                    new['nameIdentifier'] =\
+                if isinstance(c['contributorIdentifiers'],list):
+                    newa = []
+                    for cid in c['contributorIdentifiers']:
+                        new = {}
+                        new['nameIdentifier'] =\
                         cid.pop('contributorIdentifier')
-                    if 'contributorIdentifierScheme' in cid:
-                        new['nameIdentifierScheme'] =\
+                        if 'contributorIdentifierScheme' in cid:
+                            new['nameIdentifierScheme'] =\
                             cid.pop('contributorIdentifierScheme')
-                    newa.append(new)
-                c['nameIdentifiers']=newa
+                        newa.append(new)
+                    c['nameIdentifiers']=newa
+                else:
+                    print("Contributor identifier not an array - please check")
                 del c['contributorIdentifiers']
-                #else:
-                #    c['contributorIdentifiers']['nameIdentifier'] =\
-                        #    c['contributorIdentifiers'].pop('contributorIdentifier')
-                #    c['contributorIdentifiers']['nameIdentifierScheme'] =\
-                        #    c['contributorIdentifiers'].pop('contributorIdentifierScheme')
-                #    c['nameIdentifiers'] = [c.pop('contributorIdentifiers')]
-            if 'contributorEmail' in c:
-                del c['contributorEmail']
+            if pass_emails == False:
+                if 'contributorEmail' in c:
+                    del c['contributorEmail']
     #format
     if "format" in json_record:
         if isinstance(json_record['format'],list):
@@ -124,21 +124,26 @@ def decustomize_schema(json_record):
         json_record['dates']=json_record.pop('relevantDates')
 
     #set publicationYear
-    year = json_record['publicationDate'].split('-')[0]
-    json_record['publicationYear'] = year
-    #If "Submitted' date type was not manually set in metadata
-    #Or 'Issued was not manually set
-    #We want to save the entire publicationDate
-    if 'Submitted' in datetypes or 'Issued' in datetypes:
-        print("Custom Dates Present-Dropping TIND Publication Date")
-    else:
-        if 'dates' in json_record:
-            json_record['dates'].append({"date":json_record['publicationDate'],\
-                "dateType": "Submitted"})
+    if 'publicationDate' in json_record:
+        year = json_record['publicationDate'].split('-')[0]
+        json_record['publicationYear'] = year
+
+        #If "Submitted' date type was not manually set in metadata
+        #Or 'Issued was not manually set
+        #We want to save the entire publicationDate
+        if 'Submitted' in datetypes or 'Issued' in datetypes:
+            print("Custom Dates Present-Dropping TIND Publication Date")
         else:
-            json_record['dates']=[{"date":json_record['publicationDate'],\
+            if 'dates' in json_record:
+                json_record['dates'].append({"date":json_record['publicationDate'],\
+                "dateType": "Submitted"})
+            else:
+                json_record['dates']=[{"date":json_record['publicationDate'],\
                 "dateType": "Submitted"}]
-    del json_record['publicationDate']
+        del json_record['publicationDate']
+
+    else:
+        print("No publication date set - something is odd with the record")
 
     #license - no url available
     if 'rightsList' not in json_record:
@@ -152,7 +157,7 @@ def decustomize_schema(json_record):
     if 'fundings' in json_record:
         #Metadata changes and all should all be DataCite standard
         #Clean out any residual issues
-        print("Check funding information")
+        print("Legacy funding information (fundings) not transferred")
         del json_record['fundings']
 
     #Geo

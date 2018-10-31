@@ -12,7 +12,9 @@ args = parser.parse_args()
 #Get access token from TIND sed as environment variable with source token.bash
 token = os.environ['TINDTOK']
 
-production = False
+production = True
+
+print(args.delete)
 
 response = caltechdata_edit(token, args.ids, {}, args.fnames, args.delete, production)
 print(response)
