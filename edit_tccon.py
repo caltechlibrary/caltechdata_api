@@ -23,12 +23,14 @@ rid = sys.argv[2]
 group = {'contributorName':'TCCON','contributorType':'ResearchGroup'}
 new = ''
 for c in record['contributors']:
+    print(c['contributorType'])
     if c['contributorType'] == 'HostingInstitution':
-        c['contributorName'] == \
+        print("YES")
+        c['contributorName'] = \
             'California Institute of Techonolgy, Pasadena, CA (US)'
-        c['contributorIdentifiers']=\
-            [{'contributorIdentifier': 'grid.20861.3d',
-            'contributorIdentifierScheme': 'GRID'}]
+        c['nameIdentifiers']=\
+            [{'nameIdentifier': 'grid.20861.3d',
+            'nameIdentifierScheme': 'GRID'}]
 v = record['contributors']
 v.append(group)
 contact = record['creators'][int(sys.argv[3])]
@@ -37,5 +39,6 @@ contact['contributorEmail'] = sys.argv[4]
 contact['contributorType'] = 'ContactPerson'
 v.append(contact)
 new = {'contributors':v}
+print(new)
 response = caltechdata_edit(token, rid, new, {}, {}, production)
 print(response)
