@@ -38,12 +38,17 @@ def decustomize_schema(json_record,pass_emails=False):
     #Publication is effectivly a related identifier
     if "publications" in json_record:
         if 'publicationIDs' in json_record['publications']:
-            relation = {"relatedIdentifier":
-                json_record['publications']['publicationIDs']['publicationIDNumber'],
+            doi = json_record['publications']['publicationIDs']['publicationIDNumber']
+            relation = {"relatedIdentifier":doi,
                 "relatedIdentifierType": "DOI",
                 "relationType": "IsSupplementTo"}
             if 'relatedIdentifiers' in json_record:
-                json_record['relatedIdentifiers'].append(relation)
+                existing = False
+                for rec in json_record['relatedIdentifiers']:
+                    if doi == rec['relatedIdentifier']:
+                        existing = True
+                if existing == False:
+                    json_record['relatedIdentifiers'].append(relation)
             else:
                 json_record['relatedIdentifiers'] = [relation]
         del json_record['publications']
