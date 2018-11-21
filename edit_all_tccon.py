@@ -18,20 +18,20 @@ for h in hits['hits']['hits']:
         rid = str(h['id'])
         print(rid)
         record = decustomize_schema(h['metadata'],True)
+        replace = False
+        if 'relatedIdentifiers' in record:
+            for r in record['relatedIdentifiers']:
+                if r['relationType']=='IsPreviousVersionOf':
+                    description = \
+"<br> These data are now obsolete and should be replaced by the most recent data: https://doi.org/"\
+                        +r['relatedIdentifier']+' <br><br>'
+                    description = description +\
+                    record['descriptions'][0]['description']
+                    replace = True
 
-        group = {'contributorName':'TCCON','contributorType':'ResearchGroup'}
-        new = ''
-        if 'contributors' in record:
-            existing = False
-            for c in record['contributors']:
-                if c['contributorName'] == 'TCCON':
-                    existing = True
-            if existing == False:        
-                v = record['contributors']
-                v.append(group)
-                new = {'contributors':v}
-        else:
-            new = {'contributors':[group]}
-        if new != '':
-            response = caltechdata_edit(token, rid, new, {}, {}, production)
+
+        if replace == True:
+            metadata =\
+            {'descriptions':[{'description':description,'descriptionType':'Abstract'}]}
+            response = caltechdata_edit(token, rid, metadata, {}, {}, production)
             print(response)
