@@ -2,7 +2,7 @@
 import json
 import argparse
 
-def decustomize_schema(json_record,pass_emails=False):
+def decustomize_schema(json_record,pass_emails=False,pass_media=False):
 
     #Extract subjects to single string
     if "subjects" in json_record:
@@ -217,8 +217,14 @@ def decustomize_schema(json_record,pass_emails=False):
             if 'descriptionValue' in d:
                 d["description"] = d.pop("descriptionValue")
 
+    #Handle file info
+    if pass_media == False:
+        if 'electronic_location_and_access' in json_record:
+            del json_record['electonic_location_and_access']
+
+
     others = ['files', 'id', 'owners', 'pid_value', 'control_number', '_oai',
-            '_form_uuid', 'electronic_location_and_access', 'access_right',
+            '_form_uuid', 'access_right',
             'embargo_date','license','brief_authors','brief_information_bar',
             'brief_subtitle','brief_title','brief_summary','resource_type']
     for v in others:
