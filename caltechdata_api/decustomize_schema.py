@@ -217,10 +217,18 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
             if 'descriptionValue' in d:
                 d["description"] = d.pop("descriptionValue")
 
+    #Save CaltechDATA ID in all records
+    idv = {'alternateIdentifier': json_record['pid_value'],
+            'alternateIdentifierType': "CaltechDATA_Identifier"}
+    if 'alternateIdentifiers' in json_record:
+        json_record['alternateIdentifiers'].append(idv)
+    else:
+        json_record['alternateIdentifiers'] = [idv]
+
     #Handle file info
     if pass_media == False:
         if 'electronic_location_and_access' in json_record:
-            del json_record['electonic_location_and_access']
+            del json_record['electronic_location_and_access']
 
 
     others = ['files', 'id', 'owners', 'pid_value', 'control_number', '_oai',
