@@ -1,0 +1,4 @@
+build/
+dist/
+caltechdata_api.egg-info/
+caltechdata_api/__pycache__/
