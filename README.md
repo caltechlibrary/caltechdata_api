@@ -8,11 +8,11 @@ Python library for using the CaltechDATA API
 - caltechdata_edit edits records in CaltechDATA
 - get_metadata gets metadata from CaltechDATA records
 
-In development. 
-
 Requires Python 3 (Recommended via Anaconda https://www.anaconda.com/download) with reqests library.
 
 ## Examples
+
+There are some example python scripts in the GitHub repository.
 
 Create a record:
 
@@ -29,10 +29,7 @@ Successfully modified record https://cd-sandbox.tind.io/records/352
 
 ## Setup 
 
-Download the latest release from GitHub
-
-Install by typing 'pip install caltechdata_write'
-from the directory downloaded from GitHub
+Install by typing 'pip install caltechdata_api'
 
 ## Usage
 
