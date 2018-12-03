@@ -4,6 +4,7 @@ from datacite import DataCiteMDSClient, schema40
 from caltechdata_api import decustomize_schema
 
 def get_metadata(idv,production=True):
+    # Returns just DataCite metadata
 
     if production==True:
         api_url = "https://data.caltech.edu/api/record/"
@@ -17,8 +18,8 @@ def get_metadata(idv,production=True):
     if not 'metadata' in r_data:
         raise AssertionError('expected as metadata property in response, got '+r_data)
     metadata = r_data['metadata']
-    metadata = decustomize_schema(metadata)
     
+    metadata = decustomize_schema(metadata)
     try: 
         assert schema40.validate(metadata)
     except AssertionError:
