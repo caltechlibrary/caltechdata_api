@@ -79,7 +79,7 @@ def caltechdata_write(metadata,token,files=[],production=False):
         'Content-type': 'application/json'
     }
 
-    newdata = customize_schema.customize_schema(metadata)
+    newdata = customize_schema.customize_schema(copy.deepcopy(metadata))
     newdata['files'] = fileinfo
     if 'doi' not in newdata:
         #We want tind to generate the identifier

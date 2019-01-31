@@ -31,7 +31,7 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
     }
 
     if metadata:
-        metadata = customize_schema.customize_schema(metadata)
+        metadata = customize_schema.customize_schema(copy.deepcopy(metadata))
 
     for idv in ids:
         metadata['id'] = idv
@@ -97,7 +97,7 @@ def caltechdata_add(token,ids,metadata={},files={},production=False):
     }
 
     if metadata:
-        metadata = customize_schema.customize_schema(metadata)
+        metadata = customize_schema.customize_schema(copy.deepcopy(metadata))
 
     fjson = {}
 
