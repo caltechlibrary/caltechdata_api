@@ -130,8 +130,9 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
 
     #set publicationYear
     if 'publicationDate' in json_record:
-        year = json_record['publicationDate'].split('-')[0]
-        json_record['publicationYear'] = year
+        if isinstance(json_record['publicationDate'],str):
+            year = json_record['publicationDate'].split('-')[0]
+            json_record['publicationYear'] = year
 
         #If "Submitted' date type was not manually set in metadata
         #Or 'Issued was not manually set
