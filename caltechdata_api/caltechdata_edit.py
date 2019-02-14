@@ -1,5 +1,5 @@
 from requests import session
-import json
+import json,copy
 from caltechdata_api import customize_schema
 from caltechdata_api import send_s3
 

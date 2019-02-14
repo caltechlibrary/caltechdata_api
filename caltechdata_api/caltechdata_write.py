@@ -1,6 +1,6 @@
 from requests import session
 from caltechdata_api import customize_schema
-import json
+import json, copy
 import os
 
 def send_s3(filepath,token,production=False):
