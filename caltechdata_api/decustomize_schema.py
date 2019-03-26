@@ -137,7 +137,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         #Or 'Issued was not manually set
         #We want to save the entire publicationDate
         if 'Submitted' in datetypes or 'Issued' in datetypes:
-            print("Custom Dates Present-Dropping TIND Publication Date")
+            # Custom Dates Present-Dropping TIND Publication Date
         else:
             if 'dates' in json_record:
                 json_record['dates'].append({"date":json_record['publicationDate'],\
@@ -162,7 +162,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
     if 'fundings' in json_record:
         #Metadata changes and all should all be DataCite standard
         #Clean out any residual issues
-        print("Legacy funding information (fundings) not transferred")
+        # Legacy funding information (fundings) not transferred
         del json_record['fundings']
 
     #Geo
