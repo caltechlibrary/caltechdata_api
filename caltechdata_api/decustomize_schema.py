@@ -136,9 +136,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         #If "Submitted' date type was not manually set in metadata
         #Or 'Issued was not manually set
         #We want to save the entire publicationDate
-        if 'Submitted' in datetypes or 'Issued' in datetypes:
-            # Custom Dates Present-Dropping TIND Publication Date
-        else:
+        if 'Submitted' or 'Issued' not in datetypes:
             if 'dates' in json_record:
                 json_record['dates'].append({"date":json_record['publicationDate'],\
                 "dateType": "Submitted"})
