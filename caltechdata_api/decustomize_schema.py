@@ -20,6 +20,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
 
     #Extract identifier and label as DOI
     if "doi" in json_record:
+        doi = json_record['doi']
         json_record['identifier'] = {'identifier':json_record['doi'],
                 'identifierType':"DOI"}
         del json_record['doi']
@@ -77,7 +78,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
                         idv.append(nid)
                     new['nameIdentifiers']=idv
                 else:
-                    print("Author identifiers not an array - please check")
+                    print("Author identifiers not an array - please check", doi)
                 del a['authorIdentifiers']
             new['creatorName'] = a['authorName']
             newa.append(new)
@@ -105,7 +106,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
                         newa.append(new)
                     c['nameIdentifiers']=newa
                 else:
-                    print("Contributor identifier not an array - please check")
+                    print("Contributor identifier not an array - please check",doi)
                 del c['contributorIdentifiers']
             if pass_emails == False:
                 if 'contributorEmail' in c:
@@ -146,7 +147,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         del json_record['publicationDate']
 
     else:
-        print("No publication date set - something is odd with the record")
+        print("No publication date set - something is odd with the record ",doi)
 
     #license - no url available
     if 'rightsList' not in json_record:
