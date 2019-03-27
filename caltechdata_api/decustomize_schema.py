@@ -20,6 +20,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
 
     #Extract identifier and label as DOI
     if "doi" in json_record:
+        doi = json_record['doi']
         json_record['identifier'] = {'identifier':json_record['doi'],
                 'identifierType':"DOI"}
         del json_record['doi']
@@ -77,7 +78,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
                         idv.append(nid)
                     new['nameIdentifiers']=idv
                 else:
-                    print("Author identifiers not an array - please check")
+                    print("Author identifiers not an array - please check", doi)
                 del a['authorIdentifiers']
             new['creatorName'] = a['authorName']
             newa.append(new)
@@ -105,7 +106,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
                         newa.append(new)
                     c['nameIdentifiers']=newa
                 else:
-                    print("Contributor identifier not an array - please check")
+                    print("Contributor identifier not an array - please check",doi)
                 del c['contributorIdentifiers']
             if pass_emails == False:
                 if 'contributorEmail' in c:
@@ -140,9 +141,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         #If "Submitted' date type was not manually set in metadata
         #Or 'Issued was not manually set
         #We want to save the entire publicationDate
-        if 'Submitted' in datetypes or 'Issued' in datetypes:
-            print("Custom Dates Present-Dropping TIND Publication Date")
-        else:
+        if 'Submitted' or 'Issued' not in datetypes:
             if 'dates' in json_record:
                 json_record['dates'].append({"date":json_record['publicationDate'],\
                 "dateType": "Submitted"})
@@ -152,7 +151,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         del json_record['publicationDate']
 
     else:
-        print("No publication date set - something is odd with the record")
+        print("No publication date set - something is odd with the record ",doi)
 
     #license - no url available
     if 'rightsList' not in json_record:
@@ -166,7 +165,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
     if 'fundings' in json_record:
         #Metadata changes and all should all be DataCite standard
         #Clean out any residual issues
-        print("Legacy funding information (fundings) not transferred")
+        # Legacy funding information (fundings) not transferred
         del json_record['fundings']
 
     #Geo
