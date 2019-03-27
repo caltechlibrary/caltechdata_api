@@ -133,6 +133,9 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
         if isinstance(json_record['publicationDate'],str):
             year = json_record['publicationDate'].split('-')[0]
             json_record['publicationYear'] = year
+        else:
+            #Junk validation filler
+            json_record['publicationYear'] = '0000'
 
         #If "Submitted' date type was not manually set in metadata
         #Or 'Issued was not manually set
