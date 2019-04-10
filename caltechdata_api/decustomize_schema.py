@@ -129,25 +129,30 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
             datetypes.add(d['dateType'])
         json_record['dates']=json_record.pop('relevantDates')
 
-    #set publicationYear
+    #Set publicationYear and save publicationDate
     if 'publicationDate' in json_record:
-        if isinstance(json_record['publicationDate'],str):
-            year = json_record['publicationDate'].split('-')[0]
-            json_record['publicationYear'] = year
-        else:
-            #Junk validation filler
-            json_record['publicationYear'] = '0000'
-
-        #If "Submitted' date type was not manually set in metadata
-        #Or 'Issued was not manually set
-        #We want to save the entire publicationDate
-        if 'Submitted' or 'Issued' not in datetypes:
+        #If "Submitted' or 'Issued' date type was not manually set in metadata
+        #the system created publicationDate is correct
+        if 'Issued' not in datetypes and 'Submitted' not in datetypes:
             if 'dates' in json_record:
                 json_record['dates'].append({"date":json_record['publicationDate'],\
                 "dateType": "Submitted"})
             else:
                 json_record['dates']=[{"date":json_record['publicationDate'],\
                 "dateType": "Submitted"}]
+            year = json_record['publicationDate'].split('-')[0]
+            json_record['publicationYear'] = year
+        #Otherwise pick 'Submitted' then 'Issued' date for publicationYear
+        else:
+            if 'Submitted' in datetypes:
+                selection = 'Submitted'
+            else:
+                selection = 'Issued'
+            for d in json_record['dates']:
+                if d['dateType'] == selection:
+                    year = d['date'].split('-')[0]
+                    json_record['publicationYear'] = year
+
         del json_record['publicationDate']
 
     else:

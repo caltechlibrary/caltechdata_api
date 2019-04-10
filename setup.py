@@ -4,21 +4,50 @@
 # Note: To use the 'upload' functionality of this file, you must:
 #   $ pip install twine
 
-import io
+import io,json
 import os
 import sys
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-# Package meta-data.
-NAME = 'caltechdata_api'
-DESCRIPTION = "Python wrapper for the CaltechDATA API."
-URL = 'https://github.com/caltechlibrary/caltechdata_api'
-EMAIL = 'tmorrell@caltech.edu'
-AUTHOR = 'Tom Morrell'
+def read(fname):
+    with open(fname, mode = "r", encoding = "utf-8") as f:
+        src = f.read()
+    return src
+
+codemeta_json = "codemeta.json"
+
+# Let's pickup as much metadata as we need from codemeta.json
+with open(codemeta_json, mode = "r", encoding = "utf-8") as f:
+    src = f.read()
+    meta = json.loads(src)
+
+# Let's make our symvar string
+version = meta["version"]
+
+# Now we need to pull and format our author, author_email strings.
+author = ""
+author_email = ""
+for obj in meta["author"]:
+    given = obj["givenName"]
+    family = obj["familyName"]
+    email = obj["email"]
+    if len(author) == 0:
+        author = given + " " + family
+    else:
+        author = author + ", " + given + " " + family
+    if len(author_email) == 0:
+        author_email = email
+    else:
+        author_email = author_email + ", " + email
+description = meta['description']
+url = meta['codeRepository']
+download = meta['downloadUrl']
+license = meta['license']
+name = meta['name']
+
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.1.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -43,15 +72,15 @@ try:
     with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
-    long_description = DESCRIPTION
+    long_description = description
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-if not VERSION:
+if not version:
     with open(os.path.join(here, NAME, '__version__.py')) as f:
         exec(f.read(), about)
 else:
-    about['__version__'] = VERSION
+    about['__version__'] = version
 
 
 class UploadCommand(Command):
@@ -89,15 +118,15 @@ class UploadCommand(Command):
 
 # Where the magic happens:
 setup(
-    name=NAME,
+    name=name,
     version=about['__version__'],
-    description=DESCRIPTION,
+    description=description,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    author=AUTHOR,
-    author_email=EMAIL,
+    author=author,
+    author_email=author_email,
     python_requires=REQUIRES_PYTHON,
-    url=URL,
+    url=url,
     packages=find_packages(exclude=('tests',)),
     # If your package is a single module, use this instead of 'packages':
     # py_modules=['mypackage'],
@@ -108,7 +137,7 @@ setup(
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
-    license='BSD',
+    license=license,
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
