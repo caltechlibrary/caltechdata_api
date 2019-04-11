@@ -103,10 +103,16 @@ def customize_schema(json_record):
 
     if "dates" in json_record:
         dates = json_record['dates']
+        priority = False
         for d in dates:
             #If metadata has Submitted date, we can get a full date in TIND
             if d['dateType']=='Submitted':
                 json_record["publicationDate"]=d['date']
+                priority = True
+            #If we have an Issued but not a Submitted date, save full date 
+            if d['dateType']=='Issued':
+                if priority == False:
+                    json_record["publicationDate"]=d['date']
             d['relevantDateValue']=str(d.pop('date'))
             d['relevantDateType']=d.pop('dateType')
         json_record['relevantDates']=json_record.pop('dates')
