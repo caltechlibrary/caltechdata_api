@@ -3,7 +3,7 @@ from caltechdata_api import customize_schema
 import json, copy
 import os
 
-def send_s3(filepath,token,production=False):
+def send_s3(filepath,token,production=False,auth=None):
     
     if production == True:
         s3surl = "https://data.caltech.edu/tindfiles/sign_s3/"
@@ -16,7 +16,9 @@ def send_s3(filepath,token,production=False):
 
     c = session()
 
-    response = c.get(s3surl,headers=headers)
+    print(s3surl)
+    print(headers)
+    response = c.get(s3surl,headers=headers,auth=auth)
     jresp = response.json()
     data = jresp['data']
 
@@ -44,11 +46,15 @@ def send_s3(filepath,token,production=False):
             , ('file', infile ))
 
     c = session()
-    response = c.post(url,files=form, headers=s3headers)
+    response = c.post(url,files=form, headers=s3headers,auth=auth)
+    print(response)
     if(response.text):
         raise Exception(response.text)
 
-    response = c.get(chkurl+'/'+bucket+'/'+key,headers=headers)
+    print(chkurl+'/'+bucket+'/'+key+'/')
+    print(headers)
+    response = c.get(chkurl+'/'+bucket+'/'+key+'/',headers=headers,auth=auth)
+    print(response)
     md5 = response.json()["md5"]
     filename = filepath.split('/')[-1]
 
@@ -58,7 +64,7 @@ def send_s3(filepath,token,production=False):
 
     return(fileinfo)
 
-def caltechdata_write(metadata,token,files=[],production=False):
+def caltechdata_write(metadata,token,files=[],production=False,auth=None):
 
     #If files is a string - change to single value array
     if isinstance(files, str) == True:
@@ -67,7 +73,7 @@ def caltechdata_write(metadata,token,files=[],production=False):
     fileinfo=[]
 
     for f in files:
-        fileinfo.append(send_s3(f, token, production))
+        fileinfo.append(send_s3(f, token, production,auth))
 
     if production == True:
         url = "https://data.caltech.edu/submit/api/create/"
@@ -89,5 +95,5 @@ def caltechdata_write(metadata,token,files=[],production=False):
     dat = json.dumps({'record': newdata})
 
     c = session()
-    response = c.post(url,headers=headers,data=dat)
+    response = c.post(url,headers=headers,data=dat,auth=auth)
     return response.text
