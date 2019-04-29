@@ -1,8 +1,10 @@
-import argparse, os, json, requests,csv
+import argparse, os, json, requests, csv, dataset
 from caltechdata_api import caltechdata_edit, decustomize_schema
 
 #Get access token from TIND sed as environment variable with source token.bash
 token = os.environ['TINDTOK']
+
+collection = 'data/CaltechTHESIS.ds'
 
 production = True
 
@@ -11,7 +13,7 @@ if production == True:
 else:
     url = 'https://cd-sandbox.tind.io/api/records'
 
-response = requests.get(url+'/?size=1000&q=subjects:gps,thesis')
+response = requests.get(url+'/?size=1000&q=subjects:gps')
 hits = response.json()
 
 #Set up dictionary of links between resolver and thesis IDs
@@ -31,10 +33,20 @@ for h in hits['hits']['hits']:
     record = decustomize_schema(h['metadata'],True)
     if 'relatedIdentifiers' in record:
         for r in record['relatedIdentifiers']:
-            if r['relationType']=='IsSupplementTo' and 'relatedIdentifierType'=='URL':
+            if r['relationType']=='IsSupplementTo' and\
+            r['relatedIdentifierType']=='URL':
                 idv = record_list[r['relatedIdentifier']]
-                print(idv)
-        #metadata =\
-                #{'descriptions':[{'description':description,'descriptionType':'Abstract'}]}
-            #response = caltechdata_edit(token, rid, metadata, {}, {}, production)
-            #print(response)
+                thesis_metadata,err = dataset.read(collection,idv)
+                pub_date = thesis_metadata['date']
+                dates = [{"date":pub_date,"dateType":"Issued"}]
+                for date in record['dates']:
+                    if date['dateType'] == 'Issued':
+                        dates.append({"date":date['date'],"dateType":"Updated"})
+                    elif date['dateType'] == 'Updated':
+                        pass
+                    elif date['dateType'] != 'Submitted':
+                        dates.append(date)
+                print(dates)
+                metadata ={'dates':dates}
+                response = caltechdata_edit(token, rid, metadata, {}, {}, production)
+                print(response)
