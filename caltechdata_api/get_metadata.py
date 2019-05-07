@@ -3,7 +3,7 @@ import requests
 from datacite import DataCiteMDSClient, schema40
 from caltechdata_api import decustomize_schema
 
-def get_metadata(idv,production=True):
+def get_metadata(idv,production=True,auth=None):
     # Returns just DataCite metadata
 
     if production==True:
@@ -11,10 +11,11 @@ def get_metadata(idv,production=True):
     else:
         api_url = "https://cd-sandbox.tind.io/api/record/"
 
-    r = requests.get(api_url+str(idv))
+    r = requests.get(api_url+str(idv),auth=auth)
     r_data = r.json()
     if 'message' in r_data:
-        raise AssertionError('id '+idv+' expected http status 200, got '+r_data.status+r_data.message)
+        raise AssertionError('id '+str(idv)+' expected http status 200, got '\
+            +str(r.status_code)+' '+r_data['message'])
     if not 'metadata' in r_data:
         raise AssertionError('expected as metadata property in response, got '+r_data)
     metadata = r_data['metadata']
@@ -39,14 +40,18 @@ if __name__ == "__main__":
     help='The CaltechDATA ID for each record of interest')
     parser.add_argument('-test',dest='production', action='store_false')
     parser.add_argument('-xml',dest='save_xml', action='store_true')
+    parser.add_argument('-auth_user',help='Username for basic authentication')
+    parser.add_argument('-auth_pass',help='Password for basic authentication')
 
     args = parser.parse_args()
 
+    production = args.production
+    auth = None
+    if args.auth_user != None:
+        auth = (args.auth_user,args.auth_pass)
+
     for idv in args.ids:
-        if args.production == False:
-            metadata = get_metadata(idv,args.production)
-        else:
-            metadata = get_metadata(idv)
+        metadata = get_metadata(idv,production,auth)
         outfile = open(str(idv)+'.json','w')
         outfile.write(json.dumps(metadata))
         outfile.close()
