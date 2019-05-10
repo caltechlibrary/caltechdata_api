@@ -262,7 +262,7 @@ if __name__ == "__main__":
     for jfile in args.json_files:
         infile = open(jfile,'r')
         data = json.load(infile)
-        new = customize_schema(data)
+        new = decustomize_schema(data)
         with open('formatted.json','w') as outfile:
             json.dump(new,outfile)
         #print(json.dumps(new))
