@@ -131,25 +131,21 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False):
 
     #Set publicationYear and save publicationDate
     if 'publicationDate' in json_record:
-        #If "Submitted' or 'Issued' date type was not manually set in metadata
+        #If 'Issued' date type was not manually set in metadata
         #the system created publicationDate is correct
-        if 'Issued' not in datetypes and 'Submitted' not in datetypes:
+        if 'Issued' not in datetypes:
             if 'dates' in json_record:
                 json_record['dates'].append({"date":json_record['publicationDate'],\
-                "dateType": "Submitted"})
+                "dateType": "Issued"})
             else:
                 json_record['dates']=[{"date":json_record['publicationDate'],\
-                "dateType": "Submitted"}]
+                "dateType": "Issued"}]
             year = json_record['publicationDate'].split('-')[0]
             json_record['publicationYear'] = year
-        #Otherwise pick 'Submitted' then 'Issued' date for publicationYear
+        #Otherwise pick 'Issued' date for publicationYear
         else:
-            if 'Submitted' in datetypes:
-                selection = 'Submitted'
-            else:
-                selection = 'Issued'
             for d in json_record['dates']:
-                if d['dateType'] == selection:
+                if d['dateType'] == 'Issued':
                     year = d['date'].split('-')[0]
                     json_record['publicationYear'] = year
 
