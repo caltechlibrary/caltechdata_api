@@ -3,8 +3,8 @@ import requests
 from datacite import DataCiteMDSClient, schema40
 from caltechdata_api import decustomize_schema
 
-def get_metadata(idv,production=True,auth=None):
-    # Returns just DataCite metadata
+def get_metadata(idv,production=True,auth=None,emails=False):
+    # Returns just DataCite metadata or DataCite metadata with emails
 
     if production==True:
         api_url = "https://data.caltech.edu/api/record/"
@@ -20,15 +20,18 @@ def get_metadata(idv,production=True,auth=None):
         raise AssertionError('expected as metadata property in response, got '+r_data)
     metadata = r_data['metadata']
     
-    metadata = decustomize_schema(metadata)
-    try: 
-        assert schema40.validate(metadata)
-    except AssertionError:
-        v = schema40.validator.validate(metadata)
-        errors = sorted(v.iter_errors(instance), key=lambda e:e.path)
-        for error in errors:
-            print(error.message)
-        exit()
+    if emails == True:
+        metadata = decustomize_schema(metadata,pass_emails=True)
+    else:
+        metadata = decustomize_schema(metadata)
+        try: 
+            assert schema40.validate(metadata)
+        except AssertionError:
+            v = schema40.validator.validate(metadata)
+            errors = sorted(v.iter_errors(instance), key=lambda e:e.path)
+            for error in errors:
+                print(error.message)
+            exit()
 
     return metadata
 
@@ -38,6 +41,7 @@ if __name__ == "__main__":
     and returns DataCite-compatable metadata")
     parser.add_argument('ids', metavar='ID', type=int, nargs='+',\
     help='The CaltechDATA ID for each record of interest')
+    parser.add_argument('-emails',dest='emails', action='store_true')
     parser.add_argument('-test',dest='production', action='store_false')
     parser.add_argument('-xml',dest='save_xml', action='store_true')
     parser.add_argument('-auth_user',help='Username for basic authentication')
@@ -46,12 +50,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     production = args.production
+    emails = args.emails
     auth = None
     if args.auth_user != None:
         auth = (args.auth_user,args.auth_pass)
 
     for idv in args.ids:
-        metadata = get_metadata(idv,production,auth)
+        metadata = get_metadata(idv,emails,production,auth)
         outfile = open(str(idv)+'.json','w')
         outfile.write(json.dumps(metadata))
         outfile.close()
