@@ -11,7 +11,7 @@ def get_metadata(idv,production=True,auth=None,emails=False):
     else:
         api_url = "https://cd-sandbox.tind.io/api/record/"
 
-    r = requests.get(api_url+str(idv),auth=auth)
+    r = requests.get(api_url+str(idv))#,auth=auth)
     r_data = r.json()
     if 'message' in r_data:
         raise AssertionError('id '+str(idv)+' expected http status 200, got '\
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         auth = (args.auth_user,args.auth_pass)
 
     for idv in args.ids:
-        metadata = get_metadata(idv,emails,production,auth)
+        metadata = get_metadata(idv,production,auth,emails)
         outfile = open(str(idv)+'.json','w')
         outfile.write(json.dumps(metadata))
         outfile.close()
