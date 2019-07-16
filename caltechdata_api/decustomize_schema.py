@@ -239,7 +239,7 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False,pass_owner
             'embargo_date','license','brief_authors','brief_information_bar',
             'brief_subtitle','brief_title','brief_summary','resource_type']
     if pass_owner == False:
-        other.append('owners')
+        others.append('owners')
     for v in others:
         if v in json_record:
             del json_record[v]
