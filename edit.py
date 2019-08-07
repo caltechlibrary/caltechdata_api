@@ -10,13 +10,13 @@ parser.add_argument('-ids', nargs='*', help='CaltechDATA IDs')
 parser.add_argument('-fnames', nargs='*', help='New Files')
 args = parser.parse_args()
 
-#Get access token from TIND sed as environment variable with source token.bash
+#Get access token from TIND set as environment variable with source token.bash
 token = os.environ['TINDTOK']
 
 metaf = open(args.json_file[0], 'r')
 metadata = json.load(metaf)
 
-production = True
+production = False
 
 response = caltechdata_edit(token, args.ids, metadata, args.fnames, {'pdf'}, production)
 print(response)

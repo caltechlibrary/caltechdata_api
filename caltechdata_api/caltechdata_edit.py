@@ -1,14 +1,12 @@
 from requests import session
-import json,copy
+import json,copy,base64
 from caltechdata_api import customize_schema
 from caltechdata_api import send_s3
 
 def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
-
-    #Including files will only replaces files if they have the same name
-    #The delete option will delete any existing files with a given file
-    #extension
-    #There are more file operations that could be implemented
+    '''Including files will only replaces files if they have the same name
+    The delete option will delete any existing files with a given file extension
+    There are more file operations that could be implemented'''
 
     #If files is a string - change to single value array
     if isinstance(files, str) == True:
@@ -18,17 +16,17 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
     if isinstance(ids, str):
         ids = [ids]
 
+    headers = {
+        'Authorization' : 'Bearer %s' % token,
+        'Content-type': 'application/json'
+    }
+
     if production == True:
         url = "https://data.caltech.edu/submit/api/edit/"
         api_url = "https://data.caltech.edu/api/record/"
     else:
         url = "https://cd-sandbox.tind.io/submit/api/edit/"
         api_url = "https://cd-sandbox.tind.io/api/record/"
-
-    headers = {
-        'Authorization' : 'Bearer %s' % token,
-        'Content-type': 'application/json'
-    }
 
     if metadata:
         metadata = customize_schema.customize_schema(copy.deepcopy(metadata))
@@ -75,8 +73,7 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
         return response.text
 
 def caltechdata_add(token,ids,metadata={},files={},production=False):
-
-    #Adds file
+    '''Adds file'''
 
     #If files is a string - change to single value array
     if isinstance(ids, int):
