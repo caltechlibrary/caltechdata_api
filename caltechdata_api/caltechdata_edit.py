@@ -1,5 +1,5 @@
 from requests import session
-import json,copy,base64
+import json,copy
 from caltechdata_api import customize_schema
 from caltechdata_api import send_s3
 
@@ -70,7 +70,7 @@ def caltechdata_edit(token,ids,metadata={},files={},delete={},production=False):
 
         c = session()
         response = c.post(url, headers=headers, data=dat)
-        return response.text
+        print(response.text)
 
 def caltechdata_add(token,ids,metadata={},files={},production=False):
     '''Adds file'''
