@@ -224,8 +224,13 @@ def decustomize_schema(json_record,pass_emails=False,pass_media=False,pass_owner
     #Save CaltechDATA ID in all records
     idv = {'alternateIdentifier': json_record['pid_value'],
             'alternateIdentifierType': "CaltechDATA_Identifier"}
+    existing = False
     if 'alternateIdentifiers' in json_record:
-        json_record['alternateIdentifiers'].append(idv)
+        for altid in json_record['alternateIdentifiers']:
+            if altid['alternateIdentifierType'] == "CaltechDATA_Identifier":
+                existing = True
+        if existing == False:
+            json_record['alternateIdentifiers'].append(idv)
     else:
         json_record['alternateIdentifiers'] = [idv]
 
