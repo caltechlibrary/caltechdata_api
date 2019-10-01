@@ -68,7 +68,7 @@ def caltechdata_edit(token, ids, metadata={}, files={}, delete={}, production=Fa
 
         c = session()
         response = c.post(url, headers=headers, data=dat)
-        print(response.text)
+        return response.text
 
 
 def caltechdata_add(token, ids, metadata={}, files={}, production=False):
