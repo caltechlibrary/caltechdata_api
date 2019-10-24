@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     outfile = open(args.output,'w')
     writer = csv.writer(outfile)
-    writer.writerow(['lat','lon','name'])
+    writer.writerow(['lat','lon','name','doi'])
 
     for h in hits['hits']['hits']:
         metadata = decustomize_schema(h['metadata'])
@@ -62,12 +62,12 @@ if __name__ == "__main__":
                             #transform(from_proj,to_proj,point['pointLongitude'],point['pointLatitude'])
                     #pt_lat=pt_lat+[tlat]
                     #pt_lon= pt_lon+[tlon]
-                    #identifier=identifier+[metadata['identifier']['identifier']]
+                    doi = 'https://doi.org/'+metadata['identifier']['identifier']
                     #author=author+[metadata['creators'][0]['creatorName']]
                     title=metadata['titles'][0]['title'].split(':')[0]
                     lat = point['pointLatitude']
                     lon = point['pointLongitude']
-                    writer.writerow([lat,lon,title])
+                    writer.writerow([lat,lon,title,doi])
                     #year = year+[metadata['publicationYear']]
                     #cen = metadata['publicationYear'][1]
                     #dec = metadata['publicationYear'][2]
