@@ -27,6 +27,20 @@ python edit.py example.json -ids 352 -fnames logo.gif
 Successfully modified record https://cd-sandbox.tind.io/records/352
 ```
 
+Get geo points from CaltechDATA. You can import this to a GIS program like QGIS
+using a delimited text import and projection epsg:4326
+
+```
+python get_geo.py caltechdata_geo.csv
+```
+
+You can filter by keyword
+
+```
+python get_geo.py caltechdata_geo.csv -keywords TCCON
+```
+
+
 ## Setup 
 
 Install by typing 'pip install caltechdata_api'
