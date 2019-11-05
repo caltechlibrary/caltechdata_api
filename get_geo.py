@@ -31,44 +31,27 @@ if __name__ == "__main__":
 
     outfile = open(args.output,'w')
     writer = csv.writer(outfile)
-    writer.writerow(['lat','lon','name','doi'])
+    writer.writerow(['wkt','name','year','doi'])
 
     for h in hits['hits']['hits']:
         metadata = decustomize_schema(h['metadata'])
         if 'geoLocations' in metadata:
+            doi = 'https://doi.org/'+metadata['identifier']['identifier']
+            title=metadata['titles'][0]['title'].split(':')[0]
             geo = metadata['geoLocations']
+            year = metadata['publicationYear']
             for g in geo:
-                #if 'geoLocationBox' in g:
-                #    box = g['geoLocationBox']
-                #    lat=[box['northBoundLatitude'],box['northBoundLatitude'],box['southBoundLatitude'],box['southBoundLatitude']]
-                #    lon=[box['eastBoundLongitude'],box['westBoundLongitude'],box['eastBoundLongitude'],box['westBoundLongitude']]
-                #    tlon,tlat = transform(from_proj,to_proj,lon,lat)
-                #    pt_lat=pt_lat+tlat
-                #    pt_lon= pt_lon+tlon
-                #    cen = metadata['publicationYear'][1]
-                #    dec = metadata['publicationYear'][2]
-                #    identifier.append(metadata['identifier']['identifier'])
-                #    author.append(metadata['creators'][0]['creatorName'])
-                #    title.append(metadata['titles'][0]['title'].split(':')[0])
-                #    year.append(metadata['publicationYear'])
-                #    color.append(clo)
-                #    x0 = x0 + [tlon[0],tlon[2],tlon[0],tlon[1]]
-                #    x1 = x1 + [tlon[1],tlon[3],tlon[2],tlon[3]]
-                #    y0 = y0 + [tlat[0],tlat[2],tlat[0],tlat[1]]
-                #    y1 = y1 + [tlat[1],tlat[3],tlat[2],tlat[3]]
+                if 'geoLocationBox' in g:
+                    box = g['geoLocationBox']
+                    p1 = f"{box['eastBoundLongitude']} {box['northBoundLatitude']}"
+                    p2 = f"{box['westBoundLongitude']} {box['northBoundLatitude']}"
+                    p3 = f"{box['westBoundLongitude']} {box['southBoundLatitude']}"
+                    p4 = f"{box['eastBoundLongitude']} {box['southBoundLatitude']}"
+                    wkt = f'POLYGON (({p1}, {p2}, {p3}, {p4}, {p1}))'
+                    writer.writerow([wkt,title,year,doi])
+                    
                 if 'geoLocationPoint' in g:
                     point = g['geoLocationPoint']
-                    #tlon,tlat =\
-                            #transform(from_proj,to_proj,point['pointLongitude'],point['pointLatitude'])
-                    #pt_lat=pt_lat+[tlat]
-                    #pt_lon= pt_lon+[tlon]
-                    doi = 'https://doi.org/'+metadata['identifier']['identifier']
-                    #author=author+[metadata['creators'][0]['creatorName']]
-                    title=metadata['titles'][0]['title'].split(':')[0]
-                    lat = point['pointLatitude']
-                    lon = point['pointLongitude']
-                    writer.writerow([lat,lon,title,doi])
-                    #year = year+[metadata['publicationYear']]
-                    #cen = metadata['publicationYear'][1]
-                    #dec = metadata['publicationYear'][2]
+                    wkt = f"POINT ({point['pointLongitude']} {point['pointLatitude']})"
+                    writer.writerow([wkt,title,year,doi])
 

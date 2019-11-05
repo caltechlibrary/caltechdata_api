@@ -27,8 +27,10 @@ python edit.py example.json -ids 352 -fnames logo.gif
 Successfully modified record https://cd-sandbox.tind.io/records/352
 ```
 
-Get geo points from CaltechDATA. You can import this to a GIS program like QGIS
-using a delimited text import and projection epsg:4326
+Get geographic metadata from CaltechDATA with WKT representations in a csv file. 
+You can import this to a GIS program like QGIS
+using a delimited text import and projection epsg:4326. You'll have to do one
+import for Geometry type Point and another for Geometry type Polygon. 
 
 ```
 python get_geo.py caltechdata_geo.csv
