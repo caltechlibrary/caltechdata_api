@@ -17,8 +17,8 @@ def send_s3(filepath, token, production=False):
 
     c = session()
 
-    #print(s3surl)
-    #print(headers)
+    # print(s3surl)
+    # print(headers)
     response = c.get(s3surl, headers=headers)
     jresp = response.json()
     data = jresp["data"]
@@ -56,8 +56,8 @@ def send_s3(filepath, token, production=False):
     if response.text:
         raise Exception(response.text)
 
-    #print(chkurl + "/" + bucket + "/" + key + "/")
-    #print(headers)
+    # print(chkurl + "/" + bucket + "/" + key + "/")
+    # print(headers)
     response = c.get(chkurl + "/" + bucket + "/" + key + "/", headers=headers)
     print(response)
     md5 = response.json()["md5"]
