@@ -52,14 +52,14 @@ def send_s3(filepath, token, production=False):
 
     c = session()
     response = c.post(url, files=form, headers=s3headers)
-    print(response)
+    # print(response)
     if response.text:
         raise Exception(response.text)
 
     # print(chkurl + "/" + bucket + "/" + key + "/")
     # print(headers)
     response = c.get(chkurl + "/" + bucket + "/" + key + "/", headers=headers)
-    print(response)
+    # print(response)
     md5 = response.json()["md5"]
     filename = filepath.split("/")[-1]
 
