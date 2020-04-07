@@ -36,7 +36,7 @@ def caltechdata_unembargo(token, ids, production=False):
 
         metadata = {
             "id": idv,
-            "embargo_date": "2000-01-01",
+            "embargo_date": "DELETE",
             "files": {"update": update},
         }
 
