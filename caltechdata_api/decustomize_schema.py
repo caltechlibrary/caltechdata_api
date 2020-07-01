@@ -30,8 +30,8 @@ def decustomize_schema(
         }
         del json_record["doi"]
     #Fail out if a DOI is not present
-    else:
-        raise ValueError(f'Error: Record does not have a DOI {json_record}')
+    #else:
+    #    raise ValueError(f'Error: Record does not have a DOI {json_record}')
 
     # Extract title
     if "title" in json_record:
@@ -161,8 +161,8 @@ def decustomize_schema(
 
         del json_record["publicationDate"]
 
-    else:
-        print("No publication date set - something is odd with the record ", doi)
+    #else:
+    #    print("No publication date set - something is odd with the record ", doi)
 
     # license - no url available
     if "rightsList" not in json_record:
