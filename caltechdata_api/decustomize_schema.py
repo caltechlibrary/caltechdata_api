@@ -29,6 +29,9 @@ def decustomize_schema(
             "identifierType": "DOI",
         }
         del json_record["doi"]
+    #Fail out if a DOI is not present
+    else:
+        raise ValueError(f'Error: Record does not have a DOI {json_record}')
 
     # Extract title
     if "title" in json_record:
