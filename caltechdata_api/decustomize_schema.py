@@ -161,8 +161,8 @@ def decustomize_schema(
 
         del json_record["publicationDate"]
 
-    #else:
-    #    print("No publication date set - something is odd with the record ", doi)
+    else:
+        print("No publication date set - something is odd with the record ", json_record)
 
     # license - no url available
     if "rightsList" not in json_record:
