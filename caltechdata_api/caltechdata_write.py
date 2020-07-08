@@ -1,7 +1,10 @@
-from requests import session
-from caltechdata_api import customize_schema
-import json, copy
+import copy
+import json
 import os
+
+from requests import session
+
+from caltechdata_api import customize_schema
 
 
 def send_s3(filepath, token, production=False):

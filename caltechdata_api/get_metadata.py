@@ -1,6 +1,11 @@
-import os, json, csv, argparse
+import argparse
+import csv
+import json
+import os
+
 import requests
 from datacite import DataCiteMDSClient, schema40
+
 from caltechdata_api import decustomize_schema
 
 

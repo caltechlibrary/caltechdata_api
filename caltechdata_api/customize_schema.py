@@ -1,19 +1,19 @@
-# Convert a DataCite 4 standard schema json record to the customized internal
+# Convert a DataCite 4 or 4.3 standard schema json record to the customized internal
 # schema used by TIND in CaltechDATA
-import json
 import argparse
+import json
 
 
-def customize_schema(json_record):
+def customize_schema(json_record, schema='4'):
 
-    # Extract subjects to single string
-    if "subjects" in json_record:
-        subjects = json_record["subjects"]
-        subs = []
-        for s in subjects:
-            subs.append(s["subject"])
-        json_record["subjects"] = subs
+    if schema == '4':
+        return customize_schema_4(json_record)
+    elif schema == '43':
+        return customize_schema_43(json_record)
+    else:
+        raise ValueError(f'Error: schema {schema} not defined')
 
+def customize_schema_4(json_record):
     # Extract identifier and label as DOI
     if "identifier" in json_record:
         identifier = json_record["identifier"]["identifier"]
@@ -21,31 +21,6 @@ def customize_schema(json_record):
         json_record["doi"] = identifier
         del json_record["identifier"]
         # will delete other ideintifiers in file
-
-    # Extract description
-    if "descriptions" in json_record:
-        for d in json_record["descriptions"]:
-            d["descriptionValue"] = d["description"]
-            del d["description"]
-
-    # Extract title
-    if "titles" in json_record:
-        titles = json_record["titles"]
-        for t in titles:
-            if "titleType" not in t:
-                json_record["title"] = t["title"]
-        del json_record["titles"]
-
-    # Language - only translating english
-    if "language" in json_record:
-        if json_record["language"] == "en":
-            json_record["language"] = "eng"
-
-    # Change related identifier labels
-    if "relatedIdentifiers" in json_record:
-        for listing in json_record["relatedIdentifiers"]:
-            listing["relatedIdentifierRelation"] = listing.pop("relationType")
-            listing["relatedIdentifierScheme"] = listing.pop("relatedIdentifierType")
 
     # change author formatting
     # We're dropping URIs
@@ -101,6 +76,117 @@ def customize_schema(json_record):
                 new["contributorEmail"] = c["contributorEmail"]
             newc.append(new)
         json_record["contributors"] = newc
+
+
+def customize_schema_43(json_record):
+    # Extract identifiers and label as DOI or alternativeIdentifiers
+    if "identifiers" in json_record:
+        alt = []
+        for identifier = json_record["identifiers"]:
+            if identifier['identifierType'] == 'DOI':
+                json_record["doi"] = identifier
+            else:
+                alt.append(identifier)
+        if alt != []:        
+            json_record['alternativeIdentifiers']  = alt 
+        del json_record["identifier"]
+
+    # change author formatting
+    # We're dropping URIs
+    if "creators" in json_record:
+        authors = json_record["creators"]
+        newa = []
+        for a in authors:
+            new = {}
+            if "affiliations" in a:
+                affiliation = []
+                for aff in a["affiliations"]:
+                    name = {}
+                    name['affiliation'] = a["name"]
+                    if 'ROR' in a:
+                        name['ROR'] = a['ROR']
+            new["authorAffiliation"] = affiliation
+            new["authorName"] = a["name"]
+            if "nameIdentifiers" in a:
+                idn = []
+                for n in a["nameIdentifiers"]:
+                    idn.append(
+                        {
+                            "authorIdentifier": n["nameIdentifier"],
+                            "authorIdentifierScheme": n["nameIdentifierScheme"],
+                        }
+                    )
+                new["authorIdentifiers"] = idn
+            newa.append(new)
+        json_record["authors"] = newa
+        del json_record["creators"]
+
+    # strip creator URI
+    if "contributors" in json_record:
+        newc = []
+        for c in json_record["contributors"]:
+            new = {}
+            if "nameIdentifiers" in c:
+                idn = []
+                for n in c["nameIdentifiers"]:
+                    idn.append(
+                        {
+                            "contributorIdentifier": n["nameIdentifier"],
+                            "contributorIdentifierScheme": n["nameIdentifierScheme"],
+                        }
+                    )
+                new["contributorIdentifiers"] = idn
+            if "affiliations" in a:
+                affiliation = []
+                for aff in a["affiliations"]:
+                    name = {}
+                    name['affiliation'] = a["name"]
+                    if 'ROR' in a:
+                        name['ROR'] = a['ROR']
+            new["contributorAffiliation"] = affiliation
+            new["contributorName"] = c["name"]
+            if "contributorType" in c:
+                new["contributorType"] = c["contributorType"]
+            if "contributorEmail" in c:
+                new["contributorEmail"] = c["contributorEmail"]
+            newc.append(new)
+        json_record["contributors"] = newc
+
+
+def customize_standard(json_record)
+
+    # Extract subjects to single string
+    if "subjects" in json_record:
+        subjects = json_record["subjects"]
+        subs = []
+        for s in subjects:
+            subs.append(s["subject"])
+        json_record["subjects"] = subs
+
+    # Extract description
+    if "descriptions" in json_record:
+        for d in json_record["descriptions"]:
+            d["descriptionValue"] = d["description"]
+            del d["description"]
+
+    # Extract title
+    if "titles" in json_record:
+        titles = json_record["titles"]
+        for t in titles:
+            if "titleType" not in t:
+                json_record["title"] = t["title"]
+        del json_record["titles"]
+
+    # Language - only translating english
+    if "language" in json_record:
+        if json_record["language"] == "en":
+            json_record["language"] = "eng"
+
+    # Change related identifier labels
+    if "relatedIdentifiers" in json_record:
+        for listing in json_record["relatedIdentifiers"]:
+            listing["relatedIdentifierRelation"] = listing.pop("relationType")
+            listing["relatedIdentifierScheme"] = listing.pop("relatedIdentifierType")
 
     # format
     if "formats" in json_record:
@@ -177,7 +263,7 @@ if __name__ == "__main__":
     # Read in from file for demo purposes
 
     parser = argparse.ArgumentParser(
-        description="customize_schema converts a DataCite 4 standard json record\
+        description="customize_schema converts a DataCite 4 or 4.3 standard json record\
                 to TIND customized internal schema in CaltechDATA"
     )
     parser.add_argument("json_files", nargs="+", help="json file name")

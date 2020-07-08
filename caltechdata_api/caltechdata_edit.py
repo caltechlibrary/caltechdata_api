@@ -1,7 +1,9 @@
+import copy
+import json
+
 from requests import session
-import json, copy
-from caltechdata_api import customize_schema
-from caltechdata_api import send_s3
+
+from caltechdata_api import customize_schema, send_s3
 
 
 def caltechdata_unembargo(token, ids, production=False):
