@@ -1,12 +1,22 @@
-# Convert a internal TIND CaltechDATA record into a  DataCite 4 standard schema json record
+# Convert a internal TIND CaltechDATA record into a  DataCite 4 or 4.3 standard schema json record
 import json
 import argparse
 
 
 def decustomize_schema(
-    json_record, pass_emails=False, pass_media=False, pass_owner=False
+    json_record, pass_emails=False, pass_media=False, pass_owner=False,
+    schema='4'
 ):
+    if schema == '4':
+        return decustomize_schema_4(json_record, pass_emails,
+                pass_media,pass_owner)
+    elif schema == '43':
+        return decustomize_schema_4(json_record, pass_emails, 
+                pass_media,pass_owner)
+    else:
+        raise ValueError(f'Error: schema {schema} not defined')
 
+def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
     # Extract subjects to single string
     if "subjects" in json_record:
         if isinstance(json_record["subjects"], str):
@@ -20,18 +30,6 @@ def decustomize_schema(
             for s in json_record["subjects"]:
                 array.append({"subject": s})
             json_record["subjects"] = array
-
-    # Extract identifier and label as DOI
-    if "doi" in json_record:
-        doi = json_record["doi"]
-        json_record["identifier"] = {
-            "identifier": json_record["doi"],
-            "identifierType": "DOI",
-        }
-        del json_record["doi"]
-    #Fail out if a DOI is not present
-    #else:
-    #    raise ValueError(f'Error: Record does not have a DOI {json_record}')
 
     # Extract title
     if "title" in json_record:
@@ -63,6 +61,151 @@ def decustomize_schema(
             else:
                 json_record["relatedIdentifiers"] = [relation]
         del json_record["publications"]
+
+    # format
+    if "format" in json_record:
+        if isinstance(json_record["format"], list):
+            json_record["formats"] = json_record.pop("format")
+        else:
+            json_record["formats"] = [json_record.pop("format")]
+
+    # dates
+    datetypes = set()
+    # Save set of types for handling publicationDate
+    if "relevantDates" in json_record:
+        dates = json_record["relevantDates"]
+        for d in dates:
+            d["date"] = d.pop("relevantDateValue")
+            d["dateType"] = d.pop("relevantDateType")
+            datetypes.add(d["dateType"])
+        json_record["dates"] = json_record.pop("relevantDates")
+
+    # Set publicationYear and save publicationDate
+    if "publicationDate" in json_record:
+        # If 'Issued' date type was not manually set in metadata
+        # the system created publicationDate is correct
+        if "Issued" not in datetypes:
+            if "dates" in json_record:
+                json_record["dates"].append(
+                    {"date": json_record["publicationDate"], "dateType": "Issued"}
+                )
+            else:
+                json_record["dates"] = [
+                    {"date": json_record["publicationDate"], "dateType": "Issued"}
+                ]
+            year = json_record["publicationDate"].split("-")[0]
+            json_record["publicationYear"] = year
+        # Otherwise pick 'Issued' date for publicationYear
+        else:
+            for d in json_record["dates"]:
+                if d["dateType"] == "Issued":
+                    year = d["date"].split("-")[0]
+                    json_record["publicationYear"] = year
+
+        del json_record["publicationDate"]
+
+    else:
+        print("No publication date set - something is odd with the record ", json_record)
+
+
+def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
+    #Do standard transformations
+    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
+
+    # Extract identifier and label as DOI
+    identifiers = []
+    if "doi" in json_record:
+        doi = json_record["doi"]
+        identifiers.append( {
+            "identifier": json_record["doi"],
+            "identifierType": "DOI",
+        })
+        del json_record["doi"]
+    
+    # change author formatting
+    if "authors" in json_record:
+        authors = json_record["authors"]
+        newa = []
+        for a in authors:
+            new = {}
+            if "authorAffiliation" in a:
+                if isinstance(a["authorAffiliation"], list) == False:
+                    a["authorAffiliation"] = [a["authorAffiliation"]]
+                affiliation = []
+                for aff in a["authorAffiliation"]:
+                    name = {}
+                    name['name'] = a["affiliation"]
+                    if 'ROR' in a:
+                        name['ROR'] = a['ROR']
+            new["affiliation"] = affiliation
+            if "authorIdentifiers" in a:
+                idv = []
+                if isinstance(a["authorIdentifiers"], list):
+                    for cid in a["authorIdentifiers"]:
+                        nid = {}
+                        nid["nameIdentifier"] = cid.pop("authorIdentifier")
+                        nid["nameIdentifierScheme"] = cid.pop("authorIdentifierScheme")
+                        idv.append(nid)
+                    new["nameIdentifiers"] = idv
+                else:
+                    print("Author identifiers not an array - please check", doi)
+                del a["authorIdentifiers"]
+            new["name"] = a["authorName"]
+            newa.append(new)
+        json_record["creators"] = newa
+        del json_record["authors"]
+
+    # contributors
+    if "contributors" in json_record:
+        contributors = json_record["contributors"]
+        newc = []
+        for c in contributors:
+            new = {}
+            if "contributorAffiliation" in c:
+                if isinstance(c["contributorAffiliation"], list) == False:
+                    c["contributorAffiliation"] = [c["contributorAffiliation"]]
+                affiliation = []
+                for aff in a["contributorAffiliation"]:
+                    name = {}
+                    name['name'] = a["affiliation"]
+                    if 'ROR' in a:
+                        name['ROR'] = a['ROR']
+            new['affiliation'] = affiliation
+            if "contributorIdentifiers" in c:
+                if isinstance(c["contributorIdentifiers"], list):
+                    newa = []
+                    for cid in c["contributorIdentifiers"]:
+                        new = {}
+                        new["nameIdentifier"] = cid.pop("contributorIdentifier")
+                        if "contributorIdentifierScheme" in cid:
+                            new["nameIdentifierScheme"] = cid.pop(
+                                "contributorIdentifierScheme"
+                            )
+                        newa.append(new)
+                    new["nameIdentifiers"] = newa
+                else:
+                    print("Contributor identifier not an array - please check", doi)
+                del c["contributorIdentifiers"]
+            new["name"] = c["creatorName"]
+            if pass_emails == True:
+                if "contributorEmail" in c:
+                    new["contributorEmail"] = c["contributorEmail"]
+            newc.append(new)
+        json_record["contributors"] = newc
+
+
+def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
+    #Do standard transformations
+    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
+
+    # Extract identifier and label as DOI
+    if "doi" in json_record:
+        doi = json_record["doi"]
+        json_record["identifier"] = {
+            "identifier": json_record["doi"],
+            "identifierType": "DOI",
+        }
+        del json_record["doi"]
 
     # change author formatting
     # Could do better with multiple affiliations
@@ -119,58 +262,6 @@ def decustomize_schema(
             if pass_emails == False:
                 if "contributorEmail" in c:
                     del c["contributorEmail"]
-    # format
-    if "format" in json_record:
-        if isinstance(json_record["format"], list):
-            json_record["formats"] = json_record.pop("format")
-        else:
-            json_record["formats"] = [json_record.pop("format")]
-
-    # dates
-    datetypes = set()
-    # Save set of types for handling publicationDate
-    if "relevantDates" in json_record:
-        dates = json_record["relevantDates"]
-        for d in dates:
-            d["date"] = d.pop("relevantDateValue")
-            d["dateType"] = d.pop("relevantDateType")
-            datetypes.add(d["dateType"])
-        json_record["dates"] = json_record.pop("relevantDates")
-
-    # Set publicationYear and save publicationDate
-    if "publicationDate" in json_record:
-        # If 'Issued' date type was not manually set in metadata
-        # the system created publicationDate is correct
-        if "Issued" not in datetypes:
-            if "dates" in json_record:
-                json_record["dates"].append(
-                    {"date": json_record["publicationDate"], "dateType": "Issued"}
-                )
-            else:
-                json_record["dates"] = [
-                    {"date": json_record["publicationDate"], "dateType": "Issued"}
-                ]
-            year = json_record["publicationDate"].split("-")[0]
-            json_record["publicationYear"] = year
-        # Otherwise pick 'Issued' date for publicationYear
-        else:
-            for d in json_record["dates"]:
-                if d["dateType"] == "Issued":
-                    year = d["date"].split("-")[0]
-                    json_record["publicationYear"] = year
-
-        del json_record["publicationDate"]
-
-    else:
-        print("No publication date set - something is odd with the record ", json_record)
-
-    # license - no url available
-    if "rightsList" not in json_record:
-        if "license" in json_record:
-            json_record["rightsList"] = [{"rights": json_record.pop("license")}]
-    if "rightsList" in json_record:
-        if not isinstance(json_record["rightsList"], list):
-            json_record["rightsList"] = [json_record["rightsList"]]
 
     # Funding
     if "fundings" in json_record:
