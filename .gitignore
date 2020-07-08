@@ -3,3 +3,4 @@ dist/
 data/
 caltechdata_api.egg-info/
 caltechdata_api/__pycache__/
+tests/__pycache__/
