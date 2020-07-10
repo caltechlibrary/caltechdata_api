@@ -1,291 +1,334 @@
 {
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "GGG2014",
-      "alternateIdentifierType": "Software_Version"
-    },
-    {
-      "alternateIdentifier": "sp",
-      "alternateIdentifierType": "id"
-    },
-    {
-      "alternateIdentifier": "nyalesund01",
-      "alternateIdentifierType": "longName"
-    },
-    {
-      "alternateIdentifier": "R0",
-      "alternateIdentifierType": "Data_Revision"
-    },
-    {
-      "alternateIdentifier": "301",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ],
-  "contributors": [
-    {
-      "contributorName": "CaltechDATA, California Institute of Technology, CA (US)",
-      "contributorType": "HostingInstitution",
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "grid.20861.3d",
-          "nameIdentifierScheme": "GRID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Roehl, C. M.",
-      "contributorType": "DataCurator",
-      "affiliations": [
-        "California Institute of Technology, Pasadena, CA (US)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5383-8462",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ]
-    },
-    {
-      "contributorName": "AWIPEV Arctic Research Base, Ny-Ålesund, Spitsbergen (NO)",
-      "contributorType": "DataCollector"
-    },
-    {
-      "contributorName": "Justus Notholt",
-      "contributorType": "ContactPerson"
-    },
-    {
-      "contributorName": "TCCON",
-      "contributorType": "ResearchGroup"
-    }
-  ],
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "<br> These data are now obsolete and should be replaced by the most recent data: https://doi.org/10.14291/tccon.ggg2014.nyalesund01.R1 <br><br>The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station Ny Ålesund, Spitsbergen, Norway."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Notholt, J., Warneke, T., Petri, C., Deutscher, N. M., Weinzierl, C., Palm, M., &amp; Buschmann, M. (2014). <i>TCCON data from Ny Ålesund, Spitsbergen (NO), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.nyalesund01.r0/1149278\">https://doi.org/10.14291/tccon.ggg2014.nyalesund01.r0/1149278</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.nyalesund01.R0/1149278\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.nyalesund01.R0/1149278\">Download Citation</a><br>"
-    }
-  ],
-  "language": "eng",
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "10.14291/tccon.archive/1348407",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-3491-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "http://tccondata.org",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.14291/TCCON.GGG2014",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.nyalesund01.R1",
-      "relationType": "IsPreviousVersionOf",
-      "relatedIdentifierType": "DOI"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Dataset"
-  },
-  "rightsList": [
-    {
-      "rights": "TCCON Data Use Policy",
-      "rightsURI": "https://data.caltech.edu/tindfiles/serve/90348ea4-f340-4f43-8db2-b9beb7845519/"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "atmospheric trace gases"
-    },
-    {
-      "subject": "CO2"
-    },
-    {
-      "subject": "CH4"
-    },
-    {
-      "subject": "CO"
-    },
-    {
-      "subject": "N2O"
-    },
-    {
-      "subject": "column-averaged dry-air mole fractions"
-    },
-    {
-      "subject": "remote sensing"
-    },
-    {
-      "subject": "FTIR spectroscopy"
-    },
-    {
-      "subject": "TCCON"
-    }
-  ],
-  "version": "GGG2014.R0",
-  "identifier": {
-    "identifier": "10.14291/tccon.ggg2014.nyalesund01.R0/1149278",
-    "identifierType": "DOI"
-  },
-  "titles": [
-    {
-      "title": "TCCON data from Ny Ålesund, Spitsbergen (NO), Release GGG2014.R0"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-3324-885X",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "P-4520-2016",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Notholt, J."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5185-3415",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "K-1884-2012",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Warneke, T."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-7010-5532",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Petri, C."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)",
-        "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-2906-2577",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "E-3683-2015",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Deutscher, N. M."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "creatorName": "Weinzierl, C."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-7191-6911",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Palm, M."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5077-9524",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Buschmann, M."
-    }
-  ],
-  "formats": [
-    "application/x-netcdf"
-  ],
-  "dates": [
-    {
-      "date": "2017-10-31",
-      "dateType": "Created"
-    },
-    {
-      "date": "2019-06-01",
-      "dateType": "Updated"
-    },
-    {
-      "date": "2006-03-28/2018-04-27",
-      "dateType": "Collected"
-    },
-    {
-      "date": "2017-10-31",
-      "dateType": "Submitted"
-    },
-    {
-      "date": "2014-10-10",
-      "dateType": "Issued"
-    }
-  ],
-  "publicationYear": "2014",
-  "geoLocations": [
-    {
-      "geoLocationPlace": "Ny Ålesund (SJ)",
-      "geoLocationPoint": {
-        "pointLatitude": 78.9,
-        "pointLongitude": 11.9
+  "created": "2017-10-31T23:01:54.501465+00:00", 
+  "id": 301, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/301"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "_oai": {
+      "id": "oai:data.caltech.edu:recid/301", 
+      "updated": "2017-10-31T23:01:54Z"
+    }, 
+    "access_right": "open", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "GGG2014", 
+        "alternateIdentifierType": "Software_Version"
+      }, 
+      {
+        "alternateIdentifier": "sp", 
+        "alternateIdentifierType": "id"
+      }, 
+      {
+        "alternateIdentifier": "nyalesund01", 
+        "alternateIdentifierType": "longName"
+      }, 
+      {
+        "alternateIdentifier": "R0", 
+        "alternateIdentifierType": "Data_Revision"
+      }, 
+      {
+        "alternateIdentifier": "301", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
       }
-    }
-  ],
-  "publisher": "CaltechDATA"
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-3324-885X", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "P-4520-2016", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Notholt, J."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-5185-3415", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "K-1884-2012", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Warneke, T."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-7010-5532", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Petri, C."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)", 
+          "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-2906-2577", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "E-3683-2015", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Deutscher, N. M."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorName": "Weinzierl, C."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-7191-6911", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Palm, M."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-5077-9524", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Buschmann, M."
+      }
+    ], 
+    "contributors": [
+      {
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "grid.20861.3d", 
+            "contributorIdentifierScheme": "GRID"
+          }
+        ], 
+        "contributorName": "CaltechDATA, California Institute of Technology, CA (US)", 
+        "contributorType": "HostingInstitution"
+      }, 
+      {
+        "contributorAffiliation": [
+          "California Institute of Technology, Pasadena, CA (US)"
+        ], 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-5383-8462", 
+            "contributorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "contributorName": "Roehl, C. M.", 
+        "contributorType": "DataCurator"
+      }, 
+      {
+        "contributorName": "AWIPEV Arctic Research Base, Ny-\u00c5lesund, Spitsbergen (NO)", 
+        "contributorType": "DataCollector"
+      }, 
+      {
+        "contributorName": "Justus Notholt", 
+        "contributorType": "ContactPerson"
+      }, 
+      {
+        "contributorName": "TCCON", 
+        "contributorType": "ResearchGroup"
+      }
+    ], 
+    "control_number": "301", 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "<br> These data are now obsolete and should be replaced by the most recent data: https://doi.org/10.14291/tccon.ggg2014.nyalesund01.R1 <br><br>The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station Ny \u00c5lesund, Spitsbergen, Norway."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Notholt, J., Warneke, T., Petri, C., Deutscher, N. M., Weinzierl, C., Palm, M., &amp; Buschmann, M. (2014). <i>TCCON data from Ny \u00c5lesund, Spitsbergen (NO), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.nyalesund01.r0/1149278\">https://doi.org/10.14291/tccon.ggg2014.nyalesund01.r0/1149278</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.nyalesund01.R0/1149278\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.nyalesund01.R0/1149278\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 196<br>Unique Downloads: 5<br> between October 31, 2017 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.14291/tccon.ggg2014.nyalesund01.R0/1149278", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "sp20060328_20180427.public.nc"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "10282552", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/4b0e1757-6cc4-44a6-a04e-498473f26ced/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "README.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "11787", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/204eae66-66cb-417f-bfc4-278a9bcbdc11/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "LICENSE.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2313", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/90348ea4-f340-4f43-8db2-b9beb7845519/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "4b0e1757-6cc4-44a6-a04e-498473f26ced", 
+        "path": "https://data.caltech.edu/tindfiles/serve/4b0e1757-6cc4-44a6-a04e-498473f26ced/"
+      }, 
+      {
+        "id": "204eae66-66cb-417f-bfc4-278a9bcbdc11", 
+        "path": "https://data.caltech.edu/tindfiles/serve/204eae66-66cb-417f-bfc4-278a9bcbdc11/"
+      }, 
+      {
+        "id": "90348ea4-f340-4f43-8db2-b9beb7845519", 
+        "path": "https://data.caltech.edu/tindfiles/serve/90348ea4-f340-4f43-8db2-b9beb7845519/"
+      }
+    ], 
+    "format": [
+      "application/x-netcdf"
+    ], 
+    "geographicCoverage": [
+      {
+        "geoLocationPlace": "Ny \u00c5lesund (SJ)", 
+        "geoLocationPoint": {
+          "pointLatitude": "78.9", 
+          "pointLongitude": "11.9"
+        }
+      }
+    ], 
+    "id": "301", 
+    "language": "eng", 
+    "license": "other-license", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "301", 
+    "publicationDate": "2017-10-31", 
+    "publishers": {
+      "publisherName": "CaltechDATA"
+    }, 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.14291/tccon.archive/1348407", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-3491-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "http://tccondata.org", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/TCCON.GGG2014", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.nyalesund01.R1", 
+        "relatedIdentifierRelation": "IsPreviousVersionOf", 
+        "relatedIdentifierScheme": "DOI"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Created", 
+        "relevantDateValue": "2017-10-31"
+      }, 
+      {
+        "relevantDateType": "Updated", 
+        "relevantDateValue": "2019-06-01"
+      }, 
+      {
+        "relevantDateType": "Collected", 
+        "relevantDateValue": "2006-03-28/2018-04-27"
+      }, 
+      {
+        "relevantDateType": "Submitted", 
+        "relevantDateValue": "2017-10-31"
+      }, 
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2014-10-10"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Dataset"
+    }, 
+    "rightsList": {
+      "rights": "TCCON Data Use Policy", 
+      "rightsURI": "https://data.caltech.edu/tindfiles/serve/90348ea4-f340-4f43-8db2-b9beb7845519/"
+    }, 
+    "subjects": [
+      "atmospheric trace gases", 
+      "CO2", 
+      "CH4", 
+      "CO", 
+      "N2O", 
+      "column-averaged dry-air mole fractions", 
+      "remote sensing", 
+      "FTIR spectroscopy", 
+      "TCCON"
+    ], 
+    "title": "TCCON data from Ny \u00c5lesund, Spitsbergen (NO), Release GGG2014.R0", 
+    "version": "GGG2014.R0"
+  }, 
+  "updated": "2020-07-02T20:33:24.628540+00:00"
 }

@@ -1,342 +1,376 @@
 {
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "GGG2014",
-      "alternateIdentifierType": "Software_Version"
-    },
-    {
-      "alternateIdentifier": "eu",
-      "alternateIdentifierType": "id"
-    },
-    {
-      "alternateIdentifier": "eureka01",
-      "alternateIdentifierType": "longName"
-    },
-    {
-      "alternateIdentifier": "R1",
-      "alternateIdentifierType": "Data_Revision"
-    },
-    {
-      "alternateIdentifier": "1171",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    },
-    {
-      "alternateIdentifier": "1171",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    },
-    {
-      "alternateIdentifier": "1171",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ],
-  "contributors": [
-    {
-      "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)",
-      "contributorType": "HostingInstitution",
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "grid.20861.3d",
-          "nameIdentifierScheme": "GRID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Roehl, C. M.",
-      "contributorType": "DataCurator",
-      "affiliations": [
-        "California Institute of Technology, Pasadena, CA (US)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5383-8462",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Kimberly Strong",
-      "contributorType": "ContactPerson",
-      "contributorEmail": "strong@atmosp.physics.utoronto.ca",
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-9947-1053",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "D-2563-2012",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ]
-    },
-    {
-      "contributorName": "TCCON",
-      "contributorType": "ResearchGroup"
-    }
-  ],
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "<br> The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Eureka, Canada."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Strong, K., Roche, S., Franklin, J. E., Mendonca, J., Lutsch, E., Weaver, D., … Lindenmaier, R. (2018). <i>TCCON data from Eureka (CA), Release GGG2014.R3</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.eureka01.r3\">https://doi.org/10.14291/tccon.ggg2014.eureka01.r3</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.eureka01.R3\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.eureka01.R3\">Download Citation</a><br>"
-    }
-  ],
-  "fundingReferences": [
-    {
-      "funderName": "Atlantic Innovation Fund"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.439998.6",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Canada Foundation for Innovation"
-    },
-    {
-      "funderName": "Canadian Foundation for Climate and Atmospheric Sciences"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.236846.d",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Canadian Space Agency"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.410334.1",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Environment and Climate Change Canada"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.451254.3",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Government of Canada (International Polar Year funding)"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.452912.9",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Natural Sciences and Engineering Research Council of Canada"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.465477.3",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Polar Commission (Northern Scientific Training Program)"
-    },
-    {
-      "funderName": "Nova Scotia Research Innovation Trust"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.451078.f",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Ministry of Research and Innovation (Ontario Innovation Trust and Ontario Research Fund)"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.202033.0",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Natural Resources Canada (Polar Continental Shelf Program)"
-    }
-  ],
-  "language": "eng",
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R0/1149271",
-      "relationType": "IsNewVersionOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.14291/TCCON.GGG2014",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R1/1325515",
-      "relationType": "IsNewVersionOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R2",
-      "relationType": "IsNewVersionOf",
-      "relatedIdentifierType": "DOI"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Dataset"
-  },
-  "rightsList": [
-    {
-      "rights": "TCCON Data License",
-      "rightsURI": "https://data.caltech.edu/tindfiles/serve/8298981c-6613-4ed9-9c54-5ef8fb5180f4/"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "atmospheric trace gases"
-    },
-    {
-      "subject": "CO2"
-    },
-    {
-      "subject": "CH4"
-    },
-    {
-      "subject": "CO"
-    },
-    {
-      "subject": "N2O"
-    },
-    {
-      "subject": "column-averaged dry-air mole fractions"
-    },
-    {
-      "subject": "remote sensing"
-    },
-    {
-      "subject": "FTIR spectroscopy"
-    },
-    {
-      "subject": "TCCON"
-    }
-  ],
-  "version": "R3",
-  "identifier": {
-    "identifier": "10.14291/tccon.ggg2014.eureka01.R3",
-    "identifierType": "DOI"
-  },
-  "titles": [
-    {
-      "title": "TCCON data from Eureka (CA), Release GGG2014.R3"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "creatorName": "Strong, K."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "creatorName": "Roche, S."
-    },
-    {
-      "affiliations": [
-        "School of Engineering and Applied Sciences, Harvard University, Cambridge, MA (USA)"
-      ],
-      "creatorName": "Franklin, J. E."
-    },
-    {
-      "affiliations": [
-        "Environment and Climate Change Canada, Downsview, ON (CA)"
-      ],
-      "creatorName": "Mendonca, J."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "creatorName": "Lutsch, E."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "creatorName": "Weaver, D."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)"
-      ],
-      "creatorName": "Fogal, P. F."
-    },
-    {
-      "affiliations": [
-        "Department of Physics & Atmospheric Science, Dalhousie University, Halifax, NS, CA"
-      ],
-      "creatorName": "Drummond, J. R."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)",
-        "UCAR Center for Science Education, Boulder, CO (US)"
-      ],
-      "creatorName": "Batchelor, R."
-    },
-    {
-      "affiliations": [
-        "Department of Physics, University of Toronto, Toronto, ON (CA)",
-        "Pacific Northwest National Laboratory, Richland, WA (US)"
-      ],
-      "creatorName": "Lindenmaier, R."
-    }
-  ],
-  "formats": [
-    "application/x-netcdf"
-  ],
-  "dates": [
-    {
-      "date": "2019-01-31",
-      "dateType": "Created"
-    },
-    {
-      "date": "2019-05-01",
-      "dateType": "Updated"
-    },
-    {
-      "date": "2010-07-24/2018-04-28",
-      "dateType": "Collected"
-    },
-    {
-      "date": "2019-01-31",
-      "dateType": "Submitted"
-    },
-    {
-      "date": "2019-01-31",
-      "dateType": "Issued"
-    }
-  ],
-  "publicationYear": "2018",
-  "geoLocations": [
-    {
-      "geoLocationPlace": "Eureka, NU (CA)",
-      "geoLocationPoint": {
-        "pointLatitude": 80.05,
-        "pointLongitude": -86.42
+  "created": "2019-01-31T18:57:09.269224+00:00", 
+  "id": 1171, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/1171"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "_oai": {
+      "id": "oai:data.caltech.edu:recid/1171", 
+      "updated": "2019-01-31T18:57:09Z"
+    }, 
+    "access_right": "open", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "GGG2014", 
+        "alternateIdentifierType": "Software_Version"
+      }, 
+      {
+        "alternateIdentifier": "eu", 
+        "alternateIdentifierType": "id"
+      }, 
+      {
+        "alternateIdentifier": "eureka01", 
+        "alternateIdentifierType": "longName"
+      }, 
+      {
+        "alternateIdentifier": "R1", 
+        "alternateIdentifierType": "Data_Revision"
+      }, 
+      {
+        "alternateIdentifier": "1171", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
       }
-    }
-  ],
-  "publisher": "CaltechDATA"
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "authorName": "Strong, K."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "authorName": "Roche, S."
+      }, 
+      {
+        "authorAffiliation": [
+          "School of Engineering and Applied Sciences, Harvard University, Cambridge, MA (USA)"
+        ], 
+        "authorName": "Franklin, J. E."
+      }, 
+      {
+        "authorAffiliation": [
+          "Environment and Climate Change Canada, Downsview, ON (CA)"
+        ], 
+        "authorName": "Mendonca, J."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "authorName": "Lutsch, E."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "authorName": "Weaver, D."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "authorName": "Fogal, P. F."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics & Atmospheric Science, Dalhousie University, Halifax, NS, CA"
+        ], 
+        "authorName": "Drummond, J. R."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)", 
+          "UCAR Center for Science Education, Boulder, CO (US)"
+        ], 
+        "authorName": "Batchelor, R."
+      }, 
+      {
+        "authorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)", 
+          "Pacific Northwest National Laboratory, Richland, WA (US)"
+        ], 
+        "authorName": "Lindenmaier, R."
+      }
+    ], 
+    "contributors": [
+      {
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "grid.20861.3d", 
+            "contributorIdentifierScheme": "GRID"
+          }
+        ], 
+        "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)", 
+        "contributorType": "HostingInstitution"
+      }, 
+      {
+        "contributorAffiliation": [
+          "California Institute of Technology, Pasadena, CA (US)"
+        ], 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-5383-8462", 
+            "contributorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "contributorName": "Roehl, C. M.", 
+        "contributorType": "DataCurator"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Department of Physics, University of Toronto, Toronto, ON (CA)"
+        ], 
+        "contributorEmail": "strong@atmosp.physics.utoronto.ca", 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-9947-1053", 
+            "contributorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "contributorIdentifier": "D-2563-2012", 
+            "contributorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "contributorName": "Kimberly Strong", 
+        "contributorType": "ContactPerson"
+      }, 
+      {
+        "contributorName": "TCCON", 
+        "contributorType": "ResearchGroup"
+      }
+    ], 
+    "control_number": "1171", 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "<br> The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Eureka, Canada."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Strong, K., Roche, S., Franklin, J. E., Mendonca, J., Lutsch, E., Weaver, D., \u2026 Lindenmaier, R. (2019). <i>TCCON data from Eureka (CA), Release GGG2014.R3</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.eureka01.r3\">https://doi.org/10.14291/tccon.ggg2014.eureka01.r3</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.eureka01.R3\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.eureka01.R3\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 161<br>Unique Downloads: 7<br> between January 31, 2019 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.14291/tccon.ggg2014.eureka01.R3", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "eu20100724_20190815.public.nc"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "6890172", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/4aef1f82-22b9-4754-ab85-18a5d4f280e1/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "README.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "12136", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/9a0882f7-4870-40ac-af43-5f9b696aa858/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "LICENSE.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2298", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/8298981c-6613-4ed9-9c54-5ef8fb5180f4/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "4aef1f82-22b9-4754-ab85-18a5d4f280e1", 
+        "path": "https://data.caltech.edu/tindfiles/serve/4aef1f82-22b9-4754-ab85-18a5d4f280e1/"
+      }, 
+      {
+        "id": "9a0882f7-4870-40ac-af43-5f9b696aa858", 
+        "path": "https://data.caltech.edu/tindfiles/serve/9a0882f7-4870-40ac-af43-5f9b696aa858/"
+      }, 
+      {
+        "id": "8298981c-6613-4ed9-9c54-5ef8fb5180f4", 
+        "path": "https://data.caltech.edu/tindfiles/serve/8298981c-6613-4ed9-9c54-5ef8fb5180f4/"
+      }
+    ], 
+    "format": [
+      "application/x-netcdf"
+    ], 
+    "fundingReferences": [
+      {
+        "funderName": "Atlantic Innovation Fund"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.439998.6", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Canada Foundation for Innovation"
+      }, 
+      {
+        "funderName": "Canadian Foundation for Climate and Atmospheric Sciences"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.236846.d", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Canadian Space Agency"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.410334.1", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Environment and Climate Change Canada"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.451254.3", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Government of Canada (International Polar Year funding)"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.452912.9", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Natural Sciences and Engineering Research Council of Canada"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.465477.3", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Polar Commission (Northern Scientific Training Program)"
+      }, 
+      {
+        "funderName": "Nova Scotia Research Innovation Trust"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.451078.f", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Ministry of Research and Innovation (Ontario Innovation Trust and Ontario Research Fund)"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.202033.0", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Natural Resources Canada (Polar Continental Shelf Program)"
+      }
+    ], 
+    "geographicCoverage": [
+      {
+        "geoLocationPlace": "Eureka, NU (CA)", 
+        "geoLocationPoint": {
+          "pointLatitude": "80.05", 
+          "pointLongitude": "-86.42"
+        }
+      }
+    ], 
+    "id": "1171", 
+    "language": "eng", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "1171", 
+    "publicationDate": "2018-07-02", 
+    "publishers": {
+      "publisherName": "CaltechDATA"
+    }, 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R0/1149271", 
+        "relatedIdentifierRelation": "IsNewVersionOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/TCCON.GGG2014", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R1/1325515", 
+        "relatedIdentifierRelation": "IsNewVersionOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.eureka01.R2", 
+        "relatedIdentifierRelation": "IsNewVersionOf", 
+        "relatedIdentifierScheme": "DOI"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Created", 
+        "relevantDateValue": "2019-01-31"
+      }, 
+      {
+        "relevantDateType": "Updated", 
+        "relevantDateValue": "2020-07-01"
+      }, 
+      {
+        "relevantDateType": "Collected", 
+        "relevantDateValue": "2010-07-24/2019-08-15"
+      }, 
+      {
+        "relevantDateType": "Submitted", 
+        "relevantDateValue": "2019-01-31"
+      }, 
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2019-01-31"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Dataset"
+    }, 
+    "rightsList": {
+      "rights": "TCCON Data License", 
+      "rightsURI": "https://data.caltech.edu/tindfiles/serve/8298981c-6613-4ed9-9c54-5ef8fb5180f4/"
+    }, 
+    "subjects": [
+      "atmospheric trace gases", 
+      "CO2", 
+      "CH4", 
+      "CO", 
+      "N2O", 
+      "column-averaged dry-air mole fractions", 
+      "remote sensing", 
+      "FTIR spectroscopy", 
+      "TCCON"
+    ], 
+    "title": "TCCON data from Eureka (CA), Release GGG2014.R3", 
+    "version": "R3"
+  }, 
+  "updated": "2020-07-02T20:41:10.083187+00:00"
 }

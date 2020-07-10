@@ -1,87 +1,104 @@
 {
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "First included in ames, this notebook dynamically shows how many records are in CaltechDATA and where they come from (GitHub, Deposit Form, or API).  This repository is set to work with MyBinder so you can easily reproduce the plot and include new records.  "
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Morrell, T. E. (2019, April 29). caltechlibrary/caltechdata_usage: First release of CaltechDATA Usage notebook (Version v0.0.1). CaltechDATA. <a href=\"https://doi.org/10.22002/d1.1235\">https://doi.org/10.22002/d1.1235</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.22002/D1.1235\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.22002/D1.1235\">Download Citation</a><br>"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Unique Views: 2<br>Unique Downloads: 1<br> between April 29, 2019 and June 12, 2019<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
-    }
-  ],
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.0.1",
-      "relationType": "IsIdenticalTo",
-      "relatedIdentifierType": "URL"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Software"
-  },
-  "rightsList": [
-    {
-      "rights": "license",
+  "created": "2019-04-29T20:13:59.728273+00:00", 
+  "id": 1235, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/1235"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "1235", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
+      }
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Caltech Library"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-9266-5146", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Morrell, Thomas E"
+      }
+    ], 
+    "control_number": "1235", 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "First included in ames, this notebook dynamically shows how many records are in CaltechDATA and where they come from (GitHub, Deposit Form, or API).  This repository is set to work with MyBinder so you can easily reproduce the plot and include new records.  "
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Morrell, T. E. (2019, April 29). caltechlibrary/caltechdata_usage: First release of CaltechDATA Usage notebook (Version v0.0.1). CaltechDATA. <a href=\"https://doi.org/10.22002/d1.1235\">https://doi.org/10.22002/d1.1235</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.22002/D1.1235\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.22002/D1.1235\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 4<br>Unique Downloads: 1<br> between April 29, 2019 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.22002/D1.1235", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "caltechlibrary_caltechdata_usage-v0.0.1.zip"
+        ], 
+        "embargo_status": "{{embargo_status}}", 
+        "file_size": "87521", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/9762705a-1de2-4f2c-9553-5150ba6e98e1/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "9762705a-1de2-4f2c-9553-5150ba6e98e1", 
+        "path": "https://data.caltech.edu/tindfiles/serve/9762705a-1de2-4f2c-9553-5150ba6e98e1/"
+      }
+    ], 
+    "id": "1235", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "1235", 
+    "publicationDate": "2019-04-29", 
+    "publishers": [
+      {
+        "publisherName": "CaltechDATA"
+      }
+    ], 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.0.1", 
+        "relatedIdentifierRelation": "IsIdenticalTo", 
+        "relatedIdentifierScheme": "URL"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2019-04-29"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Software"
+    }, 
+    "rightsList": {
+      "rights": "license", 
       "rightsURI": "https://data.caltech.edu/license"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "CaltechDATA"
-    },
-    {
-      "subject": "reporitory"
-    },
-    {
-      "subject": "usage"
-    },
-    {
-      "subject": "Jupyter"
-    },
-    {
-      "subject": "GitHub"
-    }
-  ],
-  "version": "v0.0.1",
-  "identifier": {
-    "identifier": "10.22002/D1.1235",
-    "identifierType": "DOI"
-  },
-  "titles": [
-    {
-      "title": "caltechlibrary/caltechdata_usage: First release of CaltechDATA Usage notebook"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Caltech Library"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-9266-5146",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Morrell, Thomas E"
-    }
-  ],
-  "dates": [
-    {
-      "date": "2019-04-29",
-      "dateType": "Issued"
-    }
-  ],
-  "publicationYear": "2019",
-  "publisher": "CaltechDATA",
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "1235",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ]
+    }, 
+    "subjects": [
+      "CaltechDATA", 
+      "reporitory", 
+      "usage", 
+      "Jupyter", 
+      "GitHub"
+    ], 
+    "title": "caltechlibrary/caltechdata_usage: First release of CaltechDATA Usage notebook", 
+    "version": "v0.0.1"
+  }, 
+  "updated": "2020-07-02T20:40:41.944666+00:00"
 }

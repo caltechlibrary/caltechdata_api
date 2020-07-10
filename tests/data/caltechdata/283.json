@@ -1,482 +1,680 @@
 {
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "GGG2014",
-      "alternateIdentifierType": "Software_Version"
-    },
-    {
-      "alternateIdentifier": "or",
-      "alternateIdentifierType": "id"
-    },
-    {
-      "alternateIdentifier": "orleans01",
-      "alternateIdentifierType": "longName"
-    },
-    {
-      "alternateIdentifier": "R0",
-      "alternateIdentifierType": "Data_Revision"
-    },
-    {
-      "alternateIdentifier": "283",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ],
-  "contributors": [
-    {
-      "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)",
-      "contributorType": "HostingInstitution",
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "grid.20861.3d",
-          "nameIdentifierScheme": "GRID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Roehl, C. M.",
-      "contributorType": "DataCurator",
-      "affiliations": [
-        "California Institute of Technology, Pasadena, CA (US)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5383-8462",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Vuillemin, C.",
-      "contributorType": "ProjectMember",
-      "affiliations": [
-        "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
-      ]
-    },
-    {
-      "contributorName": "Truong, F.ç.",
-      "contributorType": "ProjectMember",
-      "affiliations": [
-        "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
-      ]
-    },
-    {
-      "contributorName": "Schmidt, M.",
-      "contributorType": "ProjectMember",
-      "affiliations": [
-        "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
-      ]
-    },
-    {
-      "contributorName": "Ramonet, M.",
-      "contributorType": "ProjectMember",
-      "affiliations": [
-        "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
-      ]
-    },
-    {
-      "contributorName": "Parmentier, E.",
-      "contributorType": "RelatedPerson",
-      "affiliations": [
-        "Institut de Physique du Globe de Paris, Observatoire magnétique de Chambon la Forêt, Cambon la Forêt (FR)"
-      ]
-    },
-    {
-      "contributorName": "Thorsten Warneke",
-      "contributorType": "ContactPerson"
-    },
-    {
-      "contributorName": "TCCON",
-      "contributorType": "ResearchGroup"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5185-3415",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "K-1884-2012",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Warneke, T."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "creatorName": "Messerschmidt, J."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-3324-885X",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "P-4520-2016",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Notholt, J."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "creatorName": "Weinzierl, C."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)",
-        "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-2906-2577",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "E-3683-2015",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Deutscher, N. M."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-7010-5532",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Petri, C."
-    },
-    {
-      "affiliations": [
-        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
-      ],
-      "creatorName": "Grupe, P."
-    }
-  ],
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Orléans, France."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Warneke, T., Messerschmidt, J., Notholt, J., Weinzierl, C., Deutscher, N. M., Petri, C., &amp; Grupe, P. (2014). <i>TCCON data from Orléans (FR), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.orleans01.r0/1149276\">https://doi.org/10.14291/tccon.ggg2014.orleans01.r0/1149276</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.orleans01.R0/1149276\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.orleans01.R0/1149276\">Download Citation</a><br>"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Unique Views: 185<br>Unique Downloads: 54<br> between September 08, 2017 and October 01, 2019<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
-    }
-  ],
-  "fundingReferences": [
-    {
-      "awardNumber": {
-        "awardNumber": "26188",
-        "awardURI": "http://cordis.europa.eu/project/rcn/81606_en.html"
-      },
-      "awardTitle": "Infrastructure for Measurement of the European Carbon Cycle (IMECC)",
-      "funderIdentifier": {
-        "funderIdentifier": "grid.453396.e",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Union"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "36677",
-        "awardURI": "http://cordis.europa.eu/project/rcn/84619_en.html"
-      },
-      "awardTitle": "Global Earth observation and monitoring (GEOMON)",
-      "funderIdentifier": {
-        "funderIdentifier": "grid.453396.e",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Union"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "284274",
-        "awardURI": "http://cordis.europa.eu/project/rcn/101549_en.html"
-      },
-      "awardTitle": "Integrated non-CO2 Greenhouse gas Observing System (INGOS)",
-      "funderIdentifier": {
-        "funderIdentifier": "grid.453396.e",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Union"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "313169",
-        "awardURI": "http://cordis.europa.eu/project/rcn/106570_en.html"
-      },
-      "awardTitle": "ICOS improved sensors, network and interoperability for GMES (ICOS-INWIRE)",
-      "funderIdentifier": {
-        "funderIdentifier": "grid.453396.e",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Union"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "640276",
-        "awardURI": "http://cordis.europa.eu/project/rcn/193710_en.html"
-      },
-      "awardTitle": "Gap Analysis for Integrated Atmospheric ECV CLImate Monitoring (GAIA-CLIM)",
-      "funderIdentifier": {
-        "funderIdentifier": "grid.453396.e",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Union"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.425996.5",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Senate of Bremen"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.457340.1",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Laboratoire des Sciences du Climat et de l'Environnement"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.7704.4",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "University of Bremen"
-    }
-  ],
-  "geoLocations": [
-    {
-      "geoLocationPlace": "Traînou, Orléans (FR)",
-      "geoLocationPoint": {
-        "pointLatitude": 47.97,
-        "pointLongitude": 2.113
+  "created": "2017-09-11T20:19:50.331043+00:00", 
+  "id": 283, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/283"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "_oai": {
+      "id": "oai:data.caltech.edu:recid/283", 
+      "updated": "2017-09-11T20:19:50Z"
+    }, 
+    "access_right": "open", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "GGG2014", 
+        "alternateIdentifierType": "Software_Version"
+      }, 
+      {
+        "alternateIdentifier": "or", 
+        "alternateIdentifierType": "id"
+      }, 
+      {
+        "alternateIdentifier": "orleans01", 
+        "alternateIdentifierType": "longName"
+      }, 
+      {
+        "alternateIdentifier": "R0", 
+        "alternateIdentifierType": "Data_Revision"
+      }, 
+      {
+        "alternateIdentifier": "283", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
       }
-    }
-  ],
-  "language": "eng",
-  "publicationYear": "2014",
-  "publisher": "CaltechDATA",
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/rs9010064",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-683-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-227-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-16-5043-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-16-14003-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-8-4785-2015",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-15-13023-2015",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-16-12005-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-4843-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-16-1653-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-3491-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/rs8050414",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.14291/TCCON.GGG2014",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "http://tccondata.org",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.3390/rs9101033",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-17-4781-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/atmos9050175",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-11-3111-2018",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-11-1251-2018",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-10-4135-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-10-2209-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/atmos10070354",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Dataset"
-  },
-  "rightsList": [
-    {
-      "rights": "TCCON Data Use Policy",
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-5185-3415", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "K-1884-2012", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Warneke, T."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorName": "Messerschmidt, J."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-3324-885X", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "P-4520-2016", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Notholt, J."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorName": "Weinzierl, C."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)", 
+          "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-2906-2577", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "E-3683-2015", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Deutscher, N. M."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-7010-5532", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Petri, C."
+      }, 
+      {
+        "authorAffiliation": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "authorName": "Grupe, P."
+      }
+    ], 
+    "contributors": [
+      {
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "grid.20861.3d", 
+            "contributorIdentifierScheme": "GRID"
+          }
+        ], 
+        "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)", 
+        "contributorType": "HostingInstitution"
+      }, 
+      {
+        "contributorAffiliation": [
+          "California Institute of Technology, Pasadena, CA (US)"
+        ], 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-5383-8462", 
+            "contributorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "contributorName": "Roehl, C. M.", 
+        "contributorType": "DataCurator"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
+        ], 
+        "contributorName": "Vuillemin, C.", 
+        "contributorType": "ProjectMember"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
+        ], 
+        "contributorName": "Truong, F.\u00e7.", 
+        "contributorType": "ProjectMember"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
+        ], 
+        "contributorName": "Schmidt, M.", 
+        "contributorType": "ProjectMember"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Laboratoire des Sciences du Climat et de l'Environnement, Gif-sur-Yvette (FR)"
+        ], 
+        "contributorName": "Ramonet, M.", 
+        "contributorType": "ProjectMember"
+      }, 
+      {
+        "contributorAffiliation": [
+          "Institut de Physique du Globe de Paris, Observatoire magn\u00e9tique de Chambon la For\u00eat, Cambon la For\u00eat (FR)"
+        ], 
+        "contributorName": "Parmentier, E.", 
+        "contributorType": "RelatedPerson"
+      }, 
+      {
+        "contributorEmail": "warneke@iup.physik.uni-bremen.de", 
+        "contributorName": "Thorsten Warneke", 
+        "contributorType": "ContactPerson"
+      }, 
+      {
+        "contributorName": "TCCON", 
+        "contributorType": "ResearchGroup"
+      }
+    ], 
+    "control_number": "283", 
+    "creators": [
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Warneke, T.", 
+        "familyName": "Warneke", 
+        "givenName": "Thorsten", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0001-5185-3415", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "K-1884-2012", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Messerschmidt, J.", 
+        "familyName": "Messerschmidt", 
+        "givenName": "Janina"
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Notholt, J.", 
+        "familyName": "Notholt", 
+        "givenName": "Justus", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-3324-885X", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "P-4520-2016", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Weinzierl, C.", 
+        "familyName": "Weinzierl", 
+        "givenName": "Christine"
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)", 
+          "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+        ], 
+        "creatorName": "Deutscher, N. M.", 
+        "familyName": "Deutscher", 
+        "givenName": "Nicholas M.", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-2906-2577", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "E-3683-2015", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Petri, C.", 
+        "familyName": "Petri", 
+        "givenName": "Christof", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-7010-5532", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }
+        ]
+      }, 
+      {
+        "affiliations": [
+          "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+        ], 
+        "creatorName": "Grupe, P.", 
+        "familyName": "Grupe", 
+        "givenName": "Peter"
+      }
+    ], 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "<br> These data are now obsolete and should be replaced by the most recent data: https://doi.org/10.14291/tccon.ggg2014.orleans01.R1 <br><br>The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Orl\u00e9ans, France."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Warneke, T., Messerschmidt, J., Notholt, J., Weinzierl, C., Deutscher, N. M., Petri, C., &amp; Grupe, P. (2014). <i>TCCON data from Orl\u00e9ans (FR), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.orleans01.r0/1149276\">https://doi.org/10.14291/tccon.ggg2014.orleans01.r0/1149276</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.orleans01.R0/1149276\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.orleans01.R0/1149276\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 222<br>Unique Downloads: 5<br> between September 08, 2017 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.14291/tccon.ggg2014.orleans01.R0/1149276", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "README.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "11793", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/f6b31f54-bcc0-431c-820f-22dec2f6777d/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "or20090829_20171128.public.nc"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "22112692", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/35c27a47-12d3-406c-92a3-ee091eaa8166/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "LICENSE.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2335", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/d0bf0bd6-739b-4aad-9e5d-45338391727f/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "f6b31f54-bcc0-431c-820f-22dec2f6777d", 
+        "path": "https://data.caltech.edu/tindfiles/serve/f6b31f54-bcc0-431c-820f-22dec2f6777d/"
+      }, 
+      {
+        "id": "35c27a47-12d3-406c-92a3-ee091eaa8166", 
+        "path": "https://data.caltech.edu/tindfiles/serve/35c27a47-12d3-406c-92a3-ee091eaa8166/"
+      }, 
+      {
+        "id": "d0bf0bd6-739b-4aad-9e5d-45338391727f", 
+        "path": "https://data.caltech.edu/tindfiles/serve/d0bf0bd6-739b-4aad-9e5d-45338391727f/"
+      }
+    ], 
+    "format": [
+      "application/x-netcdf"
+    ], 
+    "fundingReferences": [
+      {
+        "awardNumber": {
+          "awardNumber": "26188", 
+          "awardURI": "http://cordis.europa.eu/project/rcn/81606_en.html"
+        }, 
+        "awardTitle": "Infrastructure for Measurement of the European Carbon Cycle (IMECC)", 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.453396.e", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Union"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "36677", 
+          "awardURI": "http://cordis.europa.eu/project/rcn/84619_en.html"
+        }, 
+        "awardTitle": "Global Earth observation and monitoring (GEOMON)", 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.453396.e", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Union"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "284274", 
+          "awardURI": "http://cordis.europa.eu/project/rcn/101549_en.html"
+        }, 
+        "awardTitle": "Integrated non-CO2 Greenhouse gas Observing System (INGOS)", 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.453396.e", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Union"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "313169", 
+          "awardURI": "http://cordis.europa.eu/project/rcn/106570_en.html"
+        }, 
+        "awardTitle": "ICOS improved sensors, network and interoperability for GMES (ICOS-INWIRE)", 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.453396.e", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Union"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "640276", 
+          "awardURI": "http://cordis.europa.eu/project/rcn/193710_en.html"
+        }, 
+        "awardTitle": "Gap Analysis for Integrated Atmospheric ECV CLImate Monitoring (GAIA-CLIM)", 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.453396.e", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Union"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.425996.5", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Senate of Bremen"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.457340.1", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Laboratoire des Sciences du Climat et de l'Environnement"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.7704.4", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "University of Bremen"
+      }
+    ], 
+    "fundings": [
+      {
+        "fundingAwardNumber": "26188", 
+        "fundingName": "European Union"
+      }, 
+      {
+        "fundingAwardNumber": "36677", 
+        "fundingName": "European Union"
+      }, 
+      {
+        "fundingAwardNumber": "284274", 
+        "fundingName": "European Union"
+      }, 
+      {
+        "fundingAwardNumber": "313169", 
+        "fundingName": "European Union"
+      }, 
+      {
+        "fundingAwardNumber": "640276", 
+        "fundingName": "European Union"
+      }, 
+      {
+        "fundingName": "Senate of Bremen"
+      }, 
+      {
+        "fundingName": "Laboratoire des Sciences du Climat et de l'Environnement"
+      }, 
+      {
+        "fundingName": "University of Bremen"
+      }
+    ], 
+    "geoLocations": [
+      {
+        "geoLocationPlace": "Tra\u00eenou, Orl\u00e9ans (FR)", 
+        "geoLocationPoint": {
+          "pointLatitude": 47.97, 
+          "pointLongitude": 2.113
+        }
+      }
+    ], 
+    "geographicCoverage": [
+      {
+        "geoLocationPlace": "Tra\u00eenou, Orl\u00e9ans (FR)", 
+        "geoLocationPoint": {
+          "pointLatitude": "47.97", 
+          "pointLongitude": "2.113"
+        }
+      }
+    ], 
+    "id": "283", 
+    "language": "eng", 
+    "license": "other-license", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "283", 
+    "publicationDate": "2017-09-08", 
+    "publicationYear": "2017", 
+    "publisher": "CaltechDATA", 
+    "publishers": {
+      "publisherName": "CaltechDATA"
+    }, 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/rs9010064", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-683-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-227-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-16-5043-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-16-14003-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-8-4785-2015", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-15-13023-2015", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-16-12005-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-4843-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-16-1653-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-3491-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/rs8050414", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/TCCON.GGG2014", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "http://tccondata.org", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/rs9101033", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-17-4781-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/atmos9050175", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-11-3111-2018", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-11-1251-2018", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-10-4135-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-10-2209-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/atmos10070354", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.orleans01.R1", 
+        "relatedIdentifierRelation": "IsPreviousVersionOf", 
+        "relatedIdentifierScheme": "DOI"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Created", 
+        "relevantDateValue": "2014-10-10"
+      }, 
+      {
+        "relevantDateType": "Updated", 
+        "relevantDateValue": "2018-12-01"
+      }, 
+      {
+        "relevantDateType": "Collected", 
+        "relevantDateValue": "2009-08-29/2017-11-28"
+      }, 
+      {
+        "relevantDateType": "Submitted", 
+        "relevantDateValue": "2017-09-08"
+      }, 
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2014-10-10"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Dataset"
+    }, 
+    "rightsList": {
+      "rights": "TCCON Data Use Policy", 
       "rightsURI": "https://data.caltech.edu/tindfiles/serve/d0bf0bd6-739b-4aad-9e5d-45338391727f/"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "atmospheric trace gases"
-    },
-    {
-      "subject": "CO2"
-    },
-    {
-      "subject": "CH4"
-    },
-    {
-      "subject": "CO"
-    },
-    {
-      "subject": "N2O"
-    },
-    {
-      "subject": "column-averaged dry-air mole fractions"
-    },
-    {
-      "subject": "remote sensing"
-    },
-    {
-      "subject": "FTIR spectroscopy"
-    },
-    {
-      "subject": "TCCON"
-    }
-  ],
-  "titles": [
-    {
-      "title": "TCCON data from Orléans (FR), Release GGG2014.R0"
-    }
-  ],
-  "version": "GGG2014.R0",
-  "identifier": {
-    "identifier": "10.14291/tccon.ggg2014.orleans01.R0/1149276",
-    "identifierType": "DOI"
-  },
-  "formats": [
-    "application/x-netcdf"
-  ],
-  "dates": [
-    {
-      "date": "2014-10-10",
-      "dateType": "Created"
-    },
-    {
-      "date": "2018-12-01",
-      "dateType": "Updated"
-    },
-    {
-      "date": "2009-08-29/2017-11-28",
-      "dateType": "Collected"
-    },
-    {
-      "date": "2017-09-08",
-      "dateType": "Submitted"
-    },
-    {
-      "date": "2014-10-10",
-      "dateType": "Issued"
-    }
-  ]
+    }, 
+    "subjects": [
+      "atmospheric trace gases", 
+      "CO2", 
+      "CH4", 
+      "CO", 
+      "N2O", 
+      "column-averaged dry-air mole fractions", 
+      "remote sensing", 
+      "FTIR spectroscopy", 
+      "TCCON"
+    ], 
+    "title": "TCCON data from Orl\u00e9ans (FR), Release GGG2014.R0", 
+    "titles": [
+      {
+        "title": "TCCON data from Orl\u00e9ans (FR), Release GGG2014.R0"
+      }, 
+      {
+        "title": "TCCON data from Orleans, France, Release GGG2014.R0", 
+        "titleType": "AlternativeTitle"
+      }
+    ], 
+    "version": "GGG2014.R0"
+  }, 
+  "updated": "2020-07-02T20:29:07.274333+00:00"
 }

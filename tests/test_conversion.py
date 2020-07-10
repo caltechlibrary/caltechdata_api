@@ -11,7 +11,8 @@
 """Tests for format transformations."""
 
 import pytest
-from datacite.schema43 import validate, validator
+from datacite.schema40 import validator as validator4
+from datacite.schema43 import validator as validator43
 
 from caltechdata_api import decustomize_schema
 from helpers import load_json_path
@@ -39,11 +40,27 @@ CALTECHDATA_FILES = [
     'data/caltechdata/1300.json',
 ]
 
+DATACITE4_FILES = [
+    'data/datacite4/210.json',
+    'data/datacite4/266.json',
+    'data/datacite4/267.json',
+    'data/datacite4/268.json',
+    'data/datacite4/283.json',
+    'data/datacite4/293.json',
+    'data/datacite4/301.json',
+    'data/datacite4/970.json',
+    'data/datacite4/1171.json',
+    'data/datacite4/1235.json',
+    'data/datacite4/1250.json',
+    'data/datacite4/1259.json',
+    'data/datacite4/1300.json',
+]
 
-@pytest.mark.parametrize('example_caltechdata', CALTECHDATA_FILES)
-def test_example_json_validates(example_caltechdata):
+
+@pytest.mark.parametrize('example_datacite4', DATACITE4_FILES)
+def test_example_json_validates(example_datacite4):
     """Test the example file validates against the JSON schema after
     decustomizing to DataCite."""
-    example_json = load_json_path(example_caltechdata)
-    datacite = decustomize_schema(example_json,'43')
-    validator.validate(datacite)
+    example_json = load_json_path(example_datacite4)
+    datacite = decustomize_schema(example_json)
+    validator4.validate(datacite)

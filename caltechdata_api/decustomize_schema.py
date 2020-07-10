@@ -214,7 +214,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
     identifiers.append({
         "alternateIdentifier": json_record["pid_value"],
         "alternateIdentifierType": "CaltechDATA_Identifier",
-    }
+    })
     if "alternateIdentifiers" in json_record:
         for altid in json_record["alternateIdentifiers"]:
             if altid["alternateIdentifierType"] != "CaltechDATA_Identifier":

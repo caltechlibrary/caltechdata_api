@@ -1,403 +1,524 @@
 {
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "GGG2014",
-      "alternateIdentifierType": "Software_Version"
-    },
-    {
-      "alternateIdentifier": "ae",
-      "alternateIdentifierType": "id"
-    },
-    {
-      "alternateIdentifier": "ascension01",
-      "alternateIdentifierType": "longName"
-    },
-    {
-      "alternateIdentifier": "R0",
-      "alternateIdentifierType": "Data_Revision"
-    },
-    {
-      "alternateIdentifier": "210",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ],
-  "contributors": [
-    {
-      "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)",
-      "contributorType": "HostingInstitution",
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "grid.20861.3d",
-          "nameIdentifierScheme": "GRID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Roehl, C. M.",
-      "contributorType": "DataCurator",
-      "affiliations": [
-        "California Institute of Technology, Pasadena, CA (US)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5383-8462",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Dietrich Feist",
-      "contributorType": "ContactPerson",
-      "contributorEmail": "d.feist@lmu.de"
-    },
-    {
-      "contributorName": "TCCON",
-      "contributorType": "ResearchGroup"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Ludwig-Maximilians-Universität München, Lehrstuhl für Physik der Atmosphäre, Munich (DE)",
-        "Deutsches Zentrum für Luft- und Raumfahrt, Institut für Physik der Atmosphäre, Oberpfaffenhofen (DE)",
-        "Max Planck Institute for Biogeochemistry, Jena (DE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-5890-6687",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "B-6489-2013",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Feist, D. G."
-    },
-    {
-      "affiliations": [
-        "Max Planck Institute for Biogeochemistry, Jena (DE)"
-      ],
-      "creatorName": "Arnold, S. G."
-    },
-    {
-      "affiliations": [
-        "Ariane Tracking Station, Ascension Island (SH)"
-      ],
-      "creatorName": "John, N."
-    },
-    {
-      "affiliations": [
-        "Stockholm University, Stockholm (SE)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-7369-0781",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "B-8591-2015",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Geibel, M. C."
-    }
-  ],
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station on Ascension Island."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Feist, D. G., Arnold, S. G., John, N., &amp; Geibel, M. C. (2014). <i>TCCON data from Ascension Island (SH), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.ascension01.r0/1149285\">https://doi.org/10.14291/tccon.ggg2014.ascension01.r0/1149285</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.ascension01.R0/1149285\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.ascension01.R0/1149285\">Download Citation</a><br>"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Unique Views: 463<br>Unique Downloads: 103<br> between February 21, 2017 and September 04, 2019<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
-    }
-  ],
-  "fundingReferences": [
-    {
-      "awardNumber": {
-        "awardNumber": "50EE1711E"
-      },
-      "funderIdentifier": {
-        "funderIdentifier": "grid.424440.2",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Bundesministerium für Wirtschaft und Energie"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "50EE1711C"
-      },
-      "funderIdentifier": {
-        "funderIdentifier": "grid.424440.2",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Bundesministerium für Wirtschaft und Energie"
-    },
-    {
-      "awardNumber": {
-        "awardNumber": "3-14737"
-      },
-      "funderIdentifier": {
-        "funderIdentifier": "grid.410379.8",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "European Space Agency"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.419500.9",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Max Planck Institute for Biogeochemistry"
-    },
-    {
-      "funderIdentifier": {
-        "funderIdentifier": "grid.4372.2",
-        "funderIdentifierType": "GRID"
-      },
-      "funderName": "Max Planck Society"
-    }
-  ],
-  "language": "eng",
-  "publicationYear": "2014",
-  "publisher": "CaltechDATA",
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.14291/TCCON.GGG2014",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "http://tccondata.org",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-19-9797-2019",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-19-7347-2019",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-12-2241-2019",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-12-1495-2019",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-11-6539-2018",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-11-5507-2018",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-11-3111-2018",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/rs10010155",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1002/2017JD026453",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1109/jstars.2017.2650942",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/gmd-10-1261-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/gmd-10-1-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-17-4781-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-10-4135-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-10-2209-2017",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.3390/rs9101033",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1038/s41598-017-13459-0",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-3491-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-2381-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-1415-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/amt-9-683-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.5194/acp-16-1653-2016",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1002/2016JD026164",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1002/2015JD023389",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "10.1002/2015JD024157",
-      "relationType": "IsCitedBy",
-      "relatedIdentifierType": "DOI"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Dataset"
-  },
-  "rightsList": [
-    {
-      "rights": "TCCON Data Use Policy",
-      "rightsURI": "https://data.caltech.edu/tindfiles/serve/cb9b01e4-56ea-4b8c-9543-0c61d0c72148/"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "atmospheric trace gases"
-    },
-    {
-      "subject": "CO2"
-    },
-    {
-      "subject": "CH4"
-    },
-    {
-      "subject": "CO"
-    },
-    {
-      "subject": "N2O"
-    },
-    {
-      "subject": "column-averaged dry-air mole fractions"
-    },
-    {
-      "subject": "remote sensing"
-    },
-    {
-      "subject": "FTIR spectroscopy"
-    },
-    {
-      "subject": "TCCON"
-    }
-  ],
-  "titles": [
-    {
-      "title": "TCCON data from Ascension Island (SH), Release GGG2014.R0"
-    }
-  ],
-  "version": "GGG2014.R0",
-  "identifier": {
-    "identifier": "10.14291/tccon.ggg2014.ascension01.R0/1149285",
-    "identifierType": "DOI"
-  },
-  "formats": [
-    "application/x-netcdf"
-  ],
-  "dates": [
-    {
-      "date": "2014-10-01",
-      "dateType": "Created"
-    },
-    {
-      "date": "2014-10-10",
-      "dateType": "Issued"
-    },
-    {
-      "date": "2019-09-06",
-      "dateType": "Updated"
-    },
-    {
-      "date": "2012-05-22/2018-10-31",
-      "dateType": "Collected"
-    },
-    {
-      "date": "2017-02-21",
-      "dateType": "Submitted"
-    }
-  ],
-  "geoLocations": [
-    {
-      "geoLocationPlace": "Ariane Tracking Station (AC)",
-      "geoLocationPoint": {
-        "pointLatitude": -7.9165,
-        "pointLongitude": -14.3325
+  "created": "2017-02-21T21:52:11.614193+00:00", 
+  "id": 210, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/210"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "_oai": {
+      "id": "oai:data.caltech.edu:recid/210", 
+      "updated": "2017-06-07T07:31:37Z"
+    }, 
+    "access_right": "open", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "GGG2014", 
+        "alternateIdentifierType": "Software_Version"
+      }, 
+      {
+        "alternateIdentifier": "ae", 
+        "alternateIdentifierType": "id"
+      }, 
+      {
+        "alternateIdentifier": "ascension01", 
+        "alternateIdentifierType": "longName"
+      }, 
+      {
+        "alternateIdentifier": "R0", 
+        "alternateIdentifierType": "Data_Revision"
+      }, 
+      {
+        "alternateIdentifier": "210", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
       }
-    }
-  ]
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen, Lehrstuhl f\u00fcr Physik der Atmosph\u00e4re, Munich (DE)", 
+          "Deutsches Zentrum f\u00fcr Luft- und Raumfahrt, Institut f\u00fcr Physik der Atmosph\u00e4re, Oberpfaffenhofen (DE)", 
+          "Max Planck Institute for Biogeochemistry, Jena (DE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-5890-6687", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "B-6489-2013", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Feist, D. G."
+      }, 
+      {
+        "authorAffiliation": [
+          "Max Planck Institute for Biogeochemistry, Jena (DE)"
+        ], 
+        "authorName": "Arnold, S. G."
+      }, 
+      {
+        "authorAffiliation": [
+          "Ariane Tracking Station, Ascension Island (SH)"
+        ], 
+        "authorName": "John, N."
+      }, 
+      {
+        "authorAffiliation": [
+          "Stockholm University, Stockholm (SE)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-7369-0781", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "B-8591-2015", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Geibel, M. C."
+      }
+    ], 
+    "contributors": [
+      {
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "grid.20861.3d", 
+            "contributorIdentifierScheme": "GRID"
+          }
+        ], 
+        "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)", 
+        "contributorType": "HostingInstitution"
+      }, 
+      {
+        "contributorAffiliation": [
+          "California Institute of Technology, Pasadena, CA (US)"
+        ], 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-5383-8462", 
+            "contributorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "contributorName": "Roehl, C. M.", 
+        "contributorType": "DataCurator"
+      }, 
+      {
+        "contributorEmail": "d.feist@lmu.de", 
+        "contributorName": "Dietrich Feist", 
+        "contributorType": "ContactPerson"
+      }, 
+      {
+        "contributorName": "TCCON", 
+        "contributorType": "ResearchGroup"
+      }
+    ], 
+    "control_number": "210", 
+    "creators": [
+      {
+        "affiliations": [
+          "Max Planck Institute for Biogeochemistry, Jena (DE)"
+        ], 
+        "creatorName": "Feist, D. G.", 
+        "familyName": "Feist", 
+        "givenName": "Dietrich G.", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-5890-6687", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "B-6489-2013", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }, 
+      {
+        "affiliations": [
+          "Max Planck Institute for Biogeochemistry, Jena (DE)"
+        ], 
+        "creatorName": "Arnold, S. G.", 
+        "familyName": "Arnold", 
+        "givenName": "Sabrina G."
+      }, 
+      {
+        "affiliations": [
+          "Ariane Tracking Station, Ascension Island (SH)"
+        ], 
+        "creatorName": "John, N.", 
+        "familyName": "John", 
+        "givenName": "Nicholas"
+      }, 
+      {
+        "affiliations": [
+          "Stockholm University, Stockholm (SE)"
+        ], 
+        "creatorName": "Geibel, M. C.", 
+        "familyName": "Geibel", 
+        "givenName": "Marc C.", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-7369-0781", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "B-8591-2015", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }
+    ], 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station on Ascension Island."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Feist, D. G., Arnold, S. G., John, N., &amp; Geibel, M. C. (2014). <i>TCCON data from Ascension Island (SH), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.ascension01.r0/1149285\">https://doi.org/10.14291/tccon.ggg2014.ascension01.r0/1149285</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.ascension01.R0/1149285\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.ascension01.R0/1149285\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 673<br>Unique Downloads: 28<br> between February 21, 2017 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.14291/tccon.ggg2014.ascension01.R0/1149285", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "ae20120522_20181031.public.nc"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "13603976", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/beb20642-f144-4acf-ab00-32e88c758b01/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "README.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "12108", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/e3ef28f7-280a-4346-94b1-329b8f87040e/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "LICENSE.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2279", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/cb9b01e4-56ea-4b8c-9543-0c61d0c72148/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "beb20642-f144-4acf-ab00-32e88c758b01", 
+        "path": "https://data.caltech.edu/tindfiles/serve/beb20642-f144-4acf-ab00-32e88c758b01/"
+      }, 
+      {
+        "id": "e3ef28f7-280a-4346-94b1-329b8f87040e", 
+        "path": "https://data.caltech.edu/tindfiles/serve/e3ef28f7-280a-4346-94b1-329b8f87040e/"
+      }, 
+      {
+        "id": "cb9b01e4-56ea-4b8c-9543-0c61d0c72148", 
+        "path": "https://data.caltech.edu/tindfiles/serve/cb9b01e4-56ea-4b8c-9543-0c61d0c72148/"
+      }
+    ], 
+    "format": [
+      "application/x-netcdf"
+    ], 
+    "fundingReferences": [
+      {
+        "awardNumber": {
+          "awardNumber": "50EE1711E"
+        }, 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.424440.2", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Bundesministerium f\u00fcr Wirtschaft und Energie"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "50EE1711C"
+        }, 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.424440.2", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Bundesministerium f\u00fcr Wirtschaft und Energie"
+      }, 
+      {
+        "awardNumber": {
+          "awardNumber": "3-14737"
+        }, 
+        "funderIdentifier": {
+          "funderIdentifier": "grid.410379.8", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "European Space Agency"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.419500.9", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Max Planck Institute for Biogeochemistry"
+      }, 
+      {
+        "funderIdentifier": {
+          "funderIdentifier": "grid.4372.2", 
+          "funderIdentifierType": "GRID"
+        }, 
+        "funderName": "Max Planck Society"
+      }
+    ], 
+    "fundings": [
+      {
+        "fundingName": "Max Planck Society"
+      }, 
+      {
+        "fundingName": "Max Planck Institute for Biogeochemistry"
+      }
+    ], 
+    "geographicCoverage": [
+      {
+        "geoLocationPlace": "Ariane Tracking Station (AC)", 
+        "geoLocationPoint": {
+          "pointLatitude": "-7.9165", 
+          "pointLongitude": "-14.3325"
+        }
+      }
+    ], 
+    "id": "210", 
+    "language": "eng", 
+    "license": "other-license", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "210", 
+    "publicationDate": "2017-02-21", 
+    "publicationYear": "2017", 
+    "publisher": "CaltechDATA", 
+    "publishers": {
+      "publisherName": "CaltechDATA"
+    }, 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/TCCON.GGG2014", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "http://tccondata.org", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-19-9797-2019", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-19-7347-2019", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-12-2241-2019", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-12-1495-2019", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-11-6539-2018", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-11-5507-2018", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-11-3111-2018", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/rs10010155", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1002/2017JD026453", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1109/jstars.2017.2650942", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/gmd-10-1261-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/gmd-10-1-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-17-4781-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-10-4135-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-10-2209-2017", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/rs9101033", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1038/s41598-017-13459-0", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-3491-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-2381-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-1415-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/amt-9-683-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.5194/acp-16-1653-2016", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1002/2016JD026164", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1002/2015JD023389", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.1002/2015JD024157", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/atmos10070354", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Created", 
+        "relevantDateValue": "2014-10-01"
+      }, 
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2014-10-10"
+      }, 
+      {
+        "relevantDateType": "Updated", 
+        "relevantDateValue": "2020-07-01"
+      }, 
+      {
+        "relevantDateType": "Collected", 
+        "relevantDateValue": "2012-05-22/2018-10-31"
+      }, 
+      {
+        "relevantDateType": "Submitted", 
+        "relevantDateValue": "2017-02-21"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Dataset"
+    }, 
+    "rightsList": {
+      "rights": "TCCON Data Use Policy", 
+      "rightsURI": "https://data.caltech.edu/tindfiles/serve/cb9b01e4-56ea-4b8c-9543-0c61d0c72148/"
+    }, 
+    "subjects": [
+      "atmospheric trace gases", 
+      "CO2", 
+      "CH4", 
+      "CO", 
+      "N2O", 
+      "column-averaged dry-air mole fractions", 
+      "remote sensing", 
+      "FTIR spectroscopy", 
+      "TCCON"
+    ], 
+    "title": "TCCON data from Ascension Island (SH), Release GGG2014.R0", 
+    "titles": [
+      {
+        "title": "TCCON data from Ascension Island (SH), Release GGG2014.R0"
+      }, 
+      {
+        "title": "TCCON data from Ascension Island, Saint Helena, Ascension and Tristan da Cunha, Release GGG2014.R0", 
+        "titleType": "AlternativeTitle"
+      }
+    ], 
+    "version": "GGG2014.R0"
+  }, 
+  "updated": "2020-07-02T20:30:16.678942+00:00"
 }

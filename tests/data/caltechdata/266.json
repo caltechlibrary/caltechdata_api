@@ -1,205 +1,298 @@
 {
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "GGG2014",
-      "alternateIdentifierType": "Software_Version"
-    },
-    {
-      "alternateIdentifier": "an",
-      "alternateIdentifierType": "id"
-    },
-    {
-      "alternateIdentifier": "anmeyondo01",
-      "alternateIdentifierType": "longName"
-    },
-    {
-      "alternateIdentifier": "R0",
-      "alternateIdentifierType": "Data_Revision"
-    },
-    {
-      "alternateIdentifier": "266",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ],
-  "contributors": [
-    {
-      "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)",
-      "contributorType": "HostingInstitution",
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "grid.20861.3d",
-          "nameIdentifierScheme": "GRID"
-        }
-      ]
-    },
-    {
-      "contributorName": "Roehl, C. M.",
-      "contributorType": "DataCurator",
-      "affiliations": [
-        "California Institute of Technology, Pasadena, CA (US)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-5383-8462",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ]
-    },
-    {
-      "contributorEmail": "ysoh306@gmail.com",
-      "contributorName": "Young-Suk Oh",
-      "contributorType": "ContactPerson"
-    },
-    {
-      "contributorName": "TCCON",
-      "contributorType": "ResearchGroup"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
-      ],
-      "creatorName": "Goo, T.-Y."
-    },
-    {
-      "affiliations": [
-        "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
-      ],
-      "creatorName": "Oh, Y.-S."
-    },
-    {
-      "affiliations": [
-        "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0002-1376-438X",
-          "nameIdentifierScheme": "ORCID"
-        },
-        {
-          "nameIdentifier": "H-2280-2011",
-          "nameIdentifierScheme": "ResearcherID"
-        }
-      ],
-      "creatorName": "Velazco, V. A."
-    }
-  ],
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Anmeyondo, South Korea."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Goo, T.-Y., Oh, Y.-S., &amp; Velazco, V. A. (2017). <i>TCCON data from Anmeyondo (KR), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.anmeyondo01.r0/1149284\">https://doi.org/10.14291/tccon.ggg2014.anmeyondo01.r0/1149284</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.anmeyondo01.R0/1149284\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.anmeyondo01.R0/1149284\">Download Citation</a><br>"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Unique Views: 176<br>Unique Downloads: 58<br> between September 08, 2017 and June 12, 2019<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
-    }
-  ],
-  "language": "eng",
-  "publicationYear": "2014",
-  "publisher": "CaltechDATA",
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
-      "relationType": "IsDocumentedBy",
-      "relatedIdentifierType": "URL"
-    },
-    {
-      "relatedIdentifier": "10.14291/TCCON.GGG2014",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "DOI"
-    },
-    {
-      "relatedIdentifier": "http://tccondata.org",
-      "relationType": "IsPartOf",
-      "relatedIdentifierType": "URL"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Dataset"
-  },
-  "rightsList": [
-    {
-      "rights": "TCCON Data Use Policy",
+  "created": "2017-09-11T20:16:26.500308+00:00", 
+  "id": 266, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/266"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "_oai": {
+      "id": "oai:data.caltech.edu:recid/266", 
+      "updated": "2017-09-11T20:16:26Z"
+    }, 
+    "access_right": "open", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "GGG2014", 
+        "alternateIdentifierType": "Software_Version"
+      }, 
+      {
+        "alternateIdentifier": "an", 
+        "alternateIdentifierType": "id"
+      }, 
+      {
+        "alternateIdentifier": "anmeyondo01", 
+        "alternateIdentifierType": "longName"
+      }, 
+      {
+        "alternateIdentifier": "R0", 
+        "alternateIdentifierType": "Data_Revision"
+      }, 
+      {
+        "alternateIdentifier": "266", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
+      }
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
+        ], 
+        "authorName": "Goo, T.-Y."
+      }, 
+      {
+        "authorAffiliation": [
+          "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
+        ], 
+        "authorName": "Oh, Y.-S."
+      }, 
+      {
+        "authorAffiliation": [
+          "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0002-1376-438X", 
+            "authorIdentifierScheme": "ORCID"
+          }, 
+          {
+            "authorIdentifier": "H-2280-2011", 
+            "authorIdentifierScheme": "ResearcherID"
+          }
+        ], 
+        "authorName": "Velazco, V. A."
+      }
+    ], 
+    "contributors": [
+      {
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "grid.20861.3d", 
+            "contributorIdentifierScheme": "GRID"
+          }
+        ], 
+        "contributorName": "California Institute of Techonolgy, Pasadena, CA (US)", 
+        "contributorType": "HostingInstitution"
+      }, 
+      {
+        "contributorAffiliation": [
+          "California Institute of Technology, Pasadena, CA (US)"
+        ], 
+        "contributorIdentifiers": [
+          {
+            "contributorIdentifier": "0000-0001-5383-8462", 
+            "contributorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "contributorName": "Roehl, C. M.", 
+        "contributorType": "DataCurator"
+      }, 
+      {
+        "contributorEmail": "ysoh306@gmail.com", 
+        "contributorName": "Young-Suk Oh", 
+        "contributorType": "ContactPerson"
+      }, 
+      {
+        "contributorName": "TCCON", 
+        "contributorType": "ResearchGroup"
+      }
+    ], 
+    "control_number": "266", 
+    "creators": [
+      {
+        "affiliations": [
+          "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
+        ], 
+        "creatorName": "Goo, T.-Y.", 
+        "familyName": "Goo", 
+        "givenName": "Tae-Young"
+      }, 
+      {
+        "affiliations": [
+          "National Institute of Meteorological Sciences, Seogwipo-si (KR)"
+        ], 
+        "creatorName": "Oh, Y.-S.", 
+        "familyName": "Oh", 
+        "givenName": "Young-Suk"
+      }, 
+      {
+        "affiliations": [
+          "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+        ], 
+        "creatorName": "Velazco, V. A.", 
+        "familyName": "Velazco", 
+        "givenName": "Voltaire A.", 
+        "nameIdentifiers": [
+          {
+            "nameIdentifier": "0000-0002-1376-438X", 
+            "nameIdentifierScheme": "ORCID", 
+            "schemeURI": "http://orcid.org/"
+          }, 
+          {
+            "nameIdentifier": "H-2280-2011", 
+            "nameIdentifierScheme": "ResearcherID", 
+            "schemeURI": "http://www.researcherid.com/rid/"
+          }
+        ]
+      }
+    ], 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This data set contains observations from the TCCON station at Anmeyondo, South Korea."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Goo, T.-Y., Oh, Y.-S., &amp; Velazco, V. A. (2014). <i>TCCON data from Anmeyondo (KR), Release GGG2014.R0</i> [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014.anmeyondo01.r0/1149284\">https://doi.org/10.14291/tccon.ggg2014.anmeyondo01.r0/1149284</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/tccon.ggg2014.anmeyondo01.R0/1149284\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/tccon.ggg2014.anmeyondo01.R0/1149284\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 270<br>Unique Downloads: 23<br> between September 08, 2017 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.14291/tccon.ggg2014.anmeyondo01.R0/1149284", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "an20150202_20180418.public.nc"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2862396", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/73a91644-f7b5-4407-a75f-231288d33583/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "README.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "11586", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/a00f2de7-6d5f-42c5-8980-d2bbd782efc4/"
+      }, 
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "LICENSE.txt"
+        ], 
+        "embargo_status": "open", 
+        "file_size": "2226", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/1f568dd3-02e4-4020-a146-12ee8b53f78a/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "73a91644-f7b5-4407-a75f-231288d33583", 
+        "path": "https://data.caltech.edu/tindfiles/serve/73a91644-f7b5-4407-a75f-231288d33583/"
+      }, 
+      {
+        "id": "a00f2de7-6d5f-42c5-8980-d2bbd782efc4", 
+        "path": "https://data.caltech.edu/tindfiles/serve/a00f2de7-6d5f-42c5-8980-d2bbd782efc4/"
+      }, 
+      {
+        "id": "1f568dd3-02e4-4020-a146-12ee8b53f78a", 
+        "path": "https://data.caltech.edu/tindfiles/serve/1f568dd3-02e4-4020-a146-12ee8b53f78a/"
+      }
+    ], 
+    "format": [
+      "application/x-netcdf"
+    ], 
+    "id": "266", 
+    "language": "eng", 
+    "license": "other-license", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "266", 
+    "publicationDate": "2017-09-08", 
+    "publicationYear": "2017", 
+    "publisher": "CaltechDATA", 
+    "publishers": {
+      "publisherName": "CaltechDATA"
+    }, 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites", 
+        "relatedIdentifierRelation": "IsDocumentedBy", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.14291/TCCON.GGG2014", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "DOI"
+      }, 
+      {
+        "relatedIdentifier": "http://tccondata.org", 
+        "relatedIdentifierRelation": "IsPartOf", 
+        "relatedIdentifierScheme": "URL"
+      }, 
+      {
+        "relatedIdentifier": "10.3390/atmos10070354", 
+        "relatedIdentifierRelation": "IsCitedBy", 
+        "relatedIdentifierScheme": "DOI"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Created", 
+        "relevantDateValue": "2014-10-10"
+      }, 
+      {
+        "relevantDateType": "Updated", 
+        "relevantDateValue": "2020-07-01"
+      }, 
+      {
+        "relevantDateType": "Collected", 
+        "relevantDateValue": "2015-02-02/2018-04-18"
+      }, 
+      {
+        "relevantDateType": "Submitted", 
+        "relevantDateValue": "2017-09-08"
+      }, 
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2014-10-10"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Dataset"
+    }, 
+    "rightsList": {
+      "rights": "TCCON Data Use Policy", 
       "rightsURI": "https://data.caltech.edu/tindfiles/serve/1f568dd3-02e4-4020-a146-12ee8b53f78a/"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "atmospheric trace gases"
-    },
-    {
-      "subject": "CO2"
-    },
-    {
-      "subject": "CH4"
-    },
-    {
-      "subject": "CO"
-    },
-    {
-      "subject": "N2O"
-    },
-    {
-      "subject": "column-averaged dry-air mole fractions"
-    },
-    {
-      "subject": "remote sensing"
-    },
-    {
-      "subject": "FTIR spectroscopy"
-    },
-    {
-      "subject": "TCCON"
-    }
-  ],
-  "titles": [
-    {
-      "title": "TCCON data from Anmeyondo (KR), Release GGG2014.R0"
-    }
-  ],
-  "version": "GGG2014.R0",
-  "identifier": {
-    "identifier": "10.14291/tccon.ggg2014.anmeyondo01.R0/1149284",
-    "identifierType": "DOI"
-  },
-  "formats": [
-    "application/x-netcdf"
-  ],
-  "dates": [
-    {
-      "date": "2014-10-10",
-      "dateType": "Created"
-    },
-    {
-      "date": "2019-06-01",
-      "dateType": "Updated"
-    },
-    {
-      "date": "2015-02-02/2018-04-18",
-      "dateType": "Collected"
-    },
-    {
-      "date": "2017-09-08",
-      "dateType": "Submitted"
-    },
-    {
-      "date": "2014-10-10",
-      "dateType": "Issued"
-    }
-  ]
+    }, 
+    "subjects": [
+      "atmospheric trace gases", 
+      "CO2", 
+      "CH4", 
+      "CO", 
+      "N2O", 
+      "column-averaged dry-air mole fractions", 
+      "remote sensing", 
+      "FTIR spectroscopy", 
+      "TCCON"
+    ], 
+    "title": "TCCON data from Anmeyondo (KR), Release GGG2014.R0", 
+    "titles": [
+      {
+        "title": "TCCON data from Anmeyondo (KR), Release GGG2014.R0"
+      }, 
+      {
+        "title": "TCCON data from Anmeyondo, South Korea, Release GGG2014.R0", 
+        "titleType": "AlternativeTitle"
+      }
+    ], 
+    "version": "GGG2014.R0"
+  }, 
+  "updated": "2020-07-02T20:34:55.859290+00:00"
 }

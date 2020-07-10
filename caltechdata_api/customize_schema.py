@@ -82,7 +82,7 @@ def customize_schema_43(json_record):
     # Extract identifiers and label as DOI or alternativeIdentifiers
     if "identifiers" in json_record:
         alt = []
-        for identifier = json_record["identifiers"]:
+        for identifier in json_record["identifiers"]:
             if identifier['identifierType'] == 'DOI':
                 json_record["doi"] = identifier
             else:
@@ -153,7 +153,7 @@ def customize_schema_43(json_record):
         json_record["contributors"] = newc
 
 
-def customize_standard(json_record)
+def customize_standard(json_record):
 
     # Extract subjects to single string
     if "subjects" in json_record:

@@ -1,0 +1,188 @@
+{
+  "contributors": [
+    {
+      "contributorName": "Wunch, Debra",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        "California Institute of Technology, Pasadena, CA, U.S.A."
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-4924-0377",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    },
+    {
+      "contributorName": "Wennberg, P. O. ",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        "California Institute of Technology, Pasadena, CA (US)"
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-6126-3854",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    },
+    {
+      "contributorName": "Griffith, D. W.T.",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        "Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU)"
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": " 0000-0002-7986-1924",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    },
+    {
+      "contributorName": "Deutscher, N. M.",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        " Institute of Environmental Physics, University of Bremen, Bremen (DE), Centre for Atmospheric Chemistry, School of Chemistry, University of Wollongong, Wollongong, NSW (AU) "
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-2906-2577",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    },
+    {
+      "contributorName": "Feist, D. G.",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        "Max Planck Institute for Biogeochemistry, Jena (DE)"
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-5890-6687",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    },
+    {
+      "contributorName": "Notholt, J.",
+      "contributorType": "ContactPerson",
+      "affiliations": [
+        "Institute of Environmental Physics, University of Bremen, Bremen (DE)"
+      ],
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-3324-885X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ]
+    }
+  ],
+  "descriptions": [
+    {
+      "descriptionType": "Other",
+      "description": "The Total Carbon Column Observing Network (TCCON) is a network of ground-based Fourier Transform Spectrometers that record direct solar absorption spectra of the atmosphere in the near-infrared. From these spectra, accurate and precise column-averaged abundances of atmospheric constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This is the 2014 data release."
+    },
+    {
+      "descriptionType": "Other",
+      "description": "<br>Cite this record as:<br>Total Carbon Column Observing Network (TCCON) Team. (2017). <i>2014 TCCON Data Release</i> (Version GGG2014) [Data set]. CaltechDATA. <a href=\"https://doi.org/10.14291/tccon.ggg2014\">https://doi.org/10.14291/tccon.ggg2014</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.14291/TCCON.GGG2014\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.14291/TCCON.GGG2014\">Download Citation</a><br>"
+    }
+  ],
+  "language": "eng",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.14291/TCCON.GGG2014.DOCUMENTATION.R0/1221662",
+      "relationType": "IsDocumentedBy",
+      "relatedIdentifierType": "DOI"
+    },
+    {
+      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description",
+      "relationType": "IsDocumentedBy",
+      "relatedIdentifierType": "URL"
+    },
+    {
+      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Sites",
+      "relationType": "IsDocumentedBy",
+      "relatedIdentifierType": "DOI"
+    }
+  ],
+  "resourceType": {
+    "resourceTypeGeneral": "Dataset"
+  },
+  "rightsList": [
+    {
+      "rights": "TCCON Data Use Policy",
+      "rightsURI": "https://data.caltech.edu/tindfiles/serve/24d2401d-d2b7-42e1-83b1-1ee01839d84d/"
+    }
+  ],
+  "subjects": [
+    {
+      "subject": "atmospheric trace gases"
+    },
+    {
+      "subject": " CO2"
+    },
+    {
+      "subject": " CH4"
+    },
+    {
+      "subject": " CO"
+    },
+    {
+      "subject": " N2O"
+    },
+    {
+      "subject": " column-averaged dry-air mole fractions"
+    },
+    {
+      "subject": " remote sensing"
+    },
+    {
+      "subject": " FTIR spectroscopy"
+    },
+    {
+      "subject": " TCCON"
+    }
+  ],
+  "version": "GGG2014",
+  "identifier": {
+    "identifier": "10.14291/TCCON.GGG2014",
+    "identifierType": "DOI"
+  },
+  "titles": [
+    {
+      "title": "2014 TCCON Data Release"
+    }
+  ],
+  "creators": [
+    {
+      "affiliations": [
+        "TCCON Consortium"
+      ],
+      "creatorName": "Total Carbon Column Observing Network (TCCON) Team"
+    }
+  ],
+  "formats": [
+    ".tgz",
+    ".nc"
+  ],
+  "dates": [
+    {
+      "date": "2019-05-01",
+      "dateType": "Updated"
+    },
+    {
+      "date": "2017-09-13",
+      "dateType": "Submitted"
+    }
+  ],
+  "publicationYear": "2017",
+  "publisher": "CaltechDATA",
+  "alternateIdentifiers": [
+    {
+      "alternateIdentifier": "293",
+      "alternateIdentifierType": "CaltechDATA_Identifier"
+    }
+  ]
+}

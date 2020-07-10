@@ -1,87 +1,112 @@
 {
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "This release includes a new notebook that determines the use of ORCID iDs across Caltech Library DOIs.  It also updates all notebooks to use the latest version of ames and streamlines dependencies."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "Jupyter notebooks highlighting usage of CaltechDATA"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Click to run this software: <a href=\"https://mybinder.org/v2/zenodo/10.22002/d1.1259\" ><img src=\"https://mybinder.org/badge_logo.svg\"></a><br>"
-    }
-  ],
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.1.0",
-      "relationType": "IsIdenticalTo",
-      "relatedIdentifierType": "URL"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Software"
-  },
-  "rightsList": [
-    {
-      "rights": "license",
+  "created": "2019-07-16T22:53:14.663052+00:00", 
+  "id": 1259, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/1259"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "1259", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
+      }
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Caltech Library"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-9266-5146", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Morrell, Thomas E"
+      }
+    ], 
+    "control_number": "1259", 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "This release includes a new notebook that determines the use of ORCID iDs across Caltech Library DOIs.  It also updates all notebooks to use the latest version of ames and streamlines dependencies."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "Jupyter notebooks highlighting usage of CaltechDATA"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Click to run this software: <a href=\"https://mybinder.org/v2/zenodo/10.22002/d1.1259\" ><img src=\"https://mybinder.org/badge_logo.svg\"></a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Morrell, T. E. (2019, July 16). caltechlibrary/caltechdata_usage: Addition of ORCID analysis notebook and update for new ames version (Version v0.1.0). CaltechDATA. <a href=\"https://doi.org/10.22002/d1.1259\">https://doi.org/10.22002/d1.1259</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.22002/D1.1259\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.22002/D1.1259\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 86<br>Unique Downloads: 1<br> between July 16, 2019 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.22002/D1.1259", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "caltechlibrary_caltechdata_usage-v0.1.0.zip"
+        ], 
+        "embargo_status": "{{embargo_status}}", 
+        "file_size": "101985", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/96b518fe-8f28-4ff6-9a4c-d5cc59f4644e/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "96b518fe-8f28-4ff6-9a4c-d5cc59f4644e", 
+        "path": "https://data.caltech.edu/tindfiles/serve/96b518fe-8f28-4ff6-9a4c-d5cc59f4644e/"
+      }
+    ], 
+    "id": "1259", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "1259", 
+    "publicationDate": "2019-07-16", 
+    "publishers": [
+      {
+        "publisherName": "CaltechDATA"
+      }
+    ], 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.1.0", 
+        "relatedIdentifierRelation": "IsIdenticalTo", 
+        "relatedIdentifierScheme": "URL"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2019-07-16"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Software"
+    }, 
+    "rightsList": {
+      "rights": "license", 
       "rightsURI": "https://data.caltech.edu/license"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "CaltechDATA"
-    },
-    {
-      "subject": "reporitory"
-    },
-    {
-      "subject": "usage"
-    },
-    {
-      "subject": "Jupyter"
-    },
-    {
-      "subject": "GitHub"
-    }
-  ],
-  "version": "v0.1.0",
-  "identifier": {
-    "identifier": "10.22002/D1.1259",
-    "identifierType": "DOI"
-  },
-  "titles": [
-    {
-      "title": "caltechlibrary/caltechdata_usage: Addition of ORCID analysis notebook and update for new ames version"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Caltech Library"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-9266-5146",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Morrell, Thomas E"
-    }
-  ],
-  "dates": [
-    {
-      "date": "2019-07-16",
-      "dateType": "Issued"
-    }
-  ],
-  "publicationYear": "2019",
-  "publisher": "CaltechDATA",
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "1259",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ]
+    }, 
+    "subjects": [
+      "CaltechDATA", 
+      "reporitory", 
+      "usage", 
+      "Jupyter", 
+      "GitHub"
+    ], 
+    "title": "caltechlibrary/caltechdata_usage: Addition of ORCID analysis notebook and update for new ames version", 
+    "version": "v0.1.0"
+  }, 
+  "updated": "2020-07-02T20:37:16.358971+00:00"
 }

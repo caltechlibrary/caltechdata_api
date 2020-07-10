@@ -1,91 +1,112 @@
 {
-  "descriptions": [
-    {
-      "descriptionType": "Abstract",
-      "description": "This release includes two months more data and has some dependency updates."
-    },
-    {
-      "descriptionType": "Other",
-      "description": "Jupyter notebooks highlighting usage of CaltechDATA"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Click to run this software: <a href=\"https://mybinder.org/v2/zenodo/10.22002/d1.1250?filepath=CaltechDATA_Usage_Graphs.ipynb\" ><img src=\"https://mybinder.org/badge_logo.svg\"></a><br>"
-    },
-    {
-      "descriptionType": "Other",
-      "description": "<br>Cite this record as:<br>Morrell, T. E. (2019, June 19). caltechlibrary/caltechdata_usage: New months and dependency fixes (Version v0.0.2). CaltechDATA. <a href=\"https://doi.org/10.22002/d1.1250\">https://doi.org/10.22002/d1.1250</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.22002/D1.1250\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.22002/D1.1250\">Download Citation</a><br>"
-    }
-  ],
-  "relatedIdentifiers": [
-    {
-      "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.0.2",
-      "relationType": "IsIdenticalTo",
-      "relatedIdentifierType": "URL"
-    }
-  ],
-  "resourceType": {
-    "resourceTypeGeneral": "Software"
-  },
-  "rightsList": [
-    {
-      "rights": "license",
+  "created": "2019-06-19T16:27:52.460707+00:00", 
+  "id": 1250, 
+  "links": {
+    "self": "http://data.caltech.edu/api/record/1250"
+  }, 
+  "metadata": {
+    "_form_uuid": "beae3039-29ed-4e20-bd21-6ed6e994afa5", 
+    "alternateIdentifiers": [
+      {
+        "alternateIdentifier": "1250", 
+        "alternateIdentifierType": "CaltechDATA_Identifier"
+      }
+    ], 
+    "authors": [
+      {
+        "authorAffiliation": [
+          "Caltech Library"
+        ], 
+        "authorIdentifiers": [
+          {
+            "authorIdentifier": "0000-0001-9266-5146", 
+            "authorIdentifierScheme": "ORCID"
+          }
+        ], 
+        "authorName": "Morrell, Thomas E"
+      }
+    ], 
+    "control_number": "1250", 
+    "descriptions": [
+      {
+        "descriptionType": "Abstract", 
+        "descriptionValue": "This release includes two months more data and has some dependency updates."
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "Jupyter notebooks highlighting usage of CaltechDATA"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Click to run this software: <a href=\"https://mybinder.org/v2/zenodo/10.22002/d1.1250?filepath=CaltechDATA_Usage_Graphs.ipynb\" ><img src=\"https://mybinder.org/badge_logo.svg\"></a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Cite this record as:<br>Morrell, T. E. (2019, June 19). caltechlibrary/caltechdata_usage: Jupyter notebook with visualization of submissions to CaltechDATA (Version v0.0.2). CaltechDATA. <a href=\"https://doi.org/10.22002/d1.1250\">https://doi.org/10.22002/d1.1250</a><br> or choose a <a href=\"https://crosscite.org/?doi=10.22002/D1.1250\"> different citation style.</a><br><a href=\"https://data.datacite.org/application/x-bibtex/10.22002/D1.1250\">Download Citation</a><br>"
+      }, 
+      {
+        "descriptionType": "Other", 
+        "descriptionValue": "<br>Unique Views: 85<br>Unique Downloads: 2<br> between June 19, 2019 and July 02, 2020<br><a href=\"https://data.caltech.edu/stats\">More info on how stats are collected</a><br>"
+      }
+    ], 
+    "doi": "10.22002/D1.1250", 
+    "electronic_location_and_access": [
+      {
+        "access_method": "HTTP", 
+        "electronic_name": [
+          "caltechlibrary_caltechdata_usage-v0.0.2.zip"
+        ], 
+        "embargo_status": "{{embargo_status}}", 
+        "file_size": "90421", 
+        "uniform_resource_identifier": "https://data.caltech.edu/tindfiles/serve/45bc4db6-7d54-4cb7-b98a-ad9de15b0e29/"
+      }
+    ], 
+    "files": [
+      {
+        "id": "45bc4db6-7d54-4cb7-b98a-ad9de15b0e29", 
+        "path": "https://data.caltech.edu/tindfiles/serve/45bc4db6-7d54-4cb7-b98a-ad9de15b0e29/"
+      }
+    ], 
+    "id": "1250", 
+    "owners": [
+      2
+    ], 
+    "pid_value": "1250", 
+    "publicationDate": "2019-06-19", 
+    "publishers": [
+      {
+        "publisherName": "CaltechDATA"
+      }
+    ], 
+    "relatedIdentifiers": [
+      {
+        "relatedIdentifier": "https://github.com/caltechlibrary/caltechdata_usage/releases/tag/v0.0.2", 
+        "relatedIdentifierRelation": "IsIdenticalTo", 
+        "relatedIdentifierScheme": "URL"
+      }
+    ], 
+    "relevantDates": [
+      {
+        "relevantDateType": "Issued", 
+        "relevantDateValue": "2019-06-19"
+      }
+    ], 
+    "resourceType": {
+      "resourceTypeGeneral": "Software"
+    }, 
+    "rightsList": {
+      "rights": "license", 
       "rightsURI": "https://data.caltech.edu/license"
-    }
-  ],
-  "subjects": [
-    {
-      "subject": "CaltechDATA"
-    },
-    {
-      "subject": "reporitory"
-    },
-    {
-      "subject": "usage"
-    },
-    {
-      "subject": "Jupyter"
-    },
-    {
-      "subject": "GitHub"
-    }
-  ],
-  "version": "v0.0.2",
-  "identifier": {
-    "identifier": "10.22002/D1.1250",
-    "identifierType": "DOI"
-  },
-  "titles": [
-    {
-      "title": "caltechlibrary/caltechdata_usage: Jupyter notebook with visualization of submissions to CaltechDATA"
-    }
-  ],
-  "creators": [
-    {
-      "affiliations": [
-        "Caltech Library"
-      ],
-      "nameIdentifiers": [
-        {
-          "nameIdentifier": "0000-0001-9266-5146",
-          "nameIdentifierScheme": "ORCID"
-        }
-      ],
-      "creatorName": "Morrell, Thomas E"
-    }
-  ],
-  "dates": [
-    {
-      "date": "2019-06-19",
-      "dateType": "Issued"
-    }
-  ],
-  "publicationYear": "2019",
-  "publisher": "CaltechDATA",
-  "alternateIdentifiers": [
-    {
-      "alternateIdentifier": "1250",
-      "alternateIdentifierType": "CaltechDATA_Identifier"
-    }
-  ]
+    }, 
+    "subjects": [
+      "CaltechDATA", 
+      "reporitory", 
+      "usage", 
+      "Jupyter", 
+      "GitHub"
+    ], 
+    "title": "caltechlibrary/caltechdata_usage: Jupyter notebook with visualization of submissions to CaltechDATA", 
+    "version": "v0.0.2"
+  }, 
+  "updated": "2020-07-02T20:38:38.355371+00:00"
 }
