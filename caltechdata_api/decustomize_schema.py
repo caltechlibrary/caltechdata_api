@@ -17,6 +17,12 @@ def decustomize_schema(
         raise ValueError(f'Error: schema {schema} not defined')
 
 def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
+    
+    #If passed a direct API json blob, extract metadata section
+    if 'metadata' in json_record:
+        json_record = json_record["metadata"]
+
+
     # Extract subjects to single string
     if "subjects" in json_record:
         if isinstance(json_record["subjects"], str):
@@ -166,6 +172,11 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
             if "descriptionValue" in d:
                 d["description"] = d.pop("descriptionValue")
 
+    #change rightsList into array
+    print(json_record)
+    if "rightsList" in json_record:
+        json_record["rightsList"] = [json_record["rightsList"]]
+
     # Handle file info
     if pass_media == False:
         if "electronic_location_and_access" in json_record:
@@ -174,7 +185,6 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
     others = [
         "files",
         "id",
-        "pid_value",
         "control_number",
         "_oai",
         "_form_uuid",
@@ -210,6 +220,14 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
         })
         del json_record["doi"]
     
+    #Extract resourceType into types
+    if 'resourceType' in json_record:
+        json_record['types'] = json_record['resourceType']
+    if 'resourceType' not in json_record['types']:
+        json_record['types']['resourceType'] =\
+        json_record['resourceType']['resourceTypeGeneral']
+    del json_record["resourceType"]
+
     # Save CaltechDATA ID in all records
     identifiers.append({
         "alternateIdentifier": json_record["pid_value"],
@@ -223,6 +241,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                     "identifierType": altid["alternateIdentifierType"],
                     })
     del json_record["alternateIdentifiers"]
+    del json_record["pid_value"]
     json_record['identifiers'] = identifiers
 
     # change author formatting
@@ -236,11 +255,11 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                     a["authorAffiliation"] = [a["authorAffiliation"]]
                 affiliation = []
                 for aff in a["authorAffiliation"]:
-                    name = {}
-                    name['name'] = a["affiliation"]
-                    if 'ROR' in a:
-                        name['ROR'] = a['ROR']
-            new["affiliation"] = affiliation
+                    if isinstance(aff, dict):
+                        affiliation.append(aff)
+                    else:
+                        affiliation.append({'name':aff})
+                new["affiliation"] = affiliation
             if "authorIdentifiers" in a:
                 idv = []
                 if isinstance(a["authorIdentifiers"], list):
@@ -268,12 +287,12 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                 if isinstance(c["contributorAffiliation"], list) == False:
                     c["contributorAffiliation"] = [c["contributorAffiliation"]]
                 affiliation = []
-                for aff in a["contributorAffiliation"]:
-                    name = {}
-                    name['name'] = a["affiliation"]
-                    if 'ROR' in a:
-                        name['ROR'] = a['ROR']
-            new['affiliation'] = affiliation
+                for aff in c["contributorAffiliation"]:
+                    if isinstance(aff, dict):
+                        affiliation.append(aff)
+                    else:
+                        affiliation.append({'name':aff})
+                new['affiliation'] = affiliation
             if "contributorIdentifiers" in c:
                 if isinstance(c["contributorIdentifiers"], list):
                     newa = []
@@ -289,7 +308,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                 else:
                     print("Contributor identifier not an array - please check", doi)
                 del c["contributorIdentifiers"]
-            new["name"] = c["creatorName"]
+            new["name"] = c["contributorName"]
             if pass_emails == True:
                 if "contributorEmail" in c:
                     new["contributorEmail"] = c["contributorEmail"]
@@ -382,6 +401,7 @@ def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
             json_record["alternateIdentifiers"].append(idv)
     else:
         json_record["alternateIdentifiers"] = [idv]
+    del json_record["pid_value"]
 
     return json_record
 

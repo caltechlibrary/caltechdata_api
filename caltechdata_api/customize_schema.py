@@ -255,6 +255,11 @@ def customize_standard(json_record):
         publisher["publisherName"] = json_record.pop("publisher")
         json_record["publishers"] = publisher
 
+    #Drop array of rightsList values; will only include first
+    if 'rightsList' in json_record:
+        json_record['rightsList'] = json_record['rightsList'][0]
+
+
     # print(json.dumps(json_record))
     return json_record
 

@@ -57,10 +57,13 @@ DATACITE4_FILES = [
 ]
 
 
-@pytest.mark.parametrize('example_datacite4', DATACITE4_FILES)
-def test_example_json_validates(example_datacite4):
+@pytest.mark.parametrize('example_caltechdata', CALTECHDATA_FILES)
+def test_example_json_validates(example_caltechdata):
     """Test the example file validates against the JSON schema after
     decustomizing to DataCite."""
-    example_json = load_json_path(example_datacite4)
-    datacite = decustomize_schema(example_json)
-    validator4.validate(datacite)
+    example_json = load_json_path(example_caltechdata)
+    datacite4 = decustomize_schema(example_json)
+    validator4.validate(datacite4)
+    example_json = load_json_path(example_caltechdata)
+    datacite43 = decustomize_schema(example_json,schema="43")
+    validator43.validate(datacite43)
