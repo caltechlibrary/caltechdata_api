@@ -15,14 +15,7 @@ from datacite.schema40 import validator as validator4
 from datacite.schema43 import validator as validator43
 
 from caltechdata_api import decustomize_schema
-from helpers import load_json_path
-
-#def validate_json(minimal_json, extra_json):
-#    """Validate specific property."""
-#    data = {}
-#    data.update(minimal_json)
-#    data.update(extra_json)
-#    validator.validate(data)
+from helpers import load_json_path, write_json_path
 
 CALTECHDATA_FILES = [
     'data/caltechdata/210.json',
@@ -67,3 +60,6 @@ def test_example_json_validates(example_caltechdata):
     example_json = load_json_path(example_caltechdata)
     datacite43 = decustomize_schema(example_json,schema="43")
     validator43.validate(datacite43)
+    outname = example_caltechdata.split('/')[-1]
+    write_json_path(f"data/datacite43/{outname}", datacite43)
+

@@ -4,24 +4,21 @@ import json
 
 
 def decustomize_schema(
-    json_record, pass_emails=False, pass_media=False, pass_owner=False,
-    schema='4'
+    json_record, pass_emails=False, pass_media=False, pass_owner=False, schema="4"
 ):
-    if schema == '4':
-        return decustomize_schema_4(json_record, pass_emails,
-                pass_media,pass_owner)
-    elif schema == '43':
-        return decustomize_schema_43(json_record, pass_emails, 
-                pass_media,pass_owner)
+    if schema == "4":
+        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner)
+    elif schema == "43":
+        return decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner)
     else:
-        raise ValueError(f'Error: schema {schema} not defined')
+        raise ValueError(f"Error: schema {schema} not defined")
+
 
 def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
-    
-    #If passed a direct API json blob, extract metadata section
-    if 'metadata' in json_record:
-        json_record = json_record["metadata"]
 
+    # If passed a direct API json blob, extract metadata section
+    if "metadata" in json_record:
+        json_record = json_record["metadata"]
 
     # Extract subjects to single string
     if "subjects" in json_record:
@@ -111,7 +108,9 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         del json_record["publicationDate"]
 
     else:
-        print("No publication date set - something is odd with the record ", json_record)
+        print(
+            "No publication date set - something is odd with the record ", json_record
+        )
 
     # Funding
     if "fundings" in json_record:
@@ -119,44 +118,6 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         # Clean out any residual issues
         # Legacy funding information (fundings) not transferred
         del json_record["fundings"]
-
-    # Geo
-    if "geographicCoverage" in json_record:
-        geo = json_record["geographicCoverage"]
-        if isinstance(geo, list):
-            # We have the correct formatting
-            for g in geo:
-                if "geoLocationPoint" in g:
-                    pt = g["geoLocationPoint"]
-                    if isinstance(pt, list):
-                        newp = {}
-                        newp["pointLatitude"] = float(pt[0]["pointLatitude"])
-                        newp["pointLongitude"] = float(pt[0]["pointLongitude"])
-                        g["geoLocationPoint"] = newp
-                    else:
-                        pt["pointLatitude"] = float(pt["pointLatitude"])
-                        pt["pointLongitude"] = float(pt["pointLongitude"])
-                if "geoLocationBox" in g:
-                    bx = g["geoLocationBox"]
-                    newp = {}
-                    newp["southBoundLatitude"] = float(bx["southBoundLatitude"])
-                    newp["northBoundLatitude"] = float(bx["northBoundLatitude"])
-                    newp["eastBoundLongitude"] = float(bx["eastBoundLongitude"])
-                    newp["westBoundLongitude"] = float(bx["westBoundLongitude"])
-                    g["geoLocationBox"] = newp
-            json_record["geoLocations"] = json_record.pop("geographicCoverage")
-        else:
-            newgeo = {}
-            if "geoLocationPlace" in geo:
-                newgeo["geoLocationPlace"] = geo["geoLocationPlace"]
-            if "geoLocationPoint" in geo:
-                pt = geo["geoLocationPoint"][0]
-                newpt = {}
-                newpt["pointLatitude"] = float(pt["pointLatitude"])
-                newpt["pointLongitude"] = float(pt["pointLongitude"])
-                newgeo["geoLocationPoint"] = newpt
-            json_record["geoLocations"] = [newgeo]
-            del json_record["geographicCoverage"]
 
     # Publisher
     if "publishers" in json_record:
@@ -172,8 +133,7 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
             if "descriptionValue" in d:
                 d["description"] = d.pop("descriptionValue")
 
-    #change rightsList into array
-    print(json_record)
+    # change rightsList into array
     if "rightsList" in json_record:
         json_record["rightsList"] = [json_record["rightsList"]]
 
@@ -206,43 +166,48 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
 
     return json_record
 
+
 def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
-    #Do standard transformations
+    # Do standard transformations
     json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
 
     # Extract identifier and label as DOI
     identifiers = []
     if "doi" in json_record:
         doi = json_record["doi"]
-        identifiers.append( {
-            "identifier": json_record["doi"],
-            "identifierType": "DOI",
-        })
+        identifiers.append(
+            {"identifier": json_record["doi"], "identifierType": "DOI",}
+        )
         del json_record["doi"]
-    
-    #Extract resourceType into types
-    if 'resourceType' in json_record:
-        json_record['types'] = json_record['resourceType']
-    if 'resourceType' not in json_record['types']:
-        json_record['types']['resourceType'] =\
-        json_record['resourceType']['resourceTypeGeneral']
+
+    # Extract resourceType into types
+    if "resourceType" in json_record:
+        json_record["types"] = json_record["resourceType"]
+    if "resourceType" not in json_record["types"]:
+        json_record["types"]["resourceType"] = json_record["resourceType"][
+            "resourceTypeGeneral"
+        ]
     del json_record["resourceType"]
 
     # Save CaltechDATA ID in all records
-    identifiers.append({
-        "alternateIdentifier": json_record["pid_value"],
-        "alternateIdentifierType": "CaltechDATA_Identifier",
-    })
+    identifiers.append(
+        {
+            "identifier": json_record["pid_value"],
+            "identifierType": "CaltechDATA_Identifier",
+        }
+    )
     if "alternateIdentifiers" in json_record:
         for altid in json_record["alternateIdentifiers"]:
             if altid["alternateIdentifierType"] != "CaltechDATA_Identifier":
-                 identifiers.append( {
-                    "identifier": altid["alternateIdentifier"],
-                    "identifierType": altid["alternateIdentifierType"],
-                    })
+                identifiers.append(
+                    {
+                        "identifier": altid["alternateIdentifier"],
+                        "identifierType": altid["alternateIdentifierType"],
+                    }
+                )
     del json_record["alternateIdentifiers"]
     del json_record["pid_value"]
-    json_record['identifiers'] = identifiers
+    json_record["identifiers"] = identifiers
 
     # change author formatting
     if "authors" in json_record:
@@ -258,7 +223,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                     if isinstance(aff, dict):
                         affiliation.append(aff)
                     else:
-                        affiliation.append({'name':aff})
+                        affiliation.append({"name": aff})
                 new["affiliation"] = affiliation
             if "authorIdentifiers" in a:
                 idv = []
@@ -291,35 +256,92 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                     if isinstance(aff, dict):
                         affiliation.append(aff)
                     else:
-                        affiliation.append({'name':aff})
-                new['affiliation'] = affiliation
+                        affiliation.append({"name": aff})
+                new["affiliation"] = affiliation
             if "contributorIdentifiers" in c:
                 if isinstance(c["contributorIdentifiers"], list):
                     newa = []
                     for cid in c["contributorIdentifiers"]:
-                        new = {}
-                        new["nameIdentifier"] = cid.pop("contributorIdentifier")
+                        nid = {}
+                        nid["nameIdentifier"] = cid.pop("contributorIdentifier")
                         if "contributorIdentifierScheme" in cid:
-                            new["nameIdentifierScheme"] = cid.pop(
+                            nid["nameIdentifierScheme"] = cid.pop(
                                 "contributorIdentifierScheme"
                             )
-                        newa.append(new)
+                        newa.append(nid)
                     new["nameIdentifiers"] = newa
                 else:
                     print("Contributor identifier not an array - please check", doi)
                 del c["contributorIdentifiers"]
             new["name"] = c["contributorName"]
+            new["contributorType"] = c["contributorType"]
             if pass_emails == True:
                 if "contributorEmail" in c:
                     new["contributorEmail"] = c["contributorEmail"]
             newc.append(new)
         json_record["contributors"] = newc
-    
+
+    # Geo - as strings
+    if "geographicCoverage" in json_record:
+        geo = json_record["geographicCoverage"]
+        if isinstance(geo, list):
+            # We have the correct formatting
+            for g in geo:
+                if "geoLocationPoint" in g:
+                    pt = g["geoLocationPoint"]
+                    if isinstance(pt, list):
+                        newp = {}
+                        newp["pointLatitude"] = pt[0]["pointLatitude"]
+                        newp["pointLongitude"] = pt[0]["pointLongitude"]
+                        g["geoLocationPoint"] = newp
+                    else:
+                        pt["pointLatitude"] = pt["pointLatitude"]
+                        pt["pointLongitude"] = pt["pointLongitude"]
+                if "geoLocationBox" in g:
+                    bx = g["geoLocationBox"]
+                    newp = {}
+                    newp["southBoundLatitude"] = bx["southBoundLatitude"]
+                    newp["northBoundLatitude"] = bx["northBoundLatitude"]
+                    newp["eastBoundLongitude"] = bx["eastBoundLongitude"]
+                    newp["westBoundLongitude"] = bx["westBoundLongitude"]
+                    g["geoLocationBox"] = newp
+            json_record["geoLocations"] = json_record.pop("geographicCoverage")
+        else:
+            newgeo = {}
+            if "geoLocationPlace" in geo:
+                newgeo["geoLocationPlace"] = geo["geoLocationPlace"]
+            if "geoLocationPoint" in geo:
+                pt = geo["geoLocationPoint"][0]
+                newpt = {}
+                newpt["pointLatitude"] = pt["pointLatitude"]
+                newpt["pointLongitude"] = pt["pointLongitude"]
+                newgeo["geoLocationPoint"] = newpt
+            json_record["geoLocations"] = [newgeo]
+            del json_record["geographicCoverage"]
+
+    # Funding
+    if "fundingReferences" in json_record:
+        for fund in json_record["fundingReferences"]:
+            if "funderIdentifier" in fund:
+                identifier = fund.pop("funderIdentifier")
+                if "funderIdentifierType" in identifier:
+                    fund["funderIdentifierType"] = identifier["funderIdentifierType"]
+                if "funderIdentifier" in identifier:
+                    fund["funderIdentifier"] = identifier["funderIdentifier"]
+            if "awardNumber" in fund:
+                number = fund.pop("awardNumber")
+                if "awardURI" in number:
+                    fund["awardURI"] = number["awardURI"]
+                if "awardNumber" in number:
+                    fund["awardNumber"] = number["awardNumber"]
+
+    json_record["schemaVersion"] = "http://datacite.org/schema/kernel-4"
+
     return json_record
 
 
 def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
-    #Do standard transformations
+    # Do standard transformations
     json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
 
     # Extract identifier and label as DOI
@@ -372,13 +394,13 @@ def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
                 if isinstance(c["contributorIdentifiers"], list):
                     newa = []
                     for cid in c["contributorIdentifiers"]:
-                        new = {}
-                        new["nameIdentifier"] = cid.pop("contributorIdentifier")
+                        nid = {}
+                        nid["nameIdentifier"] = cid.pop("contributorIdentifier")
                         if "contributorIdentifierScheme" in cid:
-                            new["nameIdentifierScheme"] = cid.pop(
+                            nid["nameIdentifierScheme"] = cid.pop(
                                 "contributorIdentifierScheme"
                             )
-                        newa.append(new)
+                        newa.append(nid)
                     c["nameIdentifiers"] = newa
                 else:
                     print("Contributor identifier not an array - please check", doi)
@@ -386,6 +408,44 @@ def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
             if pass_emails == False:
                 if "contributorEmail" in c:
                     del c["contributorEmail"]
+
+    # Geo - as floats
+    if "geographicCoverage" in json_record:
+        geo = json_record["geographicCoverage"]
+        if isinstance(geo, list):
+            # We have the correct formatting
+            for g in geo:
+                if "geoLocationPoint" in g:
+                    pt = g["geoLocationPoint"]
+                    if isinstance(pt, list):
+                        newp = {}
+                        newp["pointLatitude"] = float(pt[0]["pointLatitude"])
+                        newp["pointLongitude"] = float(pt[0]["pointLongitude"])
+                        g["geoLocationPoint"] = newp
+                    else:
+                        pt["pointLatitude"] = float(pt["pointLatitude"])
+                        pt["pointLongitude"] = float(pt["pointLongitude"])
+                if "geoLocationBox" in g:
+                    bx = g["geoLocationBox"]
+                    newp = {}
+                    newp["southBoundLatitude"] = float(bx["southBoundLatitude"])
+                    newp["northBoundLatitude"] = float(bx["northBoundLatitude"])
+                    newp["eastBoundLongitude"] = float(bx["eastBoundLongitude"])
+                    newp["westBoundLongitude"] = float(bx["westBoundLongitude"])
+                    g["geoLocationBox"] = newp
+            json_record["geoLocations"] = json_record.pop("geographicCoverage")
+        else:
+            newgeo = {}
+            if "geoLocationPlace" in geo:
+                newgeo["geoLocationPlace"] = geo["geoLocationPlace"]
+            if "geoLocationPoint" in geo:
+                pt = geo["geoLocationPoint"][0]
+                newpt = {}
+                newpt["pointLatitude"] = float(pt["pointLatitude"])
+                newpt["pointLongitude"] = float(pt["pointLongitude"])
+                newgeo["geoLocationPoint"] = newpt
+            json_record["geoLocations"] = [newgeo]
+            del json_record["geographicCoverage"]
 
     # Save CaltechDATA ID in all records
     idv = {

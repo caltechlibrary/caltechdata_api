@@ -25,3 +25,12 @@ def load_json_path(path):
         content = file.read()
     return json.loads(content)
 
+def write_json_path(path, metadata):
+    """Helper method for writing a JSON example file to a path."""
+    path_base = dirname(__file__)
+    path_full = join(path_base, path)
+    print(path_full)
+    print(metadata)
+    with io.open(path_full, 'w', encoding='utf-8') as file:
+        json.dump(metadata, file)
+

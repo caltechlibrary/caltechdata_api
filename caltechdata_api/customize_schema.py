@@ -4,14 +4,15 @@ import argparse
 import json
 
 
-def customize_schema(json_record, schema='4'):
+def customize_schema(json_record, schema="4"):
 
-    if schema == '4':
+    if schema == "4":
         return customize_schema_4(json_record)
-    elif schema == '43':
+    elif schema == "43":
         return customize_schema_43(json_record)
     else:
-        raise ValueError(f'Error: schema {schema} not defined')
+        raise ValueError(f"Error: schema {schema} not defined")
+
 
 def customize_schema_4(json_record):
     # Extract identifier and label as DOI
@@ -83,12 +84,12 @@ def customize_schema_43(json_record):
     if "identifiers" in json_record:
         alt = []
         for identifier in json_record["identifiers"]:
-            if identifier['identifierType'] == 'DOI':
+            if identifier["identifierType"] == "DOI":
                 json_record["doi"] = identifier
             else:
                 alt.append(identifier)
-        if alt != []:        
-            json_record['alternativeIdentifiers']  = alt 
+        if alt != []:
+            json_record["alternativeIdentifiers"] = alt
         del json_record["identifier"]
 
     # change author formatting
@@ -102,9 +103,9 @@ def customize_schema_43(json_record):
                 affiliation = []
                 for aff in a["affiliations"]:
                     name = {}
-                    name['affiliation'] = a["name"]
-                    if 'ROR' in a:
-                        name['ROR'] = a['ROR']
+                    name["affiliation"] = a["name"]
+                    if "ROR" in a:
+                        name["ROR"] = a["ROR"]
             new["authorAffiliation"] = affiliation
             new["authorName"] = a["name"]
             if "nameIdentifiers" in a:
@@ -140,9 +141,9 @@ def customize_schema_43(json_record):
                 affiliation = []
                 for aff in a["affiliations"]:
                     name = {}
-                    name['affiliation'] = a["name"]
-                    if 'ROR' in a:
-                        name['ROR'] = a['ROR']
+                    name["affiliation"] = a["name"]
+                    if "ROR" in a:
+                        name["ROR"] = a["ROR"]
             new["contributorAffiliation"] = affiliation
             new["contributorName"] = c["name"]
             if "contributorType" in c:
@@ -255,10 +256,9 @@ def customize_standard(json_record):
         publisher["publisherName"] = json_record.pop("publisher")
         json_record["publishers"] = publisher
 
-    #Drop array of rightsList values; will only include first
-    if 'rightsList' in json_record:
-        json_record['rightsList'] = json_record['rightsList'][0]
-
+    # Drop array of rightsList values; will only include first
+    if "rightsList" in json_record:
+        json_record["rightsList"] = json_record["rightsList"][0]
 
     # print(json.dumps(json_record))
     return json_record
