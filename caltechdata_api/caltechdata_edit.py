@@ -49,7 +49,7 @@ def caltechdata_unembargo(token, ids, production=False):
         return response.text
 
 
-def caltechdata_edit(token, ids, metadata={}, files={}, delete={}, production=False):
+def caltechdata_edit(token, ids, metadata={}, files={}, delete={}, production=False, schema="40"):
     """Including files will only replaces files if they have the same name
     The delete option will delete any existing files with a given file extension
     There are more file operations that could be implemented"""
@@ -72,7 +72,7 @@ def caltechdata_edit(token, ids, metadata={}, files={}, delete={}, production=Fa
         api_url = "https://cd-sandbox.tind.io/api/record/"
 
     if metadata:
-        metadata = customize_schema.customize_schema(copy.deepcopy(metadata))
+        metadata = customize_schema.customize_schema(copy.deepcopy(metadata),schema=schema)
 
     for idv in ids:
         metadata["id"] = idv
@@ -116,7 +116,7 @@ def caltechdata_edit(token, ids, metadata={}, files={}, delete={}, production=Fa
         return response.text
 
 
-def caltechdata_add(token, ids, metadata={}, files={}, production=False):
+def caltechdata_add(token, ids, metadata={}, files={}, production=False, schema="40"):
     """Adds file"""
 
     # If files is a string - change to single value array
@@ -135,7 +135,7 @@ def caltechdata_add(token, ids, metadata={}, files={}, production=False):
     headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
 
     if metadata:
-        metadata = customize_schema.customize_schema(copy.deepcopy(metadata))
+        metadata = customize_schema.customize_schema(copy.deepcopy(metadata),schema)
 
     fjson = {}
 

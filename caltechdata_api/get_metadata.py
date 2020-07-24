@@ -4,12 +4,12 @@ import json
 import os
 
 import requests
-from datacite import DataCiteMDSClient, schema40
+from datacite import schema40, schema43
 
 from caltechdata_api import decustomize_schema
 
 
-def get_metadata(idv, production=True, auth=None, emails=False):
+def get_metadata(idv, production=True, auth=None, emails=False, schema="40"):
     # Returns just DataCite metadata or DataCite metadata with emails
 
     if production == True:
@@ -33,17 +33,27 @@ def get_metadata(idv, production=True, auth=None, emails=False):
     metadata = r_data["metadata"]
 
     if emails == True:
-        metadata = decustomize_schema(metadata, pass_emails=True)
+        metadata = decustomize_schema(metadata, pass_emails=True, schema=schema)
     else:
-        metadata = decustomize_schema(metadata)
-        try:
-            assert schema40.validate(metadata)
-        except AssertionError:
-            v = schema40.validator.validate(metadata)
-            errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
-            for error in errors:
-                print(error.message)
-            exit()
+        metadata = decustomize_schema(metadata, schema=schema)
+        if schema == "40":
+            try:
+                assert schema40.validate(metadata)
+            except AssertionError:
+                v = schema40.validator.validate(metadata)
+                errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
+                for error in errors:
+                    print(error.message)
+                exit()
+        if schema == "43":
+            try:
+                assert schema43.validate(metadata)
+            except AssertionError:
+                v = schema43.validator.validate(metadata)
+                errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
+                for error in errors:
+                    print(error.message)
+                exit()
 
     return metadata
 
@@ -65,17 +75,19 @@ if __name__ == "__main__":
     parser.add_argument("-xml", dest="save_xml", action="store_true")
     parser.add_argument("-auth_user", help="Username for basic authentication")
     parser.add_argument("-auth_pass", help="Password for basic authentication")
+    parser.add_argument("-schema", default = "40",help="Schema Version")
 
     args = parser.parse_args()
 
     production = args.production
     emails = args.emails
+    schema = args.schema
     auth = None
     if args.auth_user != None:
         auth = (args.auth_user, args.auth_pass)
 
     for idv in args.ids:
-        metadata = get_metadata(idv, production, auth, emails)
+        metadata = get_metadata(idv, production, auth, emails, schema)
         outfile = open(str(idv) + ".json", "w")
         outfile.write(json.dumps(metadata))
         outfile.close()

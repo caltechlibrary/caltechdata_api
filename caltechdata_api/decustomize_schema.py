@@ -205,7 +205,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
                         "identifierType": altid["alternateIdentifierType"],
                     }
                 )
-    del json_record["alternateIdentifiers"]
+        del json_record["alternateIdentifiers"]
     del json_record["pid_value"]
     json_record["identifiers"] = identifiers
 
@@ -216,15 +216,19 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
         for a in authors:
             new = {}
             if "authorAffiliation" in a:
-                if isinstance(a["authorAffiliation"], list) == False:
-                    a["authorAffiliation"] = [a["authorAffiliation"]]
-                affiliation = []
-                for aff in a["authorAffiliation"]:
-                    if isinstance(aff, dict):
-                        affiliation.append(aff)
-                    else:
-                        affiliation.append({"name": aff})
-                new["affiliation"] = affiliation
+                #Prefer full affiliation block
+                if "affiliation" in a:
+                    new["affiliation"] = a["affiliation"] 
+                else:
+                    if isinstance(a["authorAffiliation"], list) == False:
+                        a["authorAffiliation"] = [a["authorAffiliation"]]
+                    affiliation = []
+                    for aff in a["authorAffiliation"]:
+                        if isinstance(aff, dict):
+                            affiliation.append(aff)
+                        else:
+                            affiliation.append({"name": aff})
+                    new["affiliation"] = affiliation
             if "authorIdentifiers" in a:
                 idv = []
                 if isinstance(a["authorIdentifiers"], list):
@@ -249,15 +253,18 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
         for c in contributors:
             new = {}
             if "contributorAffiliation" in c:
-                if isinstance(c["contributorAffiliation"], list) == False:
-                    c["contributorAffiliation"] = [c["contributorAffiliation"]]
-                affiliation = []
-                for aff in c["contributorAffiliation"]:
-                    if isinstance(aff, dict):
-                        affiliation.append(aff)
-                    else:
-                        affiliation.append({"name": aff})
-                new["affiliation"] = affiliation
+                if "affiliation" in c:
+                    new["affiliation"] = c["affiliation"] 
+                else:
+                    if isinstance(c["contributorAffiliation"], list) == False:
+                        c["contributorAffiliation"] = [c["contributorAffiliation"]]
+                    affiliation = []
+                    for aff in c["contributorAffiliation"]:
+                        if isinstance(aff, dict):
+                            affiliation.append(aff)
+                        else:
+                            affiliation.append({"name": aff})
+                    new["affiliation"] = affiliation
             if "contributorIdentifiers" in c:
                 if isinstance(c["contributorIdentifiers"], list):
                     newa = []

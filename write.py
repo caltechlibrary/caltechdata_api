@@ -9,6 +9,8 @@ parser.add_argument('json_file', nargs=1, help=\
             'file name for json DataCite metadata file')
 parser.add_argument('-ids', nargs='*', help='CaltechDATA IDs')
 parser.add_argument('-fnames', nargs='*', help='New Files')
+parser.add_argument('-schema',default='40', help='Metadata Schema')
+
 args = parser.parse_args()
 
 #Get access token from TIND sed as environment variable with source token.bash
@@ -19,14 +21,6 @@ metadata = json.load(metaf)
 
 production = True
 
-response = caltechdata_write(metadata, token, args.fnames, production)
+response = caltechdata_write(metadata, token, args.fnames, production, args.schema)
 print(response)
-
-#If needed - write out datacite XML
-
-xml = schema40.tostring(metadata)
-
-outname = 'datacite.xml'
-outfile = open(outname,'w',encoding='utf8')
-outfile.write(xml)
 

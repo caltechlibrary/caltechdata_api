@@ -2,11 +2,12 @@
 # schema used by TIND in CaltechDATA
 import argparse
 import json
+from datetime import date
 
 
-def customize_schema(json_record, schema="4"):
+def customize_schema(json_record, schema="40"):
 
-    if schema == "4":
+    if schema == "40":
         return customize_schema_4(json_record)
     elif schema == "43":
         return customize_schema_43(json_record)
@@ -15,6 +16,7 @@ def customize_schema(json_record, schema="4"):
 
 
 def customize_schema_4(json_record):
+    json_record = customize_standard(json_record)
     # Extract identifier and label as DOI
     if "identifier" in json_record:
         identifier = json_record["identifier"]["identifier"]
@@ -78,8 +80,10 @@ def customize_schema_4(json_record):
             newc.append(new)
         json_record["contributors"] = newc
 
+    return json_record
 
 def customize_schema_43(json_record):
+    json_record = customize_standard(json_record)
     # Extract identifiers and label as DOI or alternativeIdentifiers
     if "identifiers" in json_record:
         alt = []
@@ -99,14 +103,12 @@ def customize_schema_43(json_record):
         newa = []
         for a in authors:
             new = {}
-            if "affiliations" in a:
-                affiliation = []
-                for aff in a["affiliations"]:
-                    name = {}
-                    name["affiliation"] = a["name"]
-                    if "ROR" in a:
-                        name["ROR"] = a["ROR"]
-            new["authorAffiliation"] = affiliation
+            if "affiliation" in a:
+                affiliations = []
+                for aff in a["affiliation"]:
+                    affiliations.append(aff["name"])
+                new["authorAffiliation"] = affiliations
+                new["affiliation"] = a["affiliation"]
             new["authorName"] = a["name"]
             if "nameIdentifiers" in a:
                 idn = []
@@ -137,14 +139,12 @@ def customize_schema_43(json_record):
                         }
                     )
                 new["contributorIdentifiers"] = idn
-            if "affiliations" in a:
-                affiliation = []
-                for aff in a["affiliations"]:
-                    name = {}
-                    name["affiliation"] = a["name"]
-                    if "ROR" in a:
-                        name["ROR"] = a["ROR"]
-            new["contributorAffiliation"] = affiliation
+            if "affiliation" in a:
+                affiliations = []
+                for aff in a["affiliation"]:
+                    affiliations.append(aff["name"])
+                new['affiliation' ] = a['affiliation']
+                new["contributorAffiliation"] = affiliations
             new["contributorName"] = c["name"]
             if "contributorType" in c:
                 new["contributorType"] = c["contributorType"]
@@ -153,6 +153,19 @@ def customize_schema_43(json_record):
             newc.append(new)
         json_record["contributors"] = newc
 
+    #Funding organization
+    if "fundingReferences" in json_record:
+        for funding in json_record["fundingReferences"]:
+            if 'awardNumber' in funding:
+                funding['awardNumber'] = {'awardNumber':funding['awardNumber']}
+
+    #resourceTypeGeneral
+    typeg = json_record['types']['resourceTypeGeneral']
+    json_record['resourceType'] = {'resourceTypeGeneral':typeg}
+
+    print(json_record)
+
+    return json_record
 
 def customize_standard(json_record):
 
@@ -199,19 +212,18 @@ def customize_standard(json_record):
 
     if "dates" in json_record:
         dates = json_record["dates"]
-        priority = False
         for d in dates:
             # If metadata has Submitted date, we can get a full date in TIND
             if d["dateType"] == "Submitted":
                 json_record["publicationDate"] = d["date"]
-                priority = True
             # If we have an Issued but not a Submitted date, save full date
-            if d["dateType"] == "Issued":
-                if priority == False:
-                    json_record["publicationDate"] = d["date"]
+            elif d["dateType"] == "Issued":
+                json_record["publicationDate"] = d["date"]
             d["relevantDateValue"] = str(d.pop("date"))
             d["relevantDateType"] = d.pop("dateType")
         json_record["relevantDates"] = json_record.pop("dates")
+    else:
+        json_record["publicationDate"] =  date.today().isoformat()
 
     # license
     if "rightsList" in json_record:
@@ -255,10 +267,6 @@ def customize_standard(json_record):
         publisher = {}
         publisher["publisherName"] = json_record.pop("publisher")
         json_record["publishers"] = publisher
-
-    # Drop array of rightsList values; will only include first
-    if "rightsList" in json_record:
-        json_record["rightsList"] = json_record["rightsList"][0]
 
     # print(json.dumps(json_record))
     return json_record
