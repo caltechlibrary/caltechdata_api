@@ -93,7 +93,6 @@ def caltechdata_write(metadata, token, files=[], production=False, schema="40"):
 
     headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
 
-    print(newdata)
     if "doi" not in newdata:
         # We want tind to generate the identifier
         newdata["final_actions"] = [
