@@ -8,6 +8,8 @@ def decustomize_schema(
 ):
     if schema == "4":
         return decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner)
+    elif schema == "40":
+        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner)
     elif schema == "43":
         return decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner)
     else:
@@ -126,6 +128,8 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         else:
             json_record["publisher"] = json_record["publishers"]["publisherName"]
         del json_record["publishers"]
+    else:
+        json_record["publisher"] = "CaltechDATA"
 
     # description
     if "descriptions" in json_record:
@@ -157,6 +161,7 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         "brief_title",
         "brief_summary",
         "resource_type",
+        "final_actions"
     ]
     if pass_owner == False:
         others.append("owners")
