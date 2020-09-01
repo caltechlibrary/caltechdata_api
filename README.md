@@ -17,7 +17,7 @@ There are some example python scripts in the GitHub repository.
 Create a record:
 
 ```shell
-python example.py example.json -fnames logo.gif
+python write.py example.json -fnames logo.gif
 Successfully created record https://cd-sandbox.tind.io/records/352.  
 ```
 
