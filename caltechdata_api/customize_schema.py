@@ -82,6 +82,7 @@ def customize_schema_4(json_record):
 
     return json_record
 
+
 def customize_schema_43(json_record):
     json_record = customize_standard(json_record)
     # Extract identifiers and label as DOI or alternativeIdentifiers
@@ -143,7 +144,7 @@ def customize_schema_43(json_record):
                 affiliations = []
                 for aff in a["affiliation"]:
                     affiliations.append(aff["name"])
-                new['affiliation' ] = a['affiliation']
+                new["affiliation"] = a["affiliation"]
                 new["contributorAffiliation"] = affiliations
             new["contributorName"] = c["name"]
             if "contributorType" in c:
@@ -153,19 +154,20 @@ def customize_schema_43(json_record):
             newc.append(new)
         json_record["contributors"] = newc
 
-    #Funding organization
+    # Funding organization
     if "fundingReferences" in json_record:
         for funding in json_record["fundingReferences"]:
-            if 'awardNumber' in funding:
-                funding['awardNumber'] = {'awardNumber':funding['awardNumber']}
+            if "awardNumber" in funding:
+                funding["awardNumber"] = {"awardNumber": funding["awardNumber"]}
 
-    #resourceTypeGeneral
-    typeg = json_record['types']['resourceTypeGeneral']
-    json_record['resourceType'] = {'resourceTypeGeneral':typeg}
+    # resourceTypeGeneral
+    typeg = json_record["types"]["resourceTypeGeneral"]
+    json_record["resourceType"] = {"resourceTypeGeneral": typeg}
 
     print(json_record)
 
     return json_record
+
 
 def customize_standard(json_record):
 
@@ -223,7 +225,7 @@ def customize_standard(json_record):
             d["relevantDateType"] = d.pop("dateType")
         json_record["relevantDates"] = json_record.pop("dates")
     else:
-        json_record["publicationDate"] =  date.today().isoformat()
+        json_record["publicationDate"] = date.today().isoformat()
 
     # license
     if "rightsList" in json_record:

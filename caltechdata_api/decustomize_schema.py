@@ -161,7 +161,7 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         "brief_title",
         "brief_summary",
         "resource_type",
-        "final_actions"
+        "final_actions",
     ]
     if pass_owner == False:
         others.append("owners")
@@ -181,7 +181,10 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
     if "doi" in json_record:
         doi = json_record["doi"]
         identifiers.append(
-            {"identifier": json_record["doi"], "identifierType": "DOI",}
+            {
+                "identifier": json_record["doi"],
+                "identifierType": "DOI",
+            }
         )
         del json_record["doi"]
 
@@ -221,9 +224,9 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
         for a in authors:
             new = {}
             if "authorAffiliation" in a:
-                #Prefer full affiliation block
+                # Prefer full affiliation block
                 if "affiliation" in a:
-                    new["affiliation"] = a["affiliation"] 
+                    new["affiliation"] = a["affiliation"]
                 else:
                     if isinstance(a["authorAffiliation"], list) == False:
                         a["authorAffiliation"] = [a["authorAffiliation"]]
@@ -259,7 +262,7 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
             new = {}
             if "contributorAffiliation" in c:
                 if "affiliation" in c:
-                    new["affiliation"] = c["affiliation"] 
+                    new["affiliation"] = c["affiliation"]
                 else:
                     if isinstance(c["contributorAffiliation"], list) == False:
                         c["contributorAffiliation"] = [c["contributorAffiliation"]]

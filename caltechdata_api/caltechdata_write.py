@@ -79,7 +79,7 @@ def caltechdata_write(metadata, token, files=[], production=False, schema="40"):
 
     fileinfo = []
 
-    newdata = customize_schema.customize_schema(copy.deepcopy(metadata),schema=schema)
+    newdata = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
 
     if files:
         for f in files:

@@ -44,7 +44,6 @@ def get_metadata(idv, production=True, auth=None, emails=False, schema="40"):
                 errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
                 for error in errors:
                     print(error.message)
-                exit()
         if schema == "43":
             try:
                 assert schema43.validate(metadata)
@@ -53,7 +52,6 @@ def get_metadata(idv, production=True, auth=None, emails=False, schema="40"):
                 errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
                 for error in errors:
                     print(error.message)
-                exit()
 
     return metadata
 
@@ -75,7 +73,7 @@ if __name__ == "__main__":
     parser.add_argument("-xml", dest="save_xml", action="store_true")
     parser.add_argument("-auth_user", help="Username for basic authentication")
     parser.add_argument("-auth_pass", help="Password for basic authentication")
-    parser.add_argument("-schema", default = "40",help="Schema Version")
+    parser.add_argument("-schema", default="40", help="Schema Version")
 
     args = parser.parse_args()
 

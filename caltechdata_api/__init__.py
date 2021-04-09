@@ -3,3 +3,4 @@ from .caltechdata_edit import caltechdata_add, caltechdata_edit, caltechdata_une
 from .customize_schema import customize_schema
 from .decustomize_schema import decustomize_schema
 from .get_metadata import get_metadata
+from .download_file import download_file
