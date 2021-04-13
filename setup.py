@@ -16,13 +16,6 @@ def read(fname):
         src = f.read()
     return src
 
-def read_requirements():
-    """Parse requirements from requirements.txt."""
-    reqs_path = os.path.join('.', 'requirements.txt')
-    with open(reqs_path, 'r') as f:
-        requirements = [line.rstrip() for line in f]
-    return requirements
-
 codemeta_json = "codemeta.json"
 
 # Let's pickup as much metadata as we need from codemeta.json
@@ -57,7 +50,9 @@ name = meta['name']
 REQUIRES_PYTHON = '>=3.7.0'
 
 # What packages are required for this module to be executed?
-REQUIRED = read_requirements()
+REQUIRED = [
+    'requests','datacite','tqdm'
+]
 
 # What packages are optional?
 EXTRAS = {
