@@ -51,7 +51,7 @@ REQUIRES_PYTHON = '>=3.7.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'requests','datacite','tqdm'
+    'requests','datacite>1.1.0','tqdm'
 ]
 
 # What packages are optional?

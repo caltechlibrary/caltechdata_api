@@ -2,8 +2,8 @@ import requests, argparse
 from tqdm import tnrange, tqdm_notebook
 
 
-def download_file(doi, fname=None, media_type=None):
-    """Download a file  listed in the media API for a DataCite DOI"""
+def download_url(doi, media_type=None):
+    """Get a download link for a file listed in the media API for a DataCite DOI"""
     api_url = "https://api.datacite.org/dois/" + doi + "/media"
     r = requests.get(api_url).json()
     data = r["data"]
@@ -13,6 +13,12 @@ def download_file(doi, fname=None, media_type=None):
         for media in data:
             if media["attributes"]["mediaType"] == media_type:
                 url = media["attributes"]
+    return url
+
+
+def download_file(doi, fname=None, media_type=None):
+    """Download a file  listed in the media API for a DataCite DOI"""
+    url = download_url(doi, media_type)
     r = requests.get(url, stream=True)
     # Set file name
     if fname == None:
