@@ -1,5 +1,5 @@
 import requests, argparse
-from tqdm import tnrange, tqdm_notebook
+from tqdm.auto import tqdm
 
 
 def download_url(doi, media_type=None):
@@ -31,7 +31,7 @@ def download_file(doi, fname=None, media_type=None):
     else:
         with open(fname, "wb") as f:
             total_length = int(r.headers.get("content-length"))
-            pbar = tnrange(int(total_length / 1024), unit="B")
+            pbar = tqdm(total=int(total_length / 1024), unit="B")
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk:
                     pbar.update()

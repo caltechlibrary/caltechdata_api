@@ -21,9 +21,10 @@ from os.path import dirname, join
 def load_json_path(path):
     """Helper method for loading a JSON example file from a path."""
     path_base = dirname(__file__)
-    with io.open(join(path_base, path), encoding='utf-8') as file:
+    with io.open(join(path_base, path), encoding="utf-8") as file:
         content = file.read()
     return json.loads(content)
+
 
 def write_json_path(path, metadata):
     """Helper method for writing a JSON example file to a path."""
@@ -31,6 +32,5 @@ def write_json_path(path, metadata):
     path_full = join(path_base, path)
     print(path_full)
     print(metadata)
-    with io.open(path_full, 'w', encoding='utf-8') as file:
+    with io.open(path_full, "w", encoding="utf-8") as file:
         json.dump(metadata, file)
-
