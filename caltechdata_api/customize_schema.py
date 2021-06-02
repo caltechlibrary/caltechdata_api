@@ -168,8 +168,6 @@ def customize_schema_43(json_record):
     typeg = json_record["types"]["resourceTypeGeneral"]
     json_record["resourceType"] = {"resourceTypeGeneral": typeg}
 
-    print(json_record)
-
     return json_record
 
 
