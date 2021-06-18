@@ -1,8 +1,9 @@
 import copy
 import json
-import os
+import os, sys
 
 from requests import session
+from json.decoder import JSONDecodeError
 
 from caltechdata_api import customize_schema
 
@@ -22,9 +23,12 @@ def send_s3(filepath, token, production=False):
 
     # print(s3surl)
     # print(headers)
-    response = c.get(s3surl, headers=headers)
-    jresp = response.json()
-    data = jresp["data"]
+    try:
+        response = c.get(s3surl, headers=headers)
+        jresp = response.json()
+        data = jresp["data"]
+    except Exception:
+        print(f"Incorrect access token: {response}")
 
     bucket = jresp["bucket"]
     key = data["fields"]["key"]
