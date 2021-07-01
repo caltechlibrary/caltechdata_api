@@ -50,10 +50,10 @@ if __name__ == "__main__":
         help="The DOI for files to be downloaded",
     )
     parser.add_argument(
-        "-fname", default=None, help="Username for basic authentication"
+        "-fname", default=None, help="File name to be used for downloaded file"
     )
     parser.add_argument(
-        "-media_type", default=None, help="Password for basic authentication"
+        "-media_type", default=None, help="File (media) type to be downloaded"
     )
 
     args = parser.parse_args()
