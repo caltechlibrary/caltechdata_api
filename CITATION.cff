@@ -6,7 +6,7 @@ authors:
    - 
      family-names: Morrell
      given-names: Thomas E
-     orcid: https://orcid.org/0000-0001-9266-5146
+     orcid: "https://orcid.org/0000-0001-9266-5146"
 version: "0.1.11"
 date-released: 2021-07-22
 ...
