@@ -1,5 +1,4 @@
-# YAML 1.2
----
+
 cff-version: "1.1.0"
 message: "If you use this software, please cite it as below."
 authors:
@@ -10,4 +9,3 @@ authors:
 version: "0.1.11"
 date-released: 2021-07-22
 title: "caltechdata_api"
-...
