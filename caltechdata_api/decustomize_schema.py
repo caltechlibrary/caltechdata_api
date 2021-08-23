@@ -139,7 +139,8 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
 
     # change rightsList into array
     if "rightsList" in json_record:
-        json_record["rightsList"] = [json_record["rightsList"]]
+        if not isinstance(json_record["rightsList"], list):
+            json_record["rightsList"] = [json_record["rightsList"]]
 
     # Handle file info
     if pass_media == False:
