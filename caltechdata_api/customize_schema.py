@@ -90,7 +90,7 @@ def customize_schema_43(json_record):
         alt = []
         for identifier in json_record["identifiers"]:
             if identifier["identifierType"] == "DOI":
-                json_record["doi"] = identifier['identifier']
+                json_record["doi"] = identifier["identifier"]
             else:
                 alt.append(identifier)
         if alt != []:
@@ -159,10 +159,10 @@ def customize_schema_43(json_record):
         for funding in json_record["fundingReferences"]:
             if "awardNumber" in funding:
                 funding["awardNumber"] = {"awardNumber": funding["awardNumber"]}
-            if 'funderIdentifier' in funding:
-                funding['funderIdentifier'] = {'funderIdentifier':
-                        funding['funderIdentifier']}
-
+            if "funderIdentifier" in funding:
+                funding["funderIdentifier"] = {
+                    "funderIdentifier": funding["funderIdentifier"]
+                }
 
     # resourceTypeGeneral
     typeg = json_record["types"]["resourceTypeGeneral"]
