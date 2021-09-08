@@ -81,33 +81,44 @@ def caltechdata_edit(
     for idv in ids:
         metadata["id"] = idv
 
-        if files:
-            # Files to delete
+        if files or delete:
+            # Files to add or delete
             fjson = {}
             c = session()
-            existing = c.get(api_url + idv)
-            file_info = existing.json()["metadata"]
+            existing_meta = c.get(api_url + idv)
+            file_info = existing_meta.json()["metadata"]
+            existing = {}
+            if "electronic_location_and_access" in file_info:
+                for ex in file_info["electronic_location_and_access"]:
+                    name = ex["electronic_name"][0]
+                    fu = ex["uniform_resource_identifier"].split("/")[-2]
+                    existing[name] = fu
+
+            # File ids to delete
             fids = []
-            for f in files:  # Check if new files match existing
-                if "electronic_location_and_access" in file_info:
-                    for ex in file_info["electronic_location_and_access"]:
-                        name = ex["electronic_name"][0]
-                        fu = ex["uniform_resource_identifier"].split("/")[-2]
-                        if name == f:
+
+            if files:
+                for f in files:  # Check if new files match existing
+                    # In case we have a path
+                    fname = f.split("/")[-1]
+                    if fname in existing:
+                        fids.append(existing[fname])
+                # Now upload new files
+                fileinfo = [send_s3(f, token, production) for f in files]
+                fjson["new"] = fileinfo
+
+            if delete:
+                for d in delete:
+                    if d in existing:
+                        fids.append(existing[d])
+                    # Also check if we are deleting by extenson
+                    for e in existing.keys():
+                        if e.split(".")[-1] == d:
                             fids.append(fu)
-                        for d in delete:
-                            if name == d:
-                                fids.append(fu)
-                            if name.split(".")[-1] == d:
-                                fids.append(fu)
+
             if len(fids) > 0:
                 fjson = {"delete": fids}
 
-            # upload new
-            print(files)
-            fileinfo = [send_s3(f, token, production) for f in files]
-
-            fjson["new"] = fileinfo
             metadata["files"] = fjson
 
         dat = json.dumps({"record": metadata})
