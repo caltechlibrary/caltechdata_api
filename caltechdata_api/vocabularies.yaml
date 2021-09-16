@@ -1,0 +1,21 @@
+creatorsroles:
+  pid-type: crr
+  data-file: vocabularies/roles.yaml
+contributorsroles:
+  pid-type: cor
+  data-file: vocabularies/roles.yaml
+resourcetypes:
+  pid-type: rsrct
+  data-file: vocabularies/resource_types.yaml
+descriptiontypes:
+  pid-type: dty
+  data-file: vocabularies/description_types.yaml
+datetypes:
+  pid-type: dat
+  data-file: vocabularies/date_types.yaml
+relationtypes:
+  pid-type: rlt
+  data-file: vocabularies/relation_types.yaml
+titletypes:
+  pid-type: ttyp
+  data-file: vocabularies/title_types.yaml

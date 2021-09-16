@@ -1,6 +1,6 @@
 import copy
 import json
-import os, sys
+import os, sys, requests
 
 from requests import session
 from json.decoder import JSONDecodeError
@@ -75,36 +75,53 @@ def send_s3(filepath, token, production=False):
     return fileinfo
 
 
-def caltechdata_write(metadata, token, files=[], production=False, schema="40"):
+def caltechdata_write(
+    metadata, token, files=[], production=False, schema="40", pilot=False
+):
 
     # If files is a string - change to single value array
     if isinstance(files, str) == True:
         files = [files]
 
-    fileinfo = []
+    if pilot:
+        newdata = customize_schema.customize_schema(
+            copy.deepcopy(metadata), schema=schema, pilot=True
+        )
 
-    newdata = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
-
-    if files:
-        for f in files:
-            fileinfo.append(send_s3(f, token, production))
-        newdata["files"] = fileinfo
-
-    if production == True:
-        url = "https://data.caltech.edu/submit/api/create/"
     else:
-        url = "https://cd-sandbox.tind.io/submit/api/create/"
 
-    headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
+        fileinfo = []
 
-    if "doi" not in newdata:
-        # We want tind to generate the identifier
-        newdata["final_actions"] = [
-            {"type": "create_doi", "parameters": {"type": "records", "field": "doi"}}
-        ]
+        newdata = customize_schema.customize_schema(
+            copy.deepcopy(metadata), schema=schema
+        )
 
-    dat = json.dumps({"record": newdata})
+        if files:
+            for f in files:
+                fileinfo.append(send_s3(f, token, production))
+            newdata["files"] = fileinfo
 
-    c = session()
-    response = c.post(url, headers=headers, data=dat)
-    return response.text
+        if production == True:
+            url = "https://data.caltech.edu/submit/api/create/"
+        else:
+            url = "https://cd-sandbox.tind.io/submit/api/create/"
+
+        headers = {
+            "Authorization": "Bearer %s" % token,
+            "Content-type": "application/json",
+        }
+
+        if "doi" not in newdata:
+            # We want tind to generate the identifier
+            newdata["final_actions"] = [
+                {
+                    "type": "create_doi",
+                    "parameters": {"type": "records", "field": "doi"},
+                }
+            ]
+
+        dat = json.dumps({"record": newdata})
+
+        c = session()
+        response = c.post(url, headers=headers, data=dat)
+        return response.text

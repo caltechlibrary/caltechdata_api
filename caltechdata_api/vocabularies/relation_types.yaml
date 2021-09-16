@@ -1,0 +1,155 @@
+- id: iscitedby
+  props:
+     datacite: IsCitedBy
+  title:
+     en: Is cited by
+- id: cites
+  props:
+     datacite: Cites
+  title:
+     en: Cites
+- id: issupplementto
+  props:
+     datacite: IsSupplementTo
+  title:
+     en: Is supplement to
+- id: issupplementedby
+  props:
+     datacite: IsSupplementedBy
+  title:
+     en: Is supplemented by
+- id: iscontinuedby
+  props:
+     datacite: IsContinuedBy
+  title:
+     en: Is continued by
+- id: continues
+  props:
+     datacite: Continues
+  title:
+     en: Continues
+- id: isdescribedby
+  props:
+     datacite: IsDescribedBy
+  title:
+     en: Is described by
+- id: describes
+  props:
+     datacite: Describes
+  title:
+     en: Describes
+- id: hasversion
+  props:
+     datacite: HasVersion
+  title:
+     en: Has version
+- id: isversionof
+  props:
+     datacite: IsVersionOf
+  title:
+     en: Is version of
+- id: isnewversionof
+  props:
+     datacite: IsNewVersionOf
+  title:
+     en: Is new version of
+- id: ispreviousversionof
+  props:
+     datacite: IsPreviousVersionOf
+  title:
+     en: Is previous version of
+- id: ispartof
+  props:
+     datacite: IsPartOf
+  title:
+     en: Is part of
+- id: haspart
+  props:
+     datacite: HasPart
+  title:
+     en: HasPart
+- id: isreferencedby
+  props:
+     datacite: IsReferencedBy
+  title:
+     en: Is referenced by
+- id: references
+  props:
+     datacite: References
+  title:
+     en: References
+- id: isdocumentedby
+  props:
+     datacite: IsDocumentedBy
+  title:
+     en: Is documented by
+- id: documents
+  props:
+     datacite: Documents
+  title:
+     en: Documents
+- id: iscompiledby
+  props:
+     datacite: IsCompiledBy
+  title:
+     en: Is compiled by
+- id: compiles
+  props:
+     datacite: Compiles
+  title:
+     en: Compiles
+- id: isvariantformof
+  props:
+     datacite: IsVariantFormOf
+  title:
+     en: Is variant form of
+- id: isoriginalformof
+  props:
+     datacite: IsOriginalFormOf
+  title:
+     en: Is original form of
+- id: isidenticalto
+  props:
+     datacite: IsIdenticalTo
+  title:
+     en: Is identical to
+- id: isreviewedby
+  props:
+     datacite: IsReviewedBy
+  title:
+     en: Is reviewed by
+- id: reviews
+  props:
+     datacite: Reviews
+  title:
+     en: Reviews
+- id: isderivedfrom
+  props:
+     datacite: IsDerivedFrom
+  title:
+     en: Is derived from
+- id: issourceof
+  props:
+     datacite: IsSourceOf
+  title:
+     en: Is source of
+- id: isrequiredby
+  props:
+     datacite: IsRequiredBy
+  title:
+     en: Is required by
+- id: requires
+  props:
+     datacite: Requires
+  title:
+     en: Requires
+- id: isobsoletedby
+  props:
+     datacite: IsObsoletedBy
+  title:
+     en: Is obsoleted by
+- id: obsoletes
+  props:
+     datacite: Obsoletes
+  title:
+     en: Obsoletes

@@ -1,0 +1,20 @@
+- id: alternative-title
+  props:
+    datacite: AlternativeTitle
+  title:
+    en: Alternative title
+- id: subtitle
+  props:
+    datacite: Subtitle
+  title:
+    en: Subtitle
+- id: translated-title
+  props:
+    datacite: TranslatedTitle
+  title:
+    en: Translated title
+- id: other
+  props:
+    datacite: Other
+  title:
+    en: Other

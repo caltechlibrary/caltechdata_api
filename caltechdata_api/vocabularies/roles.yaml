@@ -1,0 +1,105 @@
+- id: contactperson
+  props:
+    datacite: ContactPerson
+  title:
+    en: Contact person
+- id: datacollector
+  props:
+    datacite: DataCollector
+  title:
+    en: Data collector
+- id: datacurator
+  props:
+    datacite: DataCurator
+  title:
+    en: Data curator
+- id: datamanager
+  props:
+    datacite: DataManager
+  title:
+    en: Data manager
+- id: distributor
+  props:
+    datacite: Distributor
+  title:
+    en: Distributor
+- id: editor
+  props:
+    datacite: Editor
+  title:
+    en: Editor
+- id: hostinginstitution
+  props:
+    datacite: HostingInstitution
+  title:
+    en: Hosting institution
+- id: producer
+  props:
+    datacite: Producer
+  title:
+    en: Producer
+- id: projectleader
+  props:
+    datacite: ProjectLeader
+  title:
+    en: Project leader
+- id: projectmanager
+  props:
+    datacite: ProjectManager
+  title:
+    en: Project manager
+- id: projectmember
+  props:
+    datacite: ProjectMember
+  title:
+    en: Project member
+- id: registrationagency
+  props:
+    datacite: RegistrationAgency
+  title:
+    en: Registration agency
+- id: registrationauthority
+  props:
+    datacite: RegistrationAuthority
+  title:
+    en: Registration authority
+- id: relatedperson
+  props:
+    datacite: RelatedPerson
+  title:
+    en: Related person
+- id: researcher
+  props:
+    datacite: Researcher
+  title:
+    en: Researcher
+- id: researchgroup
+  props:
+    datacite: ResearchGroup
+  title:
+    en: Research group
+- id: rightsholder
+  props:
+    datacite: RightsHolder
+  title:
+    en: Rights holder
+- id: sponsor
+  props:
+    datacite: Sponsor
+  title:
+    en: Sponsor
+- id: supervisor
+  props:
+    datacite: Supervisor
+  title:
+    en: Supervisor
+- id: workpackageleader
+  props:
+    datacite: WorkPackageLeader
+  title:
+    en: Work package leader
+- id: other
+  props:
+    datacite: Other
+  title:
+    en: Other

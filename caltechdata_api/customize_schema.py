@@ -3,16 +3,62 @@
 import argparse
 import json
 from datetime import date
+import yaml
+from pathlib import Path
 
 
-def customize_schema(json_record, schema="40"):
+def get_vocabularies():
+    """Returns dictionary of vocabularies"""
+    path = Path(__file__).parent
+    vocab_file = path / "vocabularies.yaml"
+    vocabularies = {}
+    with open(vocab_file) as f:
+        data = yaml.safe_load(f) or {}
+        for id_, yaml_entry in data.items():
+            individual_vocab = {}
+            vocab_id = yaml_entry["pid-type"]
+            data_file = path / yaml_entry["data-file"]
+            with open(data_file) as fp:
+                # Allow empty files
+                data = yaml.safe_load(fp) or []
+                for entry in data:
+                    props = entry["props"]
+                    if "datacite_general" in props:
+                        # Resource type two layer vocab
+                        datacite = (
+                            props["datacite_general"] + ";" + props["datacite_type"]
+                        )
+                    else:
+                        datacite = props["datacite"]
+                    individual_vocab[datacite] = entry["id"]
+            vocabularies[vocab_id] = individual_vocab
+    return vocabularies
 
-    if schema == "40":
-        return customize_schema_4(json_record)
-    elif schema == "43":
-        return customize_schema_43(json_record)
+
+def customize_schema(json_record, schema="40", pilot=False):
+
+    if pilot:
+        if schema == "43":
+            return customize_schema_rdm(json_record)
+        else:
+            raise ValueError(f"Error: Pilot only supports schema 43")
     else:
-        raise ValueError(f"Error: schema {schema} not defined")
+        if schema == "40":
+            return customize_schema_4(json_record)
+        elif schema == "43":
+            return customize_schema_43(json_record)
+        else:
+            raise ValueError(f"Error: schema {schema} not defined")
+
+
+def customize_schema_rdm(json_record):
+
+    # Get vocabularies used in InvenioRDM
+    vocabularies = get_vocabularies()
+
+    print(vocabularies)
+
+    return json_record
 
 
 def customize_schema_4(json_record):
