@@ -51,14 +51,214 @@ def customize_schema(json_record, schema="40", pilot=False):
             raise ValueError(f"Error: schema {schema} not defined")
 
 
+def change_label(json, from_label, to_label):
+    if from_label in json:
+        json[to_label] = json.pop(from_label)
+
+
+def rdm_creators_contributors(person_list):
+    new = []
+    for cre in person_list:
+        new_cre = {}
+        if "nameType" in cre:
+            ntype = cre.pop("nameType")
+            if ntype == "Personal":
+                cre["type"] = "personal"
+            elif ntype == "Organizational":
+                cre["type"] = "organizational"
+            else:
+                print(f"NAME TYPE {ntype} NOT KNOWN")
+        change_label(cre, "givenName", "given_name")
+        change_label(cre, "familyName", "family_name")
+        change_label(cre, "nameIdentifiers", "identifiers")
+        if "identifiers" in cre:
+            for ide in cre["identifiers"]:
+                change_label(ide, "nameIdentifier", "identifier")
+                change_label(ide, "nameIdentifierScheme", "scheme")
+        if "affiliation" in cre:
+            aff_all = []
+            # Using ROR as InvenioRDM ID needs to be verified to not break
+            # things
+            for aff in cre.pop("affiliation"):
+                new_aff = {}
+                if "affiliationIdentifierScheme" in aff:
+                    if aff["affiliationIdentifierScheme"] == "ROR":
+                        new_aff["id"] = aff["affiliationIdentifier"]
+                if new_aff == {}:
+                    new_aff["name"] = aff["name"]
+                aff_all.append(new_aff)
+            new_cre["affiliations"] = aff_all
+        new_cre["person_or_org"] = cre
+        new.append(new_cre)
+    return new
+
+
 def customize_schema_rdm(json_record):
 
     # Get vocabularies used in InvenioRDM
     vocabularies = get_vocabularies()
 
-    print(vocabularies)
+    peopleroles = vocabularies["crr"]
+    resourcetypes = vocabularies["rsrct"]
+    descriptiontypes = vocabularies["dty"]
+    datetypes = vocabularies["dat"]
+    relationtypes = vocabularies["rlt"]
+    titletypes = vocabularies["ttyp"]
+    identifiertypes = vocabularies["idt"]
 
-    return json_record
+    # Resource types are stored in vocabulary as General;Type
+    types = json_record.pop("types")
+    if "resourceType" in types:
+        type_key = types["resourceTypeGeneral"] + ";" + types["resourceType"]
+    else:
+        type_key = types["resourceTypeGeneral"] + ";"
+    json_record["resource_type"] = {"id": resourcetypes[type_key]}
+
+    creators = json_record.pop("creators")
+    json_record["creators"] = rdm_creators_contributors(creators)
+
+    if "contributors" in json_record:
+        contributors = json_record.pop("contributors")
+        json_record["contributors"] = rdm_creators_contributors(contributors)
+
+    titles = json_record.pop("titles")
+    additional = []
+    for title in titles:
+        if "titleType" not in title:
+            # If there are multiple titles without types, extras will be lost
+            json_record["title"] = title["title"]
+        else:
+            new = {}
+            new["type"] = {"id": titletypes[title["titleType"]]}
+            new["title"] = title["title"]
+            if "lang" in title:
+                new["lang"] = {"id": title["lang"]}
+            additional.append(new)
+    if additional != []:
+        json_record["additional_titles"] = additional
+
+    descriptions = json_record.pop("descriptions")
+    additional = []
+    if len(descriptions) == 1:
+        json_record["description"] = descriptions[0]["description"]
+    else:
+        for description in descriptions:
+            if description["descriptionType"] == "Abstract":
+                # If there are multiple Abstracts, extras will be lost
+                json_record["description"] = description["description"]
+            else:
+                new = {}
+                new["type"] = {"id": descriptiontypes[description["descriptionType"]]}
+                new["description"] = description["description"]
+                if "lang" in description:
+                    new["lang"] = {"id": description["lang"]}
+            additional.append(new)
+    if additional != []:
+        json_record["additional_descriptions"] = additional
+
+    # dates
+    if "dates" in json_record:
+        dates = json_record["dates"]
+        new = []
+        for d in dates:
+            # If metadata has Submitted date, this gets priority
+            if d["dateType"] == "Submitted":
+                json_record["publication_date"] = d["date"]
+            # If we have an Issued but not a Submitted date, this is
+            # publication date
+            elif d["dateType"] == "Issued":
+                json_record["publication_date"] = d["date"]
+            dtype = d.pop("dateType")
+            d["type"] = {"id": datetypes[dtype]}
+            change_label(d, "dateInformation", "description")
+    elif "publicationYear" in json_record:
+        json_record["publication_date"] = json_record.pop("publicationYear")
+    else:
+        json_record["publication_date"] = date.today().isoformat()
+
+    if "subjects" in json_record:
+        for subject in json_record["subjects"]:
+            if "valueURI" in subject:
+                # We assume the URI is a correct subject id for InvenioRDM
+                subject = {"id": subject["valueURI"]}
+
+    if "language" in json_record:
+        json_record["languages"] = [{"id": json_record.pop("language")}]
+
+    # Need to figure out mapping for system-managed DOIs
+    if "identifiers" in json_record:
+        identifiers = []
+        for identifier in json_record["identifiers"]:
+            if identifier["identifierType"] != "DOI":
+                identifier["scheme"] = identifiertypes[identifier.pop("identifierType")]
+                identifiers.append(identifier)
+        json_record["identifiers"] = identifiers
+
+    if "relatedIdentifiers" in json_record:
+        related = json_record.pop("relatedIdentifiers")
+        for identifier in related:
+            change_label(identifier, "relatedIdentifier", "identifier")
+            rel = identifier.pop("relatedIdentifierType")
+            identifier["scheme"] = identifiertypes[rel]
+            rel = identifier.pop("relationType")
+            identifier["relation_type"] = {"id": relationtypes[rel]}
+            if "resourceTypeGeneral" in identifier:
+                rel = identifier.pop("resourceTypeGeneral")
+                identifier["resource_type"] = {"id": resourcetypes[rel + ";"]}
+
+    if "rightsList" in json_record:
+        rights = json_record.pop("rightsList")
+        new = []
+        for right in rights:
+            if "rightsIdentifier" in right:
+                new.append({"id": right["rightsIdentifier"]})
+            else:
+                entry = {"title": {"en": right["rights"]}}
+                if "rightsUri" in right:
+                    link = right["rightsUri"]
+                    entry["link"] = link
+                new.append(entry)
+        json_record["rights"] = new
+
+    if "geoLocations" in json_record:
+        locations = []
+        for location in json_record.pop("geoLocations"):
+            new = {}
+            if "geoLocationPoint" in location:
+                lat = location["geoLocationPoint"]["pointLatitude"]
+                lon = location["geoLocationPoint"]["pointLongitude"]
+                new["geometry"] = {"type": "Point", "coordinates": [lat, lon]}
+            if "geoLocationPlace" in location:
+                new["place"] = location["geoLocationPlace"]
+        json_record["locations"] = {"features": new}
+
+    if "fundingReferences" in json_record:
+        funding = json_record.pop("fundingReferences")
+        new = []
+        for fund in funding:
+            combo = {}
+            funder = {}
+            award = {}
+            if "funderName" in fund:
+                funder["name"] = fund["funderName"]
+            if "funderIdentifier" in fund:
+                funder["identifier"] = fund["funderIdentifier"]
+            if "funderIdentifierType" in fund:
+                funder["scheme"] = fund["funderIdentifierType"]
+            if "awardTitle" in fund:
+                award["title"] = fund["awardTitle"]
+            if "awardNumber" in fund:
+                award["number"] = fund["awardNumber"]
+            if "awardURI" in fund:
+                award["identifier"] = fund["awardURI"]
+            if funder != {}:
+                combo["funder"] = funder
+            if award != {}:
+                combo["award"] = award
+            new.append(combo)
+        json_record["funding"] = new
+
+    return {"metadata": json_record}
 
 
 def customize_schema_4(json_record):

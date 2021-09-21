@@ -1,0 +1,95 @@
+- id: ark
+  props:
+    datacite: ARK
+  title:
+    en: ARK
+- id: arxiv
+  props:
+    datacite: arXiv
+  title:
+    en: arXiv
+- id: bibcode
+  props:
+    datacite: bibcode
+  title:
+    en: Bibcode
+- id: doi
+  props:
+    datacite: DOI
+  title:
+    en: DOI
+- id: ean13
+  props:
+    datacite: EAN13
+  title:
+    en: EAN13
+- id: eissn
+  props:
+    datacite: EISSN
+  title:
+    en: EISSN
+- id: handle
+  props:
+    datacite: Handle
+  title:
+    en: Handle
+- id: igsn
+  props:
+    datacite: IGSN
+  title:
+    en: IGSN
+- id: isbn
+  props:
+    datacite: ISBN
+  title:
+    en: ISBN
+- id: issn
+  props:
+    datacite: ISSN
+  title:
+    en: ISSN
+- id: istc
+  props:
+    datacite: ISTC
+  title:
+    en: ISTC
+- id: lissn
+  props:
+    datacite: LISSN
+  title:
+    en: LISSN
+- id: lsid
+  props:
+    datacite: LSID
+  title:
+    en: LSID
+- id: pmid
+  props:
+    datacite: PMID
+  title:
+    en: PMID
+- id: purl
+  props:
+    datacite: PURL
+  title:
+    en: PURL
+- id: upc
+  props:
+    datacite: UPC
+  title:
+    en: UPC
+- id: url
+  props:
+    datacite: URL
+  title:
+    en: URL
+- id: urn
+  props:
+    datacite: URN
+  title:
+    en: URN
+- id: w3id
+  props:
+    datacite: w3id
+  title:
+    en: W3ID

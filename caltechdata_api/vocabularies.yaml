@@ -19,3 +19,6 @@ relationtypes:
 titletypes:
   pid-type: ttyp
   data-file: vocabularies/title_types.yaml
+identifiertypes:
+  pid-type: idt
+  data-file: vocabularies/identifier_types.yaml

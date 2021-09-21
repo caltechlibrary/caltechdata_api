@@ -1,2 +1,1 @@
-pydocstyle datacite && \
 pytest tests
