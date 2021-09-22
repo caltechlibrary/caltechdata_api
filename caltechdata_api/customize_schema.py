@@ -177,10 +177,15 @@ def customize_schema_rdm(json_record):
         json_record["publication_date"] = date.today().isoformat()
 
     if "subjects" in json_record:
-        for subject in json_record["subjects"]:
+        subjects = json_record.pop("subjects")
+        new = []
+        for subject in subjects:
             if "valueURI" in subject:
                 # We assume the URI is a correct subject id for InvenioRDM
-                subject = {"id": subject["valueURI"]}
+                new.append({"id": subject["valueURI"]})
+            else:
+                new.append(subject)
+        json_record["subjects"] = new
 
     if "language" in json_record:
         json_record["languages"] = [{"id": json_record.pop("language")}]
@@ -196,6 +201,7 @@ def customize_schema_rdm(json_record):
 
     if "relatedIdentifiers" in json_record:
         related = json_record.pop("relatedIdentifiers")
+        new = []
         for identifier in related:
             change_label(identifier, "relatedIdentifier", "identifier")
             rel = identifier.pop("relatedIdentifierType")
@@ -205,6 +211,8 @@ def customize_schema_rdm(json_record):
             if "resourceTypeGeneral" in identifier:
                 rel = identifier.pop("resourceTypeGeneral")
                 identifier["resource_type"] = {"id": resourcetypes[rel + ";"]}
+            new.append(identifier)
+        json_record["related_identifiers"] = new
 
     if "rightsList" in json_record:
         rights = json_record.pop("rightsList")
@@ -230,7 +238,7 @@ def customize_schema_rdm(json_record):
                 new["geometry"] = {"type": "Point", "coordinates": [lat, lon]}
             if "geoLocationPlace" in location:
                 new["place"] = location["geoLocationPlace"]
-        json_record["locations"] = {"features": new}
+        json_record["locations"] = {"features": [new]}
 
     if "fundingReferences" in json_record:
         funding = json_record.pop("fundingReferences")
@@ -244,7 +252,10 @@ def customize_schema_rdm(json_record):
             if "funderIdentifier" in fund:
                 funder["identifier"] = fund["funderIdentifier"]
             if "funderIdentifierType" in fund:
-                funder["scheme"] = fund["funderIdentifierType"]
+                if fund["funderIdentifierType"] == "ROR":
+                    funder["scheme"] = "ror"
+                else:
+                    print(f'Unknown Type mapping {fund["funderIdentifierType"]}')
             if "awardTitle" in fund:
                 award["title"] = fund["awardTitle"]
             if "awardNumber" in fund:
@@ -257,6 +268,11 @@ def customize_schema_rdm(json_record):
                 combo["award"] = award
             new.append(combo)
         json_record["funding"] = new
+
+    if "publicationYear" in json_record:
+        json_record.pop("publicationYear")
+    if "schemaVersion" in json_record:
+        json_record.pop("schemaVersion")
 
     return {"metadata": json_record}
 
