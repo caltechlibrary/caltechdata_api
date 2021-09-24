@@ -76,17 +76,55 @@ def send_s3(filepath, token, production=False):
 
 
 def caltechdata_write(
-    metadata, token, files=[], production=False, schema="40", pilot=False
+    metadata, token=None, files=[], production=False, schema="40", pilot=False
 ):
+
+    # If no token is provided, get from RDMTOK environment variable
+    if not token:
+        token = os.environ["RDMTOK"]
 
     # If files is a string - change to single value array
     if isinstance(files, str) == True:
         files = [files]
 
     if pilot:
-        newdata = customize_schema.customize_schema(
+        data = customize_schema.customize_schema(
             copy.deepcopy(metadata), schema=schema, pilot=True
         )
+        if production == True:
+            url = "https://data-pilot.caltech.edu/"
+            verify = True
+        else:
+            url = "https://127.0.0.1:5000/"
+            verify = False
+
+        headers = {
+            "Authorization": "Bearer %s" % token,
+            "Content-type": "application/json",
+        }
+
+        if not files:
+            data["files"] = {"enabled": False}
+
+        # Make draft and publish
+        results = requests.post(
+            url + "/api/records", headers=headers, json=data, verify=verify
+        )
+
+        if files:
+            f_json = []
+            for f in files:
+                filename = filepath.split("/")[-1]
+                f_json.append({"key": filename})
+            file_link = results.json()["links"]["files"]
+            results = requests.post(
+                file_link, headers=headers, json=f_json, verify=verify
+            )
+
+        publish = results.json()["links"]["publish"]
+        results = requests.post(publish, headers=headers, verify=verify)
+        doi = results.json()["pids"]["doi"]["identifier"]
+        return doi
 
     else:
 

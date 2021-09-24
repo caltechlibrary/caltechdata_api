@@ -56,7 +56,7 @@ def change_label(json, from_label, to_label):
         json[to_label] = json.pop(from_label)
 
 
-def rdm_creators_contributors(person_list):
+def rdm_creators_contributors(person_list, peopleroles):
     new = []
     for cre in person_list:
         new_cre = {}
@@ -75,6 +75,7 @@ def rdm_creators_contributors(person_list):
             for ide in cre["identifiers"]:
                 change_label(ide, "nameIdentifier", "identifier")
                 change_label(ide, "nameIdentifierScheme", "scheme")
+                ide["scheme"] = ide["scheme"].lower()
         if "affiliation" in cre:
             aff_all = []
             # Using ROR as InvenioRDM ID needs to be verified to not break
@@ -88,6 +89,8 @@ def rdm_creators_contributors(person_list):
                     new_aff["name"] = aff["name"]
                 aff_all.append(new_aff)
             new_cre["affiliations"] = aff_all
+        if "contributorType" in cre:
+            new_cre["role"] = {"id": peopleroles[cre.pop("contributorType")]}
         new_cre["person_or_org"] = cre
         new.append(new_cre)
     return new
@@ -115,11 +118,13 @@ def customize_schema_rdm(json_record):
     json_record["resource_type"] = {"id": resourcetypes[type_key]}
 
     creators = json_record.pop("creators")
-    json_record["creators"] = rdm_creators_contributors(creators)
+    json_record["creators"] = rdm_creators_contributors(creators, peopleroles)
 
     if "contributors" in json_record:
         contributors = json_record.pop("contributors")
-        json_record["contributors"] = rdm_creators_contributors(contributors)
+        json_record["contributors"] = rdm_creators_contributors(
+            contributors, peopleroles
+        )
 
     titles = json_record.pop("titles")
     additional = []
@@ -152,7 +157,7 @@ def customize_schema_rdm(json_record):
                 new["description"] = description["description"]
                 if "lang" in description:
                     new["lang"] = {"id": description["lang"]}
-            additional.append(new)
+                additional.append(new)
     if additional != []:
         json_record["additional_descriptions"] = additional
 
@@ -168,9 +173,12 @@ def customize_schema_rdm(json_record):
             # publication date
             elif d["dateType"] == "Issued":
                 json_record["publication_date"] = d["date"]
-            dtype = d.pop("dateType")
-            d["type"] = {"id": datetypes[dtype]}
-            change_label(d, "dateInformation", "description")
+            else:
+                dtype = d.pop("dateType")
+                d["type"] = {"id": datetypes[dtype]}
+                change_label(d, "dateInformation", "description")
+                new.append(d)
+        json_record["dates"] = new
     elif "publicationYear" in json_record:
         json_record["publication_date"] = json_record.pop("publicationYear")
     else:
