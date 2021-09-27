@@ -102,6 +102,10 @@ def caltechdata_write(
             "Authorization": "Bearer %s" % token,
             "Content-type": "application/json",
         }
+        f_headers = {
+            "Authorization": "Bearer %s" % token,
+            "Content-type": "application/octet-stream",
+        }
 
         if not files:
             data["files"] = {"enabled": False}
@@ -111,18 +115,42 @@ def caltechdata_write(
             url + "/api/records", headers=headers, json=data, verify=verify
         )
 
+        publish = results.json()["links"]["publish"]
+
         if files:
             f_json = []
+            f_list = {}
             for f in files:
-                filename = filepath.split("/")[-1]
+                filename = f.split("/")[-1]
                 f_json.append({"key": filename})
+                f_list[filename] = f
             file_link = results.json()["links"]["files"]
             results = requests.post(
                 file_link, headers=headers, json=f_json, verify=verify
             )
+            # Now we have the upload links
+            for entry in results.json()["entries"]:
+                link = entry["links"]["content"]
+                commit = entry["links"]["commit"]
+                name = entry["key"]
+                infile = open(f_list[name], "rb")
+                # size = infile.seek(0, 2)
+                # infile.seek(0, 0)  # reset at beginning
+                result = requests.put(
+                    link, headers=f_headers, verify=verify, data=infile
+                )
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
+                result = requests.post(commit, headers=headers, verify=verify)
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
 
-        publish = results.json()["links"]["publish"]
         results = requests.post(publish, headers=headers, verify=verify)
+        if results.status_code != 202:
+            print(results.text)
+            exit()
         doi = results.json()["pids"]["doi"]["identifier"]
         return doi
 
