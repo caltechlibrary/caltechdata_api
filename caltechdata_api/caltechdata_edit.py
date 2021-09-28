@@ -1,9 +1,10 @@
 import copy
 import json
 
+import requests
 from requests import session
 
-from caltechdata_api import customize_schema, send_s3
+from caltechdata_api import customize_schema, send_s3, write_files_rdm
 
 
 def caltechdata_unembargo(token, ids, production=False):
@@ -50,7 +51,15 @@ def caltechdata_unembargo(token, ids, production=False):
 
 
 def caltechdata_edit(
-    token, ids, metadata={}, files={}, delete={}, production=False, schema="40"
+    token,
+    ids,
+    metadata={},
+    files={},
+    delete={},
+    production=False,
+    schema="40",
+    pilot=False,
+    publish=False,
 ):
     """Including files will only replaces files if they have the same name
     The delete option will delete any existing files with a given file extension
@@ -63,6 +72,75 @@ def caltechdata_edit(
         ids = [str(ids)]
     if isinstance(ids, str):
         ids = [ids]
+
+    if pilot:
+        data = customize_schema.customize_schema(
+            copy.deepcopy(metadata), schema=schema, pilot=True
+        )
+        if production == True:
+            url = "https://data-pilot.caltech.edu/"
+            verify = True
+        else:
+            url = "https://127.0.0.1:5000/"
+            verify = False
+
+        headers = {
+            "Authorization": "Bearer %s" % token,
+            "Content-type": "application/json",
+        }
+        f_headers = {
+            "Authorization": "Bearer %s" % token,
+            "Content-type": "application/octet-stream",
+        }
+
+        if delete:
+            print(
+                """WARNING: Delete command is depreciated for pilot; only the
+            files listed in the file option will be added to new version of
+            record"""
+            )
+
+        completed = []
+
+        for idv in ids:
+            if files:
+                # We need to make new version
+                result = requests.post(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                    json=data,
+                    verify=verify,
+                )
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
+                idv = result.json()["id"]
+
+                file_link = result.json()["links"]["files"]
+                write_files_rdm(files, file_link, headers, f_headers, verify)
+
+            else:
+                # just update metadata
+                result = requests.post(
+                    url + "/api/records/" + idv,
+                    headers=headers,
+                    json=data,
+                    verify=verify,
+                )
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
+
+            if publish:
+                publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
+                result = requests.post(publish_link, headers=headers, verify=verify)
+                if result.status_code != 202:
+                    print(result.text)
+                    exit()
+                doi = result.json()["pids"]["doi"]["identifier"]
+                completed.append(doi)
+            else:
+                completed.append(idv)
 
     headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
 

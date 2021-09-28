@@ -8,6 +8,35 @@ from json.decoder import JSONDecodeError
 from caltechdata_api import customize_schema
 
 
+def write_files_rdm(files, file_link, headers, f_headers, verify):
+    f_json = []
+    f_list = {}
+    for f in files:
+        filename = f.split("/")[-1]
+        f_json.append({"key": filename})
+        f_list[filename] = f
+    result = requests.post(file_link, headers=headers, json=f_json, verify=verify)
+    if result.status_code != 201:
+        print(result.text)
+        exit()
+    # Now we have the upload links
+    for entry in result.json()["entries"]:
+        link = entry["links"]["content"]
+        commit = entry["links"]["commit"]
+        name = entry["key"]
+        infile = open(f_list[name], "rb")
+        # size = infile.seek(0, 2)
+        # infile.seek(0, 0)  # reset at beginning
+        result = requests.put(link, headers=f_headers, verify=verify, data=infile)
+        if result.status_code != 200:
+            print(result.text)
+            exit()
+        result = requests.post(commit, headers=headers, verify=verify)
+        if result.status_code != 200:
+            print(result.text)
+            exit()
+
+
 def send_s3(filepath, token, production=False):
 
     if production == True:
@@ -76,7 +105,13 @@ def send_s3(filepath, token, production=False):
 
 
 def caltechdata_write(
-    metadata, token=None, files=[], production=False, schema="40", pilot=False
+    metadata,
+    token=None,
+    files=[],
+    production=False,
+    schema="40",
+    pilot=False,
+    publish=False,
 ):
 
     # If no token is provided, get from RDMTOK environment variable
@@ -111,48 +146,29 @@ def caltechdata_write(
             data["files"] = {"enabled": False}
 
         # Make draft and publish
-        results = requests.post(
+        result = requests.post(
             url + "/api/records", headers=headers, json=data, verify=verify
         )
+        if result.status_code != 201:
+            print(result.text)
+            exit()
 
-        publish = results.json()["links"]["publish"]
+        idv = result.json()["id"]
+        publish_link = result.json()["links"]["publish"]
 
         if files:
-            f_json = []
-            f_list = {}
-            for f in files:
-                filename = f.split("/")[-1]
-                f_json.append({"key": filename})
-                f_list[filename] = f
-            file_link = results.json()["links"]["files"]
-            results = requests.post(
-                file_link, headers=headers, json=f_json, verify=verify
-            )
-            # Now we have the upload links
-            for entry in results.json()["entries"]:
-                link = entry["links"]["content"]
-                commit = entry["links"]["commit"]
-                name = entry["key"]
-                infile = open(f_list[name], "rb")
-                # size = infile.seek(0, 2)
-                # infile.seek(0, 0)  # reset at beginning
-                result = requests.put(
-                    link, headers=f_headers, verify=verify, data=infile
-                )
-                if result.status_code != 200:
-                    print(result.text)
-                    exit()
-                result = requests.post(commit, headers=headers, verify=verify)
-                if result.status_code != 200:
-                    print(result.text)
-                    exit()
+            file_link = result.json()["links"]["files"]
+            write_files_rdm(files, file_link, headers, f_headers, verify)
 
-        results = requests.post(publish, headers=headers, verify=verify)
-        if results.status_code != 202:
-            print(results.text)
-            exit()
-        doi = results.json()["pids"]["doi"]["identifier"]
-        return doi
+        if publish:
+            result = requests.post(publish_link, headers=headers, verify=verify)
+            if result.status_code != 202:
+                print(result.text)
+                exit()
+            doi = result.json()["pids"]["doi"]["identifier"]
+            return doi
+        else:
+            return idv
 
     else:
 

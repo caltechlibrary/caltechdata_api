@@ -14,6 +14,7 @@ import pytest
 
 from caltechdata_api import download_url, download_file
 
+
 @pytest.mark.skip(reason="works, don't want to do unnecessary downloads")
 def test_download():
     """Test that downloads from the DataCite Media API work."""

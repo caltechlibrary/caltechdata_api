@@ -9,8 +9,25 @@ from datacite import schema40, schema43
 from caltechdata_api import decustomize_schema
 
 
-def get_metadata(idv, production=True, validate=True, emails=False, schema="40"):
+def get_metadata(
+    idv, production=True, validate=True, emails=False, schema="40", pilot=False
+):
     # Returns just DataCite metadata or DataCite metadata with emails
+
+    if pilot:
+        if production == True:
+            url = "https://data-pilot.caltech.edu/api/records"
+            verify = True
+        else:
+            url = "https://127.0.0.1:5000/api/records/"
+            verify = False
+
+        headers = {
+            "Authorization": "Bearer %s" % token,
+            "accept": "application/vnd.datacite-json",
+        }
+
+        return results.get(url + idv, headers=headers, verify=verify)
 
     if production == True:
         api_url = "https://data.caltech.edu/api/record/"
