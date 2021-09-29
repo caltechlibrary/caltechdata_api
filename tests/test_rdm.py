@@ -35,8 +35,18 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
 
     assert idv.startswith("10.33569") == False
 
-    full_datacite43_record["metadata"]["title"] = "Edited"
+    full_datacite43_record["title"] = "Edited"
 
-    idv = caltechdata_edit(full_datacite43_record, idv, schema="43", pilot=True)
+    print(full_datacite43_record)
 
-    print(get_metadata(idv, pilot=True))
+    new_idv = caltechdata_edit(
+        idv, full_datacite43_record, schema="43", pilot=True, publish=True
+    )
+
+    assert new_idv != idv
+
+    new_metadata = get_metadata(idv, production=False, pilot=True)
+
+    print(new_metadata)
+
+    assert new_metadata["title"] == "Edited"

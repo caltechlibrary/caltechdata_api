@@ -16,18 +16,22 @@ def get_metadata(
 
     if pilot:
         if production == True:
-            url = "https://data-pilot.caltech.edu/api/records"
+            url = "https://data-pilot.caltech.edu/api/records/"
             verify = True
         else:
             url = "https://127.0.0.1:5000/api/records/"
             verify = False
 
         headers = {
-            "Authorization": "Bearer %s" % token,
-            "accept": "application/vnd.datacite-json",
+            "accept": "application/vnd.datacite.datacite+json",
         }
 
-        return results.get(url + idv, headers=headers, verify=verify)
+        response = requests.get(url + idv, headers=headers, verify=verify)
+        if response.status_code != 200:
+            print(response.text)
+            exit()
+        else:
+            return response.json()
 
     if production == True:
         api_url = "https://data.caltech.edu/api/record/"

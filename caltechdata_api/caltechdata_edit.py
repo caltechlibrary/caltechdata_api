@@ -1,5 +1,4 @@
-import copy
-import json
+import copy, os, json
 
 import requests
 from requests import session
@@ -51,9 +50,9 @@ def caltechdata_unembargo(token, ids, production=False):
 
 
 def caltechdata_edit(
-    token,
     ids,
     metadata={},
+    token=None,
     files={},
     delete={},
     production=False,
@@ -64,6 +63,10 @@ def caltechdata_edit(
     """Including files will only replaces files if they have the same name
     The delete option will delete any existing files with a given file extension
     There are more file operations that could be implemented"""
+
+    # If no token is provided, get from RDMTOK environment variable
+    if not token:
+        token = os.environ["RDMTOK"]
 
     # If files is a string - change to single value array
     if isinstance(files, str) == True:
@@ -106,7 +109,7 @@ def caltechdata_edit(
             if files:
                 # We need to make new version
                 result = requests.post(
-                    url + "/api/records/" + idv + "/draft",
+                    url + "/api/records/" + idv + "/versions",
                     headers=headers,
                     json=data,
                     verify=verify,
@@ -122,12 +125,12 @@ def caltechdata_edit(
             else:
                 # just update metadata
                 result = requests.post(
-                    url + "/api/records/" + idv,
+                    url + "/api/records/" + idv + "/draft",
                     headers=headers,
                     json=data,
                     verify=verify,
                 )
-                if result.status_code != 200:
+                if result.status_code != 201:
                     print(result.text)
                     exit()
 
