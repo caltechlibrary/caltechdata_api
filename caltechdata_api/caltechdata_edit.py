@@ -130,6 +130,7 @@ def caltechdata_edit(
                     json=data,
                     verify=verify,
                 )
+                print(result.text)
                 if result.status_code != 201:
                     print(result.text)
                     exit()

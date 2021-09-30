@@ -35,7 +35,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
 
     assert idv.startswith("10.33569") == False
 
-    full_datacite43_record["title"] = "Edited"
+    full_datacite43_record["publisher"] = "Edited"
 
     print(full_datacite43_record)
 
@@ -49,4 +49,4 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
 
     print(new_metadata)
 
-    assert new_metadata["title"] == "Edited"
+    assert new_metadata["publisher"] == "Edited"
