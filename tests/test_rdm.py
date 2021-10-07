@@ -37,16 +37,32 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
 
     full_datacite43_record["publisher"] = "Edited"
 
-    print(full_datacite43_record)
-
-    new_idv = caltechdata_edit(
+    doi = caltechdata_edit(
         idv, full_datacite43_record, schema="43", pilot=True, publish=True
     )
 
-    assert new_idv != idv
+    assert doi.startswith("10.33569")
+    idv = doi.split("/")[1]
 
     new_metadata = get_metadata(idv, production=False, pilot=True)
 
-    print(new_metadata)
-
     assert new_metadata["publisher"] == "Edited"
+
+    full_datacite43_record["publisher"] = "Again!"
+
+    new_doi = caltechdata_edit(
+        idv,
+        full_datacite43_record,
+        files=["codemeta.json"],
+        schema="43",
+        pilot=True,
+        publish=True,
+    )
+
+    assert new_doi != doi
+
+    idv = new_doi.split("/")[1]
+
+    new_metadata = get_metadata(idv, production=False, pilot=True)
+
+    assert new_metadata["publisher"] == "Again!"

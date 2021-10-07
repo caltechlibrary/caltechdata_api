@@ -108,30 +108,47 @@ def caltechdata_edit(
         for idv in ids:
             if files:
                 # We need to make new version
+                data["files"] = {"enabled": True}
                 result = requests.post(
                     url + "/api/records/" + idv + "/versions",
+                    headers=headers,
+                    verify=verify,
+                )
+                if result.status_code != 201:
+                    print(result.text)
+                    exit()
+                # Get the id of the new version
+                idv = result.json()["id"]
+                # Update metadata
+                result = requests.put(
+                    url + "/api/records/" + idv + "/draft",
                     headers=headers,
                     json=data,
                     verify=verify,
                 )
-                if result.status_code != 200:
-                    print(result.text)
-                    exit()
-                idv = result.json()["id"]
 
                 file_link = result.json()["links"]["files"]
                 write_files_rdm(files, file_link, headers, f_headers, verify)
 
             else:
                 # just update metadata
-                result = requests.post(
+                result = requests.get(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                    verify=verify,
+                )
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
+                # We want files to stay the same as the existing record
+                data["files"] = result.json()["files"]
+                result = requests.put(
                     url + "/api/records/" + idv + "/draft",
                     headers=headers,
                     json=data,
                     verify=verify,
                 )
-                print(result.text)
-                if result.status_code != 201:
+                if result.status_code != 200:
                     print(result.text)
                     exit()
 
@@ -145,6 +162,10 @@ def caltechdata_edit(
                 completed.append(doi)
             else:
                 completed.append(idv)
+        if len(completed) == 1:
+            return completed[0]
+        else:
+            return completed
 
     headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
 
