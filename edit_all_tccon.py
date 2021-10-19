@@ -1,37 +1,42 @@
 import argparse, os, json, requests
 from caltechdata_api import caltechdata_edit, decustomize_schema
 
-#Get access token from TIND sed as environment variable with source token.bash
-token = os.environ['TINDTOK']
+# Get access token from TIND sed as environment variable with source token.bash
+token = os.environ["TINDTOK"]
 
 production = True
 
 if production == True:
-    url = 'https://data.caltech.edu/api/records'
+    url = "https://data.caltech.edu/api/records"
 else:
-    url = 'https://cd-sandbox.tind.io/api/records'
+    url = "https://cd-sandbox.tind.io/api/records"
 
-response = requests.get(url+'/?size=1000&q=subjects:TCCON')
+response = requests.get(url + "/?size=1000&q=subjects:TCCON")
 hits = response.json()
 
-for h in hits['hits']['hits']:
-        rid = h['id']
-        print(rid)
-        record = decustomize_schema(h['metadata'],True)
-        replace = False
-        to_update =\
-        [288,269,295,291,279,284,266,281,286,278,280,293,283,287,210,274,276,290,300,285,270,268,267,302,744,282,272,289]
-        if rid in to_update:
-            dates = []
-            for d in record['dates']:
-                if d['dateType']=='Issued':
-                    d['dateType'] = 'Submitted'
-                    dates.append(d)
-                elif d['dateType']!='Submitted':
-                    dates.append(d)
-                else:
-                    print("Duplicate ",d)
-            metadata ={'dates':dates}
-            print(metadata)
-            response = caltechdata_edit(token, rid, metadata, {}, {}, production)
-            print(response)
+wiki1 = "https://tccon-wiki.caltech.edu/Network_Policy/Data_Use_Policy/Data_Description"
+new1 = "https://tccon-wiki.caltech.edu/Main/DataDescription"
+wiki2 = "https://tccon-wiki.caltech.edu/Sites"
+new2 = "https://tccon-wiki.caltech.edu/Main/TCCONSites"
+site = "http://tccondata.org/"
+new3 = "https://tccondata.org"
+exsite = "http://tccondata.org"
+
+for h in hits["hits"]["hits"]:
+    rid = h["id"]
+    print(rid)
+    record = decustomize_schema(h["metadata"], True)
+    updated = {}
+    if "relatedIdentifiers" in record:
+        for related in record["relatedIdentifiers"]:
+            if related["relatedIdentifier"] == wiki1:
+                related["relatedIdentifier"] = new1
+            if related["relatedIdentifier"] == wiki2:
+                related["relatedIdentifier"] = new2
+            if related["relatedIdentifier"] == site:
+                related["relatedIdentifier"] = new3
+            if related["relatedIdentifier"] == exsite:
+                related["relatedIdentifier"] = new3
+        updated["relatedIdentifiers"] = record["relatedIdentifiers"]
+    response = caltechdata_edit(rid, updated, token, {}, {}, production)
+    print(response)
