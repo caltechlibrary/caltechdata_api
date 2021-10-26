@@ -31,6 +31,6 @@ else:
 production = True
 
 response = caltechdata_edit(
-    token, args.ids, metadata, args.fnames, args.delete, production, args.schema
+    args.ids, metadata, token, args.fnames, args.delete, production, args.schema
 )
 print(response)
