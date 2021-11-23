@@ -15,7 +15,7 @@ args = parser.parse_args()
 # Get access token as environment variable
 token = os.environ["TINDTOK"]
 
-endpoint = "https://renc.osn.xsede.org"
+endpoint = "https://renc.osn.xsede.org/"
 
 # Get metadata and files from bucket
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
@@ -26,9 +26,9 @@ idv = args.id[0]
 metadata = get_metadata(idv, schema="43")
 
 # Find the files
-files = s3.glob(path + "/*.zip")
+files = s3.glob(path + "/*.nc")
 
-description_string = f"Files available via S3 at {endpoint}/{path}<br>"
+description_string = f"Files available via S3 at {endpoint}{path}<br>"
 for link in files:
     fname = link.split("/")[-1]
     link = endpoint + link
