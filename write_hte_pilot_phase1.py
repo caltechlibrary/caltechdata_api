@@ -54,112 +54,126 @@ with open("completed_dois.json", "r") as infile:
 for doi in completed:
     records.remove(doi)
 
+with open("excluded_dois.json", "r") as infile:
+    excluded = json.load(infile)
+
+for doi in excluded:
+    records.remove(doi)
+
 for record in records:
     base = record.split("/")[1]
     meta_path = path + base + "/" + args.json_file[0]
-    metaf = s3.open(meta_path, "rb")
-    metadata = json.load(metaf)
+    metadata = None
+    try:
+        metaf = s3.open(meta_path, "rb")
+        metadata = json.load(metaf)
+    except:
+        excluded.append(record)
+        print(f"Missing metadata {record}")
+        with open("excluded_dois.json", "w") as outfile:
+            data = json.dump(excluded, outfile)
 
-    metadata["identifiers"] = [{"identifier": record, "identifierType": "DOI"}]
+    if metadata:
+        metadata["identifiers"] = [{"identifier": record, "identifierType": "DOI"}]
 
-    # Find the zip file or files
-    zipf = s3.glob(path + base + "/*.zip")
+        # Find the zip file or files
+        zipf = s3.glob(path + base + "/*.zip")
 
-    description_string = f"Files available via S3 at {endpoint}{path}<br>"
-    for link in zipf:
-        fname = link.split("/")[-1]
-        link = endpoint + link
-        description_string += f"""{fname} <a class="btn btn-xs piwik_download" 
-        type="application/octet-stream" href="{link}">
-        <i class="fa fa-download"></i> Download</a>    <br>"""
+        description_string = f"Files available via S3 at {endpoint}{path}<br>"
+        for link in zipf:
+            fname = link.split("/")[-1]
+            link = endpoint + link
+            description_string += f"""{fname} <a class="btn btn-xs piwik_download" 
+            type="application/octet-stream" href="{link}">
+            <i class="fa fa-download"></i> Download</a>    <br>"""
 
-    descr = [
-        {"description": description_string, "descriptionType": "Other"},
-        {"description": abstract, "descriptionType": "Abstract"},
-    ]
-    if "descriptions" in metadata:
-        metadata["descriptions"] += descr
-    else:
-        metadata["descriptions"] = descr
+        descr = [
+            {"description": description_string, "descriptionType": "Other"},
+            {"description": abstract, "descriptionType": "Abstract"},
+        ]
+        if "descriptions" in metadata:
+            metadata["descriptions"] += descr
+        else:
+            metadata["descriptions"] = descr
 
-    metadata["types"] = {"resourceType": "", "resourceTypeGeneral": "Dataset"}
-    metadata["schemaVersion"] = "http://datacite.org/schema/kernel-4"
-    metadata["publicationYear"] = str(metadata["publicationYear"])
-    metadata["rightsList"] = [
-        {
-            "rights": "cc-by-sa-4.0",
-            "rightsUri": "http://creativecommons.org/licenses/by-sa/4.0/",
-        }
-    ]
-    static = [
-        {
-            "relatedIdentifier": "10.25989/es8t-kswe",
-            "relationType": "IsPartOf",
-            "relatedIdentifierType": "DOI",
-        },
-        {
-            "relatedIdentifier": "10.1038/s41524-019-0216-x",
-            "relationType": "IsDocumentedBy",
-            "relatedIdentifierType": "DOI",
-        },
-    ]
-    if "relatedIdentifiers" in metadata:
-        metadata["relatedIdentifiers"] += static
-    else:
-        metadata["relatedIdentifiers"] = static
-    metadata["fundingReferences"] = [
-        {
-            "funderName": "Office of Science of the U.S. Department of Energy",
-            "awardNumber": "DE-SC0004993",
-        }
-    ]
+        metadata["types"] = {"resourceType": "", "resourceTypeGeneral": "Dataset"}
+        metadata["schemaVersion"] = "http://datacite.org/schema/kernel-4"
+        metadata["publicationYear"] = str(metadata["publicationYear"])
+        metadata["rightsList"] = [
+            {
+                "rights": "cc-by-sa-4.0",
+                "rightsUri": "http://creativecommons.org/licenses/by-sa/4.0/",
+            }
+        ]
+        static = [
+            {
+                "relatedIdentifier": "10.25989/es8t-kswe",
+                "relationType": "IsPartOf",
+                "relatedIdentifierType": "DOI",
+            },
+            {
+                "relatedIdentifier": "10.1038/s41524-019-0216-x",
+                "relationType": "IsDocumentedBy",
+                "relatedIdentifierType": "DOI",
+            },
+        ]
+        if "relatedIdentifiers" in metadata:
+            metadata["relatedIdentifiers"] += static
+        else:
+            metadata["relatedIdentifiers"] = static
+        metadata["fundingReferences"] = [
+            {
+                "funderName": "Office of Science of the U.S. Department of Energy",
+                "awardNumber": "DE-SC0004993",
+            }
+        ]
 
-    for meta in metadata.copy():
-        if metadata[meta] == []:
-            metadata.pop(meta)
-    for contributor in metadata["contributors"]:
-        if contributor["affiliation"] == []:
-            contributor.pop("affiliation")
-    new_cre = []
-    for creator in metadata["creators"]:
-        if creator["affiliation"] == []:
-            creator.pop("affiliation")
-        if creator["name"] != "Contributors":
-            new_cre.append(creator)
-    metadata["creators"] = new_cre
+        for meta in metadata.copy():
+            if metadata[meta] == []:
+                metadata.pop(meta)
+        for contributor in metadata["contributors"]:
+            if contributor["affiliation"] == []:
+                contributor.pop("affiliation")
+        new_cre = []
+        for creator in metadata["creators"]:
+            if creator["affiliation"] == []:
+                creator.pop("affiliation")
+            if creator["name"] != "Contributors":
+                new_cre.append(creator)
+        metadata["creators"] = new_cre
 
-    unnecessary = [
-        "id",
-        "doi",
-        "container",
-        "providerId",
-        "clientId",
-        "agency",
-        "state",
-    ]
-    for un in unnecessary:
-        if un in metadata:
-            metadata.pop(un)
-    if "dates" in metadata:
-        for d in metadata["dates"]:
-            d["date"] = str(d["date"])
-    valid = schema43.validate(metadata)
-    if not valid:
-        v = schema43.validator.validate(metadata)
-        errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
-        for error in errors:
-            print(error.message)
-        exit()
+        unnecessary = [
+            "id",
+            "doi",
+            "container",
+            "providerId",
+            "clientId",
+            "agency",
+            "state",
+        ]
+        for un in unnecessary:
+            if un in metadata:
+                metadata.pop(un)
+        if "dates" in metadata:
+            for d in metadata["dates"]:
+                d["date"] = str(d["date"])
+        valid = schema43.validate(metadata)
+        if not valid:
+            v = schema43.validator.validate(metadata)
+            errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
+            for error in errors:
+                print(error.message)
+            exit()
 
-    production = True
+        production = True
 
-    response = caltechdata_write(metadata, token, [], production, "43")
-    print(response)
+        response = caltechdata_write(metadata, token, [], production, "43")
+        print(response)
 
-    url = response.split("record ")[1].strip()[:-1]
+        url = response.split("record ")[1].strip()[:-1]
 
-    doi = datacite.public_doi(metadata, url, doi=record)
-    completed.append(doi)
-    print(doi)
-    with open("completed_dois.json", "w") as outfile:
-        data = json.dump(completed, outfile)
+        doi = datacite.public_doi(metadata, url, doi=record)
+        completed.append(doi)
+        print(doi)
+        with open("completed_dois.json", "w") as outfile:
+            data = json.dump(completed, outfile)
