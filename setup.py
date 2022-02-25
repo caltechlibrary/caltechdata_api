@@ -7,6 +7,7 @@
 import io, json
 import os
 import sys
+import glob
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
@@ -17,6 +18,11 @@ def read(fname):
         src = f.read()
     return src
 
+def package_files(package, directory):
+    os.chdir(package)
+    paths = glob.glob(directory + "/**", recursive=True)
+    os.chdir("..")
+    return paths
 
 codemeta_json = "codemeta.json"
 
@@ -58,6 +64,9 @@ REQUIRED = ["requests", "datacite>1.1.0", "tqdm", "pyyaml"]
 EXTRAS = {
     # 'fancy feature': ['django'],
 }
+
+files = package_files("caltechdata_api", "vocabularies") 
+files.append("vocabularies.yaml")
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------
@@ -136,6 +145,7 @@ setup(
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
+    package_data={name: files},
     license=license,
     classifiers=[
         # Trove classifiers
