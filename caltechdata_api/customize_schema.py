@@ -67,7 +67,10 @@ def rdm_creators_contributors(person_list, peopleroles):
             elif ntype == "Organizational":
                 cre["type"] = "organizational"
             else:
-                print(f"NAME TYPE {ntype} NOT KNOWN")
+                print(f"Name type {ntype} not known")
+        else:
+            # We default to organizational if not known
+            cre["type"] = "personal"
         change_label(cre, "givenName", "given_name")
         change_label(cre, "familyName", "family_name")
         change_label(cre, "nameIdentifiers", "identifiers")
@@ -112,7 +115,10 @@ def customize_schema_rdm(json_record):
     # Resource types are stored in vocabulary as General;Type
     types = json_record.pop("types")
     if "resourceType" in types:
-        type_key = types["resourceTypeGeneral"] + ";" + types["resourceType"]
+        if types["resourceTypeGeneral"] == types["resourceType"]:
+            type_key = types["resourceTypeGeneral"] + ";"
+        else:
+            type_key = types["resourceTypeGeneral"] + ";" + types["resourceType"]
     else:
         type_key = types["resourceTypeGeneral"] + ";"
     json_record["resource_type"] = {"id": resourcetypes[type_key]}

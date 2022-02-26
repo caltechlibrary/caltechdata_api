@@ -126,11 +126,12 @@ def caltechdata_write(
         data = customize_schema.customize_schema(
             copy.deepcopy(metadata), schema=schema, pilot=True
         )
+        print(data)
         if production == True:
             url = "https://data-pilot.caltech.edu/"
             verify = True
         else:
-            url = "https://127.0.0.1:5000/"
+            url = "https://coda.caltechlibrary.dev/"
             verify = False
 
         headers = {
@@ -165,10 +166,10 @@ def caltechdata_write(
             if result.status_code != 202:
                 print(result.text)
                 exit()
-            doi = result.json()["pids"]["doi"]["identifier"]
-            return doi
-        else:
-            return idv
+            pids = result.json()["pids"]
+            if "doi" in pids:
+                idv = pids["doi"]["identifier"]
+        return idv
 
     else:
 
