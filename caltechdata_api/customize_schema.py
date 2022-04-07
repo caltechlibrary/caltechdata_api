@@ -416,11 +416,11 @@ def customize_schema_43(json_record):
                         }
                     )
                 new["contributorIdentifiers"] = idn
-            if "affiliation" in a:
+            if "affiliation" in c:
                 affiliations = []
-                for aff in a["affiliation"]:
+                for aff in c["affiliation"]:
                     affiliations.append(aff["name"])
-                new["affiliation"] = a["affiliation"]
+                new["affiliation"] = c["affiliation"]
                 new["contributorAffiliation"] = affiliations
             new["contributorName"] = c["name"]
             if "contributorType" in c:
