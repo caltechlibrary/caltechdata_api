@@ -86,8 +86,11 @@ def rdm_creators_contributors(person_list, peopleroles):
             for aff in cre.pop("affiliation"):
                 new_aff = {}
                 if "affiliationIdentifierScheme" in aff:
+                    identifier = aff["affiliationIdentifier"]
                     if aff["affiliationIdentifierScheme"] == "ROR":
-                        new_aff["id"] = aff["affiliationIdentifier"]
+                        if 'ror.org/' in identifier:
+                            identifier = identifier.split('ror.org/')[1]
+                        new_aff["id"] = identifier
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
                 aff_all.append(new_aff)
@@ -172,23 +175,30 @@ def customize_schema_rdm(json_record):
         dates = json_record["dates"]
         new = []
         for d in dates:
+            date = d["date"]
+            #Strip out any time imformation
+            if ' ' in date:
+                date = date.split(' ')[0]
             # If metadata has Submitted date, this gets priority
             if d["dateType"] == "Submitted":
-                json_record["publication_date"] = d["date"]
+                json_record["publication_date"] = date
             # If we have an Issued but not a Submitted date, this is
             # publication date
             elif d["dateType"] == "Issued":
-                json_record["publication_date"] = d["date"]
+                json_record["publication_date"] = date
             else:
                 dtype = d.pop("dateType")
                 d["type"] = {"id": datetypes[dtype]}
+                d['date'] = date
                 change_label(d, "dateInformation", "description")
                 new.append(d)
         json_record["dates"] = new
-    elif "publicationYear" in json_record:
-        json_record["publication_date"] = json_record.pop("publicationYear")
-    else:
-        json_record["publication_date"] = date.today().isoformat()
+    if 'publication_date' not in json_record:
+        #A publication date isalways required
+        if "publicationYear" in json_record:
+            json_record["publication_date"] = json_record.pop("publicationYear")
+        else:
+            json_record["publication_date"] = date.today().isoformat()
 
     if "subjects" in json_record:
         subjects = json_record.pop("subjects")
@@ -202,7 +212,11 @@ def customize_schema_rdm(json_record):
         json_record["subjects"] = new
 
     if "language" in json_record:
-        json_record["languages"] = [{"id": json_record.pop("language")}]
+        language = json_record.pop("language")
+        #Only known language in data set; so no need to do vocabulary lookup
+        if language == 'English':
+            language = 'eng'
+        json_record["languages"] = [{"id": language}]
 
     # Need to figure out mapping for system-managed DOIs
     if "identifiers" in json_record:
