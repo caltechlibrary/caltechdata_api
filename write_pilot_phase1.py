@@ -11,7 +11,6 @@ parser.add_argument("folder", nargs=1, help="Folder")
 parser.add_argument(
     "json_file", nargs=1, help="file name for json DataCite metadata file"
 )
-parser.add_argument("-flinks", nargs="*", help="File Links")
 
 args = parser.parse_args()
 

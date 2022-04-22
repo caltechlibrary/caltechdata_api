@@ -115,7 +115,7 @@ if __name__ == "__main__":
     for idv in args.ids:
         metadata = get_metadata(idv, production, validate, emails, schema)
         outfile = open(str(idv) + ".json", "w")
-        outfile.write(json.dumps(metadata,indent=4))
+        outfile.write(json.dumps(metadata, indent=4))
         outfile.close()
         if args.save_xml == True:
             xml = schema40.tostring(metadata)
