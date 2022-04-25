@@ -528,7 +528,12 @@ def customize_standard(json_record):
         # else:
         # if licenses[0]['rights'] == 'public-domain':
         #    licenses[0]['rights'] = 'other'
-        json_record["rightsList"] = licenses[0]
+        #Only transfer the first license
+        lic = licenses[0]
+        if 'rightsUri' in lic:
+            #4.3 capitalization correction
+            lic['rightsURI'] = lic.pop('rightsUri')
+        json_record["rightsList"] = lic
         # Only transfers first license
 
     # Geo
