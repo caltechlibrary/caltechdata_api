@@ -220,7 +220,7 @@ def caltechdata_edit(
                             fids.append(fu)
 
             if len(fids) > 0:
-                fjson = {"delete": fids}
+                fjson["delete"] = fids
 
             metadata["files"] = fjson
 
