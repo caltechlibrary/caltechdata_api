@@ -399,7 +399,6 @@ def customize_schema_43(json_record):
                 for aff in a["affiliation"]:
                     affiliations.append(aff["name"])
                 new["authorAffiliation"] = affiliations
-                new["affiliation"] = a["affiliation"]
             new["authorName"] = a["name"]
             if "nameIdentifiers" in a:
                 idn = []
@@ -434,7 +433,6 @@ def customize_schema_43(json_record):
                 affiliations = []
                 for aff in c["affiliation"]:
                     affiliations.append(aff["name"])
-                new["affiliation"] = c["affiliation"]
                 new["contributorAffiliation"] = affiliations
             new["contributorName"] = c["name"]
             if "contributorType" in c:
