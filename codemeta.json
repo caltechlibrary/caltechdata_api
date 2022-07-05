@@ -12,7 +12,10 @@
       "@type": "Person",
       "givenName": "Thomas E",
       "familyName": "Morrell",
-      "affiliation": "Caltech Library",
+      "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech Library"
+            },
       "email": "tmorrell@caltech.edu",
       "@id": "https://orcid.org/0000-0001-9266-5146"
     }],
