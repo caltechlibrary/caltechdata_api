@@ -126,7 +126,7 @@ def caltechdata_write(
         data = customize_schema.customize_schema(
             copy.deepcopy(metadata), schema=schema, pilot=True
         )
-        print(data)
+        print(json.dumps(data))
         if production == True:
             url = "https://data-pilot.caltech.edu/"
             verify = True

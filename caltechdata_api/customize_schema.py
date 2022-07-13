@@ -384,7 +384,7 @@ def customize_schema_43(json_record):
             else:
                 alt.append(identifier)
         if alt != []:
-            json_record["alternativeIdentifiers"] = alt
+            json_record["alternateIdentifiers"] = alt
         del json_record["identifiers"]
 
     # change author formatting
