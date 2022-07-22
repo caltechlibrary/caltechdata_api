@@ -55,9 +55,17 @@ for link in files:
             if "." not in name:
                 level_2_files = s3.glob(file + "/*")
                 for f in level_2_files:
-                    description_string = add_description_line(
-                        f, endpoint, description_string, folder
-                    )
+                    name = f.split("/")[-1]
+                    if "." not in name:
+                        level_3_files = s3.glob(f + "/*")
+                        for l3 in level_3_files:
+                            description_string = add_description_line(
+                        l3, endpoint, description_string, folder
+                        )
+                    else:
+                        description_string = add_description_line(
+                            f, endpoint, description_string, folder
+                        )
             else:
                 description_string = add_description_line(
                     file, endpoint, description_string, folder
