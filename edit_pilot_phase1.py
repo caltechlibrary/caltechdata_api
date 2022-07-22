@@ -4,8 +4,11 @@ from datacite import schema43
 from caltechdata_api import caltechdata_edit, get_metadata
 
 
-def add_description_line(link, endpoint, description_string):
-    fname = link.split("/")[-1]
+def add_description_line(link, endpoint, description_string, path_split=None):
+    if path_split:
+        fname = link.split(f"{path_split}/")[1]
+    else:
+        fname = link.split("/")[-1]
     link = endpoint + link
     link = link.replace(" ", "%20")
     description_string += f"""{fname} <a class="btn btn-xs piwik_download"
@@ -31,7 +34,9 @@ endpoint = "https://renc.osn.xsede.org/"
 # Get metadata and files from bucket
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
-path = "ini210004tommorrell/" + args.folder[0] + "/"
+folder = args.folder[0]
+
+path = "ini210004tommorrell/" + folder + "/"
 
 idv = args.id[0]
 metadata = get_metadata(idv, schema="43")
@@ -46,9 +51,17 @@ for link in files:
         # If there is a directory, get files
         folder_files = s3.glob(link + "/*")
         for file in folder_files:
-            description_string = add_description_line(
-                file, endpoint, description_string
-            )
+            name = file.split("/")[-1]
+            if "." not in name:
+                level_2_files = s3.glob(file + "/*")
+                for f in level_2_files:
+                    description_string = add_description_line(
+                        f, endpoint, description_string, folder
+                    )
+            else:
+                description_string = add_description_line(
+                    file, endpoint, description_string, folder
+                )
     else:
         description_string = add_description_line(link, endpoint, description_string)
 
