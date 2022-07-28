@@ -207,13 +207,22 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
     )
     if "alternateIdentifiers" in json_record:
         for altid in json_record["alternateIdentifiers"]:
-            if altid["identifierType"] != "CaltechDATA_Identifier":
-                identifiers.append(
+            if 'identifierType' in altid:
+                if altid["identifierType"] != "CaltechDATA_Identifier":
+                    identifiers.append(
+                    {
+                        "identifier": altid["alternateIdentifier"],
+                        "identifierType": altid["identifierType"],
+                    }
+                    )
+            if 'alternateIdentifierType' in altid:
+                if altid["alternateIdentifierType"] != "CaltechDATA_Identifier":
+                    identifiers.append(
                     {
                         "identifier": altid["alternateIdentifier"],
                         "identifierType": altid["alternateIdentifierType"],
                     }
-                )
+                    )
         del json_record["alternateIdentifiers"]
     #Deal with incorrect metadata in CaltechDATA
     if "alternativeIdentifiers" in json_record:
