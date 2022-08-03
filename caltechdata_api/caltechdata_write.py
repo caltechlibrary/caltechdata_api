@@ -128,7 +128,7 @@ def caltechdata_write(
         )
         print(json.dumps(data))
         if production == True:
-            url = "https://data-pilot.caltech.edu/"
+            url = "https://data.caltechlibrary.dev/"
             verify = True
         else:
             url = "https://coda.caltechlibrary.dev/"
