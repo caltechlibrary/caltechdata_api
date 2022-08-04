@@ -8,7 +8,7 @@ from json.decoder import JSONDecodeError
 from caltechdata_api import customize_schema
 
 
-def write_files_rdm(files, file_link, headers, f_headers, verify):
+def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
     f_json = []
     f_list = {}
     for f in files:
@@ -24,7 +24,10 @@ def write_files_rdm(files, file_link, headers, f_headers, verify):
         link = entry["links"]["content"]
         commit = entry["links"]["commit"]
         name = entry["key"]
-        infile = open(f_list[name], "rb")
+        if s3:
+            infile = s3.open(f_list[name], "rb")
+        else:
+            infile = open(f_list[name], "rb")
         # size = infile.seek(0, 2)
         # infile.seek(0, 0)  # reset at beginning
         result = requests.put(link, headers=f_headers, verify=verify, data=infile)
@@ -112,7 +115,9 @@ def caltechdata_write(
     schema="40",
     pilot=False,
     publish=False,
+    s3=None
 ):
+    #S3 is a s3sf object for directly opening files
 
     # If no token is provided, get from RDMTOK environment variable
     if not token:
@@ -159,16 +164,19 @@ def caltechdata_write(
 
         if files:
             file_link = result.json()["links"]["files"]
-            write_files_rdm(files, file_link, headers, f_headers, verify)
+            write_files_rdm(files, file_link, headers, f_headers, verify, s3)
 
         if publish:
             result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
                 print(result.text)
                 exit()
-            pids = result.json()["pids"]
-            if "doi" in pids:
-                idv = pids["doi"]["identifier"]
+            #Not sure of behavior here. DOI makes sense for most cases....but
+            #not something like TCCON. Probably just stick with idv defined
+            #above
+            #pids = result.json()["pids"]
+            #if "doi" in pids:
+            #    idv = pids["doi"]["identifier"]
         return idv
 
     else:
