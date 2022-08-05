@@ -487,8 +487,12 @@ def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
     existing = False
     if "alternateIdentifiers" in json_record:
         for altid in json_record["alternateIdentifiers"]:
-            if altid["alternateIdentifierType"] == "CaltechDATA_Identifier":
-                existing = True
+            if "alternateIdentifierType" in altid:
+                if altid["alternateIdentifierType"] == "CaltechDATA_Identifier":
+                    existing = True
+            if 'identifierType' in altid:
+                if altid["identifierType"] == "CaltechDATA_Identifier":
+                    existing = True
         if existing == False:
             json_record["alternateIdentifiers"].append(idv)
     else:
