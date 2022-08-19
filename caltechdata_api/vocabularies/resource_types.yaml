@@ -485,6 +485,25 @@
     - linkable
   title:
     en: Diagram
+- id: image-map
+  props:
+    csl: figure
+    datacite_general: Image
+    datacite_type: Map
+    openaire_resourceType: '25'
+    openaire_type: dataset
+    eurepo: info:eu-repo/semantics/other
+    schema.org: https://schema.org/ImageObject
+    subtype: image-map
+    subtype_name: Map
+    type: image
+    type_icon: chart bar outline
+    type_name: Image
+  tags:
+    - linkable
+    - depositable
+  title:
+    en: Map
 - id: image-photo
   props:
     csl: graphic
@@ -634,7 +653,7 @@
     - depositable
     - linkable
   title:
-    en: Dataset
+    en: "Interactive Resource"
 - id: workflow
   props:
     csl: dataset

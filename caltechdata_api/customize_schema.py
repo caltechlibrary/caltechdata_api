@@ -26,7 +26,7 @@ def get_vocabularies():
                     if "datacite_general" in props:
                         # Resource type two layer vocab
                         datacite = (
-                            props["datacite_general"] + ";" + props["datacite_type"]
+                            props["datacite_general"] + ";" + props["subtype_name"]
                         )
                     else:
                         datacite = props["datacite"]
@@ -186,6 +186,9 @@ def customize_schema_rdm(json_record):
             # publication date
             elif d["dateType"] == "Issued":
                 json_record["publication_date"] = date
+            elif d["dateType"] == "Updated":
+                #We now let InvenioRDM handle updated dates
+                print('Skipping updated date')
             else:
                 dtype = d.pop("dateType")
                 d["type"] = {"id": datetypes[dtype]}

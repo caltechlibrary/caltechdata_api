@@ -93,3 +93,8 @@
     datacite: w3id
   title:
     en: W3ID
+- id: cdid
+  props:
+    datacite: CaltechDATA_Identifier
+  title:
+    en: CALTECHDATA_ID
