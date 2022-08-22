@@ -88,8 +88,8 @@ def rdm_creators_contributors(person_list, peopleroles):
                 if "affiliationIdentifierScheme" in aff:
                     identifier = aff["affiliationIdentifier"]
                     if aff["affiliationIdentifierScheme"] == "ROR":
-                        if 'ror.org/' in identifier:
-                            identifier = identifier.split('ror.org/')[1]
+                        if "ror.org/" in identifier:
+                            identifier = identifier.split("ror.org/")[1]
                         new_aff["id"] = identifier
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
@@ -176,9 +176,9 @@ def customize_schema_rdm(json_record):
         new = []
         for d in dates:
             date = d["date"]
-            #Strip out any time imformation
-            if ' ' in date:
-                date = date.split(' ')[0]
+            # Strip out any time imformation
+            if " " in date:
+                date = date.split(" ")[0]
             # If metadata has Submitted date, this gets priority
             if d["dateType"] == "Submitted":
                 json_record["publication_date"] = date
@@ -187,17 +187,17 @@ def customize_schema_rdm(json_record):
             elif d["dateType"] == "Issued":
                 json_record["publication_date"] = date
             elif d["dateType"] == "Updated":
-                #We now let InvenioRDM handle updated dates
-                print('Skipping updated date')
+                # We now let InvenioRDM handle updated dates
+                print("Skipping updated date")
             else:
                 dtype = d.pop("dateType")
                 d["type"] = {"id": datetypes[dtype]}
-                d['date'] = date
+                d["date"] = date
                 change_label(d, "dateInformation", "description")
                 new.append(d)
         json_record["dates"] = new
-    if 'publication_date' not in json_record:
-        #A publication date isalways required
+    if "publication_date" not in json_record:
+        # A publication date isalways required
         if "publicationYear" in json_record:
             json_record["publication_date"] = json_record.pop("publicationYear")
         else:
@@ -216,9 +216,9 @@ def customize_schema_rdm(json_record):
 
     if "language" in json_record:
         language = json_record.pop("language")
-        #Only known language in data set; so no need to do vocabulary lookup
-        if language == 'English':
-            language = 'eng'
+        # Only known language in data set; so no need to do vocabulary lookup
+        if language == "English":
+            language = "eng"
         json_record["languages"] = [{"id": language}]
 
     # Need to figure out mapping for system-managed DOIs
@@ -267,6 +267,21 @@ def customize_schema_rdm(json_record):
                 lat = location["geoLocationPoint"]["pointLatitude"]
                 lon = location["geoLocationPoint"]["pointLongitude"]
                 new["geometry"] = {"type": "Point", "coordinates": [lat, lon]}
+            if "geoLocationBox" in location:
+                south = float(location["geoLocationBox"]["southBoundLatitude"])
+                north = float(location["geoLocationBox"]["northBoundLatitude"])
+                east = float(location["geoLocationBox"]["eastBoundLongitude"])
+                west = float(location["geoLocationBox"]["westBoundLongitude"])
+                new["geometry"] = {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [north, east],
+                        [north, west],
+                        [south, west],
+                        [south, east],
+                        [north, east],
+                    ]],
+                }
             if "geoLocationPlace" in location:
                 new["place"] = location["geoLocationPlace"]
         json_record["locations"] = {"features": [new]}
@@ -288,7 +303,7 @@ def customize_schema_rdm(json_record):
                 else:
                     print(f'Unknown Type mapping {fund["funderIdentifierType"]}')
             if "awardTitle" in fund:
-                award["title"] = fund["awardTitle"]
+                award["title"] = {"en":fund["awardTitle"]}
             if "awardNumber" in fund:
                 award["number"] = fund["awardNumber"]
             if "awardURI" in fund:
@@ -296,6 +311,8 @@ def customize_schema_rdm(json_record):
             if funder != {}:
                 combo["funder"] = funder
             if award != {}:
+                if 'title' not in award:
+                    award["title"] = {"en":':unav'}
                 combo["award"] = award
             new.append(combo)
         json_record["funding"] = new
@@ -529,11 +546,11 @@ def customize_standard(json_record):
         # else:
         # if licenses[0]['rights'] == 'public-domain':
         #    licenses[0]['rights'] = 'other'
-        #Only transfer the first license
+        # Only transfer the first license
         lic = licenses[0]
-        if 'rightsUri' in lic:
-            #4.3 capitalization correction
-            lic['rightsURI'] = lic.pop('rightsUri')
+        if "rightsUri" in lic:
+            # 4.3 capitalization correction
+            lic["rightsURI"] = lic.pop("rightsUri")
         json_record["rightsList"] = lic
         # Only transfers first license
 
