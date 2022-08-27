@@ -81,8 +81,8 @@ def rdm_creators_contributors(person_list, peopleroles):
                 ide["scheme"] = ide["scheme"].lower()
         if "affiliation" in cre:
             aff_all = []
-            # Using ROR as InvenioRDM ID needs to be verified to not break
-            # things
+            # Not all ROR identifiers are available in InvenioRDM
+            missing = ["05sy8gb82"]
             for aff in cre.pop("affiliation"):
                 new_aff = {}
                 if "affiliationIdentifierScheme" in aff:
@@ -90,7 +90,11 @@ def rdm_creators_contributors(person_list, peopleroles):
                     if aff["affiliationIdentifierScheme"] == "ROR":
                         if "ror.org/" in identifier:
                             identifier = identifier.split("ror.org/")[1]
-                        new_aff["id"] = identifier
+                        if identifier not in missing:
+                            new_aff["id"] = identifier
+                        # We retain the name, since it might be different than
+                        # the ROR version
+                        new_aff["name"] = aff["name"]
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
                 aff_all.append(new_aff)
@@ -221,13 +225,20 @@ def customize_schema_rdm(json_record):
             language = "eng"
         json_record["languages"] = [{"id": language}]
 
-    # Need to figure out mapping for system-managed DOIs
+    pids = {}
     if "identifiers" in json_record:
         identifiers = []
         for identifier in json_record["identifiers"]:
             if identifier["identifierType"] != "DOI":
                 identifier["scheme"] = identifiertypes[identifier.pop("identifierType")]
                 identifiers.append(identifier)
+            else:
+                pids = {
+                    "doi": {
+                        "identifier": identifier["identifier"],
+                        "provider": "external",
+                    }
+                }
         json_record["identifiers"] = identifiers
 
     if "relatedIdentifiers" in json_record:
@@ -274,13 +285,15 @@ def customize_schema_rdm(json_record):
                 west = float(location["geoLocationBox"]["westBoundLongitude"])
                 new["geometry"] = {
                     "type": "Polygon",
-                    "coordinates": [[
-                        [north, east],
-                        [north, west],
-                        [south, west],
-                        [south, east],
-                        [north, east],
-                    ]],
+                    "coordinates": [
+                        [
+                            [north, east],
+                            [north, west],
+                            [south, west],
+                            [south, east],
+                            [north, east],
+                        ]
+                    ],
                 }
             if "geoLocationPlace" in location:
                 new["place"] = location["geoLocationPlace"]
@@ -303,7 +316,7 @@ def customize_schema_rdm(json_record):
                 else:
                     print(f'Unknown Type mapping {fund["funderIdentifierType"]}')
             if "awardTitle" in fund:
-                award["title"] = {"en":fund["awardTitle"]}
+                award["title"] = {"en": fund["awardTitle"]}
             if "awardNumber" in fund:
                 award["number"] = fund["awardNumber"]
             if "awardURI" in fund:
@@ -311,8 +324,8 @@ def customize_schema_rdm(json_record):
             if funder != {}:
                 combo["funder"] = funder
             if award != {}:
-                if 'title' not in award:
-                    award["title"] = {"en":':unav'}
+                if "title" not in award:
+                    award["title"] = {"en": ":unav"}
                 combo["award"] = award
             new.append(combo)
         json_record["funding"] = new
@@ -322,7 +335,14 @@ def customize_schema_rdm(json_record):
     if "schemaVersion" in json_record:
         json_record.pop("schemaVersion")
 
-    return {"metadata": json_record}
+    # Not technically DataCite, but owner info neded for record transfer
+    parent = {}
+    # if "owners" in json_record:
+    #    parent = {"access": {
+    #                "owned_by": [
+    #                { "user": json_record['owners'][0]}]}}
+
+    return {"metadata": json_record, "pids": pids, "parent": parent}
 
 
 def customize_schema_4(json_record):

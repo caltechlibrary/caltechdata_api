@@ -207,24 +207,24 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
     )
     if "alternateIdentifiers" in json_record:
         for altid in json_record["alternateIdentifiers"]:
-            if 'identifierType' in altid:
+            if "identifierType" in altid:
                 if altid["identifierType"] != "CaltechDATA_Identifier":
                     identifiers.append(
-                    {
-                        "identifier": altid["alternateIdentifier"],
-                        "identifierType": altid["identifierType"],
-                    }
+                        {
+                            "identifier": altid["alternateIdentifier"],
+                            "identifierType": altid["identifierType"],
+                        }
                     )
-            if 'alternateIdentifierType' in altid:
+            if "alternateIdentifierType" in altid:
                 if altid["alternateIdentifierType"] != "CaltechDATA_Identifier":
                     identifiers.append(
-                    {
-                        "identifier": altid["alternateIdentifier"],
-                        "identifierType": altid["alternateIdentifierType"],
-                    }
+                        {
+                            "identifier": altid["alternateIdentifier"],
+                            "identifierType": altid["alternateIdentifierType"],
+                        }
                     )
         del json_record["alternateIdentifiers"]
-    #Deal with incorrect metadata in CaltechDATA
+    # Deal with incorrect metadata in CaltechDATA
     if "alternativeIdentifiers" in json_record:
         for altid in json_record["alternativeIdentifiers"]:
             if altid["identifierType"] != "CaltechDATA_Identifier":
@@ -490,7 +490,7 @@ def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
             if "alternateIdentifierType" in altid:
                 if altid["alternateIdentifierType"] == "CaltechDATA_Identifier":
                     existing = True
-            if 'identifierType' in altid:
+            if "identifierType" in altid:
                 if altid["identifierType"] == "CaltechDATA_Identifier":
                     existing = True
         if existing == False:
