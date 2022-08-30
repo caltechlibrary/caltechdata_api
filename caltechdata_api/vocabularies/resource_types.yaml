@@ -489,7 +489,7 @@
   props:
     csl: figure
     datacite_general: Image
-    datacite_type: Map
+    datacite_type: Diagram
     openaire_resourceType: '25'
     openaire_type: dataset
     eurepo: info:eu-repo/semantics/other
@@ -581,8 +581,8 @@
 - id: lesson
   props:
     csl: speech
-    datacite_general: InteractiveResource
-    datacite_type: ''
+    datacite_general: Other
+    datacite_type: Lesson
     openaire_resourceType: '10'
     openaire_type: other
     eurepo: info:eu-repo/semantics/lecture
@@ -593,7 +593,6 @@
     type_icon: graduation
     type_name: Lesson
   tags:
-    - depositable
     - linkable
   title:
     en: Lesson

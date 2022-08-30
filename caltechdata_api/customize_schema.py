@@ -26,7 +26,7 @@ def get_vocabularies():
                     if "datacite_general" in props:
                         # Resource type two layer vocab
                         datacite = (
-                            props["datacite_general"] + ";" + props["subtype_name"]
+                            props["datacite_general"] + ";" + props["datacite_type"]
                         )
                     else:
                         datacite = props["datacite"]
@@ -337,10 +337,10 @@ def customize_schema_rdm(json_record):
 
     # Not technically DataCite, but owner info neded for record transfer
     parent = {}
-    # if "owners" in json_record:
-    #    parent = {"access": {
-    #                "owned_by": [
-    #                { "user": json_record['owners'][0]}]}}
+    if "owners" in json_record:
+        parent = {"access": {
+                    "owned_by": [
+                    { "user": json_record['owners'][0]}]}}
 
     return {"metadata": json_record, "pids": pids, "parent": parent}
 
