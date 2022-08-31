@@ -4,19 +4,19 @@ import json
 
 
 def decustomize_schema(
-    json_record, pass_emails=False, pass_media=False, pass_owner=False, schema="4"
+    json_record, pass_emails=False, pass_media=False, pass_tind=False, schema="4"
 ):
     if schema == "4":
-        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner)
+        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_tind)
     elif schema == "40":
-        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner)
+        return decustomize_schema_4(json_record, pass_emails, pass_media, pass_tind)
     elif schema == "43":
-        return decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner)
+        return decustomize_schema_43(json_record, pass_emails, pass_media, pass_tind)
     else:
         raise ValueError(f"Error: schema {schema} not defined")
 
 
-def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
+def decustomize_standard(json_record, pass_emails, pass_media, pass_tind):
 
     # If passed a direct API json blob, extract metadata section
     if "metadata" in json_record:
@@ -65,7 +65,9 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
                     json_record["relatedIdentifiers"].append(relation)
             else:
                 json_record["relatedIdentifiers"] = [relation]
-        del json_record["publications"]
+        if pass_tind == False:
+            print("DELETE")
+            del json_record["publications"]
 
     # format
     if "format" in json_record:
@@ -164,7 +166,7 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
         "resource_type",
         "final_actions",
     ]
-    if pass_owner == False:
+    if pass_tind == False:
         others.append("owners")
     for v in others:
         if v in json_record:
@@ -173,9 +175,9 @@ def decustomize_standard(json_record, pass_emails, pass_media, pass_owner):
     return json_record
 
 
-def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
+def decustomize_schema_43(json_record, pass_emails, pass_media, pass_tind):
     # Do standard transformations
-    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
+    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_tind)
 
     # Extract identifier and label as DOI
     identifiers = []
@@ -372,9 +374,9 @@ def decustomize_schema_43(json_record, pass_emails, pass_media, pass_owner):
     return json_record
 
 
-def decustomize_schema_4(json_record, pass_emails, pass_media, pass_owner):
+def decustomize_schema_4(json_record, pass_emails, pass_media, pass_tind):
     # Do standard transformations
-    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_owner)
+    json_record = decustomize_standard(json_record, pass_emails, pass_media, pass_tind)
 
     # Extract identifier and label as DOI
     if "doi" in json_record:
