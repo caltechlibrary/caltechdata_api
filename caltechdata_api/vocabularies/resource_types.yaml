@@ -489,7 +489,7 @@
   props:
     csl: figure
     datacite_general: Image
-    datacite_type: Diagram
+    datacite_type: Map
     openaire_resourceType: '25'
     openaire_type: dataset
     eurepo: info:eu-repo/semantics/other

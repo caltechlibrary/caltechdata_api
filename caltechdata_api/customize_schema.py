@@ -308,11 +308,13 @@ def customize_schema_rdm(json_record):
             award = {}
             if "funderName" in fund:
                 funder["name"] = fund["funderName"]
-            if "funderIdentifier" in fund:
-                funder["identifier"] = fund["funderIdentifier"]
             if "funderIdentifierType" in fund:
                 if fund["funderIdentifierType"] == "ROR":
-                    funder["scheme"] = "ror"
+                    ror = fund.pop("funderIdentifier")
+                    if 'ror.org' in ror:
+                        ror = ror.split('ror.org/')[1]
+                    funder["id"] = ror
+                    fund.pop("funderIdentifierType")
                 else:
                     print(f'Unknown Type mapping {fund["funderIdentifierType"]}')
             if "awardTitle" in fund:
@@ -324,9 +326,12 @@ def customize_schema_rdm(json_record):
             if funder != {}:
                 combo["funder"] = funder
             if award != {}:
-                if "title" not in award:
-                    award["title"] = {"en": ":unav"}
-                combo["award"] = award
+                if "id" not in award:
+                    if "title" not in award:
+                        award["title"] = {"en": ":unav"}
+                    if "number" not in award:
+                        award["title"] = ":unav"
+                    combo["award"] = award
             new.append(combo)
         json_record["funding"] = new
 

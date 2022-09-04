@@ -16,6 +16,7 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
         f_json.append({"key": filename})
         f_list[filename] = f
     result = requests.post(file_link, headers=headers, json=f_json, verify=verify)
+    print("upload links")
     if result.status_code != 201:
         print(result.text)
         exit()
@@ -30,6 +31,8 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
             infile = open(f_list[name], "rb")
         # size = infile.seek(0, 2)
         # infile.seek(0, 0)  # reset at beginning
+        print("upload")
+        print(link)
         result = requests.put(link, headers=f_headers, verify=verify, data=infile)
         if result.status_code != 200:
             print(result.text)
@@ -115,9 +118,9 @@ def caltechdata_write(
     schema="40",
     pilot=False,
     publish=False,
-    s3=None
+    s3=None,
 ):
-    #S3 is a s3sf object for directly opening files
+    # S3 is a s3sf object for directly opening files
 
     # If no token is provided, get from RDMTOK environment variable
     if not token:
@@ -131,7 +134,6 @@ def caltechdata_write(
         data = customize_schema.customize_schema(
             copy.deepcopy(metadata), schema=schema, pilot=True
         )
-        print(json.dumps(data))
         if production == True:
             url = "https://data.caltechlibrary.dev/"
             verify = True
@@ -150,6 +152,11 @@ def caltechdata_write(
 
         if not files:
             data["files"] = {"enabled": False}
+        else:    
+            if 'README.txt' in files:
+                data["files"] = {'default_preview':'README.txt'}
+
+        print(json.dumps(data))
 
         # Make draft and publish
         result = requests.post(
@@ -158,24 +165,25 @@ def caltechdata_write(
         if result.status_code != 201:
             print(result.text)
             exit()
-
+        print("record created")
         idv = result.json()["id"]
         publish_link = result.json()["links"]["publish"]
 
         if files:
             file_link = result.json()["links"]["files"]
             write_files_rdm(files, file_link, headers, f_headers, verify, s3)
+        print("files added")
 
         if publish:
             result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
                 print(result.text)
                 exit()
-            #Not sure of behavior here. DOI makes sense for most cases....but
-            #not something like TCCON. Probably just stick with idv defined
-            #above
-            #pids = result.json()["pids"]
-            #if "doi" in pids:
+            # Not sure of behavior here. DOI makes sense for most cases....but
+            # not something like TCCON. Probably just stick with idv defined
+            # above
+            # pids = result.json()["pids"]
+            # if "doi" in pids:
             #    idv = pids["doi"]["identifier"]
         return idv
 
