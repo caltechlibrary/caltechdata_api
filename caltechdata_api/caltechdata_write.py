@@ -2,6 +2,7 @@ import copy
 import json
 import os, sys, requests
 
+import s3fs
 from requests import session
 from json.decoder import JSONDecodeError
 
@@ -110,6 +111,31 @@ def send_s3(filepath, token, production=False):
     return fileinfo
 
 
+def add_file_links(metadata, file_links):
+    #Currently configured for OSN S3 links
+    link_string = ""
+    endpoint = "https://renc.osn.xsede.org/"
+    s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+    for link in file_links:
+        file = link.split('/')[-1]
+        path = link.split(endpoint)[1]
+        try:
+            size = s3.info(path)["Size"]
+            size = round(size / 1024.0 / 1024.0 / 1024.0, 2)
+        except:
+            size=0
+        if link_string == '':
+            cleaned = link.strip(file)
+            link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
+        link_string += f'''{file} {size} GB 
+        <p>&lt;a role="button" class="ui compact mini button" href="{link}"
+        &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
+        '''
+
+    description = {"description": link_string, "descriptionType": "Other"}
+    metadata['descriptions'].append(description)
+    return metadata
+
 def caltechdata_write(
     metadata,
     token=None,
@@ -118,10 +144,15 @@ def caltechdata_write(
     schema="40",
     pilot=False,
     publish=False,
+    file_links = [],
     s3=None,
 ):
-    # S3 is a s3sf object for directly opening files
+    '''
+    File links are links to files existing in external systems that will
+    be added directly in a CaltechDATA record, instead of uploading the file.
 
+    S3 is a s3sf object for directly opening files
+    '''
     # If no token is provided, get from RDMTOK environment variable
     if not token:
         token = os.environ["RDMTOK"]
@@ -131,6 +162,10 @@ def caltechdata_write(
         files = [files]
 
     if pilot:
+
+        if file_links:
+            metadata = add_file_links(metadata, file_links)
+
         data = customize_schema.customize_schema(
             copy.deepcopy(metadata), schema=schema, pilot=True
         )
