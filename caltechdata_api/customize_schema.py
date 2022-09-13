@@ -346,6 +346,10 @@ def customize_schema_rdm(json_record):
         parent = {"access": {
                     "owned_by": [
                     { "user": json_record['owners'][0]}]}}
+    # Not technically dataset, but transfer community information
+    if "community" in json_record:
+        com = json_record.pop('community')
+        parent['communities']={'ids':[com],'default':com}
 
     return {"metadata": json_record, "pids": pids, "parent": parent}
 

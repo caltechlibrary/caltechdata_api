@@ -3,19 +3,7 @@ import s3fs
 from datacite import schema43, DataCiteRESTClient
 from caltechdata_api import caltechdata_write, caltechdata_edit
 
-parser = argparse.ArgumentParser(
-    description="Adds S3-stored pilot files and a DataCite 4.3 standard json record\
-        to CaltechDATA repository"
-)
-parser.add_argument("folder", nargs=1, help="Folder")
-parser.add_argument(
-    "json_file", nargs=1, help="file name for json DataCite metadata file"
-)
-
-args = parser.parse_args()
-
-# Get access token as environment variable
-token = os.environ["TINDTOK"]
+folder = '0_gregoire'
 
 endpoint = "https://renc.osn.xsede.org/"
 
@@ -23,11 +11,11 @@ endpoint = "https://renc.osn.xsede.org/"
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 # Set up datacite client
-password = os.environ["DATACITE"]
+#password = os.environ["DATACITE"]
 prefix = "10.25989"
-datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
+#datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
 
-path = "ini210004tommorrell/" + args.folder[0] + "/"
+path = "ini210004tommorrell/" + folder + "/"
 dirs = s3.ls(path)
 # Strip out reference to top level directory
 repeat = dirs.pop(0)
@@ -66,7 +54,7 @@ for doi in excluded:
 
 for record in records:
     base = record.split("/")[1]
-    meta_path = path + base + "/" + args.json_file[0]
+    meta_path = path + base + "/metadata.json"
     metadata = None
     files = s3.ls(path + base)
     if len(files) == 0:
@@ -91,23 +79,12 @@ for record in records:
 
         # Find the zip file or files
         zipf = s3.glob(path + base + "/*.zip")
+        file_links = []
 
         description_string = f"Files available via S3 at {endpoint}{path}<br>"
         for link in zipf:
             fname = link.split("/")[-1]
-            link = endpoint + link
-            description_string += f"""{fname} <a class="btn btn-xs piwik_download" 
-            type="application/octet-stream" href="{link}">
-            <i class="fa fa-download"></i> Download</a>    <br>"""
-
-        descr = [
-            {"description": description_string, "descriptionType": "Other"},
-            {"description": abstract, "descriptionType": "Abstract"},
-        ]
-        if "descriptions" in metadata:
-            metadata["descriptions"] += descr
-        else:
-            metadata["descriptions"] = descr
+            file_links.append( endpoint + link)
 
         metadata["types"] = {"resourceType": "", "resourceTypeGeneral": "Dataset"}
         metadata["schemaVersion"] = "http://datacite.org/schema/kernel-4"
@@ -137,9 +114,17 @@ for record in records:
         metadata["fundingReferences"] = [
             {
                 "funderName": "Office of Science of the U.S. Department of Energy",
+                "awardTitle": "Energy Innovation Hub Renewal - Fuels from Sunlight",
                 "awardNumber": "DE-SC0004993",
             }
         ]
+
+        if 'descriptions' not in metadata:
+            metadata['descriptions'] = [{"description": abstract,
+            "descriptionType": "Abstract"}]
+        else:
+            print(metadata['descriptions'])
+            exit()
 
         for meta in metadata.copy():
             if metadata[meta] == []:
@@ -178,17 +163,21 @@ for record in records:
                 print(error.message)
             exit()
 
+        metadata.pop('language')
+        metadata['community'] = 'd0de1569-0a01-498f-b6bd-4bc75d54012f'
+
         production = True
 
         #response = caltechdata_edit("12620", metadata, token, [],[],production, "43")
-        response = caltechdata_write(metadata, token, [],production, "43")
+        response = caltechdata_write(metadata, schema='43', pilot=True,
+                publish=False, production=True,file_links=file_links,s3=s3)
         print(response)
 
-        url = response.split("record ")[1].strip()[:-1]
+        #url = response.split("record ")[1].strip()[:-1]
 
-        doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
+        #doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
         completed.append(doi)
         print(doi)
         with open("completed_dois.json", "w") as outfile:
             data = json.dump(completed, outfile)
-
+        exit()
