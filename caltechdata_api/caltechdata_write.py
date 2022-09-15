@@ -112,29 +112,30 @@ def send_s3(filepath, token, production=False):
 
 
 def add_file_links(metadata, file_links):
-    #Currently configured for OSN S3 links
+    # Currently configured for OSN S3 links
     link_string = ""
     endpoint = "https://renc.osn.xsede.org/"
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     for link in file_links:
-        file = link.split('/')[-1]
+        file = link.split("/")[-1]
         path = link.split(endpoint)[1]
         try:
             size = s3.info(path)["Size"]
             size = round(size / 1024.0 / 1024.0 / 1024.0, 2)
         except:
-            size=0
-        if link_string == '':
+            size = 0
+        if link_string == "":
             cleaned = link.strip(file)
             link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
-        link_string += f'''{file} {size} GB 
+        link_string += f"""{file} {size} GB 
         <p>&lt;a role="button" class="ui compact mini button" href="{link}"
         &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
-        '''
+        """
 
     description = {"description": link_string, "descriptionType": "Other"}
-    metadata['descriptions'].append(description)
+    metadata["descriptions"].append(description)
     return metadata
+
 
 def caltechdata_write(
     metadata,
@@ -144,15 +145,16 @@ def caltechdata_write(
     schema="40",
     pilot=False,
     publish=False,
-    file_links = [],
+    file_links=[],
     s3=None,
+    community=None,
 ):
-    '''
+    """
     File links are links to files existing in external systems that will
     be added directly in a CaltechDATA record, instead of uploading the file.
 
     S3 is a s3sf object for directly opening files
-    '''
+    """
     # If no token is provided, get from RDMTOK environment variable
     if not token:
         token = os.environ["RDMTOK"]
@@ -187,9 +189,9 @@ def caltechdata_write(
 
         if not files:
             data["files"] = {"enabled": False}
-        else:    
-            if 'README.txt' in files:
-                data["files"] = {'default_preview':'README.txt'}
+        else:
+            if "README.txt" in files:
+                data["files"] = {"default_preview": "README.txt"}
 
         print(json.dumps(data))
 
@@ -209,11 +211,54 @@ def caltechdata_write(
             write_files_rdm(files, file_link, headers, f_headers, verify, s3)
         print("files added")
 
-        if publish:
-            result = requests.post(publish_link, headers=headers, verify=verify)
-            if result.status_code != 202:
+        if community:
+            review_link = result.json()["links"]["review"]
+            data = {
+                "receiver": {"community": community},
+                "type": "community-submission",
+            }
+            result = requests.put(
+                review_link, json=data, headers=headers, verify=verify
+            )
+            if result.status_code != 200:
+                print(result.status_code)
                 print(result.text)
                 exit()
+            submit_link = result.json()["links"]["actions"]["submit"]
+            data = comment = {
+                "payload": {
+                    "content": "This record is submitted automatically with the CaltechDATA API",
+                    "format": "html",
+                }
+            }
+            result = requests.post(
+                submit_link, json=data, headers=headers, verify=verify
+            )
+            if result.status_code != 200:
+                print(result.status_code)
+                print(result.text)
+                exit()
+            if publish:
+                accept_link = result.json()["links"]["actions"]["accept"]
+                data = comment = {
+                "payload": {
+                    "content": "This record is accepted automatically with the CaltechDATA API",
+                    "format": "html",
+                }
+                }
+                result = requests.post(
+                accept_link, json=data, headers=headers, verify=verify
+                )
+                if result.status_code != 200:
+                    print(result.status_code)
+                    print(result.text)
+                    exit()
+        else:
+            if publish:
+                result = requests.post(publish_link, headers=headers, verify=verify)
+                if result.status_code != 202:
+                    print(result.text)
+                    exit()
             # Not sure of behavior here. DOI makes sense for most cases....but
             # not something like TCCON. Probably just stick with idv defined
             # above

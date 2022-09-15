@@ -1,9 +1,10 @@
 import argparse, os, json
 import s3fs
+import requests
 from datacite import schema43, DataCiteRESTClient
 from caltechdata_api import caltechdata_write, caltechdata_edit
 
-folder = '0_gregoire'
+folder = "0_gregoire"
 
 endpoint = "https://renc.osn.xsede.org/"
 
@@ -11,25 +12,28 @@ endpoint = "https://renc.osn.xsede.org/"
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 # Set up datacite client
-#password = os.environ["DATACITE"]
+# password = os.environ["DATACITE"]
 prefix = "10.25989"
-#datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
+# datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
 
 path = "ini210004tommorrell/" + folder + "/"
 dirs = s3.ls(path)
 # Strip out reference to top level directory
 repeat = dirs.pop(0)
 assert repeat == path
-#Switch directories to doi
+# Switch directories to doi
 records = []
 for record in dirs:
-    body = record.split('0_gregoire/')[1]
-    records.append(f'{prefix}/{body}')
+    body = record.split("0_gregoire/")[1]
+    records.append(f"{prefix}/{body}")
+
+with open("new_ids.json", "r") as infile:
+    record_ids = json.load(infile)
 
 # We are using the list of unregistered dois
-#with open("unregistered_dois.json", "r") as infile:
+# with open("unregistered_dois.json", "r") as infile:
 #    data = json.load(infile)
-#records = data["pub"]
+# records = data["pub"]
 
 abstract = """This record is a component of the Materials Experiment and
 Analysis Database (MEAD). It contains raw data and metadata from millions 
@@ -44,7 +48,10 @@ with open("completed_dois.json", "r") as infile:
     completed = json.load(infile)
 
 for doi in completed:
-    records.remove(doi)
+    if doi in records:
+        records.remove(doi)
+    else:
+        print(doi)
 
 with open("excluded_dois.json", "r") as infile:
     excluded = json.load(infile)
@@ -84,7 +91,7 @@ for record in records:
         description_string = f"Files available via S3 at {endpoint}{path}<br>"
         for link in zipf:
             fname = link.split("/")[-1]
-            file_links.append( endpoint + link)
+            file_links.append(endpoint + link)
 
         metadata["types"] = {"resourceType": "", "resourceTypeGeneral": "Dataset"}
         metadata["schemaVersion"] = "http://datacite.org/schema/kernel-4"
@@ -119,11 +126,12 @@ for record in records:
             }
         ]
 
-        if 'descriptions' not in metadata:
-            metadata['descriptions'] = [{"description": abstract,
-            "descriptionType": "Abstract"}]
+        if "descriptions" not in metadata:
+            metadata["descriptions"] = [
+                {"description": abstract, "descriptionType": "Abstract"}
+            ]
         else:
-            print(metadata['descriptions'])
+            print(metadata["descriptions"])
             exit()
 
         for meta in metadata.copy():
@@ -140,6 +148,7 @@ for record in records:
                 new_cre.append(creator)
         metadata["creators"] = new_cre
 
+        doi = metadata['doi'].lower()
         unnecessary = [
             "id",
             "doi",
@@ -163,21 +172,38 @@ for record in records:
                 print(error.message)
             exit()
 
-        metadata.pop('language')
-        metadata['community'] = 'd0de1569-0a01-498f-b6bd-4bc75d54012f'
+        metadata.pop("language")
+        community = "d0de1569-0a01-498f-b6bd-4bc75d54012f"
 
         production = True
 
-        #response = caltechdata_edit("12620", metadata, token, [],[],production, "43")
-        response = caltechdata_write(metadata, schema='43', pilot=True,
-                publish=False, production=True,file_links=file_links,s3=s3)
-        print(response)
+        result = requests.get(f'https://api.datacite.org/dois/{doi}')
+        if result.status_code != 200:
+            print('DATACITE Failed')
+            print(result.text)
+            exit()
+        
+        url = result.json()['data']['attributes']['url']
+        old_id = url.split('data.caltech.edu/records/')[1]
+        new_id = caltechdata_write(
+            metadata,
+            schema="43",
+            pilot=True,
+            publish=True,
+            production=True,
+            file_links=file_links,
+            s3=s3,
+            community=community,
+        )
+        print(new_id)
 
-        #url = response.split("record ")[1].strip()[:-1]
+        # url = response.split("record ")[1].strip()[:-1]
+        
+        record_ids[old_id] = new_id
+        with open("new_ids.json", "w") as outfile:
+            json.dump(record_ids, outfile)
 
-        #doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
+        # doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
         completed.append(doi)
-        print(doi)
         with open("completed_dois.json", "w") as outfile:
             data = json.dump(completed, outfile)
-        exit()

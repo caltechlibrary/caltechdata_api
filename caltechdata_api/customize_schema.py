@@ -311,8 +311,8 @@ def customize_schema_rdm(json_record):
             if "funderIdentifierType" in fund:
                 if fund["funderIdentifierType"] == "ROR":
                     ror = fund.pop("funderIdentifier")
-                    if 'ror.org' in ror:
-                        ror = ror.split('ror.org/')[1]
+                    if "ror.org" in ror:
+                        ror = ror.split("ror.org/")[1]
                     funder["id"] = ror
                     fund.pop("funderIdentifierType")
                 else:
@@ -343,13 +343,11 @@ def customize_schema_rdm(json_record):
     # Not technically DataCite, but owner info neded for record transfer
     parent = {}
     if "owners" in json_record:
-        parent = {"access": {
-                    "owned_by": [
-                    { "user": json_record['owners'][0]}]}}
+        parent = {"access": {"owned_by": [{"user": json_record["owners"][0]}]}}
     # Not technically dataset, but transfer community information
     if "community" in json_record:
-        com = json_record.pop('community')
-        parent['communities']={'ids':[com],'default':com}
+        com = json_record.pop("community")
+        parent["communities"] = {"ids": [com], "default": com}
 
     return {"metadata": json_record, "pids": pids, "parent": parent}
 
