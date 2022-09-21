@@ -188,7 +188,6 @@ for record in records:
         new_id = caltechdata_write(
             metadata,
             schema="43",
-            pilot=True,
             publish=True,
             production=True,
             file_links=file_links,

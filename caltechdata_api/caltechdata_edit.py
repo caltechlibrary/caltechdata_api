@@ -7,46 +7,7 @@ from caltechdata_api import customize_schema, send_s3, write_files_rdm
 
 
 def caltechdata_unembargo(token, ids, production=False):
-    """Unembargo files from a record. Needed bacause the delete API call
-    doesn't remove the embargo data"""
-
-    # Ensure ids is an arrary
-    if isinstance(ids, int):
-        ids = [str(ids)]
-    if isinstance(ids, str):
-        ids = [ids]
-
-    headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
-
-    if production == True:
-        url = "https://data.caltech.edu/submit/api/edit/"
-        api_url = "https://data.caltech.edu/api/record/"
-    else:
-        url = "https://cd-sandbox.tind.io/submit/api/edit/"
-        api_url = "https://cd-sandbox.tind.io/api/record/"
-
-    for idv in ids:
-        update = []
-        c = session()
-        existing = c.get(api_url + idv)
-        file_info = existing.json()["metadata"]
-        if "electronic_location_and_access" in file_info:
-            for ex in file_info["electronic_location_and_access"]:
-                name = ex["electronic_name"][0]
-                fu = ex["uniform_resource_identifier"].split("/")[-2]
-                update.append({"id": fu, "embargo_status": "open"})
-
-        metadata = {
-            "id": idv,
-            "embargo_date": "DELETE",
-            "files": {"update": update},
-        }
-
-        dat = json.dumps({"record": metadata})
-
-        c = session()
-        response = c.post(url, headers=headers, data=dat)
-        return response.text
+    print("caltechdaua_unembargo is not yet re-implemented")
 
 
 def caltechdata_edit(
@@ -56,8 +17,7 @@ def caltechdata_edit(
     files={},
     delete={},
     production=False,
-    schema="40",
-    pilot=False,
+    schema="43",
     publish=False,
 ):
     """Including files will only replaces files if they have the same name
@@ -76,202 +36,92 @@ def caltechdata_edit(
     if isinstance(ids, str):
         ids = [ids]
 
-    if pilot:
-        data = customize_schema.customize_schema(
-            copy.deepcopy(metadata), schema=schema, pilot=True
-        )
-        if production == True:
-            url = "https://data-pilot.caltech.edu/"
-            verify = True
-        else:
-            url = "https://127.0.0.1:5000/"
-            verify = False
+    data = customize_schema.customize_schema(
+        copy.deepcopy(metadata), schema=schema, pilot=True
+    )
+    if production == True:
+        url = "https://data.caltech.edu/"
+        verify = True
+    else:
+        url = "https://data.caltechlibrary.dev/"
+        verify = True
 
-        headers = {
-            "Authorization": "Bearer %s" % token,
-            "Content-type": "application/json",
-        }
-        f_headers = {
-            "Authorization": "Bearer %s" % token,
-            "Content-type": "application/octet-stream",
-        }
+    headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+    }
+    f_headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/octet-stream",
+    }
 
-        if delete:
-            print(
-                """WARNING: Delete command is depreciated for pilot; only the
+    if delete:
+        print(
+            """WARNING: Delete command is no longer supported; only the
             files listed in the file option will be added to new version of
             record"""
-            )
-
-        completed = []
-
-        for idv in ids:
-            if files:
-                # We need to make new version
-                data["files"] = {"enabled": True}
-                result = requests.post(
-                    url + "/api/records/" + idv + "/versions",
-                    headers=headers,
-                    verify=verify,
-                )
-                if result.status_code != 201:
-                    print(result.text)
-                    exit()
-                # Get the id of the new version
-                idv = result.json()["id"]
-                # Update metadata
-                result = requests.put(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                    json=data,
-                    verify=verify,
-                )
-
-                file_link = result.json()["links"]["files"]
-                write_files_rdm(files, file_link, headers, f_headers, verify)
-
-            else:
-                # just update metadata
-                result = requests.get(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                    verify=verify,
-                )
-                if result.status_code != 200:
-                    print(result.text)
-                    exit()
-                # We want files to stay the same as the existing record
-                data["files"] = result.json()["files"]
-                result = requests.put(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                    json=data,
-                    verify=verify,
-                )
-                if result.status_code != 200:
-                    print(result.text)
-                    exit()
-
-            if publish:
-                publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
-                result = requests.post(publish_link, headers=headers, verify=verify)
-                if result.status_code != 202:
-                    print(result.text)
-                    exit()
-                doi = result.json()["pids"]["doi"]["identifier"]
-                completed.append(doi)
-            else:
-                completed.append(idv)
-        if len(completed) == 1:
-            return completed[0]
-        else:
-            return completed
-
-    headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
-
-    if production == True:
-        url = "https://data.caltech.edu/submit/api/edit/"
-        api_url = "https://data.caltech.edu/api/record/"
-    else:
-        url = "https://cd-sandbox.tind.io/submit/api/edit/"
-        api_url = "https://cd-sandbox.tind.io/api/record/"
-
-    if metadata:
-        metadata = customize_schema.customize_schema(
-            copy.deepcopy(metadata), schema=schema
         )
 
-    for idv in ids:
-        metadata["id"] = idv
-
-        if files or delete:
-            # Files to add or delete
-            fjson = {}
-            c = session()
-            existing_meta = c.get(api_url + idv)
-            file_info = existing_meta.json()["metadata"]
-            existing = {}
-            if "electronic_location_and_access" in file_info:
-                for ex in file_info["electronic_location_and_access"]:
-                    name = ex["electronic_name"][0]
-                    fu = ex["uniform_resource_identifier"].split("/")[-2]
-                    existing[name] = fu
-
-            # File ids to delete
-            fids = []
-
-            if files:
-                for f in files:  # Check if new files match existing
-                    # In case we have a path
-                    fname = f.split("/")[-1]
-                    if fname in existing:
-                        fids.append(existing[fname])
-                # Now upload new files
-                fileinfo = [send_s3(f, token, production) for f in files]
-                fjson["new"] = fileinfo
-
-            if delete:
-                for d in delete:
-                    if d in existing:
-                        fids.append(existing[d])
-                    # Also check if we are deleting by extenson
-                    for e in existing.keys():
-                        if e.split(".")[-1] == d:
-                            fids.append(fu)
-
-            if len(fids) > 0:
-                fjson["delete"] = fids
-
-            metadata["files"] = fjson
-
-        dat = json.dumps({"record": metadata})
-
-        # outf = open('out.json','w')
-        # outf.write(dat)
-
-        c = session()
-        response = c.post(url, headers=headers, data=dat)
-        return response.text
-
-
-def caltechdata_add(token, ids, metadata={}, files={}, production=False, schema="40"):
-    """Adds file"""
-
-    # If files is a string - change to single value array
-    if isinstance(ids, int):
-        ids = [str(ids)]
-    if isinstance(ids, str):
-        ids = [ids]
-
-    if production == True:
-        url = "https://data.caltech.edu/submit/api/edit/"
-        api_url = "https://data.caltech.edu/api/record/"
-    else:
-        url = "https://cd-sandbox.tind.io/submit/api/edit/"
-        api_url = "https://cd-sandbox.tind.io/api/record/"
-
-    headers = {"Authorization": "Bearer %s" % token, "Content-type": "application/json"}
-
-    if metadata:
-        metadata = customize_schema.customize_schema(copy.deepcopy(metadata), schema)
-
-    fjson = {}
+    completed = []
 
     for idv in ids:
-        metadata["id"] = idv
-
         if files:
-            # upload new
-            fileinfo = [send_s3(f, token, production) for f in files]
+            # We need to make new version
+            data["files"] = {"enabled": True}
+            result = requests.post(
+                url + "/api/records/" + idv + "/versions",
+                headers=headers,
+                verify=verify,
+            )
+            if result.status_code != 201:
+                print(result.text)
+                exit()
+            # Get the id of the new version
+            idv = result.json()["id"]
+            # Update metadata
+            result = requests.put(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                json=data,
+                verify=verify,
+            )
 
-            fjson["new"] = fileinfo
-            metadata["files"] = fjson
+            file_link = result.json()["links"]["files"]
+            write_files_rdm(files, file_link, headers, f_headers, verify)
 
-        dat = json.dumps({"record": metadata})
+        else:
+            # just update metadata
+            result = requests.get(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                verify=verify,
+            )
+            if result.status_code != 200:
+                print(result.text)
+                exit()
+            # We want files to stay the same as the existing record
+            data["files"] = result.json()["files"]
+            result = requests.put(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                json=data,
+                verify=verify,
+            )
+            if result.status_code != 200:
+                print(result.text)
+                exit()
 
-        # outf = open('out.json','w')
-        # outf.write(dat)
-
-        c = session()
-        response = c.post(url, headers=headers, data=dat)
-        return response.text
+        if publish:
+            publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
+            result = requests.post(publish_link, headers=headers, verify=verify)
+            if result.status_code != 202:
+                print(result.text)
+                exit()
+            doi = result.json()["pids"]["doi"]["identifier"]
+            completed.append(doi)
+        else:
+            completed.append(idv)
+    if len(completed) == 1:
+        return completed[0]
+    else:
+        return completed

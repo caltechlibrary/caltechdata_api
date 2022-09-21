@@ -44,73 +44,6 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
             exit()
 
 
-def send_s3(filepath, token, production=False):
-
-    if production == True:
-        s3surl = "https://data.caltech.edu/tindfiles/sign_s3/"
-        chkurl = "https://data.caltech.edu/tindfiles/md5_s3"
-    else:
-        s3surl = "https://cd-sandbox.tind.io/tindfiles/sign_s3/"
-        chkurl = "https://cd-sandbox.tind.io/tindfiles/md5_s3"
-
-    headers = {"Authorization": "Bearer %s" % token}
-
-    c = session()
-
-    # print(s3surl)
-    # print(headers)
-    try:
-        response = c.get(s3surl, headers=headers)
-        jresp = response.json()
-        data = jresp["data"]
-    except Exception:
-        print(f"Incorrect access token: {response}")
-
-    bucket = jresp["bucket"]
-    key = data["fields"]["key"]
-    policy = data["fields"]["policy"]
-    aid = data["fields"]["AWSAccessKeyId"]
-    signature = data["fields"]["signature"]
-    url = data["url"]
-
-    infile = open(filepath, "rb")
-    size = infile.seek(0, 2)
-    infile.seek(0, 0)  # reset at beginning
-
-    s3headers = {
-        "Host": bucket + ".s3.amazonaws.com",
-        "Date": "date",
-        "x-amz-acl": "public-read",
-        "Access-Control-Allow-Origin": "*",
-    }
-
-    form = (
-        ("key", key),
-        ("acl", "public-read"),
-        ("AWSAccessKeyID", aid),
-        ("policy", policy),
-        ("signature", signature),
-        ("file", infile),
-    )
-
-    c = session()
-    response = c.post(url, files=form, headers=s3headers)
-    # print(response)
-    if response.text:
-        raise Exception(response.text)
-
-    # print(chkurl + "/" + bucket + "/" + key + "/")
-    # print(headers)
-    response = c.get(chkurl + "/" + bucket + "/" + key + "/", headers=headers)
-    # print(response)
-    md5 = response.json()["md5"]
-    filename = filepath.split("/")[-1]
-
-    fileinfo = {"url": key, "filename": filename, "md5": md5, "size": size}
-
-    return fileinfo
-
-
 def add_file_links(metadata, file_links):
     # Currently configured for OSN S3 links
     link_string = ""
@@ -142,8 +75,7 @@ def caltechdata_write(
     token=None,
     files=[],
     production=False,
-    schema="40",
-    pilot=False,
+    schema="43",
     publish=False,
     file_links=[],
     s3=None,
@@ -163,144 +95,92 @@ def caltechdata_write(
     if isinstance(files, str) == True:
         files = [files]
 
-    if pilot:
+    if file_links:
+        metadata = add_file_links(metadata, file_links)
 
-        if file_links:
-            metadata = add_file_links(metadata, file_links)
+    data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+    if production == True:
+        url = "https://data.caltech.edu/"
+        verify = True
+    else:
+        url = "https://data.caltechlibrary.dev/"
+        verify = False
 
-        data = customize_schema.customize_schema(
-            copy.deepcopy(metadata), schema=schema, pilot=True
-        )
-        if production == True:
-            url = "https://data.caltechlibrary.dev/"
-            verify = True
-        else:
-            url = "https://coda.caltechlibrary.dev/"
-            verify = False
+    headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+    }
+    f_headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/octet-stream",
+    }
 
-        headers = {
-            "Authorization": "Bearer %s" % token,
-            "Content-type": "application/json",
+    if not files:
+        data["files"] = {"enabled": False}
+    else:
+        if "README.txt" in files:
+            data["files"] = {"default_preview": "README.txt"}
+
+    print(json.dumps(data))
+
+    # Make draft and publish
+    result = requests.post(
+        url + "/api/records", headers=headers, json=data, verify=verify
+    )
+    if result.status_code != 201:
+        print(result.text)
+        exit()
+    idv = result.json()["id"]
+    print(f"record {idv} created")
+    publish_link = result.json()["links"]["publish"]
+
+    if files:
+        file_link = result.json()["links"]["files"]
+        write_files_rdm(files, file_link, headers, f_headers, verify, s3)
+    print("files added")
+
+    if community:
+        review_link = result.json()["links"]["review"]
+        data = {
+            "receiver": {"community": community},
+            "type": "community-submission",
         }
-        f_headers = {
-            "Authorization": "Bearer %s" % token,
-            "Content-type": "application/octet-stream",
-        }
-
-        if not files:
-            data["files"] = {"enabled": False}
-        else:
-            if "README.txt" in files:
-                data["files"] = {"default_preview": "README.txt"}
-
-        print(json.dumps(data))
-
-        # Make draft and publish
-        result = requests.post(
-            url + "/api/records", headers=headers, json=data, verify=verify
-        )
-        if result.status_code != 201:
+        result = requests.put(review_link, json=data, headers=headers, verify=verify)
+        if result.status_code != 200:
+            print(result.status_code)
             print(result.text)
             exit()
-        print("record created")
-        idv = result.json()["id"]
-        publish_link = result.json()["links"]["publish"]
-
-        if files:
-            file_link = result.json()["links"]["files"]
-            write_files_rdm(files, file_link, headers, f_headers, verify, s3)
-        print("files added")
-
-        if community:
-            review_link = result.json()["links"]["review"]
-            data = {
-                "receiver": {"community": community},
-                "type": "community-submission",
+        submit_link = result.json()["links"]["actions"]["submit"]
+        data = comment = {
+            "payload": {
+                "content": "This record is submitted automatically with the CaltechDATA API",
+                "format": "html",
             }
-            result = requests.put(
-                review_link, json=data, headers=headers, verify=verify
-            )
-            if result.status_code != 200:
-                print(result.status_code)
-                print(result.text)
-                exit()
-            submit_link = result.json()["links"]["actions"]["submit"]
+        }
+        result = requests.post(submit_link, json=data, headers=headers, verify=verify)
+        if result.status_code != 200:
+            print(result.status_code)
+            print(result.text)
+            exit()
+        if publish:
+            accept_link = result.json()["links"]["actions"]["accept"]
             data = comment = {
-                "payload": {
-                    "content": "This record is submitted automatically with the CaltechDATA API",
-                    "format": "html",
-                }
-            }
-            result = requests.post(
-                submit_link, json=data, headers=headers, verify=verify
-            )
-            if result.status_code != 200:
-                print(result.status_code)
-                print(result.text)
-                exit()
-            if publish:
-                accept_link = result.json()["links"]["actions"]["accept"]
-                data = comment = {
                 "payload": {
                     "content": "This record is accepted automatically with the CaltechDATA API",
                     "format": "html",
                 }
-                }
-                result = requests.post(
+            }
+            result = requests.post(
                 accept_link, json=data, headers=headers, verify=verify
-                )
-                if result.status_code != 200:
-                    print(result.status_code)
-                    print(result.text)
-                    exit()
-        else:
-            if publish:
-                result = requests.post(publish_link, headers=headers, verify=verify)
-                if result.status_code != 202:
-                    print(result.text)
-                    exit()
-            # Not sure of behavior here. DOI makes sense for most cases....but
-            # not something like TCCON. Probably just stick with idv defined
-            # above
-            # pids = result.json()["pids"]
-            # if "doi" in pids:
-            #    idv = pids["doi"]["identifier"]
-        return idv
-
+            )
+            if result.status_code != 200:
+                print(result.status_code)
+                print(result.text)
+                exit()
     else:
-
-        fileinfo = []
-
-        newdata = customize_schema.customize_schema(
-            copy.deepcopy(metadata), schema=schema
-        )
-
-        if files:
-            for f in files:
-                fileinfo.append(send_s3(f, token, production))
-            newdata["files"] = fileinfo
-
-        if production == True:
-            url = "https://data.caltech.edu/submit/api/create/"
-        else:
-            url = "https://cd-sandbox.tind.io/submit/api/create/"
-
-        headers = {
-            "Authorization": "Bearer %s" % token,
-            "Content-type": "application/json",
-        }
-
-        if "doi" not in newdata:
-            # We want tind to generate the identifier
-            newdata["final_actions"] = [
-                {
-                    "type": "create_doi",
-                    "parameters": {"type": "records", "field": "doi"},
-                }
-            ]
-
-        dat = json.dumps({"record": newdata})
-
-        c = session()
-        response = c.post(url, headers=headers, data=dat)
-        return response.text
+        if publish:
+            result = requests.post(publish_link, headers=headers, verify=verify)
+            if result.status_code != 202:
+                print(result.text)
+                exit()
+    return idv

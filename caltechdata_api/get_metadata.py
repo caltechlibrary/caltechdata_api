@@ -4,68 +4,31 @@ import json
 import os
 
 import requests
-from datacite import schema40, schema43
-
-from caltechdata_api import decustomize_schema
+from datacite import schema43
 
 
-def get_metadata(
-    idv, production=True, validate=True, emails=False, schema="40", pilot=False
-):
+def get_metadata(idv, production=True, validate=True, emails=False, schema="43"):
     # Returns just DataCite metadata or DataCite metadata with emails
 
-    if pilot:
-        if production == True:
-            url = "https://data-pilot.caltech.edu/api/records/"
-            verify = True
-        else:
-            url = "https://127.0.0.1:5000/api/records/"
-            verify = False
-
-        headers = {
-            "accept": "application/vnd.datacite.datacite+json",
-        }
-
-        response = requests.get(url + idv, headers=headers, verify=verify)
-        if response.status_code != 200:
-            print(response.text)
-            exit()
-        else:
-            return response.json()
-
     if production == True:
-        api_url = "https://data.caltech.edu/api/record/"
+        url = "https://data.caltech.edu/api/records/"
+        verify = True
     else:
-        api_url = "https://cd-sandbox.tind.io/api/record/"
+        url = "https://data.caltechlibrary.dev/api/records/"
+        verify = True
 
-    r = requests.get(api_url + str(idv))
-    r_data = r.json()
-    if "message" in r_data:
-        raise AssertionError(
-            "id "
-            + str(idv)
-            + " expected http status 200, got "
-            + str(r.status_code)
-            + " "
-            + r_data["message"]
-        )
-    if not "metadata" in r_data:
-        raise AssertionError("expected as metadata property in response, got " + r_data)
-    metadata = r_data["metadata"]
+    headers = {
+        "accept": "application/vnd.datacite.datacite+json",
+    }
 
-    if emails == True:
-        metadata = decustomize_schema(metadata, pass_emails=True, schema=schema)
+    response = requests.get(url + idv, headers=headers, verify=verify)
+    if response.status_code != 200:
+        print(response.text)
+        exit()
     else:
-        metadata = decustomize_schema(metadata, schema=schema)
+        metadata = response.json()
+
         if validate:
-            if schema == "40":
-                try:
-                    assert schema40.validate(metadata)
-                except AssertionError:
-                    v = schema40.validator.validate(metadata)
-                    errors = sorted(v.iter_errors(instance), key=lambda e: e.path)
-                    for error in errors:
-                        print(error.message)
             if schema == "43":
                 try:
                     assert schema43.validate(metadata)
@@ -86,11 +49,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "ids",
         metavar="ID",
-        type=int,
+        type=str,
         nargs="+",
         help="The CaltechDATA ID for each record of interest",
     )
-    parser.add_argument("-emails", dest="emails", action="store_true")
     parser.add_argument("-test", dest="production", action="store_false")
     parser.add_argument("-xml", dest="save_xml", action="store_true")
     parser.add_argument(
@@ -99,12 +61,11 @@ if __name__ == "__main__":
         action="store_true",
         help="skip validation of metadata",
     )
-    parser.add_argument("-schema", default="40", help="Schema Version")
+    parser.add_argument("-schema", default="43", help="Schema Version")
 
     args = parser.parse_args()
 
     production = args.production
-    emails = args.emails
     schema = args.schema
     skip_validate = args.skip_validate
     if skip_validate:
@@ -113,7 +74,7 @@ if __name__ == "__main__":
         validate = True
 
     for idv in args.ids:
-        metadata = get_metadata(idv, production, validate, emails, schema)
+        metadata = get_metadata(idv, production, validate, schema)
         outfile = open(str(idv) + ".json", "w")
         outfile.write(json.dumps(metadata, indent=4))
         outfile.close()
