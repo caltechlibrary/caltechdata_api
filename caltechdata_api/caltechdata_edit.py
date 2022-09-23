@@ -3,7 +3,7 @@ import copy, os, json
 import requests
 from requests import session
 
-from caltechdata_api import customize_schema, send_s3, write_files_rdm
+from caltechdata_api import customize_schema, write_files_rdm
 
 
 def caltechdata_unembargo(token, ids, production=False):
@@ -37,8 +37,7 @@ def caltechdata_edit(
         ids = [ids]
 
     data = customize_schema.customize_schema(
-        copy.deepcopy(metadata), schema=schema, pilot=True
-    )
+        copy.deepcopy(metadata), schema=schema)
     if production == True:
         url = "https://data.caltech.edu/"
         verify = True
