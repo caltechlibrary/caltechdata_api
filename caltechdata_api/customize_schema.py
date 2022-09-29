@@ -221,16 +221,31 @@ def customize_schema_rdm(json_record):
     if "identifiers" in json_record:
         identifiers = []
         for identifier in json_record["identifiers"]:
-            if identifier["identifierType"] != "DOI":
+            if identifier["identifierType"] == "DOI":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+                if prefix == "10.22002":
+                    pids = {
+                        "doi": {
+                            "identifier": doi,
+                            "provider": "datacite",
+                            "client": "datacite",
+                        }
+                    }
+                else:
+                    pids = {
+                        "doi": {
+                            "identifier": doi,
+                            "provider": "external",
+                        }
+                    }
+            elif identifier["identifierType"] == "oai":
+                # All OAI identifiers are system generated, and are not accepted
+                # via this API
+                print("Discarding oai identifier")
+            else:
                 identifier["scheme"] = identifiertypes[identifier.pop("identifierType")]
                 identifiers.append(identifier)
-            else:
-                pids = {
-                    "doi": {
-                        "identifier": identifier["identifier"],
-                        "provider": "external",
-                    }
-                }
         json_record["identifiers"] = identifiers
 
     if "relatedIdentifiers" in json_record:

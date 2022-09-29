@@ -58,7 +58,7 @@ name = meta["name"]
 REQUIRES_PYTHON = ">=3.6.0"
 
 # What packages are required for this module to be executed?
-REQUIRED = ["requests", "datacite>1.1.0", "tqdm", "pyyaml"]
+REQUIRED = ["requests", "datacite>1.1.0", "tqdm>=4.62.3", "pyyaml"]
 
 # What packages are optional?
 EXTRAS = {

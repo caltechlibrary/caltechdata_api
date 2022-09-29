@@ -36,13 +36,12 @@ def caltechdata_edit(
     if isinstance(ids, str):
         ids = [ids]
 
-    data = customize_schema.customize_schema(
-        copy.deepcopy(metadata), schema=schema)
+    data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
     if production == True:
-        url = "https://data.caltech.edu/"
+        url = "https://data.caltech.edu"
         verify = True
     else:
-        url = "https://data.caltechlibrary.dev/"
+        url = "https://data.caltechlibrary.dev"
         verify = True
 
     headers = {
@@ -90,8 +89,19 @@ def caltechdata_edit(
 
         else:
             # just update metadata
+            # result = requests.post(
+            #    url + "/api/records/" + idv + "/draft",
+            #    headers=headers,
+            #    verify=verify,
+            # )
+            # if result.status_code != 200:
+            #    print(result.text)
+            #    exit()
+            # print(result.json())
+            # exit()
+            # print(url + "/api/records/" + idv + "/draft")
             result = requests.get(
-                url + "/api/records/" + idv + "/draft",
+                url + "/api/records/" + idv,
                 headers=headers,
                 verify=verify,
             )
@@ -100,6 +110,7 @@ def caltechdata_edit(
                 exit()
             # We want files to stay the same as the existing record
             data["files"] = result.json()["files"]
+            print(url + "/api/records/" + idv + "/draft")
             result = requests.put(
                 url + "/api/records/" + idv + "/draft",
                 headers=headers,
@@ -112,6 +123,7 @@ def caltechdata_edit(
 
         if publish:
             publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
+            print(publish_link)
             result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
                 print(result.text)

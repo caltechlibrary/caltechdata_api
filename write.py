@@ -9,19 +9,19 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "json_file", nargs=1, help="file name for json DataCite metadata file"
 )
-parser.add_argument("-ids", nargs="*", help="CaltechDATA IDs")
 parser.add_argument("-fnames", nargs="*", help="New Files")
-parser.add_argument("-schema", default="40", help="Metadata Schema")
+parser.add_argument("-schema", default="43", help="Metadata Schema")
 
 args = parser.parse_args()
 
 # Get access token as environment variable
-token = os.environ["TINDTOK"]
+token = os.environ["RDMTOK"]
 
 metaf = open(args.json_file[0], "r")
 metadata = json.load(metaf)
 
 production = True
+publish = False
 
-response = caltechdata_write(metadata, token, args.fnames, production, args.schema)
+response = caltechdata_write(metadata, token, args.fnames, production, args.schema, publish)
 print(response)
