@@ -106,8 +106,14 @@ def caltechdata_edit(
                 verify=verify,
             )
             if result.status_code != 200:
-                print(result.text)
-                exit()
+                result = requests.get(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                verify=verify,
+                )
+                if result.status_code != 200:
+                    print(result.text)
+                    exit()
             # We want files to stay the same as the existing record
             data["files"] = result.json()["files"]
             print(url + "/api/records/" + idv + "/draft")
