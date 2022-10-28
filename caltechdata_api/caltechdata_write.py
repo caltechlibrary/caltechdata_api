@@ -161,7 +161,7 @@ def caltechdata_write(
         url + "/api/records", headers=headers, json=data, verify=verify
     )
     if result.status_code != 201:
-        raise Exceltion(result.text)
+        raise Exception(result.text)
     idv = result.json()["id"]
     print(f"record {idv} created")
     publish_link = result.json()["links"]["publish"]
