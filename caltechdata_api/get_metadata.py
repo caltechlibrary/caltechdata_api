@@ -23,8 +23,7 @@ def get_metadata(idv, production=True, validate=True, emails=False, schema="43")
 
     response = requests.get(url + idv, headers=headers, verify=verify)
     if response.status_code != 200:
-        print(response.text)
-        exit()
+        raise Exception(response.text)
     else:
         metadata = response.json()
 
