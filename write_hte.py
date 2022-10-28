@@ -12,9 +12,9 @@ endpoint = "https://renc.osn.xsede.org/"
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 # Set up datacite client
-# password = os.environ["DATACITE"]
+password = os.environ["DATACITE"]
 prefix = "10.25989"
-# datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
+datacite = DataCiteRESTClient(username="CALTECH.HTE", password=password, prefix=prefix)
 
 path = "ini210004tommorrell/" + folder + "/"
 dirs = s3.ls(path)
@@ -177,14 +177,15 @@ for record in records:
 
         production = True
 
-        result = requests.get(f'https://api.datacite.org/dois/{doi}')
-        if result.status_code != 200:
-            print('DATACITE Failed')
-            print(result.text)
-            exit()
+        #We're now doing new records, so redirects are not needed
+        #result = requests.get(f'https://api.datacite.org/dois/{doi}')
+        #if result.status_code != 200:
+        #    print('DATACITE Failed')
+        #    print(result.text)
+        #    exit()
         
-        url = result.json()['data']['attributes']['url']
-        old_id = url.split('data.caltech.edu/records/')[1]
+        #url = result.json()['data']['attributes']['url']
+        #old_id = url.split('data.caltech.edu/records/')[1]
         new_id = caltechdata_write(
             metadata,
             schema="43",
@@ -195,14 +196,15 @@ for record in records:
             community=community,
         )
         print(new_id)
-
-        # url = response.split("record ")[1].strip()[:-1]
+        url = f'https://data.caltech.edu/records/{new_id}'    
         
-        record_ids[old_id] = new_id
-        with open("new_ids.json", "w") as outfile:
-            json.dump(record_ids, outfile)
+        #record_ids[old_id] = new_id
+        #with open("new_ids.json", "w") as outfile:
+        #    json.dump(record_ids, outfile)
 
-        # doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
+        doi = datacite.update_doi(doi=record, metadata=metadata, url=url)['doi']
         completed.append(doi)
         with open("completed_dois.json", "w") as outfile:
             data = json.dump(completed, outfile)
+
+        exit()

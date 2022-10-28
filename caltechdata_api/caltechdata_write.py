@@ -1,6 +1,6 @@
 import copy
 import json
-import os, sys, requests
+import os, requests
 
 import s3fs
 from requests import session
@@ -19,8 +19,7 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
     result = requests.post(file_link, headers=headers, json=f_json, verify=verify)
     print("upload links")
     if result.status_code != 201:
-        print(result.text)
-        exit()
+        raise Exception(result.text)
     # Now we have the upload links
     for entry in result.json()["entries"]:
         link = entry["links"]["content"]
@@ -36,12 +35,10 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
         print(link)
         result = requests.put(link, headers=f_headers, verify=verify, data=infile)
         if result.status_code != 200:
-            print(result.text)
-            exit()
+            raise Exception(result.text)
         result = requests.post(commit, headers=headers, verify=verify)
         if result.status_code != 200:
-            print(result.text)
-            exit()
+            raise Exception(result.text)
 
 
 def add_file_links(metadata, file_links):
@@ -68,6 +65,42 @@ def add_file_links(metadata, file_links):
     description = {"description": link_string, "descriptionType": "Other"}
     metadata["descriptions"].append(description)
     return metadata
+
+
+def send_to_community(review_link, data, headers, verify, publish, community):
+
+    data = {
+        "receiver": {"community": community},
+        "type": "community-submission",
+    }
+    result = requests.put(review_link, json=data, headers=headers, verify=verify)
+    if result.status_code != 200:
+        print(result.status_code)
+        raise Exception(result.text)
+    submit_link = result.json()["links"]["actions"]["submit"]
+    data = comment = {
+        "payload": {
+            "content": "This record is submitted automatically with the CaltechDATA API",
+            "format": "html",
+        }
+    }
+    result = requests.post(submit_link, json=data, headers=headers, verify=verify)
+    if result.status_code != 200:
+        print(result.status_code)
+        raise Exception(result.text)
+    if publish:
+        accept_link = result.json()["links"]["actions"]["accept"]
+        data = comment = {
+            "payload": {
+                "content": "This record is accepted automatically with the CaltechDATA API",
+                "format": "html",
+            }
+        }
+        result = requests.post(accept_link, json=data, headers=headers, verify=verify)
+        if result.status_code != 200:
+            print(result.status_code)
+            raise Exception(result.text)
+    return result
 
 
 def caltechdata_write(
@@ -128,8 +161,7 @@ def caltechdata_write(
         url + "/api/records", headers=headers, json=data, verify=verify
     )
     if result.status_code != 201:
-        print(result.text)
-        exit()
+        raise Exceltion(result.text)
     idv = result.json()["id"]
     print(f"record {idv} created")
     publish_link = result.json()["links"]["publish"]
@@ -141,46 +173,11 @@ def caltechdata_write(
 
     if community:
         review_link = result.json()["links"]["review"]
-        data = {
-            "receiver": {"community": community},
-            "type": "community-submission",
-        }
-        result = requests.put(review_link, json=data, headers=headers, verify=verify)
-        if result.status_code != 200:
-            print(result.status_code)
-            print(result.text)
-            exit()
-        submit_link = result.json()["links"]["actions"]["submit"]
-        data = comment = {
-            "payload": {
-                "content": "This record is submitted automatically with the CaltechDATA API",
-                "format": "html",
-            }
-        }
-        result = requests.post(submit_link, json=data, headers=headers, verify=verify)
-        if result.status_code != 200:
-            print(result.status_code)
-            print(result.text)
-            exit()
-        if publish:
-            accept_link = result.json()["links"]["actions"]["accept"]
-            data = comment = {
-                "payload": {
-                    "content": "This record is accepted automatically with the CaltechDATA API",
-                    "format": "html",
-                }
-            }
-            result = requests.post(
-                accept_link, json=data, headers=headers, verify=verify
-            )
-            if result.status_code != 200:
-                print(result.status_code)
-                print(result.text)
-                exit()
+        send_to_community(review_link, data, headers, verify, publish, community)
+
     else:
         if publish:
             result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
-                print(result.text)
-                exit()
+                raise Exception(result.text)
     return idv

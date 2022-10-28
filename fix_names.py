@@ -23,7 +23,7 @@ response = requests.get(f"{url}?search_type=scan&scroll=5m")
 
 total = response.json()["hits"]["total"]
 pages = math.ceil(int(total) / 1000)
-hits = []
+hits = []#[{'id':'15e0h-t0t34'}]
 print(total)
 for c in progressbar(range(1,2)):#, pages + 1)):
     chunkurl = (

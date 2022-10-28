@@ -3,7 +3,12 @@ import copy, os, json
 import requests
 from requests import session
 
-from caltechdata_api import customize_schema, write_files_rdm
+from caltechdata_api import (
+    customize_schema,
+    write_files_rdm,
+    add_file_links,
+    send_to_community,
+)
 
 
 def caltechdata_unembargo(token, ids, production=False):
@@ -19,10 +24,10 @@ def caltechdata_edit(
     production=False,
     schema="43",
     publish=False,
+    file_links=[],
+    s3=None,
+    community=None,
 ):
-    """Including files will only replaces files if they have the same name
-    The delete option will delete any existing files with a given file extension
-    There are more file operations that could be implemented"""
 
     # If no token is provided, get from RDMTOK environment variable
     if not token:
@@ -35,6 +40,9 @@ def caltechdata_edit(
         ids = [str(ids)]
     if isinstance(ids, str):
         ids = [ids]
+
+    if file_links:
+        metadata = add_file_links(metadata, file_links)
 
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
     if production == True:
@@ -88,52 +96,58 @@ def caltechdata_edit(
             write_files_rdm(files, file_link, headers, f_headers, verify)
 
         else:
-            # just update metadata
-            # result = requests.post(
-            #    url + "/api/records/" + idv + "/draft",
-            #    headers=headers,
-            #    verify=verify,
-            # )
-            # if result.status_code != 200:
-            #    print(result.text)
-            #    exit()
-            # print(result.json())
-            # exit()
-            # print(url + "/api/records/" + idv + "/draft")
+            # Check for existing draft
             result = requests.get(
-                url + "/api/records/" + idv,
+                url + "/api/records/" + idv + "/draft",
                 headers=headers,
                 verify=verify,
             )
             if result.status_code != 200:
+                draft = False
+            else:
+                draft = True
+            if draft == False:
                 result = requests.get(
-                url + "/api/records/" + idv + "/draft",
-                headers=headers,
-                verify=verify,
+                    url + "/api/records/" + idv,
+                    headers=headers,
+                    verify=verify,
                 )
                 if result.status_code != 200:
-                    print(result.text)
-                    exit()
+                    raise Exception(result.text)
             # We want files to stay the same as the existing record
             data["files"] = result.json()["files"]
             print(url + "/api/records/" + idv + "/draft")
-            result = requests.put(
-                url + "/api/records/" + idv + "/draft",
-                headers=headers,
-                json=data,
-                verify=verify,
-            )
-            if result.status_code != 200:
-                print(result.text)
-                exit()
+            if draft == True:
+                result = requests.put(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                    json=data,
+                    verify=verify,
+                )
+                if result.status_code != 200:
+                    raise Exception(result.text)
+            else:
+                result = requests.post(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                    json=data,
+                    verify=verify,
+                )
+                if result.status_code != 201:
+                    raise Exception(result.text)
 
-        if publish:
+        if community:
+            review_link = result.json()["links"]["review"]
+            result = send_to_community(
+                review_link, data, headers, verify, publish, community
+            )
+            doi = result.json()["pids"]["doi"]["identifier"]
+            completed.append(doi)
+        elif publish:
             publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
-            print(publish_link)
             result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
-                print(result.text)
-                exit()
+                raise Exception(result.text)
             doi = result.json()["pids"]["doi"]["identifier"]
             completed.append(doi)
         else:
