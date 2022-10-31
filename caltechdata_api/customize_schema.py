@@ -5,6 +5,21 @@ import json
 from datetime import date
 import yaml
 from pathlib import Path
+import requests
+
+
+def grid_to_ror(grid):
+    # Temporary until InvenioRDM stops spitting out GRIDS
+    # We manually handle some incorrect/redundant GRID Ids
+    if grid == "grid.451078.f":
+        ror = "https://ror.org/00hm6j694"
+    elif grid == 'grid.5805.8':
+        ror = "https://ror.org/02en5vm52"
+    else:
+        url = f"https://api.ror.org/organizations?query.advanced=external_ids.GRID.all:{grid}"
+        results = requests.get(url)
+        ror = results.json()["items"][0]["id"]
+    return ror
 
 
 def get_vocabularies():
@@ -318,6 +333,11 @@ def customize_schema_rdm(json_record):
                     ror = fund.pop("funderIdentifier")
                     if "ror.org" in ror:
                         ror = ror.split("ror.org/")[1]
+                    funder["id"] = ror
+                    fund.pop("funderIdentifierType")
+                elif fund["funderIdentifierType"] == "GRID":
+                    #We need this temporarily to round-trip data
+                    ror = grid_to_ror(fund.pop("funderIdentifier"))
                     funder["id"] = ror
                     fund.pop("funderIdentifierType")
                 else:
