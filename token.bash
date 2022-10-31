@@ -1,2 +1,2 @@
-export TINDTOK="token"
+export RDMTOK="token"
 

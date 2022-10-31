@@ -18,11 +18,13 @@ def read(fname):
         src = f.read()
     return src
 
+
 def package_files(package, directory):
     os.chdir(package)
     paths = glob.glob(directory + "/**", recursive=True)
     os.chdir("..")
     return paths
+
 
 codemeta_json = "codemeta.json"
 
@@ -65,7 +67,7 @@ EXTRAS = {
     # 'fancy feature': ['django'],
 }
 
-files = package_files("caltechdata_api", "vocabularies") 
+files = package_files("caltechdata_api", "vocabularies")
 files.append("vocabularies.yaml")
 
 # The rest you shouldn't have to touch too much :)

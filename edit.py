@@ -13,14 +13,12 @@ parser.add_argument(
 )
 parser.add_argument("-ids", nargs="*", help="CaltechDATA IDs")
 parser.add_argument("-fnames", nargs="*", help="New Files")
-parser.add_argument("-schema", default="40", help="Metadata Schema")
-parser.add_argument(
-    "-delete", nargs="*", default="{}", help="Filename or extension to delete"
-)
+parser.add_argument("-flinks", nargs="*", help="New File Links")
+parser.add_argument("-schema", default="43", help="Metadata Schema")
 args = parser.parse_args()
 
-# Get access token from TIND set as environment variable with source token.bash
-token = os.environ["TINDTOK"]
+# Get access token set as environment variable with source token.bash
+token = os.environ["RDMTOK"]
 
 if args.json_file:
     metaf = open(args.json_file, "r")
@@ -29,8 +27,16 @@ else:
     metadata = {}
 
 production = True
+publish = True
 
 response = caltechdata_edit(
-    args.ids, metadata, token, args.fnames, args.delete, production, args.schema
+    args.ids,
+    metadata,
+    token,
+    args.fnames,
+    production,
+    args.schema,
+    publish,
+    args.flinks,
 )
 print(response)

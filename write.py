@@ -23,5 +23,7 @@ metadata = json.load(metaf)
 production = True
 publish = False
 
-response = caltechdata_write(metadata, token, args.fnames, production, args.schema, publish)
+response = caltechdata_write(
+    metadata, token, args.fnames, production, args.schema, publish
+)
 print(response)

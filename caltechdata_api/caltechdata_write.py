@@ -17,7 +17,6 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
         f_json.append({"key": filename})
         f_list[filename] = f
     result = requests.post(file_link, headers=headers, json=f_json, verify=verify)
-    print("upload links")
     if result.status_code != 201:
         raise Exception(result.text)
     # Now we have the upload links
@@ -31,8 +30,6 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
             infile = open(f_list[name], "rb")
         # size = infile.seek(0, 2)
         # infile.seek(0, 0)  # reset at beginning
-        print("upload")
-        print(link)
         result = requests.put(link, headers=f_headers, verify=verify, data=infile)
         if result.status_code != 200:
             raise Exception(result.text)
@@ -75,7 +72,6 @@ def send_to_community(review_link, data, headers, verify, publish, community):
     }
     result = requests.put(review_link, json=data, headers=headers, verify=verify)
     if result.status_code != 200:
-        print(result.status_code)
         raise Exception(result.text)
     submit_link = result.json()["links"]["actions"]["submit"]
     data = comment = {
@@ -86,7 +82,6 @@ def send_to_community(review_link, data, headers, verify, publish, community):
     }
     result = requests.post(submit_link, json=data, headers=headers, verify=verify)
     if result.status_code != 200:
-        print(result.status_code)
         raise Exception(result.text)
     if publish:
         accept_link = result.json()["links"]["actions"]["accept"]
@@ -98,7 +93,6 @@ def send_to_community(review_link, data, headers, verify, publish, community):
         }
         result = requests.post(accept_link, json=data, headers=headers, verify=verify)
         if result.status_code != 200:
-            print(result.status_code)
             raise Exception(result.text)
     return result
 
@@ -154,8 +148,6 @@ def caltechdata_write(
         if "README.txt" in files:
             data["files"] = {"default_preview": "README.txt"}
 
-    print(json.dumps(data))
-
     # Make draft and publish
     result = requests.post(
         url + "/api/records", headers=headers, json=data, verify=verify
@@ -163,13 +155,11 @@ def caltechdata_write(
     if result.status_code != 201:
         raise Exception(result.text)
     idv = result.json()["id"]
-    print(f"record {idv} created")
     publish_link = result.json()["links"]["publish"]
 
     if files:
         file_link = result.json()["links"]["files"]
         write_files_rdm(files, file_link, headers, f_headers, verify, s3)
-    print("files added")
 
     if community:
         review_link = result.json()["links"]["review"]

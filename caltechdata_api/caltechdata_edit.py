@@ -20,7 +20,6 @@ def caltechdata_edit(
     metadata={},
     token=None,
     files={},
-    delete={},
     production=False,
     schema="43",
     publish=False,
@@ -61,13 +60,6 @@ def caltechdata_edit(
         "Content-type": "application/octet-stream",
     }
 
-    if delete:
-        print(
-            """WARNING: Delete command is no longer supported; only the
-            files listed in the file option will be added to new version of
-            record"""
-        )
-
     completed = []
 
     for idv in ids:
@@ -80,8 +72,7 @@ def caltechdata_edit(
                 verify=verify,
             )
             if result.status_code != 201:
-                print(result.text)
-                exit()
+                raise Exception(result.text)
             # Get the id of the new version
             idv = result.json()["id"]
             # Update metadata
@@ -103,10 +94,14 @@ def caltechdata_edit(
                 verify=verify,
             )
             if result.status_code != 200:
-                draft = False
-            else:
-                draft = True
-            if draft == False:
+                # We make a draft
+                result = requests.post(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                    verify=verify,
+                )
+                if result.status_code != 201:
+                    raise Exception(result.text)
                 result = requests.get(
                     url + "/api/records/" + idv,
                     headers=headers,
@@ -116,25 +111,14 @@ def caltechdata_edit(
                     raise Exception(result.text)
             # We want files to stay the same as the existing record
             data["files"] = result.json()["files"]
-            print(url + "/api/records/" + idv + "/draft")
-            if draft == True:
-                result = requests.put(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                    json=data,
-                    verify=verify,
-                )
-                if result.status_code != 200:
-                    raise Exception(result.text)
-            else:
-                result = requests.post(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                    json=data,
-                    verify=verify,
-                )
-                if result.status_code != 201:
-                    raise Exception(result.text)
+            result = requests.put(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                json=data,
+                verify=verify,
+            )
+            if result.status_code != 200:
+                raise Exception(result.text)
 
         if community:
             review_link = result.json()["links"]["review"]
