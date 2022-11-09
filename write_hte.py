@@ -3,6 +3,7 @@ import s3fs
 import requests
 from datacite import schema43, DataCiteRESTClient
 from caltechdata_api import caltechdata_write, caltechdata_edit
+from tqdm import tqdm
 
 folder = "0_gregoire"
 
@@ -59,7 +60,7 @@ with open("excluded_dois.json", "r") as infile:
 for doi in excluded:
     records.remove(doi)
 
-for record in records:
+for record in tqdm(records):
     base = record.split("/")[1]
     meta_path = path + base + "/metadata.json"
     metadata = None
@@ -195,16 +196,18 @@ for record in records:
             s3=s3,
             community=community,
         )
-        print(new_id)
         url = f"https://data.caltech.edu/records/{new_id}"
 
         # record_ids[old_id] = new_id
         # with open("new_ids.json", "w") as outfile:
         #    json.dump(record_ids, outfile)
-
-        doi = datacite.update_doi(doi=record, metadata=metadata, url=url)["doi"]
+        
+        result = requests.get(f'https://api.datacite.org/dois/{doi}')
+        if result.status_code != 200:
+            doi = datacite.public_doi(doi=record, metadata=metadata, url=url)
+        else:
+            doi = datacite.update_doi(doi=record, metadata=metadata, url=url)["doi"]
         completed.append(doi)
         with open("completed_dois.json", "w") as outfile:
             data = json.dump(completed, outfile)
 
-        exit()
