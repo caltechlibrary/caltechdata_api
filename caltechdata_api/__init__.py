@@ -4,7 +4,11 @@ from .caltechdata_write import (
     add_file_links,
     send_to_community,
 )
-from .caltechdata_edit import caltechdata_edit, caltechdata_unembargo
+from .caltechdata_edit import (
+    caltechdata_edit,
+    caltechdata_unembargo,
+    caltechdata_accept,
+)
 from .customize_schema import customize_schema
 from .get_metadata import get_metadata
 from .download_file import download_file, download_url

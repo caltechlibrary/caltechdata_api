@@ -15,6 +15,43 @@ def caltechdata_unembargo(token, ids, production=False):
     print("caltechdaua_unembargo is not yet re-implemented")
 
 
+def caltechdata_accept(ids, token=None, production=False):
+    # Accept a record into a community
+
+    # If no token is provided, get from RDMTOK environment variable
+    if not token:
+        token = os.environ["RDMTOK"]
+
+    if production == True:
+        url = "https://data.caltech.edu"
+        verify = True
+    else:
+        url = "https://data.caltechlibrary.dev"
+        verify = True
+
+    headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+    }
+
+    for idv in ids:
+
+        result = requests.get(
+            url + "/api/records/" + idv + "/draft/review", headers=headers
+        )
+
+        accept_link = result.json()["links"]["actions"]["accept"]
+        data = comment = {
+            "payload": {
+                "content": "This record is accepted automatically with the CaltechDATA API",
+                "format": "html",
+            }
+        }
+        result = requests.post(accept_link, json=data, headers=headers)
+        if result.status_code != 200:
+            raise Exception(result.text)
+
+
 def caltechdata_edit(
     ids,
     metadata={},

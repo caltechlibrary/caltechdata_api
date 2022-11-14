@@ -13,7 +13,7 @@ def grid_to_ror(grid):
     # We manually handle some incorrect/redundant GRID Ids
     if grid == "grid.451078.f":
         ror = "https://ror.org/00hm6j694"
-    elif grid == 'grid.5805.8':
+    elif grid == "grid.5805.8":
         ror = "https://ror.org/02en5vm52"
     else:
         url = f"https://api.ror.org/organizations?query.advanced=external_ids.GRID.all:{grid}"
@@ -336,7 +336,7 @@ def customize_schema_rdm(json_record):
                     funder["id"] = ror
                     fund.pop("funderIdentifierType")
                 elif fund["funderIdentifierType"] == "GRID":
-                    #We need this temporarily to round-trip data
+                    # We need this temporarily to round-trip data
                     ror = grid_to_ror(fund.pop("funderIdentifier"))
                     funder["id"] = ror
                     fund.pop("funderIdentifierType")
