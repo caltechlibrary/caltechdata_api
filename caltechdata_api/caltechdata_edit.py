@@ -24,10 +24,8 @@ def caltechdata_accept(ids, token=None, production=False):
 
     if production == True:
         url = "https://data.caltech.edu"
-        verify = True
     else:
         url = "https://data.caltechlibrary.dev"
-        verify = True
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -83,10 +81,8 @@ def caltechdata_edit(
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
     if production == True:
         url = "https://data.caltech.edu"
-        verify = True
     else:
         url = "https://data.caltechlibrary.dev"
-        verify = True
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -106,7 +102,6 @@ def caltechdata_edit(
             result = requests.post(
                 url + "/api/records/" + idv + "/versions",
                 headers=headers,
-                verify=verify,
             )
             if result.status_code != 201:
                 raise Exception(result.text)
@@ -117,32 +112,28 @@ def caltechdata_edit(
                 url + "/api/records/" + idv + "/draft",
                 headers=headers,
                 json=data,
-                verify=verify,
             )
 
             file_link = result.json()["links"]["files"]
-            write_files_rdm(files, file_link, headers, f_headers, verify)
+            write_files_rdm(files, file_link, headers, f_headers)
 
         else:
             # Check for existing draft
             result = requests.get(
                 url + "/api/records/" + idv + "/draft",
                 headers=headers,
-                verify=verify,
             )
             if result.status_code != 200:
                 # We make a draft
                 result = requests.post(
                     url + "/api/records/" + idv + "/draft",
                     headers=headers,
-                    verify=verify,
                 )
                 if result.status_code != 201:
                     raise Exception(result.text)
                 result = requests.get(
                     url + "/api/records/" + idv,
                     headers=headers,
-                    verify=verify,
                 )
                 if result.status_code != 200:
                     raise Exception(result.text)
@@ -152,7 +143,6 @@ def caltechdata_edit(
                 url + "/api/records/" + idv + "/draft",
                 headers=headers,
                 json=data,
-                verify=verify,
             )
             if result.status_code != 200:
                 raise Exception(result.text)
@@ -160,13 +150,13 @@ def caltechdata_edit(
         if community:
             review_link = result.json()["links"]["review"]
             result = send_to_community(
-                review_link, data, headers, verify, publish, community
+                review_link, data, headers, publish, community
             )
             doi = result.json()["pids"]["doi"]["identifier"]
             completed.append(doi)
         elif publish:
             publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
-            result = requests.post(publish_link, headers=headers, verify=verify)
+            result = requests.post(publish_link, headers=headers)
             if result.status_code != 202:
                 raise Exception(result.text)
             doi = result.json()["pids"]["doi"]["identifier"]

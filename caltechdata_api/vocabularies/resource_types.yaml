@@ -467,29 +467,11 @@
     - linkable
   title:
     en: Drawing
-- id: image-diagram
-  props:
-    csl: figure
-    datacite_general: Image
-    datacite_type: Diagram
-    openaire_resourceType: '25'
-    openaire_type: dataset
-    eurepo: info:eu-repo/semantics/other
-    schema.org: https://schema.org/ImageObject
-    subtype: image-diagram
-    subtype_name: Diagram
-    type: image
-    type_icon: chart bar outline
-    type_name: Image
-  tags:
-    - linkable
-  title:
-    en: Diagram
 - id: image-map
   props:
     csl: figure
     datacite_general: Image
-    datacite_type: Map
+    datacite_type: Diagram
     openaire_resourceType: '25'
     openaire_type: dataset
     eurepo: info:eu-repo/semantics/other

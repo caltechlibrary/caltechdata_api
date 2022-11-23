@@ -9,14 +9,14 @@ from json.decoder import JSONDecodeError
 from caltechdata_api import customize_schema
 
 
-def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
+def write_files_rdm(files, file_link, headers, f_headers, s3=None):
     f_json = []
     f_list = {}
     for f in files:
         filename = f.split("/")[-1]
         f_json.append({"key": filename})
         f_list[filename] = f
-    result = requests.post(file_link, headers=headers, json=f_json, verify=verify)
+    result = requests.post(file_link, headers=headers, json=f_json)
     if result.status_code != 201:
         raise Exception(result.text)
     # Now we have the upload links
@@ -30,10 +30,10 @@ def write_files_rdm(files, file_link, headers, f_headers, verify, s3=None):
             infile = open(f_list[name], "rb")
         # size = infile.seek(0, 2)
         # infile.seek(0, 0)  # reset at beginning
-        result = requests.put(link, headers=f_headers, verify=verify, data=infile)
+        result = requests.put(link, headers=f_headers, data=infile)
         if result.status_code != 200:
             raise Exception(result.text)
-        result = requests.post(commit, headers=headers, verify=verify)
+        result = requests.post(commit, headers=headers)
         if result.status_code != 200:
             raise Exception(result.text)
 
@@ -64,13 +64,13 @@ def add_file_links(metadata, file_links):
     return metadata
 
 
-def send_to_community(review_link, data, headers, verify, publish, community):
+def send_to_community(review_link, data, headers, publish, community):
 
     data = {
         "receiver": {"community": community},
         "type": "community-submission",
     }
-    result = requests.put(review_link, json=data, headers=headers, verify=verify)
+    result = requests.put(review_link, json=data, headers=headers)
     if result.status_code != 200:
         raise Exception(result.text)
     submit_link = result.json()["links"]["actions"]["submit"]
@@ -80,7 +80,7 @@ def send_to_community(review_link, data, headers, verify, publish, community):
             "format": "html",
         }
     }
-    result = requests.post(submit_link, json=data, headers=headers, verify=verify)
+    result = requests.post(submit_link, json=data, headers=headers)
     if result.status_code != 200:
         raise Exception(result.text)
     if publish:
@@ -91,7 +91,7 @@ def send_to_community(review_link, data, headers, verify, publish, community):
                 "format": "html",
             }
         }
-        result = requests.post(accept_link, json=data, headers=headers, verify=verify)
+        result = requests.post(accept_link, json=data, headers=headers)
         if result.status_code != 200:
             raise Exception(result.text)
     return result
@@ -128,10 +128,8 @@ def caltechdata_write(
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
     if production == True:
         url = "https://data.caltech.edu/"
-        verify = True
     else:
         url = "https://data.caltechlibrary.dev/"
-        verify = False
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -150,7 +148,7 @@ def caltechdata_write(
 
     # Make draft and publish
     result = requests.post(
-        url + "/api/records", headers=headers, json=data, verify=verify
+        url + "/api/records", headers=headers, json=data
     )
     if result.status_code != 201:
         raise Exception(result.text)
@@ -159,15 +157,15 @@ def caltechdata_write(
 
     if files:
         file_link = result.json()["links"]["files"]
-        write_files_rdm(files, file_link, headers, f_headers, verify, s3)
+        write_files_rdm(files, file_link, headers, f_headers, s3)
 
     if community:
         review_link = result.json()["links"]["review"]
-        send_to_community(review_link, data, headers, verify, publish, community)
+        send_to_community(review_link, data, headers, publish, community)
 
     else:
         if publish:
-            result = requests.post(publish_link, headers=headers, verify=verify)
+            result = requests.post(publish_link, headers=headers)
             if result.status_code != 202:
                 raise Exception(result.text)
     return idv

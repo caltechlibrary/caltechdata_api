@@ -12,13 +12,14 @@ def grid_to_ror(grid):
     # Temporary until InvenioRDM stops spitting out GRIDS
     # We manually handle some incorrect/redundant GRID Ids
     if grid == "grid.451078.f":
-        ror = "https://ror.org/00hm6j694"
+        ror = "00hm6j694"
     elif grid == "grid.5805.8":
-        ror = "https://ror.org/02en5vm52"
+        ror = "02en5vm52"
     else:
         url = f"https://api.ror.org/organizations?query.advanced=external_ids.GRID.all:{grid}"
         results = requests.get(url)
         ror = results.json()["items"][0]["id"]
+        ror = ror.split('ror.org/')[1]
     return ror
 
 
