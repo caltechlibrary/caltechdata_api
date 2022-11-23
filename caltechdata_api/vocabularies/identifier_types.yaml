@@ -98,3 +98,8 @@
     datacite: cdid
   title:
     en: CALTECHDATA_ID
+- id: tiltid
+  props:
+    datacite: tiltid
+  title:
+    en: TILT_SERIES_ID
