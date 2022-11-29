@@ -108,6 +108,8 @@ def rdm_creators_contributors(person_list, peopleroles):
                         # We retain the name, since it might be different than
                         # the ROR version
                         new_aff["name"] = aff["name"]
+                    elif aff["affiliationIdentifierScheme"] == "N/A":
+                        print('Discarding affiliation with N/A scheme')
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
                 aff_all.append(new_aff)
