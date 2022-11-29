@@ -83,10 +83,15 @@ def rdm_creators_contributors(person_list, peopleroles):
         change_label(cre, "familyName", "family_name")
         change_label(cre, "nameIdentifiers", "identifiers")
         if "identifiers" in cre:
+            new_id = []
             for ide in cre["identifiers"]:
                 change_label(ide, "nameIdentifier", "identifier")
                 change_label(ide, "nameIdentifierScheme", "scheme")
                 ide["scheme"] = ide["scheme"].lower()
+                #We don't support researcher id at this time
+                if ide["scheme"] != "researcherid":
+                    new_id.append(ide)
+            cre['identifiers'] = new_id
         if "affiliation" in cre:
             aff_all = []
             # Not all ROR identifiers are available in InvenioRDM
