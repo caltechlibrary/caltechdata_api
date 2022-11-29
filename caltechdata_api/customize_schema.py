@@ -98,6 +98,7 @@ def rdm_creators_contributors(person_list, peopleroles):
             missing = ["05sy8gb82"]
             for aff in cre.pop("affiliation"):
                 new_aff = {}
+                keep = True
                 if "affiliationIdentifierScheme" in aff:
                     identifier = aff["affiliationIdentifier"]
                     if aff["affiliationIdentifierScheme"] == "ROR":
@@ -110,9 +111,11 @@ def rdm_creators_contributors(person_list, peopleroles):
                         new_aff["name"] = aff["name"]
                     elif aff["affiliationIdentifierScheme"] == "N/A":
                         print('Discarding affiliation with N/A scheme')
+                        keep = False
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
-                aff_all.append(new_aff)
+                if keep:
+                    aff_all.append(new_aff)
             new_cre["affiliations"] = aff_all
         if "contributorType" in cre:
             new_cre["role"] = {"id": peopleroles[cre.pop("contributorType")]}
