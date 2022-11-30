@@ -114,6 +114,8 @@ def rdm_creators_contributors(person_list, peopleroles):
                         keep = False
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
+                if aff["name"] == '':
+                    keep=False
                 if keep:
                     aff_all.append(new_aff)
             new_cre["affiliations"] = aff_all
