@@ -5,6 +5,7 @@ import os, requests
 import s3fs
 from requests import session
 from json.decoder import JSONDecodeError
+from .utils import humanbytes
 
 from caltechdata_api import customize_schema
 
@@ -48,13 +49,13 @@ def add_file_links(metadata, file_links):
         path = link.split(endpoint)[1]
         try:
             size = s3.info(path)["Size"]
-            size = round(size / 1024.0 / 1024.0 / 1024.0, 2)
+            size = humanbytes(size)  # round(size / 1024.0 / 1024.0 / 1024.0, 2)
         except:
             size = 0
         if link_string == "":
             cleaned = link.strip(file)
             link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
-        link_string += f"""{file} {size} GB 
+        link_string += f"""{file} {size} 
         <p>&lt;a role="button" class="ui compact mini button" href="{link}"
         &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
         """
@@ -125,6 +126,36 @@ def caltechdata_write(
     if file_links:
         metadata = add_file_links(metadata, file_links)
 
+    # Pull out pid information
+    if production == True:
+        repo_prefix = "10.22002"
+    else:
+        repo_prefix = "10.33569"
+    if "identifiers" in metadata:
+        pids = {}
+        for identifier in metadata["identifiers"]:
+            if identifier["identifierType"] == "DOI":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+
+                if prefix == repo_prefix:
+                    pids["doi"] = {
+                        "identifier": doi,
+                        "provider": "datacite",
+                        "client": "datacite",
+                    }
+                else:
+                    pids["doi"] = {
+                        "identifier": doi,
+                        "provider": "external",
+                    }
+            elif identifier["identifierType"] == "oai":
+                pids["oai"] = {
+                    "identifier": identifier["identifier"],
+                    "provider": "oai",
+                }
+    metadata["pids"] = pids
+
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
     if production == True:
         url = "https://data.caltech.edu/"
@@ -147,9 +178,7 @@ def caltechdata_write(
             data["files"] = {"default_preview": "README.txt"}
 
     # Make draft and publish
-    result = requests.post(
-        url + "/api/records", headers=headers, json=data
-    )
+    result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
         raise Exception(result.text)
     idv = result.json()["id"]

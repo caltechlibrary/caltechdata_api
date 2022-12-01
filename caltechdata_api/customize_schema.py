@@ -19,7 +19,7 @@ def grid_to_ror(grid):
         url = f"https://api.ror.org/organizations?query.advanced=external_ids.GRID.all:{grid}"
         results = requests.get(url)
         ror = results.json()["items"][0]["id"]
-        ror = ror.split('ror.org/')[1]
+        ror = ror.split("ror.org/")[1]
     return ror
 
 
@@ -88,10 +88,10 @@ def rdm_creators_contributors(person_list, peopleroles):
                 change_label(ide, "nameIdentifier", "identifier")
                 change_label(ide, "nameIdentifierScheme", "scheme")
                 ide["scheme"] = ide["scheme"].lower()
-                #We don't support researcher id at this time
+                # We don't support researcher id at this time
                 if ide["scheme"] != "researcherid":
                     new_id.append(ide)
-            cre['identifiers'] = new_id
+            cre["identifiers"] = new_id
         if "affiliation" in cre:
             aff_all = []
             # Not all ROR identifiers are available in InvenioRDM
@@ -110,12 +110,12 @@ def rdm_creators_contributors(person_list, peopleroles):
                         # the ROR version
                         new_aff["name"] = aff["name"]
                     elif aff["affiliationIdentifierScheme"] == "N/A":
-                        print('Discarding affiliation with N/A scheme')
+                        print("Discarding affiliation with N/A scheme")
                         keep = False
                 if new_aff == {}:
                     new_aff["name"] = aff["name"]
-                if aff["name"] == '':
-                    keep=False
+                if aff["name"] == "":
+                    keep = False
                 if keep:
                     aff_all.append(new_aff)
             new_cre["affiliations"] = aff_all
@@ -245,31 +245,11 @@ def customize_schema_rdm(json_record):
             language = "eng"
         json_record["languages"] = [{"id": language}]
 
-    pids = {}
     if "identifiers" in json_record:
         identifiers = []
-        pids = {}
+        system_pids = ["DOI", "oai"]
         for identifier in json_record["identifiers"]:
-            if identifier["identifierType"] == "DOI":
-                doi = identifier["identifier"]
-                prefix = doi.split("/")[0]
-                if prefix == "10.22002":
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "datacite",
-                        "client": "datacite",
-                    }
-                else:
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "external",
-                    }
-            elif identifier["identifierType"] == "oai":
-                pids["oai"] = {
-                    "identifier": identifier["identifier"],
-                    "provider": "oai",
-                }
-            else:
+            if identifier["identifierType"] not in system_pids:
                 identifier["scheme"] = identifiertypes[identifier.pop("identifierType")]
                 identifiers.append(identifier)
         json_record["identifiers"] = identifiers
@@ -386,6 +366,9 @@ def customize_schema_rdm(json_record):
     if "community" in json_record:
         com = json_record.pop("community")
         parent["communities"] = {"ids": [com], "default": com}
+    # Not technically datacite, but transfer pids information
+    if "pids" in json_record:
+        pids = json_record.pop("pids")
 
     return {"metadata": json_record, "pids": pids, "parent": parent}
 

@@ -78,7 +78,38 @@ def caltechdata_edit(
     if file_links:
         metadata = add_file_links(metadata, file_links)
 
+    # Pull out pid information
+    if production == True:
+        repo_prefix = "10.22002"
+    else:
+        repo_prefix = "10.33569"
+    pids = {}
+    if "identifiers" in metadata:
+        for identifier in metadata["identifiers"]:
+            if identifier["identifierType"] == "DOI":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+
+                if prefix == repo_prefix:
+                    pids["doi"] = {
+                        "identifier": doi,
+                        "provider": "datacite",
+                        "client": "datacite",
+                    }
+                else:
+                    pids["doi"] = {
+                        "identifier": doi,
+                        "provider": "external",
+                    }
+            elif identifier["identifierType"] == "oai":
+                pids["oai"] = {
+                    "identifier": identifier["identifier"],
+                    "provider": "oai",
+                }
+    metadata["pids"] = pids
+
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+
     if production == True:
         url = "https://data.caltech.edu"
     else:
@@ -96,6 +127,7 @@ def caltechdata_edit(
     completed = []
 
     for idv in ids:
+
         if files:
             # We need to make new version
             data["files"] = {"enabled": True}
@@ -127,6 +159,7 @@ def caltechdata_edit(
                 # We make a draft
                 result = requests.post(
                     url + "/api/records/" + idv + "/draft",
+                    json=data,
                     headers=headers,
                 )
                 if result.status_code != 201:
@@ -149,9 +182,7 @@ def caltechdata_edit(
 
         if community:
             review_link = result.json()["links"]["review"]
-            result = send_to_community(
-                review_link, data, headers, publish, community
-            )
+            result = send_to_community(review_link, data, headers, publish, community)
             doi = result.json()["pids"]["doi"]["identifier"]
             completed.append(doi)
         elif publish:
