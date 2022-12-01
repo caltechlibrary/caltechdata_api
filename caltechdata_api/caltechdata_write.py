@@ -5,9 +5,7 @@ import os, requests
 import s3fs
 from requests import session
 from json.decoder import JSONDecodeError
-from .utils import humanbytes
-
-from caltechdata_api import customize_schema
+from caltechdata_aip import humanbytes, customize_schema
 
 
 def write_files_rdm(files, file_link, headers, f_headers, s3=None):

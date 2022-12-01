@@ -12,3 +12,4 @@ from .caltechdata_edit import (
 from .customize_schema import customize_schema
 from .get_metadata import get_metadata
 from .download_file import download_file, download_url
+from .utils.humanbytes import humanbytes
