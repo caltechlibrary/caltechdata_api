@@ -51,7 +51,7 @@ def caltechdata_accept(ids, token=None, production=False):
 
 
 def caltechdata_edit(
-    ids,
+    idv,
     metadata={},
     token=None,
     files={},
@@ -61,7 +61,7 @@ def caltechdata_edit(
     file_links=[],
     s3=None,
     community=None,
-    new_version=False
+    new_version=False,
 ):
 
     # If no token is provided, get from RDMTOK environment variable
@@ -71,10 +71,6 @@ def caltechdata_edit(
     # If files is a string - change to single value array
     if isinstance(files, str) == True:
         files = [files]
-    if isinstance(ids, int):
-        ids = [str(ids)]
-    if isinstance(ids, str):
-        ids = [ids]
 
     if file_links:
         metadata = add_file_links(metadata, file_links)
@@ -85,6 +81,7 @@ def caltechdata_edit(
     else:
         repo_prefix = "10.33569"
     pids = {}
+    oai = False
     if "identifiers" in metadata:
         for identifier in metadata["identifiers"]:
             if identifier["identifierType"] == "DOI":
@@ -107,6 +104,12 @@ def caltechdata_edit(
                     "identifier": identifier["identifier"],
                     "provider": "oai",
                 }
+                oai = True
+    if oai == False:
+        pids["oai"] = {
+            "identifier": f"oai:data.caltech.edu:{idv}",
+            "provider": "oai",
+        }
     metadata["pids"] = pids
 
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
@@ -125,77 +128,69 @@ def caltechdata_edit(
         "Content-type": "application/octet-stream",
     }
 
-    completed = []
+    if files or new_version:
+        # We need to make new version
+        data["files"] = {"enabled": True}
+        result = requests.post(
+            url + "/api/records/" + idv + "/versions",
+            headers=headers,
+        )
+        if result.status_code != 201:
+            raise Exception(result.text)
+        # Get the id of the new version
+        idv = result.json()["id"]
+        # Update metadata
+        result = requests.put(
+            url + "/api/records/" + idv + "/draft",
+            headers=headers,
+            json=data,
+        )
 
-    for idv in ids:
+        file_link = result.json()["links"]["files"]
+        write_files_rdm(files, file_link, headers, f_headers)
 
-        if files or new_version:
-            # We need to make new version
-            data["files"] = {"enabled": True}
+    else:
+        # Check for existing draft
+        result = requests.get(
+            url + "/api/records/" + idv + "/draft",
+            headers=headers,
+        )
+        if result.status_code != 200:
+            # We make a draft
             result = requests.post(
-                url + "/api/records/" + idv + "/versions",
+                url + "/api/records/" + idv + "/draft",
+                json=data,
                 headers=headers,
             )
             if result.status_code != 201:
                 raise Exception(result.text)
-            # Get the id of the new version
-            idv = result.json()["id"]
-            # Update metadata
-            result = requests.put(
-                url + "/api/records/" + idv + "/draft",
-                headers=headers,
-                json=data,
-            )
-
-            file_link = result.json()["links"]["files"]
-            write_files_rdm(files, file_link, headers, f_headers)
-
-        else:
-            # Check for existing draft
             result = requests.get(
-                url + "/api/records/" + idv + "/draft",
+                url + "/api/records/" + idv,
                 headers=headers,
-            )
-            if result.status_code != 200:
-                # We make a draft
-                result = requests.post(
-                    url + "/api/records/" + idv + "/draft",
-                    json=data,
-                    headers=headers,
-                )
-                if result.status_code != 201:
-                    raise Exception(result.text)
-                result = requests.get(
-                    url + "/api/records/" + idv,
-                    headers=headers,
-                )
-                if result.status_code != 200:
-                    raise Exception(result.text)
-            # We want files to stay the same as the existing record
-            data["files"] = result.json()["files"]
-            result = requests.put(
-                url + "/api/records/" + idv + "/draft",
-                headers=headers,
-                json=data,
             )
             if result.status_code != 200:
                 raise Exception(result.text)
+        # We want files to stay the same as the existing record
+        data["files"] = result.json()["files"]
+        result = requests.put(
+            url + "/api/records/" + idv + "/draft",
+            headers=headers,
+            json=data,
+        )
+        if result.status_code != 200:
+            raise Exception(result.text)
 
-        if community:
-            review_link = result.json()["links"]["review"]
-            result = send_to_community(review_link, data, headers, publish, community)
-            doi = result.json()["pids"]["doi"]["identifier"]
-            completed.append(doi)
-        elif publish:
-            publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
-            result = requests.post(publish_link, headers=headers)
-            if result.status_code != 202:
-                raise Exception(result.text)
-            doi = result.json()["pids"]["doi"]["identifier"]
-            completed.append(doi)
-        else:
-            completed.append(idv)
-    if len(completed) == 1:
-        return completed[0]
+    if community:
+        review_link = result.json()["links"]["review"]
+        result = send_to_community(review_link, data, headers, publish, community)
+        doi = result.json()["pids"]["doi"]["identifier"]
+        return doi
+    elif publish:
+        publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
+        result = requests.post(publish_link, headers=headers)
+        if result.status_code != 202:
+            raise Exception(result.text)
+        doi = result.json()["pids"]["doi"]["identifier"]
+        return doi
     else:
-        return completed
+        return idv
