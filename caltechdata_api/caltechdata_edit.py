@@ -61,6 +61,7 @@ def caltechdata_edit(
     file_links=[],
     s3=None,
     community=None,
+    new_version=False
 ):
 
     # If no token is provided, get from RDMTOK environment variable
@@ -128,7 +129,7 @@ def caltechdata_edit(
 
     for idv in ids:
 
-        if files:
+        if files or new_version:
             # We need to make new version
             data["files"] = {"enabled": True}
             result = requests.post(
