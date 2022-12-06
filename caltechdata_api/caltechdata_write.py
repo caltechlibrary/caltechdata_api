@@ -47,7 +47,7 @@ def add_file_links(metadata, file_links):
         path = link.split(endpoint)[1]
         try:
             size = s3.info(path)["Size"]
-            size = humanbytes(size)  # round(size / 1024.0 / 1024.0 / 1024.0, 2)
+            size = humanbytes(size)  
         except:
             size = 0
         if link_string == "":
