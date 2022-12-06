@@ -1,6 +1,5 @@
 import os, json, csv, argparse
 import requests
-from caltechdata_api import decustomize_schema
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

@@ -11,7 +11,7 @@ parser.add_argument(
     default=None,
     help="file name for json DataCite metadata file",
 )
-parser.add_argument("-ids", nargs="*", help="CaltechDATA IDs")
+parser.add_argument("-id", help="CaltechDATA IDs")
 parser.add_argument("-fnames", nargs="*", help="New Files")
 parser.add_argument("-flinks", nargs="*", help="New File Links")
 parser.add_argument("-schema", default="43", help="Metadata Schema")
@@ -26,11 +26,11 @@ if args.json_file:
 else:
     metadata = {}
 
-production = True
+production = False
 publish = True
 
 response = caltechdata_edit(
-    args.ids,
+    args.id,
     metadata,
     token,
     args.fnames,

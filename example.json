@@ -1,37 +1,48 @@
 {
-    "alternateIdentifiers": [
-        {
-            "alternateIdentifier": "Alt_Identifier",
-            "alternateIdentifierType": "Alt_Identifier_Type"
-        }
+    "identifiers": [
+            {"identifier": "1924MNRAS..84..308E", "identifierType": "bibcode"}
     ],
     "contributors": [
         {
-            "affiliations": [ "Affiliation"  ],
-            "contributorName": "Contributor Name",
+          "nameType": "Personal",
+          "affiliation": [
+              {
+                  "name": "DataCitea",
+                  "affiliationIdentifier": "https://ror.org/04wxnsj81",
+                  "affiliationIdentifierScheme": "ROR"
+                }
+              ],
+            "name": "Contributor Name",
+            "familyName": "Family Name",
+            "givenName": "Given Name",
             "contributorType": "ContactPerson",
             "nameIdentifiers": [
                 {
-                    "nameIdentifier": "Contributor Identifier",
-                    "nameIdentifierScheme": "GRID",
-                    "schemeURI": "https://www.grid.ac/institutes/"
+                    "nameIdentifier": "0000-0002-1825-0097",
+                    "nameIdentifierScheme": "ORCID",
+                    "schemeUri": "https://orcid.org/"
                 }
             ]
         }
     ],
     "creators": [
         {
-            "affiliations": [
-                "Affiliation"
+          "nameType": "Personal",
+          "affiliation": [
+              {
+                "name": "DataCite",
+                "affiliationIdentifier": "https://ror.org/04wxnsj81",
+                "affiliationIdentifierScheme": "ROR"
+              }
             ],
-            "creatorName": "Name",
+            "name": "Name",
             "familyName": "Family Name",
             "givenName": "Given Name",
             "nameIdentifiers": [
                 {
-                    "nameIdentifier": "Name Identifier",
+                    "nameIdentifier": "0000-0002-1825-0097",
                     "nameIdentifierScheme": "ORCID",
-                    "schemeURI": "http://orcid.org/"
+                    "schemeUri": "https://orcid.org/"
                 }
             ]
         }
@@ -40,10 +51,6 @@
         {
             "date": "2014-10-01",
             "dateType": "Created"
-        },
-        {
-            "date": "2017-03-01",
-            "dateType": "Updated"
         },
         {
             "date": "2012-05-22/2016-12-21",
@@ -60,24 +67,24 @@
         "format"
     ],
     "fundingReferences": [
-        {
-            "funderIdentifier": {
-                "funderIdentifier": "Funding Identifier",
-                "funderIdentifierType": "GRID"
-            },
-            "funderName": "Funder Name"
-        }
+          {
+            "awardTitle": "Measurement of Column-Averaged CO2",
+            "funderName": "National Aeronautics and Space Administration",
+            "funderIdentifierType": "GRID",
+            "funderIdentifier": "grid.238252.c",
+            "awardNumber": "NAG5-12247"
+          }
     ],
     "geoLocations": [
         {
             "geoLocationPlace": "Place Name",
             "geoLocationPoint": {
-                "pointLatitude": 0.000,
-                "pointLongitude": 0.000
+                "pointLatitude": "34.138",
+                "pointLongitude": "-118.1258"
             }
         }
     ],
-    "language": "en",
+    "language": "eng",
     "publicationYear": "2017",
     "publisher": "Publisher",
     "relatedIdentifiers": [
@@ -92,8 +99,9 @@
             "relationType": "IsDocumentedBy"
         }
     ],
-    "resourceType": {
-        "resourceTypeGeneral": "Dataset"
+    "types": {
+        "resourceTypeGeneral": "Dataset",
+        "resourceType": "Dataset"
     },
     "rightsList": [
         {
@@ -118,5 +126,6 @@
             "titleType": "AlternativeTitle"
         }
     ],
-    "version": "0"
+    "version": "0",
+    "schemaVersion": "http://datacite.org/schema/kernel-4"
 }

@@ -20,7 +20,7 @@ token = os.environ["RDMTOK"]
 metaf = open(args.json_file[0], "r")
 metadata = json.load(metaf)
 
-production = True
+production = False
 publish = False
 
 response = caltechdata_write(

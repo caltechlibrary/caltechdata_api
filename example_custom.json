@@ -1,32 +1,27 @@
 {
-  "identifiers": [
-    {
-    "identifier": "10.14291/1",
-    "identifierType": "DOI"
-    }],
-    "alternateIdentifiers": [
-        {
-            "alternateIdentifier": "Alt_Identifier",
-            "alternateIdentifierType": "Alt_Identifier_Type"
-        }
+    "identifiers": [
+            {"identifier": "10.5281/inveniordm.1234", "identifierType": "DOI"},
+            {"identifier": "1924MNRAS..84..308E", "identifierType": "bibcode"}
     ],
     "contributors": [
         {
           "nameType": "Personal",
           "affiliation": [
               {
-                  "name": "DataCite",
+                  "name": "DataCitea",
                   "affiliationIdentifier": "https://ror.org/04wxnsj81",
                   "affiliationIdentifierScheme": "ROR"
                 }
               ],
             "name": "Contributor Name",
+            "familyName": "Family Name",
+            "givenName": "Given Name",
             "contributorType": "ContactPerson",
             "nameIdentifiers": [
                 {
-                    "nameIdentifier": "Contributor Identifier",
-                    "nameIdentifierScheme": "GRID",
-                    "schemeUri": "https://www.grid.ac/institutes/"
+                    "nameIdentifier": "0000-0002-1825-0097",
+                    "nameIdentifierScheme": "ORCID",
+                    "schemeUri": "https://orcid.org/"
                 }
             ]
         }
@@ -46,9 +41,9 @@
             "givenName": "Given Name",
             "nameIdentifiers": [
                 {
-                    "nameIdentifier": "Name Identifier",
+                    "nameIdentifier": "0000-0002-1825-0097",
                     "nameIdentifierScheme": "ORCID",
-                    "schemeUri": "http://orcid.org/"
+                    "schemeUri": "https://orcid.org/"
                 }
             ]
         }
@@ -57,10 +52,6 @@
         {
             "date": "2014-10-01",
             "dateType": "Created"
-        },
-        {
-            "date": "2017-03-01",
-            "dateType": "Updated"
         },
         {
             "date": "2012-05-22/2016-12-21",
@@ -89,8 +80,8 @@
         {
             "geoLocationPlace": "Place Name",
             "geoLocationPoint": {
-                "pointLatitude": "0.000",
-                "pointLongitude": "0.000"
+                "pointLatitude": "34.138",
+                "pointLongitude": "-118.1258"
             }
         }
     ],

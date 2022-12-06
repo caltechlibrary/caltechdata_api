@@ -129,8 +129,8 @@ def caltechdata_write(
         repo_prefix = "10.22002"
     else:
         repo_prefix = "10.33569"
+    pids = {}
     if "identifiers" in metadata:
-        pids = {}
         for identifier in metadata["identifiers"]:
             if identifier["identifierType"] == "DOI":
                 doi = identifier["identifier"]

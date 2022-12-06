@@ -82,12 +82,13 @@ def caltechdata_edit(
         repo_prefix = "10.33569"
     pids = {}
     oai = False
+    doi = False
     if "identifiers" in metadata:
         for identifier in metadata["identifiers"]:
             if identifier["identifierType"] == "DOI":
+                doi = True
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-
                 if prefix == repo_prefix:
                     pids["doi"] = {
                         "identifier": doi,
@@ -105,11 +106,20 @@ def caltechdata_edit(
                     "provider": "oai",
                 }
                 oai = True
+    #Records are not happy without the auto-assigned oai identifier
     if oai == False:
         pids["oai"] = {
             "identifier": f"oai:data.caltech.edu:{idv}",
             "provider": "oai",
         }
+    #We do not want to lose the auto-assigned DOI
+    #Users with custom DOIs must pass them in the metadata
+    if doi == False:
+        pids["doi"] = {
+                        "identifier": f'{repo_prefix}/{idv}',
+                        "provider": "datacite",
+                        "client": "datacite",
+                    }
     metadata["pids"] = pids
 
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)

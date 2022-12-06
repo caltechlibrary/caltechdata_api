@@ -1,7 +1,5 @@
 # caltechdata_api
 
-[![DOI](https://data.caltech.edu/badge/87960443.svg)](https://data.caltech.edu/badge/latestdoi/87960443)
-
 Python library for using the CaltechDATA API
 
 - caltechdata_write write files and a DataCite 4 standard json record to CaltechDATA repository
@@ -18,30 +16,35 @@ Create a record:
 
 ```shell
 python write.py example.json -fnames logo.gif
-Successfully created record https://cd-sandbox.tind.io/records/352.  
+pbkn6-m9y63
 ```
+The response will be the unique identifier for the record. You can put this at
+the end of a url to visit the record (e.g.
+https://data.caltechlibrary.dev/records/pbkn6-m9y63)
 
 Edit a record (make changes to the example.json file to see a change)
 ```
-python edit.py example.json -ids 352 -fnames logo.gif
-Successfully modified record https://cd-sandbox.tind.io/records/352
+python edit.py example.json -id pbkn6-m9y63
+10.33569/pbkn6-m9y63
+```
+The response is the DOI for the record, which includes the unique identifier
+for the record in the default configuration.
+
+Some groups have worked with the library to create custom DOIs. These can be
+passed in the metadata like:
+
+```shell
+python write.py example_custom.json -fnames logo.gif
+m6zxz-p4j22
 ```
 
-Get geographic metadata from CaltechDATA with WKT representations in a csv file. 
-You can import this to a GIS program like QGIS
-using a delimited text import and projection epsg:4326. You'll have to do one
-import for Geometry type Point and another for Geometry type Polygon. 
-
+And then you can edit with
 ```
-python get_geo.py caltechdata_geo.csv
+python edit.py example_custom.json -id m6zxz-p4j22
+10.5281/inveniordm.1234
 ```
 
-You can filter by keyword
-
-```
-python get_geo.py caltechdata_geo.csv -keywords TCCON
-```
-
+This returns the custom DOI of the record if it is successful.
 
 ## Setup 
 
@@ -49,18 +52,11 @@ Install by typing 'pip install caltechdata_api'
 
 ## Usage
 
-Write API access is controlled by repository staff.  Email us at data@caltech.edu 
-with your request if you want to use the write API.
-
 You need to acquire a personal access token from your CaltechDATA account
 (find it at the top right of your screen under "Applications").
-Make sure you include the "deposit_api:write" and "file_manager:upload"
-scopes.  Then copy the token to token.bash.  Type source token.bash in 
+Then copy the token to token.bash.  Type `source token.bash` in 
 the command line to load the token.  
 
-Only test your application on the test repository.  Testing the API on the public 
+Only test your application on the test repository (data.caltechlibrary.dev).  Testing the API on the public 
 repository will generate junk records that are annoying to delete.
 
-## TODO
-
-Handle incorrect token on file upload
