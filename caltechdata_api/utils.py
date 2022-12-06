@@ -13,7 +13,7 @@ PRECISION_FORMATS: List[str] = [
 ]  # PREDEFINED FOR SPEED.
 
 
-def humanbytes(num: Union[int, float], metric: bool = False, precision: int = 1) -> str:
+def humanbytes(num: Union[int, float], metric: bool = True, precision: int = 1) -> str:
     """
     Human-readable formatting of bytes, using binary (powers of 1024)
     or metric (powers of 1000) representation.

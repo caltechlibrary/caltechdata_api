@@ -103,3 +103,8 @@
     datacite: tiltid
   title:
     en: TILT_SERIES_ID
+- id: dsa-110-id
+  props:
+    datacite: dsa-110-id
+  title:
+    en: DSA_110_ID
