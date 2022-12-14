@@ -8,11 +8,11 @@ authors:
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
-version: 1.1.0
+version: 1.1.1
 license-url: "https://data.caltech.edu/license"
 keywords:
   - GitHub
   - metadata
   - software
   - Invenio
-date-released: 2022-12-06
+date-released: 2022-12-14
