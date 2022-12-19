@@ -290,7 +290,7 @@ def customize_schema_rdm(json_record):
             if "geoLocationPoint" in location:
                 lat = location["geoLocationPoint"]["pointLatitude"]
                 lon = location["geoLocationPoint"]["pointLongitude"]
-                new["geometry"] = {"type": "Point", "coordinates": [lat, lon]}
+                new["geometry"] = {"type": "Point", "coordinates": [lon, lat]}
             if "geoLocationBox" in location:
                 south = float(location["geoLocationBox"]["southBoundLatitude"])
                 north = float(location["geoLocationBox"]["northBoundLatitude"])
@@ -300,11 +300,11 @@ def customize_schema_rdm(json_record):
                     "type": "Polygon",
                     "coordinates": [
                         [
-                            [north, east],
-                            [north, west],
-                            [south, west],
-                            [south, east],
-                            [north, east],
+                            [east, north],
+                            [west, north],
+                            [west, south],
+                            [east, south],
+                            [east, north],
                         ]
                     ],
                 }
