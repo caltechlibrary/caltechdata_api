@@ -8,6 +8,7 @@ from json.decoder import JSONDecodeError
 from caltechdata_api import customize_schema
 from caltechdata_api.utils import humanbytes
 
+
 def write_files_rdm(files, file_link, headers, f_headers, s3=None):
     f_json = []
     f_list = {}
@@ -15,26 +16,43 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
         filename = f.split("/")[-1]
         f_json.append({"key": filename})
         f_list[filename] = f
+    # Now we see if any existing draft files need to be replaced
+    result = requests.get(file_link, headers=f_headers)
+    if result.status_code == 200:
+        ex_files = result.json()["entries"]
+        for ex in ex_files:
+            if ex["key"] in f_list:
+                result = requests.delete(ex["links"]["self"], headers=f_headers)
+                if result.status_code != 204:
+                    raise Exception(result.text)
+    # Create new file upload links
     result = requests.post(file_link, headers=headers, json=f_json)
     if result.status_code != 201:
         raise Exception(result.text)
     # Now we have the upload links
     for entry in result.json()["entries"]:
+        self = entry["links"]["self"]
         link = entry["links"]["content"]
         commit = entry["links"]["commit"]
         name = entry["key"]
-        if s3:
-            infile = s3.open(f_list[name], "rb")
+        if name in f_list:
+            if s3:
+                infile = s3.open(f_list[name], "rb")
+            else:
+                infile = open(f_list[name], "rb")
+            # size = infile.seek(0, 2)
+            # infile.seek(0, 0)  # reset at beginning
+            result = requests.put(link, headers=f_headers, data=infile)
+            if result.status_code != 200:
+                raise Exception(result.text)
+            result = requests.post(commit, headers=headers)
+            if result.status_code != 200:
+                raise Exception(result.text)
         else:
-            infile = open(f_list[name], "rb")
-        # size = infile.seek(0, 2)
-        # infile.seek(0, 0)  # reset at beginning
-        result = requests.put(link, headers=f_headers, data=infile)
-        if result.status_code != 200:
-            raise Exception(result.text)
-        result = requests.post(commit, headers=headers)
-        if result.status_code != 200:
-            raise Exception(result.text)
+            # Delete any files not included in this write command
+            result = requests.delete(self, headers=f_headers)
+            if result.status_code != 204:
+                raise Exception(result.text)
 
 
 def add_file_links(metadata, file_links):
@@ -47,7 +65,7 @@ def add_file_links(metadata, file_links):
         path = link.split(endpoint)[1]
         try:
             size = s3.info(path)["Size"]
-            size = humanbytes(size)  
+            size = humanbytes(size)
         except:
             size = 0
         if link_string == "":

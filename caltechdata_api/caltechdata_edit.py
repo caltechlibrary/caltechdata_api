@@ -75,6 +75,56 @@ def caltechdata_edit(
     if file_links:
         metadata = add_file_links(metadata, file_links)
 
+    if production == True:
+        url = "https://data.caltech.edu"
+    else:
+        url = "https://data.caltechlibrary.dev"
+
+    headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+    }
+    f_headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/octet-stream",
+    }
+
+    # Check status
+    existing = requests.get(
+        url + "/api/records/" + idv,
+        headers=headers,
+    )
+    if existing.status_code != 200:
+        # Might have a draft
+        existing = requests.get(
+            url + "/api/records/" + idv + "/draft",
+            headers=headers,
+        )
+        if existing.status_code != 200:
+            raise Exception(existing.text)
+
+    status = existing.json()["status"]
+
+    # Determine whether we need a new version
+    version = False
+    if status == "published" and files:
+        version = True
+
+    if new_version:
+        version = True
+
+    if version:
+        # We need to make new version
+        result = requests.post(
+            url + "/api/records/" + idv + "/versions",
+            headers=headers,
+        )
+        if result.status_code != 201:
+            raise Exception(result.text)
+        # Get the id of the new version
+        idv = result.json()["id"]
+
+    print(idv)
     # Pull out pid information
     if production == True:
         repo_prefix = "10.22002"
@@ -106,56 +156,34 @@ def caltechdata_edit(
                     "provider": "oai",
                 }
                 oai = True
-    #Records are not happy without the auto-assigned oai identifier
-    if oai == False:
+    # Existing records are not happy without the auto-assigned oai identifier
+    if oai == False and version == False:
         pids["oai"] = {
             "identifier": f"oai:data.caltech.edu:{idv}",
             "provider": "oai",
         }
-    #We do not want to lose the auto-assigned DOI
-    #Users with custom DOIs must pass them in the metadata
-    if doi == False:
+    # We do not want to lose the auto-assigned DOI
+    # Users with custom DOIs must pass them in the metadata
+    if doi == False and version == False:
         pids["doi"] = {
-                        "identifier": f'{repo_prefix}/{idv}',
-                        "provider": "datacite",
-                        "client": "datacite",
-                    }
+            "identifier": f"{repo_prefix}/{idv}",
+            "provider": "datacite",
+            "client": "datacite",
+        }
     metadata["pids"] = pids
 
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
 
-    if production == True:
-        url = "https://data.caltech.edu"
-    else:
-        url = "https://data.caltechlibrary.dev"
-
-    headers = {
-        "Authorization": "Bearer %s" % token,
-        "Content-type": "application/json",
-    }
-    f_headers = {
-        "Authorization": "Bearer %s" % token,
-        "Content-type": "application/octet-stream",
-    }
-
-    if files or new_version:
-        # We need to make new version
+    if files:
         data["files"] = {"enabled": True}
-        result = requests.post(
-            url + "/api/records/" + idv + "/versions",
-            headers=headers,
-        )
-        if result.status_code != 201:
-            raise Exception(result.text)
-        # Get the id of the new version
-        idv = result.json()["id"]
         # Update metadata
         result = requests.put(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
             json=data,
         )
-
+        if result.status_code != 200:
+            raise Exception(result.text)
         file_link = result.json()["links"]["files"]
         write_files_rdm(files, file_link, headers, f_headers)
 
@@ -181,7 +209,8 @@ def caltechdata_edit(
             if result.status_code != 200:
                 raise Exception(result.text)
         # We want files to stay the same as the existing record
-        data["files"] = result.json()["files"]
+        data["files"] = existing.json()["files"]
+        # Update metadata
         result = requests.put(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
