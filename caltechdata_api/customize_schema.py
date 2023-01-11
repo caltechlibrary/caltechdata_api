@@ -81,6 +81,8 @@ def rdm_creators_contributors(person_list, peopleroles):
             cre["type"] = "personal"
         change_label(cre, "givenName", "given_name")
         change_label(cre, "familyName", "family_name")
+        if 'name' not in cre:
+            cre['name'] = cre['family_name']+','+cre['given_name']
         change_label(cre, "nameIdentifiers", "identifiers")
         if "identifiers" in cre:
             new_id = []
@@ -199,29 +201,29 @@ def customize_schema_rdm(json_record):
         dates = json_record["dates"]
         new = []
         for d in dates:
-            date = d["date"]
+            datev = d["date"]
             # Strip out any time imformation
-            if " " in date:
-                date = date.split(" ")[0]
+            if " " in datev:
+                datev = datev.split(" ")[0]
             # If metadata has Submitted date, this gets priority
             if d["dateType"] == "Submitted":
-                json_record["publication_date"] = date
+                json_record["publication_date"] = datev
             # If we have an Issued but not a Submitted date, this is
             # publication date
             elif d["dateType"] == "Issued":
-                json_record["publication_date"] = date
+                json_record["publication_date"] = datev
             elif d["dateType"] == "Updated":
                 # We now let InvenioRDM handle updated dates
                 print("Skipping updated date")
             else:
                 dtype = d.pop("dateType")
                 d["type"] = {"id": datetypes[dtype]}
-                d["date"] = date
+                d["date"] = datev
                 change_label(d, "dateInformation", "description")
                 new.append(d)
         json_record["dates"] = new
     if "publication_date" not in json_record:
-        # A publication date isalways required
+        # A publication date is always required
         if "publicationYear" in json_record:
             json_record["publication_date"] = json_record.pop("publicationYear")
         else:
