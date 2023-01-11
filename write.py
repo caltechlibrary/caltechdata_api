@@ -1,5 +1,4 @@
 import argparse, os, json
-from datacite import DataCiteMDSClient, schema40
 from caltechdata_api import caltechdata_write
 
 parser = argparse.ArgumentParser(
