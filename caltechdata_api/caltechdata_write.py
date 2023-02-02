@@ -124,6 +124,7 @@ def caltechdata_write(
     file_links=[],
     s3=None,
     community=None,
+    authors=False
 ):
     """
     File links are links to files existing in external systems that will
@@ -172,11 +173,18 @@ def caltechdata_write(
                 }
     metadata["pids"] = pids
 
-    data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
-    if production == True:
-        url = "https://data.caltech.edu/"
+    if authors == False:
+        data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+        if production == True:
+            url = "https://data.caltech.edu/"
+        else:
+            url = "https://data.caltechlibrary.dev/"
     else:
-        url = "https://data.caltechlibrary.dev/"
+        data = metadata
+        if production == True:
+            url = "https://authors.caltech.edu/"
+        else:
+            url = "https://authors.caltechlibrary.dev/"
 
     headers = {
         "Authorization": "Bearer %s" % token,
