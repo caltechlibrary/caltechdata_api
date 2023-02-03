@@ -22,8 +22,16 @@ metadata = json.load(metaf)
 production = False
 publish = True
 authors = True
+community = "d0b46a93-0293-4689-a5c6-5ded7b7b4fd8"
 
 response = caltechdata_write(
-    metadata, token, args.fnames, production, args.schema, publish, authors=authors
+    metadata,
+    token,
+    args.fnames,
+    production,
+    args.schema,
+    publish,
+    community=community,
+    authors=authors,
 )
 print(response)
