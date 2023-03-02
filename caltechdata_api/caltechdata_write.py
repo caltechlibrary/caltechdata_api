@@ -124,7 +124,7 @@ def caltechdata_write(
     file_links=[],
     s3=None,
     community=None,
-    authors=False
+    authors=False,
 ):
     """
     File links are links to files existing in external systems that will
@@ -149,28 +149,43 @@ def caltechdata_write(
     else:
         repo_prefix = "10.33569"
     pids = {}
-    if "identifiers" in metadata:
-        for identifier in metadata["identifiers"]:
+    identifiers = []
+    if "metadata" in metadata:
+        # we have rdm schema
+        if "identifiers" in metadata["metadata"]:
+            identifiers = metadata["metadata"]["identifiers"]
+    elif "identifiers" in metadata:
+        identifiers = metadata["identifiers"]
+    for identifier in identifiers:
+        if "identifierType" in identifier:
             if identifier["identifierType"] == "DOI":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-
-                if prefix == repo_prefix:
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "datacite",
-                        "client": "datacite",
-                    }
-                else:
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "external",
-                    }
             elif identifier["identifierType"] == "oai":
                 pids["oai"] = {
                     "identifier": identifier["identifier"],
                     "provider": "oai",
                 }
+        elif "scheme" in identifier:
+            # We have RDM internal metadata
+            if identifier["scheme"] == "doi":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+        else:
+            doi = False
+        if doi != False:
+            if prefix == repo_prefix:
+                pids["doi"] = {
+                    "identifier": doi,
+                    "provider": "datacite",
+                    "client": "datacite",
+                }
+            else:
+                pids["doi"] = {
+                    "identifier": doi,
+                    "provider": "external",
+                }
+
     metadata["pids"] = pids
 
     if authors == False:
@@ -202,6 +217,7 @@ def caltechdata_write(
             data["files"] = {"default_preview": "README.txt"}
 
     # Make draft and publish
+    print(data)
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
         raise Exception(result.text)
