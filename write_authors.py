@@ -22,7 +22,7 @@ metadata = json.load(metaf)
 production = False
 publish = True
 authors = True
-community = "d0b46a93-0293-4689-a5c6-5ded7b7b4fd8"
+community = "bbb4cf12-be6e-42db-a8e1-114edfff5500"
 
 response = caltechdata_write(
     metadata,
