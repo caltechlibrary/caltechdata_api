@@ -171,6 +171,8 @@ def caltechdata_write(
             if identifier["scheme"] == "doi":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
+            else:
+                doi = False
         else:
             doi = False
         if doi != False:
