@@ -81,8 +81,8 @@ def rdm_creators_contributors(person_list, peopleroles):
             cre["type"] = "personal"
         change_label(cre, "givenName", "given_name")
         change_label(cre, "familyName", "family_name")
-        if 'name' not in cre:
-            cre['name'] = cre['family_name']+','+cre['given_name']
+        if "name" not in cre:
+            cre["name"] = cre["family_name"] + "," + cre["given_name"]
         change_label(cre, "nameIdentifiers", "identifiers")
         if "identifiers" in cre:
             new_id = []

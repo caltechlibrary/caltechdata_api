@@ -1,13 +1,8 @@
 {
     "pids": {
-        "doi": {
-            "identifier": "10.5281/inveniordm.1234",
-            "provider": "datacite",
-            "client": "inveniordm"
-        }
     },
     "metadata": {
-        "resource_type": {"id": "image-photo"},
+        "resource_type": {"id": "dataset"},
         "creators": [
             {
                 "person_or_org": {

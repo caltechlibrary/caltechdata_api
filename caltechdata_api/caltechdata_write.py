@@ -63,11 +63,8 @@ def add_file_links(metadata, file_links):
     for link in file_links:
         file = link.split("/")[-1]
         path = link.split(endpoint)[1]
-        try:
-            size = s3.info(path)["Size"]
-            size = humanbytes(size)
-        except:
-            size = 0
+        size = s3.info(path)["size"]
+        size = humanbytes(size)
         if link_string == "":
             cleaned = link.strip(file)
             link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
