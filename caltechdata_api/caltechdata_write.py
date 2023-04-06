@@ -63,11 +63,8 @@ def add_file_links(metadata, file_links):
     for link in file_links:
         file = link.split("/")[-1]
         path = link.split(endpoint)[1]
-        try:
-            size = s3.info(path)["Size"]
-            size = humanbytes(size)
-        except:
-            size = 0
+        size = s3.info(path)["size"]
+        size = humanbytes(size)
         if link_string == "":
             cleaned = link.strip(file)
             link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
@@ -124,6 +121,7 @@ def caltechdata_write(
     file_links=[],
     s3=None,
     community=None,
+    authors=False,
 ):
     """
     File links are links to files existing in external systems that will
@@ -148,35 +146,59 @@ def caltechdata_write(
     else:
         repo_prefix = "10.33569"
     pids = {}
-    if "identifiers" in metadata:
-        for identifier in metadata["identifiers"]:
+    identifiers = []
+    if "metadata" in metadata:
+        # we have rdm schema
+        if "identifiers" in metadata["metadata"]:
+            identifiers = metadata["metadata"]["identifiers"]
+    elif "identifiers" in metadata:
+        identifiers = metadata["identifiers"]
+    for identifier in identifiers:
+        if "identifierType" in identifier:
             if identifier["identifierType"] == "DOI":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-
-                if prefix == repo_prefix:
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "datacite",
-                        "client": "datacite",
-                    }
-                else:
-                    pids["doi"] = {
-                        "identifier": doi,
-                        "provider": "external",
-                    }
             elif identifier["identifierType"] == "oai":
                 pids["oai"] = {
                     "identifier": identifier["identifier"],
                     "provider": "oai",
                 }
+        elif "scheme" in identifier:
+            # We have RDM internal metadata
+            if identifier["scheme"] == "doi":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+            else:
+                doi = False
+        else:
+            doi = False
+        if doi != False:
+            if prefix == repo_prefix:
+                pids["doi"] = {
+                    "identifier": doi,
+                    "provider": "datacite",
+                    "client": "datacite",
+                }
+            else:
+                pids["doi"] = {
+                    "identifier": doi,
+                    "provider": "external",
+                }
+
     metadata["pids"] = pids
 
-    data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
-    if production == True:
-        url = "https://data.caltech.edu/"
+    if authors == False:
+        data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+        if production == True:
+            url = "https://data.caltech.edu/"
+        else:
+            url = "https://data.caltechlibrary.dev/"
     else:
-        url = "https://data.caltechlibrary.dev/"
+        data = metadata
+        if production == True:
+            url = "https://authors.caltech.edu/"
+        else:
+            url = "https://authors.caltechlibrary.dev/"
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -194,6 +216,7 @@ def caltechdata_write(
             data["files"] = {"default_preview": "README.txt"}
 
     # Make draft and publish
+    print(data)
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
         raise Exception(result.text)

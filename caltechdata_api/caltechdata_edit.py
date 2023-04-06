@@ -72,8 +72,27 @@ def caltechdata_edit(
     if isinstance(files, str) == True:
         files = [files]
 
+    # Check if file links were provided in the metadata
+    descriptions = []
+    for d in metadata["descriptions"]:
+        if d["description"].startswith("Files available via S3"):
+            ex_file_links = []
+            file_text = d["description"]
+            file_list = file_text.split('href="')
+            # Loop over links in description, skip header text
+            for file in file_list[1:]:
+                ex_file_links.append(file.split('"\n')[0])
+        else:
+            descriptions.append(d)
+    # We remove file link descriptions, and re-add below
+    metadata["descriptions"] = descriptions
+
+    # If user has provided file links as a cli option, we add those
     if file_links:
         metadata = add_file_links(metadata, file_links)
+    # Otherwise we add file links found in the mtadata file
+    elif ex_file_links:
+        metadata = add_file_links(metadata, ex_file_links)
 
     if production == True:
         url = "https://data.caltech.edu"
@@ -101,7 +120,7 @@ def caltechdata_edit(
             headers=headers,
         )
         if existing.status_code != 200:
-            raise Exception(existing.text)
+            raise Exception(f"Record {idv} does not exist, cannot edit")
 
     status = existing.json()["status"]
 
