@@ -2,6 +2,7 @@ import json
 import os
 import openai
 import glob
+import s3fs
 from caltechdata_api import caltechdata_write
 from iga.name_utils import split_name
 
@@ -25,15 +26,14 @@ def parse_collaborators(collaborator_string):
     raw = response["choices"][0]["text"].split("\n\n")[1]
     for line in raw.split(","):
         split = line.strip("[]").split(";")
-        print(split)
         contributors.append(split)
     formatted = []
     for c in contributors:
         formatted.append(
             {
                 "nameType": "Personal",
-                "familyName": c[1],
-                "givenName": c[0],
+                "familyName": c[1].strip("' [']"),
+                "givenName": c[0].strip("' [']"),
                 "contributorType": "Researcher",
             }
         )
@@ -42,37 +42,61 @@ def parse_collaborators(collaborator_string):
 
 def create_detailed_description(information, files):
     keywords = []
-    description = "Details of data collection: "
+    description = "Details of data collection:"
     keyword_labels = ["Microscope", "Tilt Scheme", "acquisitionSoftware"]
     if "tiltSeriesCollection" in information:
-        info = information["tiltSeriesCollection"]
+        info = information["tiltSeriesCollection"][0]
         for key in info:
             if key in keyword_labels:
-                keywords.append({"subject": info[key]})
-                description += f"{key}: {info[key]}"
+                keywords.append(info[key])
+            description += f" {key}: {info[key]},"
     if "uploadMethod" in information:
-        description += f'uploadMethod: {information["uploadMethod"]}'
+        description += f' uploadMethod: {information["uploadMethod"]},'
         keywords.append(information["uploadMethod"])
     if "processingSoftwareUsed" in information:
-        description += f'uploadMethod: {information["processingSoftwareUsed"]}'
-        keywords.append(information["processingSoftwareUsed"])
+        software = information["processingSoftwareUsed"]
+        description += f" processingSoftwareUsed: {software},"
+        if "," in software:
+            software = software.split(",")
+        else:
+            software = [software]
+        for soft in software:
+            keywords.append(soft)
     for f in files:
         if "reconstruction" in f:
             rec = f["reconstruction"]
             if "pixelSize(nm)" in rec:
-                description += f'reconstructionPixelSize(nm): {rec["pixelSize(nm)"]}'
+                description += f' reconstructionPixelSize(nm): {rec["pixelSize(nm)"]},'
         if "rawTiltSeries" in f:
             raw = f["rawTiltSeries"]
             if "pixelSize(nm)" in raw:
-                description += f'rawPixelSize(nm): {raw["pixelSize(nm)"]}'
+                description += f' rawPixelSize(nm): {raw["pixelSize(nm)"]},'
     return description, keywords
 
 
 def get_formats(files):
     formats = []
+    file_paths = []
+    file_links = []
+    upload = ["mp4", "jpg", "jpeg"]
     for f in files:
-        formats.append(f["fileName"].split(".")[-1])
-    return formats
+        name = f["fileName"]
+        location = f["fileLocation"]
+        fpath = location.replace(
+            "/jdatabase/tomography/data/",
+            "s3://ini210004tommorrell/tomography_archive/",
+        )
+        s3path = location.replace(
+            "/jdatabase/tomography/data/",
+            "https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/",
+        )
+        formatn = name.split(".")[-1]
+        formats.append(formatn)
+        if formatn in upload:
+            file_paths.append(f"{fpath}{name}")
+        else:
+            file_links.append(f"{s3path}{name}")
+    return formats, file_paths, file_links
 
 
 funding = [
@@ -109,9 +133,8 @@ for f in files:
         files = source["Files"]
 
         metadata = {}
-        metadata["identifiers"] = [
-            {"identifier": annotation["tiltSeriesID"], "identifierType": "tiltid"}
-        ]
+        idv = annotation["tiltSeriesID"]
+        metadata["identifiers"] = [{"identifier": idv, "identifierType": "tiltid"}]
         metadata["contributors"] = parse_collaborators(
             annotation["collaboratorsAndRoles"]
         )
@@ -160,10 +183,11 @@ for f in files:
         description, keywords = create_detailed_description(information, files)
         descriptions.append({"descriptionType": "Other", "description": description})
         metadata["descriptions"] = descriptions
-        metadata["formats"] = get_formats(files)
+        formats, files, file_links = get_formats(files)
+        metadata["formats"] = formats
         metadata["fundingReferences"] = funding
         metadata["language"] = "eng"
-        metadata["publicationYear"] = 2023
+        metadata["publicationYear"] = "2023"
         metadata["publisher"] = "CaltechDATA"
         metadata["types"] = {
             "resourceTypeGeneral": "Dataset",
@@ -175,7 +199,22 @@ for f in files:
                 keywords.append(s["name"])
         subjects = []
         for k in keywords:
-            subjects.append({"subject": k})
+            if k != "":
+                subjects.append({"subject": k})
         metadata["subjects"] = subjects
         metadata["titles"] = [{"title": title}]
         print(json.dumps(metadata))
+        community = "fe1c8afc-38eb-4634-85af-43cdad391d79"
+        token = os.environ["RDMTOK"]
+        endpoint = "https://renc.osn.xsede.org/"
+        osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+        result = caltechdata_write(
+            metadata,
+            token,
+            files=[],
+            production=False,
+            publish=True,
+            file_links=file_links,
+            community=community,
+        )
+        print(result)
