@@ -212,9 +212,6 @@ def customize_schema_rdm(json_record):
             # publication date
             elif d["dateType"] == "Issued":
                 json_record["publication_date"] = datev
-            elif d["dateType"] == "Updated":
-                # We now let InvenioRDM handle updated dates
-                print("Skipping updated date")
             else:
                 dtype = d.pop("dateType")
                 d["type"] = {"id": datetypes[dtype]}
