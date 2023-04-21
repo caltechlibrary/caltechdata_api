@@ -163,6 +163,8 @@ def caltechdata_write(
                     "identifier": identifier["identifier"],
                     "provider": "oai",
                 }
+            else:
+                doi = False
         elif "scheme" in identifier:
             # We have RDM internal metadata
             if identifier["scheme"] == "doi":
