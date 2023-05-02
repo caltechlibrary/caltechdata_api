@@ -125,10 +125,6 @@ def get_formats(files):
         name = f["fileName"]
         location = f["fileLocation"]
         desc = ""
-        fpath = location.replace(
-            "/jdatabase/tomography/data/",
-            "s3://ini210004tommorrell/tomography_archive/",
-        )
         s3path = location.replace(
             "/jdatabase/tomography/data/",
             "https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/",
@@ -284,7 +280,7 @@ for f in files:
         result = caltechdata_write(
             metadata,
             token,
-            files=[],
+            files=files,
             production=False,
             publish=True,
             file_links=file_links,
