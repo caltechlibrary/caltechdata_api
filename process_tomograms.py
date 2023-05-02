@@ -44,20 +44,22 @@ def create_detailed_description(information, annotation):
     keywords = []
     description = "<p>"
     sep = "</p><p>"
+    s = "<strong>"
+    e = "</strong>"
     if "tiltSeriesDate" in information:
-        description += f' Tilt Series Date: {information["tiltSeriesDate"]}{sep}'
+        description += f'{s}Tilt Series Date:{e} {information["tiltSeriesDate"]}{sep}'
     if "dataTakenBy" in information:
         description += (
-            f' Data Taken By: {information["dataTakenBy"][0]["fullName"]}{sep}'
+            f'{s}Data Taken By:{e} {information["dataTakenBy"][0]["fullName"]}{sep}'
         )
     if "species/Specimen" in information:
         species = information["species/Specimen"]
         if "name" in species:
-            description += (
-                f' Species / Specimen: {information["Species/Specimen"]["name"]}{sep}'
-            )
+            description += f'{s}Species / Specimen:{e} {information["Species/Specimen"]["name"]}{sep}'
         if "strain" in species:
-            description += f' Strain: {information["Species/Specimen"]["strain"]}{sep}'
+            description += (
+                f'{s}Strain:{e} {information["Species/Specimen"]["strain"]}{sep}'
+            )
     if "tiltSeriesCollection" in information:
         settings = ""
         info = information["tiltSeriesCollection"][0]
@@ -81,19 +83,21 @@ def create_detailed_description(information, annotation):
             settings += f' defocus: {info["defocus"]} μm, '
         if "magnification" in info:
             settings += f' magnification: {info["magnification"].split(".")[0]}x. '
-        description += f" Tilt Series Settings: {settings}{sep}"
+        description += f"{s}Tilt Series Settings:{e} {settings}{sep}"
         if "Microscope" in info:
-            description += f' Microscope: {info["Microscope"]}{sep}'
+            description += f'{s}Microscope:{e} {info["Microscope"]}{sep}'
             keywords.append(info["Microscope"])
         if "acquisitionSoftware" in info:
-            description += f' Acquisition Software: {info["acquisitionSoftware"]}{sep}'
+            description += (
+                f'{s}Acquisition Software:{e} {info["acquisitionSoftware"]}{sep}'
+            )
             keywords.append(info["acquisitionSoftware"])
     if "uploadMethod" in information:
-        description += f' Upload Method: {information["uploadMethod"]}{sep}'
+        description += f'{s}Upload Method:{e} {information["uploadMethod"]}{sep}'
         keywords.append(information["uploadMethod"])
     if "processingSoftwareUsed" in information:
         software = information["processingSoftwareUsed"]
-        description += f" Processing Software Used: {software}{sep}"
+        description += f"{s}Processing Software Used:{e} {software}{sep}"
         if "," in software:
             software = software.split(",")
         else:
@@ -101,11 +105,13 @@ def create_detailed_description(information, annotation):
         for soft in software:
             keywords.append(soft)
     if "purificationGrowthConditionsTreatment" in annotation:
-        description += f' Purification / Growth Conditions / Treatment: {annotation["purificationGrowthConditionsTreatment"]}{sep}'
+        description += f'{s}Purification / Growth Conditions / Treatment:{e} {annotation["purificationGrowthConditionsTreatment"]}{sep}'
     if "description" in annotation:
-        description += f' Notes: {annotation["description"]}{sep}'
+        description += f'{s}Notes:{e} {annotation["description"]}{sep}'
     if "samplePreparation" in annotation:
-        description += f' Sample Preparation: {annotation["samplePreparation"]}{sep}'
+        description += (
+            f'{s}Sample Preparation:{e} {annotation["samplePreparation"]}{sep}'
+        )
     return description, keywords
 
 
@@ -186,6 +192,15 @@ for f in files:
 
         metadata = {}
         idv = annotation["tiltSeriesID"]
+        # Pull out restricted records
+        embargoed = False
+        if "2021" or "2022" in idv:
+            metadata["access"] = {
+                "record": "public",
+                "files": "restricted",
+                "embargo": {"active": True, "until": "2024-06-01"},
+            }
+            embargoed = True
         metadata["identifiers"] = [{"identifier": idv, "identifierType": "tiltid"}]
         metadata["contributors"] = parse_collaborators(
             annotation["collaboratorsAndRoles"]
@@ -230,7 +245,21 @@ for f in files:
             {"descriptionType": "Abstract", "description": description + "</p>"}
         ]
         metadata["descriptions"] = descriptions
-        formats, files, file_links, file_descriptions = get_formats(files)
+        formats, files, file_links, file_descriptions = get_formats(files, embargoed)
+        if embargoed:
+            # We don't add in file links
+            f_text = "The fllowing raw files are currently embargoed:"
+            index = 0
+            for f in file_links:
+                file = link.split("/")[-1]
+                pathf = link.split("ini210004tommorrell/")[1]
+                try:
+                    desc = file_descriptions[index]
+                except IndexError:
+                    desc = ""
+                f_text += f"<p>{file} {desc} {pathf}</p>"
+            descriptions.append({"descriptionType": "Other", "description": f_text})
+            file_links = []
         metadata["formats"] = formats
         metadata["fundingReferences"] = funding
         metadata["language"] = "eng"
@@ -250,11 +279,8 @@ for f in files:
                 subjects.append({"subject": k})
         metadata["subjects"] = subjects
         metadata["titles"] = [{"title": title}]
-        print(json.dumps(metadata))
         community = "fe1c8afc-38eb-4634-85af-43cdad391d79"
         token = os.environ["RDMTOK"]
-        endpoint = "https://renc.osn.xsede.org/"
-        osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
         result = caltechdata_write(
             metadata,
             token,
