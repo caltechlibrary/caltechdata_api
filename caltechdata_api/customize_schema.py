@@ -357,6 +357,8 @@ def customize_schema_rdm(json_record):
     if "schemaVersion" in json_record:
         json_record.pop("schemaVersion")
 
+    # Now prep the final structure
+    final = {}
     # Not technically DataCite, but owner info neded for record transfer
     parent = {}
     if "owners" in json_record:
@@ -365,11 +367,17 @@ def customize_schema_rdm(json_record):
     if "community" in json_record:
         com = json_record.pop("community")
         parent["communities"] = {"ids": [com], "default": com}
+    final["parent"] = parent
     # Not technically datacite, but transfer pids information
     if "pids" in json_record:
-        pids = json_record.pop("pids")
+        final["pids"] = json_record.pop("pids")
+    # Not technically datacite, but transfer access information
+    if "access" in json_record:
+        final["access"] = json_record.pop("access")
+    # Now we should just have clear metadata left
+    final["metadata"] = json_record
 
-    return {"metadata": json_record, "pids": pids, "parent": parent}
+    return final
 
 
 if __name__ == "__main__":

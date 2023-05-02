@@ -55,23 +55,31 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
                 raise Exception(result.text)
 
 
-def add_file_links(metadata, file_links):
+def add_file_links(metadata, file_links, file_descriptions):
     # Currently configured for OSN S3 links
     link_string = ""
     endpoint = "https://renc.osn.xsede.org/"
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+    index = 0
     for link in file_links:
         file = link.split("/")[-1]
         path = link.split(endpoint)[1]
         size = s3.info(path)["size"]
         size = humanbytes(size)
+        try:
+            desc = file_descriptions[index]
+            print(desc)
+        except IndexError:
+            print("ERROR")
+            desc = ""
         if link_string == "":
             cleaned = link.strip(file)
             link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
-        link_string += f"""{file} {size} 
+        link_string += f"""{file} {desc} {size}  
         <p>&lt;a role="button" class="ui compact mini button" href="{link}"
         &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
         """
+        index += 1
 
     description = {"description": link_string, "descriptionType": "Other"}
     metadata["descriptions"].append(description)
@@ -122,6 +130,7 @@ def caltechdata_write(
     s3=None,
     community=None,
     authors=False,
+    file_descriptions=[],
 ):
     """
     File links are links to files existing in external systems that will
@@ -138,7 +147,7 @@ def caltechdata_write(
         files = [files]
 
     if file_links:
-        metadata = add_file_links(metadata, file_links)
+        metadata = add_file_links(metadata, file_links, file_descriptions)
 
     # Pull out pid information
     if production == True:
@@ -218,7 +227,6 @@ def caltechdata_write(
             data["files"] = {"default_preview": "README.txt"}
 
     # Make draft and publish
-    print(data)
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
         raise Exception(result.text)
