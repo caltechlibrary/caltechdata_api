@@ -40,37 +40,72 @@ def parse_collaborators(collaborator_string):
     return formatted
 
 
-def create_detailed_description(information, files):
+def create_detailed_description(information, annotation):
     keywords = []
-    description = "Details of data collection:"
-    keyword_labels = ["Microscope", "Tilt Scheme", "acquisitionSoftware"]
+    description = "<p>"
+    sep = "</p><p>"
+    if "tiltSeriesDate" in information:
+        description += f' Tilt Series Date: {information["tiltSeriesDate"]}{sep}'
+    if "dataTakenBy" in information:
+        description += (
+            f' Data Taken By: {information["dataTakenBy"][0]["fullName"]}{sep}'
+        )
+    if "species/Specimen" in information:
+        species = information["species/Specimen"]
+        if "name" in species:
+            description += (
+                f' Species / Specimen: {information["Species/Specimen"]["name"]}{sep}'
+            )
+        if "strain" in species:
+            description += f' Strain: {information["Species/Specimen"]["strain"]}{sep}'
     if "tiltSeriesCollection" in information:
+        settings = ""
         info = information["tiltSeriesCollection"][0]
-        for key in info:
-            if key in keyword_labels:
-                keywords.append(info[key])
-            description += f" {key}: {info[key]},"
+        if "Tilt Scheme" in info:
+            settings += f' {info["Tilt Scheme"]},'
+            keywords.append(info["Tilt Scheme"])
+        if "tiltRangeMin" in info:
+            settings += (
+                f' tilt range: ({info["tiltRangeMin"]}°, {info["tiltRangeMax"]}°),'
+            )
+        if "angularIncrement" in info:
+            settings += f' step: {info["angularIncrement"]}°,'
+        if "isAngularIncrementConstant" in info:
+            if info["isAngularIncrementConstant"] == "yes":
+                settings += " constant angular increment,"
+            else:
+                settings += " variable angular increment,"
+        if "dosage" in info:
+            settings += f' dosage: {info["dosage"]} eV/Å², '
+        if "defocus" in info:
+            settings += f' defocus: {info["defocus"]} μm, '
+        if "magnification" in info:
+            settings += f' magnification: {info["magnification"].split(".")[0]}x. '
+        description += f" Tilt Series Settings: {settings}{sep}"
+        if "Microscope" in info:
+            description += f' Microscope: {info["Microscope"]}{sep}'
+            keywords.append(info["Microscope"])
+        if "acquisitionSoftware" in info:
+            description += f' Acquisition Software: {info["acquisitionSoftware"]}{sep}'
+            keywords.append(info["acquisitionSoftware"])
     if "uploadMethod" in information:
-        description += f' uploadMethod: {information["uploadMethod"]},'
+        description += f' Upload Method: {information["uploadMethod"]}{sep}'
         keywords.append(information["uploadMethod"])
     if "processingSoftwareUsed" in information:
         software = information["processingSoftwareUsed"]
-        description += f" processingSoftwareUsed: {software},"
+        description += f" Processing Software Used: {software}{sep}"
         if "," in software:
             software = software.split(",")
         else:
             software = [software]
         for soft in software:
             keywords.append(soft)
-    for f in files:
-        if "reconstruction" in f:
-            rec = f["reconstruction"]
-            if "pixelSize(nm)" in rec:
-                description += f' reconstructionPixelSize(nm): {rec["pixelSize(nm)"]},'
-        if "rawTiltSeries" in f:
-            raw = f["rawTiltSeries"]
-            if "pixelSize(nm)" in raw:
-                description += f' rawPixelSize(nm): {raw["pixelSize(nm)"]},'
+    if "purificationGrowthConditionsTreatment" in annotation:
+        description += f' Purification / Growth Conditions / Treatment: {annotation["purificationGrowthConditionsTreatment"]}{sep}'
+    if "description" in annotation:
+        description += f' Notes: {annotation["description"]}{sep}'
+    if "samplePreparation" in annotation:
+        description += f' Sample Preparation: {annotation["samplePreparation"]}{sep}'
     return description, keywords
 
 
@@ -78,10 +113,12 @@ def get_formats(files):
     formats = []
     file_paths = []
     file_links = []
+    file_descriptions = []
     upload = ["mp4", "jpg", "jpeg"]
     for f in files:
         name = f["fileName"]
         location = f["fileLocation"]
+        desc = ""
         fpath = location.replace(
             "/jdatabase/tomography/data/",
             "s3://ini210004tommorrell/tomography_archive/",
@@ -96,7 +133,22 @@ def get_formats(files):
             file_paths.append(f"{fpath}{name}")
         else:
             file_links.append(f"{s3path}{name}")
-    return formats, file_paths, file_links
+            if "reconstruction" in f:
+                rec = f["reconstruction"]
+                if "pixelSize(nm)" in rec:
+                    desc += f' Reconstruction (Pixel Size {rec["pixelSize(nm)"]} nm)'
+                else:
+                    desc += f" Reconstruction"
+            if "rawTiltSeries" in f:
+                raw = f["rawTiltSeries"]
+                if "pixelSize(nm)" in raw:
+                    desc += f' Tilt Series (Pixel Size {raw["pixelSize(nm)"]} nm)'
+                else:
+                    desc += f" Tilt Series"
+            if "fileNote" in f:
+                desc += f' {f["fileNote"]}'
+            file_descriptions.append(desc)
+    return formats, file_paths, file_links, file_descriptions
 
 
 funding = [
@@ -172,18 +224,13 @@ for f in files:
                 }
             )
         metadata["dates"] = dates
-        descriptions = []
         title = annotation["descriptiveTitle"]
-        descriptions.append(
-            {
-                "descriptionType": "Abstract",
-                "description": f"Electron tomography files of {title} ",
-            }
-        )
-        description, keywords = create_detailed_description(information, files)
-        descriptions.append({"descriptionType": "Other", "description": description})
+        description, keywords = create_detailed_description(information, annotation)
+        descriptions = [
+            {"descriptionType": "Abstract", "description": description + "</p>"}
+        ]
         metadata["descriptions"] = descriptions
-        formats, files, file_links = get_formats(files)
+        formats, files, file_links, file_descriptions = get_formats(files)
         metadata["formats"] = formats
         metadata["fundingReferences"] = funding
         metadata["language"] = "eng"
@@ -215,6 +262,7 @@ for f in files:
             production=False,
             publish=True,
             file_links=file_links,
+            file_descriptions=file_descriptions,
             community=community,
         )
         print(result)
