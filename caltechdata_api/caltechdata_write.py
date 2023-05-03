@@ -37,7 +37,9 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
         name = entry["key"]
         if name in f_list:
             if s3:
-                infile = s3.open(f_list[name], "rb")
+                print("Downloading", f_list[name])
+                s3.download(f_list[name], name)
+                infile = open(name, "rb")
             else:
                 infile = open(f_list[name], "rb")
             # size = infile.seek(0, 2)
@@ -68,9 +70,7 @@ def add_file_links(metadata, file_links, file_descriptions):
         size = humanbytes(size)
         try:
             desc = file_descriptions[index]
-            print(desc)
         except IndexError:
-            print("ERROR")
             desc = ""
         if link_string == "":
             cleaned = link.strip(file)
