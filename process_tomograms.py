@@ -104,6 +104,10 @@ def create_detailed_description(information, annotation):
             software = [software]
         for soft in software:
             keywords.append(soft)
+    if "collaboratorsAndRoles" in annotation:
+        description += (
+            f'{s}Collaborators and Roles:{e} {annotation["collaboratorsAndRoles"]}{sep}'
+        )
     if "purificationGrowthConditionsTreatment" in annotation:
         description += f'{s}Purification / Growth Conditions / Treatment:{e} {annotation["purificationGrowthConditionsTreatment"]}{sep}'
     if "description" in annotation:
@@ -115,7 +119,7 @@ def create_detailed_description(information, annotation):
     return description, keywords
 
 
-def get_formats(files):
+def get_formats(files, embargoed):
     formats = []
     file_paths = []
     file_links = []
@@ -129,10 +133,24 @@ def get_formats(files):
             "/jdatabase/tomography/data/",
             "https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/",
         )
+        fpath = location.replace(
+            "/jdatabase/tomography/data/",
+            "ini210004tommorrell/tomography_archive/",
+        )
         formatn = name.split(".")[-1]
         formats.append(formatn)
         if formatn in upload:
-            file_paths.append(f"{fpath}{name}")
+            if embargoed:
+                os.system(
+                    'scp "%s:%s%s" "%s"'
+                    % ("jcontrol3.jensen.caltech.edu", location, name, name)
+                )
+                file_paths.append(name)
+            else:
+                if len(location.split("Caps")) > 1:
+                    print("CAPS file ignored")
+                else:
+                    file_paths.append(f"{fpath}{name}")
         else:
             file_links.append(f"{s3path}{name}")
             if "reconstruction" in f:
@@ -190,7 +208,9 @@ for f in files:
         idv = annotation["tiltSeriesID"]
         # Pull out restricted records
         embargoed = False
-        if "2021" or "2022" in idv:
+        year = idv[3:7]
+        if year == "2021" or year == "2022":
+            print("embargoed")
             metadata["access"] = {
                 "record": "public",
                 "files": "restricted",
@@ -246,14 +266,14 @@ for f in files:
             # We don't add in file links
             f_text = "The fllowing raw files are currently embargoed:"
             index = 0
-            for f in file_links:
+            for link in file_links:
                 file = link.split("/")[-1]
                 pathf = link.split("ini210004tommorrell/")[1]
                 try:
                     desc = file_descriptions[index]
                 except IndexError:
                     desc = ""
-                f_text += f"<p>{file} {desc} {pathf}</p>"
+                f_text += f" {file} {desc} {pathf};"
             descriptions.append({"descriptionType": "Other", "description": f_text})
             file_links = []
         metadata["formats"] = formats
@@ -277,10 +297,15 @@ for f in files:
         metadata["titles"] = [{"title": title}]
         community = "fe1c8afc-38eb-4634-85af-43cdad391d79"
         token = os.environ["RDMTOK"]
+        endpoint = "https://renc.osn.xsede.org/"
+        osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+        if embargoed:
+            osn_s3 = None
         result = caltechdata_write(
             metadata,
             token,
             files=files,
+            s3=osn_s3,
             production=False,
             publish=True,
             file_links=file_links,
