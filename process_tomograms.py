@@ -85,8 +85,9 @@ def create_detailed_description(information, annotation):
             settings += f' magnification: {info["magnification"].split(".")[0]}x. '
         description += f"{s}Tilt Series Settings:{e} {settings}{sep}"
         if "Microscope" in info:
-            description += f'{s}Microscope:{e} {info["Microscope"]}{sep}'
-            keywords.append(info["Microscope"])
+            if info["Microscope"] != "":
+                description += f'{s}Microscope:{e} {info["Microscope"]}{sep}'
+                keywords.append(info["Microscope"])
         if "acquisitionSoftware" in info:
             description += (
                 f'{s}Acquisition Software:{e} {info["acquisitionSoftware"]}{sep}'
@@ -113,9 +114,10 @@ def create_detailed_description(information, annotation):
     if "description" in annotation:
         description += f'{s}Notes:{e} {annotation["description"]}{sep}'
     if "samplePreparation" in annotation:
-        description += (
-            f'{s}Sample Preparation:{e} {annotation["samplePreparation"]}{sep}'
-        )
+        if annotation["samplePreparation"] != "":
+            description += (
+                f'{s}Sample Preparation:{e} {annotation["samplePreparation"]}{sep}'
+            )
     return description, keywords
 
 
@@ -124,6 +126,7 @@ def get_formats(files, embargoed):
     file_paths = []
     file_links = []
     file_descriptions = []
+    additional_description = ""
     upload = ["mp4", "jpg", "jpeg"]
     for f in files:
         name = f["fileName"]
@@ -147,10 +150,10 @@ def get_formats(files, embargoed):
                 )
                 file_paths.append(name)
             else:
-                if len(location.split("Caps")) > 1:
-                    print("CAPS file ignored")
-                else:
-                    file_paths.append(f"{fpath}{name}")
+                file_paths.append(f"{fpath}{name}")
+                if "fileNote" in f:
+                    if f["fileNote"] != "":
+                        additional_description += f' {name}: {f["fileNote"]}'
         else:
             file_links.append(f"{s3path}{name}")
             if "reconstruction" in f:
@@ -168,7 +171,7 @@ def get_formats(files, embargoed):
             if "fileNote" in f:
                 desc += f' {f["fileNote"]}'
             file_descriptions.append(desc)
-    return formats, file_paths, file_links, file_descriptions
+    return formats, file_paths, file_links, file_descriptions, additional_description
 
 
 funding = [
@@ -257,11 +260,20 @@ for f in files:
         metadata["dates"] = dates
         title = annotation["descriptiveTitle"]
         description, keywords = create_detailed_description(information, annotation)
+        (
+            formats,
+            files,
+            file_links,
+            file_descriptions,
+            additional_description,
+        ) = get_formats(files, embargoed)
         descriptions = [
-            {"descriptionType": "Abstract", "description": description + "</p>"}
+            {
+                "descriptionType": "Abstract",
+                "description": f"{description} {additional_description} </p>",
+            }
         ]
         metadata["descriptions"] = descriptions
-        formats, files, file_links, file_descriptions = get_formats(files, embargoed)
         if embargoed:
             # We don't add in file links
             f_text = "The fllowing raw files are currently embargoed:"
@@ -273,8 +285,11 @@ for f in files:
                     desc = file_descriptions[index]
                 except IndexError:
                     desc = ""
-                f_text += f" {file} {desc} {pathf};"
-            descriptions.append({"descriptionType": "Other", "description": f_text})
+                f_text += f" {file}, {desc}, {pathf};"
+                index += 1
+            descriptions.append(
+                {"descriptionType": "TechnicalInfo", "description": f_text}
+            )
             file_links = []
         metadata["formats"] = formats
         metadata["fundingReferences"] = funding
@@ -301,6 +316,9 @@ for f in files:
         osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
         if embargoed:
             osn_s3 = None
+        s3_link = (
+            f"https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/{idv}"
+        )
         result = caltechdata_write(
             metadata,
             token,
@@ -311,5 +329,6 @@ for f in files:
             file_links=file_links,
             file_descriptions=file_descriptions,
             community=community,
+            s3_link=s3_link,
         )
         print(result)

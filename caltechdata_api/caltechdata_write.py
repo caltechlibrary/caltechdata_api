@@ -57,7 +57,9 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
                 raise Exception(result.text)
 
 
-def add_file_links(metadata, file_links, file_descriptions):
+def add_file_links(
+    metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
+):
     # Currently configured for OSN S3 links
     link_string = ""
     endpoint = "https://renc.osn.xsede.org/"
@@ -69,19 +71,25 @@ def add_file_links(metadata, file_links, file_descriptions):
         size = s3.info(path)["size"]
         size = humanbytes(size)
         try:
-            desc = file_descriptions[index]
+            desc = file_descriptions[index] + ","
         except IndexError:
             desc = ""
         if link_string == "":
-            cleaned = link.strip(file)
-            link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
-        link_string += f"""{file} {desc} {size}  
+            if s3_link:
+                link_string = f"Files available via S3 at {s3_link}&lt;/p&gt;</p>"
+            else:
+                cleaned = link.strip(file)
+                link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
+        link_string += f"""{file}, {desc} {size}  
         <p>&lt;a role="button" class="ui compact mini button" href="{link}"
         &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
         """
         index += 1
+    # Tack on any additional descriptions
+    if additional_descriptions != "":
+        link_string += additional_descriptions
 
-    description = {"description": link_string, "descriptionType": "Other"}
+    description = {"description": link_string, "descriptionType": "TechnicalInfo"}
     metadata["descriptions"].append(description)
     return metadata
 
@@ -131,6 +139,7 @@ def caltechdata_write(
     community=None,
     authors=False,
     file_descriptions=[],
+    s3_link=None,
 ):
     """
     File links are links to files existing in external systems that will
@@ -147,7 +156,9 @@ def caltechdata_write(
         files = [files]
 
     if file_links:
-        metadata = add_file_links(metadata, file_links, file_descriptions)
+        metadata = add_file_links(
+            metadata, file_links, file_descriptions, s3_link=s3_link
+        )
 
     # Pull out pid information
     if production == True:
