@@ -28,3 +28,7 @@
     datacite: Other
   title:
     en: Other
+# Not really a datacite mapping, but needed to support passing custom types
+- id: files
+  props:
+    datacite: files

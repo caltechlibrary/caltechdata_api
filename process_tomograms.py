@@ -43,9 +43,9 @@ def parse_collaborators(collaborator_string):
 def create_detailed_description(information, annotation):
     keywords = []
     description = "<p>"
-    sep = "</p><p>"
-    s = "<strong>"
-    e = "</strong>"
+    sep = "&lt;/p&gt;</p><p>"
+    s = "&lt;strong&gt;"
+    e = "&lt;/strong&gt;"
     if "tiltSeriesDate" in information:
         description += f'{s}Tilt Series Date:{e} {information["tiltSeriesDate"]}{sep}'
     if "dataTakenBy" in information:
@@ -111,8 +111,6 @@ def create_detailed_description(information, annotation):
         )
     if "purificationGrowthConditionsTreatment" in annotation:
         description += f'{s}Purification / Growth Conditions / Treatment:{e} {annotation["purificationGrowthConditionsTreatment"]}{sep}'
-    if "description" in annotation:
-        description += f'{s}Notes:{e} {annotation["description"]}{sep}'
     if "samplePreparation" in annotation:
         if annotation["samplePreparation"] != "":
             description += (
@@ -121,15 +119,18 @@ def create_detailed_description(information, annotation):
     return description, keywords
 
 
-def get_formats(files, embargoed):
+def process_files(files, embargoed):
     formats = []
     file_paths = []
     file_links = []
     file_descriptions = []
     additional_description = ""
+    default_preview = None
     upload = ["mp4", "jpg", "jpeg"]
     for f in files:
         name = f["fileName"]
+        if name.startswith("keyimg"):
+            default_preview = name
         location = f["fileLocation"]
         desc = ""
         s3path = location.replace(
@@ -171,7 +172,14 @@ def get_formats(files, embargoed):
             if "fileNote" in f:
                 desc += f' {f["fileNote"]}'
             file_descriptions.append(desc)
-    return formats, file_paths, file_links, file_descriptions, additional_description
+    return (
+        formats,
+        file_paths,
+        file_links,
+        file_descriptions,
+        additional_description,
+        default_preview,
+    )
 
 
 funding = [
@@ -266,10 +274,11 @@ for f in files:
             file_links,
             file_descriptions,
             additional_description,
-        ) = get_formats(files, embargoed)
+            default_preview,
+        ) = process_files(files, embargoed)
         descriptions = [
             {
-                "descriptionType": "Abstract",
+                "descriptionType": "TechnicalInfo",
                 "description": f"{description} {additional_description} </p>",
             }
         ]
@@ -287,10 +296,22 @@ for f in files:
                     desc = ""
                 f_text += f" {file}, {desc}, {pathf};"
                 index += 1
-            descriptions.append(
-                {"descriptionType": "TechnicalInfo", "description": f_text}
-            )
+            descriptions.append({"descriptionType": "files", "description": f_text})
             file_links = []
+        if "description" in annotation:
+            descriptions.append(
+                {
+                    "descriptionType": "Abstract",
+                    "description": annotation["description"],
+                }
+            )
+        else:
+            descriptions.append(
+                {
+                    "descriptionType": "Abstract",
+                    "description": f"Raw data files of {title}",
+                }
+            )
         metadata["formats"] = formats
         metadata["fundingReferences"] = funding
         metadata["language"] = "eng"
@@ -330,5 +351,6 @@ for f in files:
             file_descriptions=file_descriptions,
             community=community,
             s3_link=s3_link,
+            default_preview=default_preview,
         )
         print(result)

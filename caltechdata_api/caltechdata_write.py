@@ -89,7 +89,7 @@ def add_file_links(
     if additional_descriptions != "":
         link_string += additional_descriptions
 
-    description = {"description": link_string, "descriptionType": "TechnicalInfo"}
+    description = {"description": link_string, "descriptionType": "files"}
     metadata["descriptions"].append(description)
     return metadata
 
@@ -140,6 +140,7 @@ def caltechdata_write(
     authors=False,
     file_descriptions=[],
     s3_link=None,
+    default_preview=None,
 ):
     """
     File links are links to files existing in external systems that will
@@ -233,9 +234,10 @@ def caltechdata_write(
 
     if not files:
         data["files"] = {"enabled": False}
-    else:
-        if "README.txt" in files:
-            data["files"] = {"default_preview": "README.txt"}
+    elif default_preview:
+        data["files"] = {"enabled": True, "default_preview": default_preview}
+
+    print(data)
 
     # Make draft and publish
     result = requests.post(url + "/api/records", headers=headers, json=data)
