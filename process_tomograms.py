@@ -3,7 +3,8 @@ import os
 import openai
 import glob
 import s3fs
-from caltechdata_api import caltechdata_write
+import sys
+from caltechdata_api import caltechdata_write, caltechdata_edit
 from iga.name_utils import split_name
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -29,14 +30,18 @@ def parse_collaborators(collaborator_string):
         contributors.append(split)
     formatted = []
     for c in contributors:
-        formatted.append(
-            {
-                "nameType": "Personal",
-                "familyName": c[1].strip("' [']"),
-                "givenName": c[0].strip("' [']"),
-                "contributorType": "Researcher",
-            }
-        )
+        if len(c) == 2:
+            first = c[0].strip("' [']")
+            last = c[1].strip("' [']")
+            if first != last:
+                formatted.append(
+                    {
+                        "nameType": "Personal",
+                        "familyName": last,
+                        "givenName": first,
+                        "contributorType": "Researcher",
+                    }
+                )
     return formatted
 
 
@@ -53,13 +58,15 @@ def create_detailed_description(information, annotation):
             f'{s}Data Taken By:{e} {information["dataTakenBy"][0]["fullName"]}{sep}'
         )
     if "species/Specimen" in information:
-        species = information["species/Specimen"]
+        species = information["species/Specimen"][0]
         if "name" in species:
-            description += f'{s}Species / Specimen:{e} {information["Species/Specimen"]["name"]}{sep}'
+            sp = species["name"]
+            description += f"{s}Species / Specimen:{e} {sp}{sep}"
+            keywords.append(sp)
         if "strain" in species:
-            description += (
-                f'{s}Strain:{e} {information["Species/Specimen"]["strain"]}{sep}'
-            )
+            st = species["strain"]
+            description += f"{s}Strain:{e} {st}{sep}"
+            keywords.append(st)
     if "tiltSeriesCollection" in information:
         settings = ""
         info = information["tiltSeriesCollection"][0]
@@ -158,13 +165,13 @@ def process_files(files, embargoed):
         else:
             file_links.append(f"{s3path}{name}")
             if "reconstruction" in f:
-                rec = f["reconstruction"]
+                rec = f["reconstruction"][0]
                 if "pixelSize(nm)" in rec:
                     desc += f' Reconstruction (Pixel Size {rec["pixelSize(nm)"]} nm)'
                 else:
                     desc += f" Reconstruction"
             if "rawTiltSeries" in f:
-                raw = f["rawTiltSeries"]
+                raw = f["rawTiltSeries"][0]
                 if "pixelSize(nm)" in raw:
                     desc += f' Tilt Series (Pixel Size {raw["pixelSize(nm)"]} nm)'
                 else:
@@ -203,149 +210,143 @@ funding = [
     },
 ]
 
-directory = "jensen"
 
-files = glob.glob(f"{directory}/*.json")
+def process_record(source, edit=None):
+    annotation = source["annotation"][0]
+    information = source["information"][0]
+    files = source["Files"]
 
-for f in files:
-    print(f)
-    with open(f, "r") as infile:
-        source = json.load(infile)
-        annotation = source["annotation"][0]
-        information = source["information"][0]
-        files = source["Files"]
-
-        metadata = {}
-        idv = annotation["tiltSeriesID"]
-        # Pull out restricted records
-        embargoed = False
-        year = idv[3:7]
-        if year == "2021" or year == "2022":
-            print("embargoed")
-            metadata["access"] = {
-                "record": "public",
-                "files": "restricted",
-                "embargo": {"active": True, "until": "2024-06-01"},
-            }
-            embargoed = True
-        metadata["identifiers"] = [{"identifier": idv, "identifierType": "tiltid"}]
+    metadata = {}
+    # Pull out restricted records
+    embargoed = False
+    year = idv[3:7]
+    if year == "2021" or year == "2022":
+        print("embargoed")
+        metadata["access"] = {
+            "record": "public",
+            "files": "restricted",
+            "embargo": {"active": True, "until": "2024-06-01"},
+        }
+        embargoed = True
+    metadata["identifiers"] = [{"identifier": idv, "identifierType": "tiltid"}]
+    if "collaboratorsAndRoles" in annotation:
         metadata["contributors"] = parse_collaborators(
             annotation["collaboratorsAndRoles"]
         )
-        creators = []
-        for name in information["dataTakenBy"]:
-            creator = {
-                "nameType": "Personal",
-                "affiliation": [
-                    {
-                        "name": "Caltech",
-                        "affiliationIdentifier": "https://ror.org/05dxps055",
-                        "affiliationIdentifierScheme": "ROR",
-                    }
-                ],
-            }
-            clean = split_name(name["fullName"])
-            creator["givenName"] = clean[0]
-            creator["familyName"] = clean[1]
-            creators.append(creator)
-        metadata["creators"] = creators
-        dates = []
-        if "tiltSeriesDate" in information:
-            dates.append(
-                {"date": information["tiltSeriesDate"], "dateType": "Collected"}
-            )
-        if "timeAdded" in information:
-            dates.append(
-                {"date": information["timeAdded"].split(" ")[0], "dateType": "Created"}
-            )
-        if "lastModified" in information:
-            dates.append(
+    creators = []
+    for name in information["dataTakenBy"]:
+        creator = {
+            "nameType": "Personal",
+            "affiliation": [
                 {
-                    "date": information["lastModified"].split(" ")[0],
-                    "dateType": "Updated",
+                    "name": "Caltech",
+                    "affiliationIdentifier": "https://ror.org/05dxps055",
+                    "affiliationIdentifierScheme": "ROR",
                 }
-            )
-        metadata["dates"] = dates
-        title = annotation["descriptiveTitle"]
-        description, keywords = create_detailed_description(information, annotation)
-        (
-            formats,
-            files,
-            file_links,
-            file_descriptions,
-            additional_description,
-            default_preview,
-        ) = process_files(files, embargoed)
-        descriptions = [
-            {
-                "descriptionType": "TechnicalInfo",
-                "description": f"{description} {additional_description} </p>",
-            }
-        ]
-        metadata["descriptions"] = descriptions
-        if embargoed:
-            # We don't add in file links
-            f_text = "The fllowing raw files are currently embargoed:"
-            index = 0
-            for link in file_links:
-                file = link.split("/")[-1]
-                pathf = link.split("ini210004tommorrell/")[1]
-                try:
-                    desc = file_descriptions[index]
-                except IndexError:
-                    desc = ""
-                f_text += f" {file}, {desc}, {pathf};"
-                index += 1
-            descriptions.append({"descriptionType": "files", "description": f_text})
-            file_links = []
-        if "description" in annotation:
-            descriptions.append(
-                {
-                    "descriptionType": "Abstract",
-                    "description": annotation["description"],
-                }
-            )
-        else:
-            descriptions.append(
-                {
-                    "descriptionType": "Abstract",
-                    "description": f"Raw data files of {title}",
-                }
-            )
-        metadata["formats"] = formats
-        metadata["fundingReferences"] = funding
-        metadata["language"] = "eng"
-        metadata["publicationYear"] = "2023"
-        metadata["publisher"] = "CaltechDATA"
-        metadata["types"] = {
-            "resourceTypeGeneral": "Dataset",
-            "resourceType": "Dataset",
+            ],
         }
-        metadata["rightsList"] = [{"rights": "cc-by-nc-4.0"}]
-        if "species/Specimen" in information:
-            for s in information["species/Specimen"]:
-                keywords.append(s["name"])
-        subjects = []
-        for k in keywords:
-            if k != "":
-                subjects.append({"subject": k})
-        metadata["subjects"] = subjects
-        metadata["titles"] = [{"title": title}]
-        community = "fe1c8afc-38eb-4634-85af-43cdad391d79"
-        token = os.environ["RDMTOK"]
-        endpoint = "https://renc.osn.xsede.org/"
-        osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
-        if embargoed:
-            osn_s3 = None
-        s3_link = (
-            f"https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/{idv}"
+        clean = split_name(name["fullName"])
+        creator["givenName"] = clean[0]
+        creator["familyName"] = clean[1]
+        creators.append(creator)
+    metadata["creators"] = creators
+    dates = []
+    if "tiltSeriesDate" in information:
+        dates.append({"date": information["tiltSeriesDate"], "dateType": "Collected"})
+        metadata["publicationYear"] = information["tiltSeriesDate"][0:4]
+    if "timeAdded" in information:
+        dates.append(
+            {
+                "date": information["timeAdded"].split(" ")[0],
+                "dateType": "Created",
+            }
         )
-        result = caltechdata_write(
+    if "lastModified" in information:
+        dates.append(
+            {
+                "date": information["lastModified"].split(" ")[0],
+                "dateType": "Updated",
+            }
+        )
+    metadata["dates"] = dates
+    if "descriptiveTitle" in annotation:
+        title = annotation["descriptiveTitle"]
+    else:
+        title = information["species/Specimen"][0]["name"]
+    description, keywords = create_detailed_description(information, annotation)
+    (
+        formats,
+        files,
+        file_links,
+        file_descriptions,
+        additional_description,
+        default_preview,
+    ) = process_files(files, embargoed)
+    descriptions = [
+        {
+            "descriptionType": "TechnicalInfo",
+            "description": f"{description} {additional_description} </p>",
+        }
+    ]
+    metadata["descriptions"] = descriptions
+    if embargoed:
+        # We don't add in file links
+        f_text = "The fllowing raw files are currently embargoed:"
+        index = 0
+        for link in file_links:
+            file = link.split("/")[-1]
+            pathf = link.split("ini210004tommorrell/")[1]
+            try:
+                desc = file_descriptions[index]
+            except IndexError:
+                desc = ""
+            f_text += f" {file}, {desc}, {pathf};"
+            index += 1
+        descriptions.append({"descriptionType": "files", "description": f_text})
+        file_links = []
+    if "description" in annotation:
+        descriptions.append(
+            {
+                "descriptionType": "Abstract",
+                "description": annotation["description"],
+            }
+        )
+    else:
+        descriptions.append(
+            {
+                "descriptionType": "Abstract",
+                "description": f"Raw data files of {title}",
+            }
+        )
+    metadata["formats"] = formats
+    metadata["fundingReferences"] = funding
+    metadata["language"] = "eng"
+    metadata["publisher"] = "CaltechDATA"
+    metadata["types"] = {
+        "resourceTypeGeneral": "Dataset",
+        "resourceType": "Dataset",
+    }
+    metadata["rightsList"] = [{"rightsIdentifier": "cc-by-nc-4.0"}]
+    subjects = []
+    for k in keywords:
+        if k != "":
+            subjects.append({"subject": k})
+    metadata["subjects"] = subjects
+    metadata["titles"] = [{"title": title}]
+    community = "0497183f-f3b1-483d-b8bb-133c731c939a"
+    token = os.environ["RDMTOK"]
+    endpoint = "https://renc.osn.xsede.org/"
+    osn_s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+    if embargoed:
+        osn_s3 = None
+    s3_link = f"https://renc.osn.xsede.org/ini210004tommorrell/tomography_archive/{idv}"
+    if edit:
+        result = caltechdata_edit(
+            edit,
             metadata,
             token,
-            files=files,
-            s3=osn_s3,
-            production=False,
+            files=[],
+            production=True,
             publish=True,
             file_links=file_links,
             file_descriptions=file_descriptions,
@@ -354,3 +355,62 @@ for f in files:
             default_preview=default_preview,
         )
         print(result)
+    else:
+        cdid = caltechdata_write(
+            metadata,
+            token,
+            files=files,
+            s3=osn_s3,
+            production=True,
+            publish=True,
+            file_links=file_links,
+            file_descriptions=file_descriptions,
+            community=community,
+            s3_link=s3_link,
+            default_preview=default_preview,
+        )
+        print(cdid)
+        record_ids[idv] = cdid
+        with open("tomogram_ids.json", "w") as outfile:
+            json.dump(record_ids, outfile)
+        # Delete files and clean up
+        for file in files:
+            os.remove(file.split("/")[-1])
+
+
+with open("tomogram_ids.json", "r") as infile:
+    record_ids = json.load(infile)
+with open("tomogram_error_ids.json", "r") as infile:
+    error_ids = json.load(infile)["ids"]
+
+directory = "jensen"
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == "edit":
+        # We will edit all existing records
+        for idv in record_ids:
+            file = f"{directory}/{idv}.json"
+            with open(file, "r") as infile:
+                source = json.load(infile)
+                process_record(source, record_ids[idv])
+else:
+    # We will create new records
+
+    files = glob.glob(f"{directory}/*.json")
+
+    for f in files:
+        idv = f.split("/")[1].split(".json")[0]
+        if idv not in record_ids:
+            print(f)
+            with open(f, "r") as infile:
+                try:
+                    source = json.load(infile)
+                except json.decoder.JSONDecodeError:
+                    print("ERROR")
+                    error_ids.append(idv)
+                    with open("tomogram_error_ids.json", "w") as outfile:
+                        json.dump({"ids": error_ids}, outfile)
+                    os.rename(f, "errors/" + f)
+                    source = None
+                if source:
+                    process_record(source)
