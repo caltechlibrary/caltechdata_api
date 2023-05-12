@@ -62,6 +62,9 @@ def caltechdata_edit(
     s3=None,
     community=None,
     new_version=False,
+    file_descriptions=[],
+    s3_link=None,
+    default_preview=None,
 ):
 
     # If no token is provided, get from RDMTOK environment variable
@@ -89,10 +92,14 @@ def caltechdata_edit(
 
     # If user has provided file links as a cli option, we add those
     if file_links:
-        metadata = add_file_links(metadata, file_links)
+        metadata = add_file_links(
+            metadata, file_links, file_descriptions, s3_link=s3_link
+        )
     # Otherwise we add file links found in the mtadata file
     elif ex_file_links:
-        metadata = add_file_links(metadata, ex_file_links)
+        metadata = add_file_links(
+            metadata, ex_file_links, file_descriptions, s3_link=s3_link
+        )
 
     if production == True:
         url = "https://data.caltech.edu"
@@ -194,7 +201,10 @@ def caltechdata_edit(
     data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
 
     if files:
-        data["files"] = {"enabled": True}
+        if default_preview:
+            data["files"] = {"enabled": True, "default_preview": default_preview}
+        else:
+            data["files"] = {"enabled": True}
         # Update metadata
         result = requests.put(
             url + "/api/records/" + idv + "/draft",
@@ -229,6 +239,8 @@ def caltechdata_edit(
                 raise Exception(result.text)
         # We want files to stay the same as the existing record
         data["files"] = existing.json()["files"]
+        if default_preview:
+            data["files"]["default_preview"] = default_preview
         # Update metadata
         result = requests.put(
             url + "/api/records/" + idv + "/draft",
@@ -238,12 +250,7 @@ def caltechdata_edit(
         if result.status_code != 200:
             raise Exception(result.text)
 
-    if community:
-        review_link = result.json()["links"]["review"]
-        result = send_to_community(review_link, data, headers, publish, community)
-        doi = result.json()["pids"]["doi"]["identifier"]
-        return doi
-    elif publish:
+    if publish:
         publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
         result = requests.post(publish_link, headers=headers)
         if result.status_code != 202:
