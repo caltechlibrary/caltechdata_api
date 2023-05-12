@@ -256,7 +256,7 @@ def caltechdata_write(
 
     else:
         if publish:
-            result = requests.post(publish_link, headers=headers)
+            result = requests.post(publish_link, json=data, headers=headers)
             if result.status_code != 202:
                 raise Exception(result.text)
     return idv
