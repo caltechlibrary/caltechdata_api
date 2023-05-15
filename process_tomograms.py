@@ -30,18 +30,21 @@ def parse_collaborators(collaborator_string):
         contributors.append(split)
     formatted = []
     for c in contributors:
-        if len(c) == 2:
+        print(c)
+        if len(c) == 3:
             first = c[0].strip("' [']")
             last = c[1].strip("' [']")
             if first != last:
-                formatted.append(
-                    {
+                if last != "":
+                    new = {
                         "nameType": "Personal",
                         "familyName": last,
                         "givenName": first,
                         "contributorType": "Researcher",
                     }
-                )
+                    if new not in formatted:
+                        print(last, first)
+                        formatted.append(new)
     return formatted
 
 
@@ -305,10 +308,19 @@ def process_record(source, edit=None):
         descriptions.append({"descriptionType": "files", "description": f_text})
         file_links = []
     if "description" in annotation:
+        d_text = annotation["description"]
+        split = d_text.split("Keywords:")
+        if len(split) > 1:
+            s_key = split[1].split(",")
+            for s in s_key:
+                keywords.append(s.strip())
+        d_text = split[0]
+        if d_text == "":
+            d_text = f"Raw data files of {title}"
         descriptions.append(
             {
                 "descriptionType": "Abstract",
-                "description": annotation["description"],
+                "description": d_text,
             }
         )
     else:
@@ -375,7 +387,10 @@ def process_record(source, edit=None):
             json.dump(record_ids, outfile)
         # Delete files and clean up
         for file in files:
-            os.remove(file.split("/")[-1])
+            try:
+                os.remove(file.split("/")[-1])
+            except FileNotFoundError:
+                print("Not deleting remaned files")
 
 
 with open("tomogram_ids.json", "r") as infile:
@@ -406,6 +421,13 @@ else:
                 try:
                     source = json.load(infile)
                 except json.decoder.JSONDecodeError:
+                    print("ERROR")
+                    error_ids.append(idv)
+                    with open("tomogram_error_ids.json", "w") as outfile:
+                        json.dump({"ids": error_ids}, outfile)
+                    os.rename(f, "errors/" + f)
+                    source = None
+                except UnicodeDecodeError:
                     print("ERROR")
                     error_ids.append(idv)
                     with open("tomogram_error_ids.json", "w") as outfile:

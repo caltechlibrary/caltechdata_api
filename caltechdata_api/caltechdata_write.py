@@ -12,8 +12,15 @@ from caltechdata_api.utils import humanbytes
 def write_files_rdm(files, file_link, headers, f_headers, s3=None):
     f_json = []
     f_list = {}
+    fnames = []
     for f in files:
-        filename = f.split("/")[-1]
+        split = f.split("/")
+        filename = split[-1]
+        if filename in fnames:
+            # We can't have a duplicate filename
+            # Assume that the previous path value makes a unique name
+            filename = f"{split[-2]}-{split[-1]}" 
+        fnames.append(filename)
         f_json.append({"key": filename})
         f_list[filename] = f
     # Now we see if any existing draft files need to be replaced
