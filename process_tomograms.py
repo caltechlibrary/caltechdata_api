@@ -276,6 +276,8 @@ def process_record(source, edit=None):
         title = annotation["descriptiveTitle"]
     else:
         title = information["species/Specimen"][0]["name"]
+    if len(title) <= 3:
+        title = title + " tomogram data"
     description, keywords = create_detailed_description(information, annotation)
     (
         formats,
