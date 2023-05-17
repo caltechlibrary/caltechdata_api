@@ -7,7 +7,7 @@ env:
   all_assets:    false
   all_metadata:  false
   community:     none
-  parent_record: none
+  parent_record: "6qhkm-7n074"
   debug:         false
 
 # ~~~~~~~~~~ The rest of this file should be left as-is ~~~~~~~~~~
