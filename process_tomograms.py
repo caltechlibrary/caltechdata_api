@@ -114,7 +114,8 @@ def create_detailed_description(information, annotation):
         else:
             software = [software]
         for soft in software:
-            keywords.append(soft)
+            if soft not in keywords:
+                keywords.append(soft)
     if "collaboratorsAndRoles" in annotation:
         description += (
             f'{s}Collaborators and Roles:{e} {annotation["collaboratorsAndRoles"]}{sep}'
@@ -315,7 +316,9 @@ def process_record(source, edit=None):
         if len(split) > 1:
             s_key = split[1].split(",")
             for s in s_key:
-                keywords.append(s.strip())
+                n = s.strip()
+                if n not in keywords:
+                    keywords.append(n)
         d_text = split[0]
         if d_text == "":
             d_text = f"Raw data files of {title}"
