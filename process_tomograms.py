@@ -29,6 +29,8 @@ def parse_collaborators(collaborator_string):
         split = line.strip("[]").split(";")
         contributors.append(split)
     formatted = []
+    with open("collab.txt", "a") as myfile:
+            myfile.write(f"{collaborator_string} > {contributors}\n")
     for c in contributors:
         print(c)
         if len(c) == 3:
@@ -69,7 +71,8 @@ def create_detailed_description(information, annotation):
         if "strain" in species:
             st = species["strain"]
             description += f"{s}Strain:{e} {st}{sep}"
-            keywords.append(st)
+            if st not in keywords:
+                keywords.append(st)
     if "tiltSeriesCollection" in information:
         settings = ""
         info = information["tiltSeriesCollection"][0]
@@ -153,7 +156,8 @@ def process_files(files, embargoed):
             "ini210004tommorrell/tomography_archive/",
         )
         formatn = name.split(".")[-1]
-        formats.append(formatn)
+        if formatn not in formats:
+            formats.append(formatn)
         if formatn in upload:
             if embargoed:
                 os.system(
