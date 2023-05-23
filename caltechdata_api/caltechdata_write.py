@@ -19,7 +19,7 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
         if filename in fnames:
             # We can't have a duplicate filename
             # Assume that the previous path value makes a unique name
-            filename = f"{split[-2]}-{split[-1]}" 
+            filename = f"{split[-2]}-{split[-1]}"
         fnames.append(filename)
         f_json.append({"key": filename})
         f_list[filename] = f
@@ -155,6 +155,9 @@ def caltechdata_write(
 
     S3 is a s3sf object for directly opening files
     """
+    # Make a copy so that none of our changes leak out
+    metadata = copy.deepcopy(metadata)
+
     # If no token is provided, get from RDMTOK environment variable
     if not token:
         token = os.environ["RDMTOK"]
@@ -218,7 +221,7 @@ def caltechdata_write(
     metadata["pids"] = pids
 
     if authors == False:
-        data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+        data = customize_schema.customize_schema(metadata, schema=schema)
         if production == True:
             url = "https://data.caltech.edu/"
         else:

@@ -66,6 +66,8 @@ def caltechdata_edit(
     s3_link=None,
     default_preview=None,
 ):
+    # Make a copy of the metadata to make sure our local changes don't leak
+    metadata = copy.deepcopy(metadata)
 
     # If no token is provided, get from RDMTOK environment variable
     if not token:
@@ -198,7 +200,7 @@ def caltechdata_edit(
         }
     metadata["pids"] = pids
 
-    data = customize_schema.customize_schema(copy.deepcopy(metadata), schema=schema)
+    data = customize_schema.customize_schema(metadata, schema=schema)
 
     if files:
         if default_preview:
