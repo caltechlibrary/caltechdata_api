@@ -66,13 +66,15 @@ def create_detailed_description(information, annotation):
         species = information["species/Specimen"][0]
         if "name" in species:
             sp = species["name"]
-            description += f"{s}Species / Specimen:{e} {sp}{sep}"
-            keywords.append(sp)
+            if sp != 'Unspecified':
+                description += f"{s}Species / Specimen:{e} {sp}{sep}"
+                keywords.append(sp)
         if "strain" in species:
             st = species["strain"]
-            description += f"{s}Strain:{e} {st}{sep}"
-            if st not in keywords:
-                keywords.append(st)
+            if st != "None":
+                description += f"{s}Strain:{e} {st}{sep}"
+                if st not in keywords:
+                    keywords.append(st)
     if "tiltSeriesCollection" in information:
         settings = ""
         info = information["tiltSeriesCollection"][0]
@@ -99,8 +101,9 @@ def create_detailed_description(information, annotation):
         description += f"{s}Tilt Series Settings:{e} {settings}{sep}"
         if "Microscope" in info:
             if info["Microscope"] != "":
-                description += f'{s}Microscope:{e} {info["Microscope"]}{sep}'
-                keywords.append(info["Microscope"])
+                if info["Microscope"] != "None":
+                    description += f'{s}Microscope:{e} {info["Microscope"]}{sep}'
+                    keywords.append(info["Microscope"])
         if "acquisitionSoftware" in info:
             description += (
                 f'{s}Acquisition Software:{e} {info["acquisitionSoftware"]}{sep}'
@@ -238,9 +241,11 @@ def process_record(source, edit=None):
         embargoed = True
     metadata["identifiers"] = [{"identifier": idv, "identifierType": "tiltid"}]
     if "collaboratorsAndRoles" in annotation:
-        metadata["contributors"] = parse_collaborators(
-            annotation["collaboratorsAndRoles"]
-        )
+        with open("collab_not_completed.txt", "a") as myfile:
+            myfile.write(f"{idv}\n")
+        #metadata["contributors"] = parse_collaborators(
+        #    annotation["collaboratorsAndRoles"]
+        #)
     creators = []
     for name in information["dataTakenBy"]:
         creator = {

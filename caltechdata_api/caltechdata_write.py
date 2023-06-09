@@ -101,7 +101,10 @@ def add_file_links(
     return metadata
 
 
-def send_to_community(review_link, data, headers, publish, community):
+def send_to_community(review_link, data, headers, publish, community, message=None):
+
+    if not message:
+        message = "This record is submitted automatically with the CaltechDATA API"
 
     data = {
         "receiver": {"community": community},
@@ -113,7 +116,7 @@ def send_to_community(review_link, data, headers, publish, community):
     submit_link = result.json()["links"]["actions"]["submit"]
     data = comment = {
         "payload": {
-            "content": "This record is submitted automatically with the CaltechDATA API",
+            "content": message,
             "format": "html",
         }
     }
@@ -148,6 +151,7 @@ def caltechdata_write(
     file_descriptions=[],
     s3_link=None,
     default_preview=None,
+    review_message=None,
 ):
     """
     File links are links to files existing in external systems that will
@@ -218,7 +222,8 @@ def caltechdata_write(
                     "provider": "external",
                 }
 
-    metadata["pids"] = pids
+    if "pids" not in metadata:
+        metadata["pids"] = pids
 
     if authors == False:
         data = customize_schema.customize_schema(metadata, schema=schema)
@@ -247,8 +252,6 @@ def caltechdata_write(
     elif default_preview:
         data["files"] = {"enabled": True, "default_preview": default_preview}
 
-    print(data)
-
     # Make draft and publish
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
@@ -262,7 +265,9 @@ def caltechdata_write(
 
     if community:
         review_link = result.json()["links"]["review"]
-        send_to_community(review_link, data, headers, publish, community)
+        send_to_community(
+            review_link, data, headers, publish, community, review_message
+        )
 
     else:
         if publish:
