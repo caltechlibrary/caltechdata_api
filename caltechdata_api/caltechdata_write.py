@@ -113,7 +113,7 @@ def send_to_community(review_link, data, headers, publish, community, message=No
     result = requests.put(review_link, json=data, headers=headers)
     if result.status_code != 200:
         raise Exception(result.text)
-    submit_link = result.json()["links"]["actions"]["submit"]
+    submit_link = review_link.replace('/review','/actions/submit-review')
     data = comment = {
         "payload": {
             "content": message,
@@ -121,7 +121,7 @@ def send_to_community(review_link, data, headers, publish, community, message=No
         }
     }
     result = requests.post(submit_link, json=data, headers=headers)
-    if result.status_code != 200:
+    if result.status_code != 202:
         raise Exception(result.text)
     if publish:
         accept_link = result.json()["links"]["actions"]["accept"]

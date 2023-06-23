@@ -432,21 +432,21 @@ else:
         if idv not in record_ids:
             print(f)
             with open(f, "r") as infile:
-                try:
-                    source = json.load(infile)
-                except json.decoder.JSONDecodeError:
-                    print("ERROR")
-                    error_ids.append(idv)
-                    with open("tomogram_error_ids.json", "w") as outfile:
-                        json.dump({"ids": error_ids}, outfile)
-                    os.rename(f, "errors/" + f)
-                    source = None
-                except UnicodeDecodeError:
-                    print("ERROR")
-                    error_ids.append(idv)
-                    with open("tomogram_error_ids.json", "w") as outfile:
-                        json.dump({"ids": error_ids}, outfile)
-                    os.rename(f, "errors/" + f)
-                    source = None
-                if source:
-                    process_record(source)
+                    try:
+                        source = json.load(infile)
+                    except json.decoder.JSONDecodeError:
+                        print("ERROR")
+                        error_ids.append(idv)
+                        with open("tomogram_error_ids.json", "w") as outfile:
+                            json.dump({"ids": error_ids}, outfile)
+                        os.rename(f, "errors/" + f)
+                        source = None
+                    except UnicodeDecodeError:
+                        print("ERROR")
+                        error_ids.append(idv)
+                        with open("tomogram_error_ids.json", "w") as outfile:
+                            json.dump({"ids": error_ids}, outfile)
+                        os.rename(f, "errors/" + f)
+                        source = None
+                    if source:
+                        process_record(source)

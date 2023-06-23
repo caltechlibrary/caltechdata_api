@@ -20,9 +20,9 @@ metaf = open(args.json_file[0], "r")
 metadata = json.load(metaf)
 
 production = False
-publish = True
+publish = False
 authors = True
-community = "70768bd5-918b-441b-bd45-12a3f296447c"
+community = "669e5e57-7d9e-4d19-8ab5-9c6158562fb3"
 
 response = caltechdata_write(
     metadata,
