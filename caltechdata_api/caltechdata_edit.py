@@ -80,17 +80,18 @@ def caltechdata_edit(
     # Check if file links were provided in the metadata
     descriptions = []
     ex_file_links = []
-    for d in metadata["descriptions"]:
-        if d["description"].startswith("Files available via S3"):
-            file_text = d["description"]
-            file_list = file_text.split('href="')
-            # Loop over links in description, skip header text
-            for file in file_list[1:]:
-                ex_file_links.append(file.split('"\n')[0])
-        else:
-            descriptions.append(d)
-    # We remove file link descriptions, and re-add below
-    metadata["descriptions"] = descriptions
+    if "descriptions" in metadata:
+        for d in metadata["descriptions"]:
+            if d["description"].startswith("Files available via S3"):
+                file_text = d["description"]
+                file_list = file_text.split('href="')
+                # Loop over links in description, skip header text
+                for file in file_list[1:]:
+                    ex_file_links.append(file.split('"\n')[0])
+            else:
+                descriptions.append(d)
+        # We remove file link descriptions, and re-add below
+        metadata["descriptions"] = descriptions
 
     # If user has provided file links as a cli option, we add those
     if file_links:
@@ -131,7 +132,8 @@ def caltechdata_edit(
         if existing.status_code != 200:
             raise Exception(f"Record {idv} does not exist, cannot edit")
 
-    status = existing.json()["status"]
+    existing = existing.json()
+    status = existing["status"]
 
     # Determine whether we need a new version
     version = False
@@ -161,7 +163,7 @@ def caltechdata_edit(
     pids = {}
     oai = False
     doi = False
-    if "identifiers" in metadata:
+    if "identifiers" in metadata and version == False:
         for identifier in metadata["identifiers"]:
             if identifier["identifierType"] == "DOI":
                 doi = True
@@ -198,9 +200,17 @@ def caltechdata_edit(
             "provider": "datacite",
             "client": "datacite",
         }
-    metadata["pids"] = pids
 
-    data = customize_schema.customize_schema(metadata, schema=schema)
+    # If no metadata is provided, use existing. Otherwise customize provided
+    # metadata
+    if metadata == {}:
+        data = existing
+        if version == True:
+            # We want to have the system set new DOIs
+            data["pids"] = {}
+    else:
+        metadata["pids"] = pids
+        data = customize_schema.customize_schema(metadata, schema=schema)
 
     if files:
         if default_preview:
