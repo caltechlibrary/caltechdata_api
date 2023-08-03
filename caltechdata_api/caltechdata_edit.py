@@ -79,9 +79,9 @@ def caltechdata_edit(
 
     # Check if file links were provided in the metadata
     descriptions = []
+    ex_file_links = []
     for d in metadata["descriptions"]:
         if d["description"].startswith("Files available via S3"):
-            ex_file_links = []
             file_text = d["description"]
             file_list = file_text.split('href="')
             # Loop over links in description, skip header text
