@@ -234,7 +234,7 @@ def caltechdata_write(
     else:
         data = metadata
         if production == True:
-            url = "https://authors.caltech.edu/"
+            url = "https://authors.library.caltech.edu/"
         else:
             url = "https://authors.caltechlibrary.dev/"
 
