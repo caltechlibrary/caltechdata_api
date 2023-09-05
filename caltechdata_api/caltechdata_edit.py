@@ -65,6 +65,7 @@ def caltechdata_edit(
     file_descriptions=[],
     s3_link=None,
     default_preview=None,
+    authors=False,
 ):
     # Make a copy of the metadata to make sure our local changes don't leak
     metadata = copy.deepcopy(metadata)
@@ -104,10 +105,16 @@ def caltechdata_edit(
             metadata, ex_file_links, file_descriptions, s3_link=s3_link
         )
 
-    if production == True:
-        url = "https://data.caltech.edu"
+    if authors == False:
+        if production == True:
+            url = "https://data.caltech.edu/"
+        else:
+            url = "https://data.caltechlibrary.dev/"
     else:
-        url = "https://data.caltechlibrary.dev"
+        if production == True:
+            url = "https://authors.library.caltech.edu/"
+        else:
+            url = "https://authors.caltechlibrary.dev/"
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -156,8 +163,12 @@ def caltechdata_edit(
 
     print(idv)
     # Pull out pid information
+    # Not currently used for authors
     if production == True:
-        repo_prefix = "10.22002"
+        if authors == True:
+            repo_prefix = "10.7907"
+        else:
+            repo_prefix = "10.22002"
     else:
         repo_prefix = "10.33569"
     pids = {}
@@ -209,8 +220,11 @@ def caltechdata_edit(
             # We want to have the system set new DOIs
             data["pids"] = {}
     else:
-        metadata["pids"] = pids
-        data = customize_schema.customize_schema(metadata, schema=schema)
+        if authors == False:
+            metadata["pids"] = pids
+            data = customize_schema.customize_schema(metadata, schema=schema)
+        else:
+            data = metadata
 
     if files:
         if default_preview:
@@ -250,7 +264,7 @@ def caltechdata_edit(
             if result.status_code != 200:
                 raise Exception(result.text)
         # We want files to stay the same as the existing record
-        data["files"] = existing.json()["files"]
+        data["files"] = existing["files"]
         if default_preview:
             data["files"]["default_preview"] = default_preview
         # Update metadata
