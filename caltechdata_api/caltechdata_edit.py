@@ -281,7 +281,10 @@ def caltechdata_edit(
         result = requests.post(publish_link, headers=headers)
         if result.status_code != 202:
             raise Exception(result.text)
-        doi = result.json()["pids"]["doi"]["identifier"]
-        return doi
+        pids = result.json()["pids"]
+        if "doi" in pids:
+            return pids["doi"]["identifier"]
+        else:
+            return pids["oai"]["identifier"]
     else:
         return idv
