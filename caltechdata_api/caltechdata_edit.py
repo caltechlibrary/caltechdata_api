@@ -224,6 +224,11 @@ def caltechdata_edit(
             metadata["pids"] = pids
             data = customize_schema.customize_schema(metadata, schema=schema)
         else:
+            # Authors, force oai PID
+            metadata["pids"]["oai"] = {
+                "identifier": f"oai:authors.library.caltech.edu:{idv}",
+                "provider": "oai",
+            }
             data = metadata
 
     if files:
