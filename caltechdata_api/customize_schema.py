@@ -15,10 +15,15 @@ def grid_to_ror(grid):
         ror = "00hm6j694"
     elif grid == "grid.5805.8":
         ror = "02en5vm52"
+    elif grid == "grid.465477.3":
+        ror = "00em52312"
     else:
         url = f"https://api.ror.org/organizations?query.advanced=external_ids.GRID.all:{grid}"
-        results = requests.get(url)
-        ror = results.json()["items"][0]["id"]
+        results = requests.get(url).json()
+        if len(results["items"]) == 0:
+            print(url + "doesn't have a valid ROR")
+            exit()
+        ror = results["items"][0]["id"]
         ror = ror.split("ror.org/")[1]
     return ror
 
@@ -177,24 +182,27 @@ def customize_schema_rdm(json_record):
     if additional != []:
         json_record["additional_titles"] = additional
 
-    descriptions = json_record.pop("descriptions")
-    additional = []
-    if len(descriptions) == 1:
-        json_record["description"] = descriptions[0]["description"]
-    else:
-        for description in descriptions:
-            if description["descriptionType"] == "Abstract":
-                # If there are multiple Abstracts, extras will be lost
-                json_record["description"] = description["description"]
-            else:
-                new = {}
-                new["type"] = {"id": descriptiontypes[description["descriptionType"]]}
-                new["description"] = description["description"]
-                if "lang" in description:
-                    new["lang"] = {"id": description["lang"]}
-                additional.append(new)
-    if additional != []:
-        json_record["additional_descriptions"] = additional
+    if "descriptions" in json_record:
+        descriptions = json_record.pop("descriptions")
+        additional = []
+        if len(descriptions) == 1:
+            json_record["description"] = descriptions[0]["description"]
+        else:
+            for description in descriptions:
+                if description["descriptionType"] == "Abstract":
+                    # If there are multiple Abstracts, extras will be lost
+                    json_record["description"] = description["description"]
+                else:
+                    new = {}
+                    new["type"] = {
+                        "id": descriptiontypes[description["descriptionType"]]
+                    }
+                    new["description"] = description["description"]
+                    if "lang" in description:
+                        new["lang"] = {"id": description["lang"]}
+                    additional.append(new)
+        if additional != []:
+            json_record["additional_descriptions"] = additional
 
     # dates
     if "dates" in json_record:
