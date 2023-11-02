@@ -7,7 +7,9 @@ import requests
 from datacite import schema43
 
 
-def get_metadata(idv, production=True, validate=True, emails=False, schema="43"):
+def get_metadata(
+    idv, production=True, validate=True, emails=False, schema="43", token=False
+):
     # Returns just DataCite metadata or DataCite metadata with emails
 
     if production == True:
@@ -21,7 +23,11 @@ def get_metadata(idv, production=True, validate=True, emails=False, schema="43")
         "accept": "application/vnd.datacite.datacite+json",
     }
 
+    if token:
+        headers["Authorization"] = "Bearer %s" % token
+
     response = requests.get(url + idv, headers=headers, verify=verify)
+    print(response.headers)
     if response.status_code != 200:
         raise Exception(response.text)
     else:

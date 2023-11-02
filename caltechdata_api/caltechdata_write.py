@@ -189,6 +189,7 @@ def caltechdata_write(
     elif "identifiers" in metadata:
         identifiers = metadata["identifiers"]
     for identifier in identifiers:
+        doi = False
         if "identifierType" in identifier:
             if identifier["identifierType"] == "DOI":
                 doi = identifier["identifier"]
@@ -198,17 +199,11 @@ def caltechdata_write(
                     "identifier": identifier["identifier"],
                     "provider": "oai",
                 }
-            else:
-                doi = False
         elif "scheme" in identifier:
             # We have RDM internal metadata
             if identifier["scheme"] == "doi":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-            else:
-                doi = False
-        else:
-            doi = False
         if doi != False:
             if prefix == repo_prefix:
                 pids["doi"] = {

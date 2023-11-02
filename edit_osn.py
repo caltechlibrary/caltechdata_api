@@ -1,5 +1,5 @@
 import argparse, os, json
-import s3fs
+import s3fs, requests
 from datacite import schema43
 from caltechdata_api import caltechdata_edit, get_metadata
 
@@ -25,7 +25,20 @@ folder = args.folder[0]
 path = "ini210004tommorrell/" + folder + "/"
 
 idv = args.id[0]
-metadata = get_metadata(idv, schema="43")
+try:
+    metadata = get_metadata(idv, schema="43")
+except:
+    url = "https://data.caltech.edu/api/records/"
+
+    headers = {
+        "accept": "application/vnd.datacite.datacite+json",
+        "Authorization": "Bearer %s" % token,
+        }
+
+    response = requests.get(url + idv +'/draft', headers=headers)
+    if response.status_code != 200:
+        raise Exception(response.text)
+    metadata = response.json()
 
 # Find the files
 files = s3.glob(path + "/*")
@@ -56,6 +69,6 @@ for link in files:
 production = True
 
 response = caltechdata_edit(
-    idv, metadata, token, [], production, "43", publish=True, file_links=file_links
+    idv, metadata, token, [], production, "43", publish=False, file_links=file_links
 )
 print(response)
