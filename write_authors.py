@@ -19,7 +19,7 @@ token = os.environ["RDMTOK"]
 metaf = open(args.json_file[0], "r")
 metadata = json.load(metaf)
 
-production = False
+production = True
 publish = False
 authors = True
 community = "669e5e57-7d9e-4d19-8ab5-9c6158562fb3"

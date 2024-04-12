@@ -22,7 +22,7 @@ s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 folder = args.folder[0]
 
-path = "ini210004tommorrell/" + folder + "/"
+path = "ini210004tommorrell/" + folder
 
 idv = args.id[0]
 try:
