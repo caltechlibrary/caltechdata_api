@@ -60,8 +60,7 @@ name = meta["name"]
 REQUIRES_PYTHON = ">=3.6.0"
 
 # What packages are required for this module to be executed?
-REQUIRED = ["requests", "datacite>1.1.0", "tqdm>=4.62.3", "pyyaml",
-            "s3fs","keyring"]
+REQUIRED = ["requests", "datacite>1.1.0", "tqdm>=4.62.3", "pyyaml", "s3fs", "keyring"]
 
 # What packages are optional?
 EXTRAS = {
@@ -166,8 +165,8 @@ setup(
         "upload": UploadCommand,
     },
     entry_points={
-        'console_scripts': [
-            'cli=caltechdata_api.cli:main',
+        "console_scripts": [
+            "cli=caltechdata_api.cli:main",
         ],
     },
 )

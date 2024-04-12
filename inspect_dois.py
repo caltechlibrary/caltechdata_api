@@ -24,7 +24,7 @@ response = requests.get(f"{url}&search_type=scan&scroll=5m")
 
 total = response.json()["hits"]["total"]
 pages = math.ceil(int(total) / 1000)
-hits = [] 
+hits = []
 print(total)
 for c in progressbar(range(1, pages + 1)):
     chunkurl = f"{url}&sort=newest&size=1000&page={c}"
@@ -33,17 +33,15 @@ for c in progressbar(range(1, pages + 1)):
     hits += response["hits"]["hits"]
 
 
-url = 'https://data.caltech.edu/api/records'
+url = "https://data.caltech.edu/api/records"
 
 for h in progressbar(hits):
     idv = str(h["id"])
-    
-    doi = h['pids']['doi']
 
-    if 'client' not in doi:
+    doi = h["pids"]["doi"]
 
-        if '10.22002/' in doi['identifier']:
-            
+    if "client" not in doi:
+        if "10.22002/" in doi["identifier"]:
             response = requests.get(f"{url}/{idv}", headers=headers)
             if response.status_code != 200:
                 print(response.text)

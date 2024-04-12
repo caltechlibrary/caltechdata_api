@@ -17,4 +17,4 @@ caltechdata_accept(
     token,
     production,
 )
-print('Completed')
+print("Completed")

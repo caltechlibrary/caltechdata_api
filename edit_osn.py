@@ -33,9 +33,9 @@ except:
     headers = {
         "accept": "application/vnd.datacite.datacite+json",
         "Authorization": "Bearer %s" % token,
-        }
+    }
 
-    response = requests.get(url + idv +'/draft', headers=headers)
+    response = requests.get(url + idv + "/draft", headers=headers)
     if response.status_code != 200:
         raise Exception(response.text)
     metadata = response.json()
