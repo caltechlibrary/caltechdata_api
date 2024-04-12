@@ -1,5 +1,6 @@
 import argparse
 import requests
+import s3fs
 from caltechdata_api import caltechdata_write, caltechdata_edit
 from md_to_json import parse_readme_to_json
 import json
@@ -21,27 +22,29 @@ funderIdentifierType = ""
 funderName = ""
 
 
-CONFIG_FILE = 'caltechdata_config.ini'
+CONFIG_FILE = "caltechdata_config.ini"
+
 
 def get_or_set_token():
     config = configparser.ConfigParser()
 
     if os.path.isfile(CONFIG_FILE):
         config.read(CONFIG_FILE)
-        if 'CaltechDATA' in config and 'token' in config['CaltechDATA']:
-            return config['CaltechDATA']['token']
+        if "CaltechDATA" in config and "token" in config["CaltechDATA"]:
+            return config["CaltechDATA"]["token"]
     else:
         while True:
             token = get_user_input("Enter your CaltechDATA token: ")
             confirm_token = get_user_input("Confirm your CaltechDATA token: ")
             if token == confirm_token:
-                config.add_section('CaltechDATA')
-                config.set('CaltechDATA', 'token', token)
-                with open(CONFIG_FILE, 'w') as configfile:
+                config.add_section("CaltechDATA")
+                config.set("CaltechDATA", "token", token)
+                with open(CONFIG_FILE, "w") as configfile:
                     config.write(configfile)
                 return token
             else:
                 print("Tokens do not match. Please try again.")
+
 
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
@@ -59,9 +62,9 @@ def get_user_input(prompt, required=True):
 def confirm_upload():
     while True:
         user_input = input("Do you want to send this record to CaltechDATA? (y/n): ")
-        if user_input.lower() == 'y':
+        if user_input.lower() == "y":
             return True
-        elif user_input.lower() == 'n':
+        elif user_input.lower() == "n":
             print("Upload canceled.")
             return False
         else:
@@ -69,7 +72,9 @@ def confirm_upload():
 
 
 def check_award_number(award_number):
-    response = requests.get(f"https://data.caltech.edu/api/awards?q=number:{award_number}")
+    response = requests.get(
+        f"https://data.caltech.edu/api/awards?q=number:{award_number}"
+    )
     data = response.json()
     total_hits = data.get("hits", {}).get("total", 0)
     return total_hits > 0
@@ -78,7 +83,9 @@ def check_award_number(award_number):
 def get_funding_entries():
     while True:
         try:
-            num_entries = int(input("How many funding entries do you want to provide? "))
+            num_entries = int(
+                input("How many funding entries do you want to provide? ")
+            )
             if num_entries >= 0:
                 return num_entries
             else:
@@ -101,32 +108,38 @@ def get_funding_details():
     award_number = get_user_input("Enter the award number for funding: ")
     award_exists = check_award_number(award_number)
     if not award_exists:
-        print(f"""Error: No award with number '{award_number}' found in
+        print(
+            f"""Error: No award with number '{award_number}' found in
               CaltechDATA. You will need to provide more details about the
-              funding.""")
+              funding."""
+        )
     award_title = get_user_input("Enter the award title for funding: ")
     while True:
         funder_identifier = get_user_input("Enter the funder ROR (https://ror.org): ")
         if validate_funder_identifier(funder_identifier):
             break
         else:
-            print("""This funder identifier is not a ROR. Please enter a valid
+            print(
+                """This funder identifier is not a ROR. Please enter a valid
                   ROR identifier (without the url). For example the ROR for the
-                  NSF is 021nxhr62.""")
+                  NSF is 021nxhr62."""
+            )
     print("-" * 10)
     return {
         "awardNumber": award_number,
         "awardTitle": award_title,
         "funderIdentifier": funder_identifier,
-        "funderIdentifierType": 'ROR'
+        "funderIdentifierType": "ROR",
     }
 
 
 def parse_arguments():
     welcome_message()
     args = {}
-    args['title'] = get_user_input("Enter the title of the dataset: ")
-    args['description'] = get_user_input("Enter the abstract or description of the dataset: ")
+    args["title"] = get_user_input("Enter the title of the dataset: ")
+    args["description"] = get_user_input(
+        "Enter the abstract or description of the dataset: "
+    )
     print("License options:")
     print("1. Creative Commons Zero Waiver (cc-zero)")
     print("2. Creative Commons Attribution (cc-by)")
@@ -134,13 +147,15 @@ def parse_arguments():
 
     # Prompt user to select a license
     while True:
-        license_number = input("Enter the number corresponding to the desired license: ")
+        license_number = input(
+            "Enter the number corresponding to the desired license: "
+        )
         if license_number.isdigit() and 1 <= int(license_number) <= 8:
             # Valid license number selected
-            args['license'] = {
-                '1': 'cc0-1.0',
-                '2': 'cc-by-4.0',
-                '3': 'cc-by-nc-4.0',
+            args["license"] = {
+                "1": "cc0-1.0",
+                "2": "cc-by-4.0",
+                "3": "cc-by-nc-4.0",
             }[license_number]
             break
         else:
@@ -150,10 +165,10 @@ def parse_arguments():
         orcid = get_user_input("Enter your ORCID identifier: ")
         family_name, given_name = get_names(orcid)
         if family_name is not None and given_name is not None:
-            args['orcid'] = orcid
+            args["orcid"] = orcid
             break  # Break out of the loop if names are successfully retrieved
         retry = input("Do you want to try again? (y/n): ")
-        if retry.lower() != 'y':
+        if retry.lower() != "y":
             print("Exiting program.")
             return
     # Optional arguments
@@ -161,7 +176,7 @@ def parse_arguments():
     funding_references = []
     for _ in range(num_funding_entries):
         funding_references.append(get_funding_details())
-    args['fundingReferences'] = funding_references
+    args["fundingReferences"] = funding_references
     return args
 
 
@@ -196,7 +211,9 @@ def get_names(orcid):
             family_name = name_info.get("family-name", {}).get("value", "")
             given_name = name_info.get("given-names", {}).get("value", "")
         except json.decoder.JSONDecodeError:
-            print(f"Error: ORCID identifier not found or invalid. Please check the ORCID identifier and try again.")
+            print(
+                f"Error: ORCID identifier not found or invalid. Please check the ORCID identifier and try again."
+            )
             return None, None
     return family_name, given_name
 
@@ -205,16 +222,53 @@ def upload_supporting_file():
     filepath = ""
     file_link = ""
     while True:
-        choice = get_user_input("Do you want to upload an additional supporting file? (y/n): ").lower()
-        if choice == 'y':
+        choice = get_user_input(
+            "Do you want to upload or link data files? (upload/link/n): "
+        ).lower()
+        if choice == "link":
+            endpoint = "https://sdsc.osn.xsede.org/"
+
+            s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
+            # Find the files
+            files = s3.glob(path + "/*")
+
+            file_links = []
+            for link in files:
+                fname = link.split("/")[-1]
+            if "." not in fname:
+                # If there is a directory, get files
+                folder_files = s3.glob(link + "/*")
+                for file in folder_files:
+                    name = file.split("/")[-1]
+                    if "." not in name:
+                        level_2_files = s3.glob(file + "/*")
+                        for f in level_2_files:
+                            name = f.split("/")[-1]
+                            if "." not in name:
+                                level_3_files = s3.glob(f + "/*")
+                                for l3 in level_3_files:
+                                    file_links.append(endpoint + l3)
+                            else:
+                                file_links.append(endpoint + f)
+                    else:
+                        file_links.append(endpoint + file)
+            else:
+                file_links.append(endpoint + link)
+        if choice == "upload":
             print("Current files in the directory:")
-            files = [f for f in os.listdir() if not f.endswith('.json') and os.path.isfile(f)]
+            files = [
+                f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
+            ]
             print("\n".join(files))
-            filename = get_user_input("Enter the filename to upload as a supporting file: ")
+            filename = get_user_input(
+                "Enter the filename to upload as a supporting file: "
+            )
             if filename in files:
                 file_size = os.path.getsize(filename)
-                if file_size > 1024 * 1024:  
-                    file_link = get_user_input("Enter the S3 link to the file (File size is more than 1MB): ")
+                if file_size > 1024 * 1024:
+                    file_link = get_user_input(
+                        "Enter the S3 link to the file (File size is more than 1MB): "
+                    )
                     if file_link:
                         return filepath, file_link
                     else:
@@ -224,33 +278,37 @@ def upload_supporting_file():
                     filepath = os.path.abspath(filename)
                     break
             else:
-                print(f"Error: File '{filename}' not found. Please enter a valid filename.")
-        elif choice == 'n':
+                print(
+                    f"Error: File '{filename}' not found. Please enter a valid filename."
+                )
+        elif choice == "n":
             break
         else:
             print("Invalid input. Please enter 'y' or 'n'.")
-    
+
     return filepath, file_link
 
 
 def upload_data_from_file():
     while True:
         print("Current JSON files in the directory:")
-        files = [f for f in os.listdir() if f.endswith('.json') and os.path.isfile(f)]
+        files = [f for f in os.listdir() if f.endswith(".json") and os.path.isfile(f)]
         print("\n".join(files))
 
-        filename = get_user_input("Enter a README.md or JSON filename to upload to CaltechDATA (or type 'exit' to go back): ")
+        filename = get_user_input(
+            "Enter a README.md or JSON filename to upload to CaltechDATA (or type 'exit' to go back): "
+        )
 
-        if filename.lower() == 'exit':
+        if filename.lower() == "exit":
             return None
 
-        if filename == 'README.md':
+        if filename == "README.md":
             data = parse_readme_to_json(filename)
             print(json.dumps(data))
             return data
         else:
             try:
-                with open(filename, 'r') as file:
+                with open(filename, "r") as file:
                     data = json.load(file)
                 return data
 
@@ -259,10 +317,12 @@ def upload_data_from_file():
 
 
 def main():
-    choice = get_user_input("Do you want to create or edit a CaltechDATA record? (create/edit): ").lower()
-    if choice == 'create':
+    choice = get_user_input(
+        "Do you want to create or edit a CaltechDATA record? (create/edit): "
+    ).lower()
+    if choice == "create":
         create_record()
-    elif choice == 'edit':
+    elif choice == "edit":
         edit_record()
     else:
         print("Invalid choice. Please enter 'create' or 'edit'.")
@@ -272,34 +332,49 @@ def create_record():
     token = get_or_set_token()
     print("Using CaltechDATA token:", token)
     while True:
-        choice = get_user_input("Do you want to use metadata from an existing file or create new metadata? (existing/create): ").lower()
-        if choice == 'existing':
+        choice = get_user_input(
+            "Do you want to use metadata from an existing file or create new metadata? (existing/create): "
+        ).lower()
+        if choice == "existing":
             existing_data = upload_data_from_file()
             filepath, file_link = upload_supporting_file()
             if existing_data:
                 if filepath != "":
-                    response = caltechdata_write(existing_data, token, filepath, production=False, publish=True)
+                    response = caltechdata_write(
+                        existing_data, token, filepath, production=False, publish=True
+                    )
                 elif file_link != "":
-                    response = caltechdata_write(existing_data, token, file_links=[file_link], s3_link=file_link, production=False, publish=True)
+                    response = caltechdata_write(
+                        existing_data,
+                        token,
+                        file_links=[file_link],
+                        s3_link=file_link,
+                        production=False,
+                        publish=True,
+                    )
                 else:
-                    response = caltechdata_write(existing_data, token, production=False, publish=True)
+                    response = caltechdata_write(
+                        existing_data, token, production=False, publish=True
+                    )
                 print(response)
                 break
             else:
                 print("Going back to the main menu.")
-        elif choice == 'create':
+        elif choice == "create":
             args = parse_arguments()
-            family_name, given_name = get_names(args['orcid'])
+            family_name, given_name = get_names(args["orcid"])
             metadata = {
-                "titles": [{"title": args['title']}],
-                "descriptions": [{"description": args['description'], "descriptionType": "Abstract"}],
+                "titles": [{"title": args["title"]}],
+                "descriptions": [
+                    {"description": args["description"], "descriptionType": "Abstract"}
+                ],
                 "creators": [
                     {
                         "affiliation": [
                             {
                                 "affiliationIdentifier": affiliation_identifier,
                                 "affiliationIdentifierScheme": affiliationIdentifierScheme,
-                                "name": name
+                                "name": name,
                             }
                         ],
                         "familyName": family_name,
@@ -307,7 +382,7 @@ def create_record():
                         "name": f"{family_name}, {given_name}",
                         "nameIdentifiers": [
                             {
-                                "nameIdentifier": args['orcid'],
+                                "nameIdentifier": args["orcid"],
                                 "nameIdentifierScheme": "ORCID",
                             }
                         ],
@@ -317,20 +392,30 @@ def create_record():
                 "types": {"resourceType": "", "resourceTypeGeneral": "Dataset"},
                 "rightsList": [
                     {
-                        "rightsIdentifier": args['license'],
+                        "rightsIdentifier": args["license"],
                     }
                 ],
-                "fundingReferences": args['fundingReferences'],
+                "fundingReferences": args["fundingReferences"],
                 "schemaVersion": "http://datacite.org/schema/kernel-4",
             }
             filepath, file_link = upload_supporting_file()
             if confirm_upload():
                 if filepath != "":
-                    response = caltechdata_write(metadata, token, filepath, production=False, publish=True)
+                    response = caltechdata_write(
+                        metadata, token, filepath, production=False, publish=True
+                    )
                 elif file_link != "":
-                    response = caltechdata_write(metadata, token,  file_links=[file_link], production=False, publish=True)
+                    response = caltechdata_write(
+                        metadata,
+                        token,
+                        file_links=[file_link],
+                        production=False,
+                        publish=True,
+                    )
                 else:
-                    response = caltechdata_write(metadata, token, production=False, publish=True)
+                    response = caltechdata_write(
+                        metadata, token, production=False, publish=True
+                    )
                 print(response)
                 print(family_name, given_name)
                 with open(response + ".json", "w") as file:
@@ -343,23 +428,20 @@ def create_record():
 
 
 def edit_record():
-    choice = get_user_input("Do you want to edit metadata or upload files in server? (metadata/files): ").lower()
-    if choice == 'metadata':
-        edit_metadata()
-    elif choice == 'files':
-        upload_file()
-    else:
-        print("Invalid choice. Please enter 'metadata' or 'files'.")
-
-def edit_metadata():
-    file_name, record_id = download_file_by_id()
+    record_id = input("Enter the ID (or 'exit' to quit): ")
+    if record_id.lower() == "exit":
+        print("Exiting the program.")
+        break
+    file_name = download_file_by_id(record_id)
     if file_name:
         try:
             # Read the edited metadata file
             with open(file_name, "r") as file:
                 metadata = json.load(file)
             token = get_or_set_token()
-            response = caltechdata_edit(record_id, metadata, token, production=False, publish=True)
+            response = caltechdata_edit(
+                record_id, metadata, token, production=False, publish=True
+            )
             if response:
                 print("Metadata edited successfully.")
             else:
@@ -368,57 +450,42 @@ def edit_metadata():
             print(f"An error occurred during metadata editing: {e}")
     else:
         print("No metadata file found.")
-
-def upload_file():
-    id = get_user_input("Enter the record ID: ")
-    if id:
-        files = [f for f in os.listdir() if not f.endswith('.json') and os.path.isfile(f)]
-        print("\n".join(files))
-        file_names = get_user_input("Enter the filename to upload as a supporting file: ")
-        if file_names:
-            token = get_or_set_token()
-            url = f"https://data.caltechlibrary.dev/records/{id}/export/datacite-json"
-            try:
-                response = requests.get(url)
-                if response.status_code == 200:
-                    file_content = response.content
-                    file_name = f"metadata_{id}.json"
-                    with open(file_name, "wb") as file:
-                        file.write(file_content)
-                    with open(file_name, "r") as file:
-                        metadata = json.load(file)
-                    # Check file size
-                    file_size = os.path.getsize(file_names)
-                    if file_size > 1024 * 1024:  # 1 MB
-                        file_link = input("File larger than 1MB. Please put the S3 link: ")
-                        response = caltechdata_edit(id, metadata, token, file_links=[file_link], production=False, publish=True)
-                    else:
-                        with open(file_names, "rb") as file:
-                            response = caltechdata_edit(id, metadata, token, file_names, production=False, publish=True)
-                    
-                    if response:
-                        print("File uploaded successfully.")
-                    else:
-                        print("Failed to upload metadata.")
-                else:
-                    print(f"Failed to download metadata. Status code: {response.status_code}")
-            except Exception as e:
-                print(f"An error occurred: {e}")
+    choice = get_user_input("Do you want to add files? (y/n): ").lower()
+    if choice == "y":
+        filepath, file_link = upload_supporting_file()
+        if filepath != "":
+            response = caltechdata_edit(
+                record_id, metadata, token, filepath, production=False, publish=True
+            )
+        elif file_link != "":
+            response = caltechdata_edit(
+                record_id,
+                metadata,
+                token,
+                file_links=[file_link],
+                s3_link=file_link,
+                production=False,
+                publish=True,
+            )
         else:
-            print("Filename is required.")
+            response = caltechdata_edit(
+                record_id, metadata, token, production=False, publish=True
+            )
+        print(response)
+    elif choice == "n":
+        response = caltechdata_edit(
+            record_id, metadata, token, production=False, publish=True
+        )
+        print(response)
     else:
-        print("Record ID is required.")
+        print("Invalid choice. Please enter 'metadata' or 'files'.")
 
 
-def download_file_by_id():
+def download_file_by_id(record_id):
     while True:
-        record_id = input("Enter the ID (or 'exit' to quit): ")
-        if record_id.lower() == 'exit':
-            print("Exiting the program.")
-            break
-        record_ids = record_id
-
-        url = f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
+        url = (
+            f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
+        )
 
         try:
             response = requests.get(url)
@@ -427,7 +494,7 @@ def download_file_by_id():
                 file_name = f"downloaded_data_{record_id}.json"
                 with open(file_name, "wb") as file:
                     file.write(file_content)
-                print(f"File downloaded successfully: {file_name}")
+                print(f"Metadata downloaded successfully: {file_name}")
                 with open(file_name, "r") as file:
                     metadata = json.load(file)
                 while True:
@@ -435,7 +502,11 @@ def download_file_by_id():
                     for i, field in enumerate(metadata.keys()):
                         print(f"{i + 1}. {field}")
 
-                    field_choice = int(input("Enter the number of the field you want to edit (or 0 to skip, 'exit' to exit): "))
+                    field_choice = int(
+                        input(
+                            "Enter the number of the field you want to edit (or 0 to skip, 'exit' to exit): "
+                        )
+                    )
 
                     if field_choice == 0:
                         break
@@ -448,7 +519,11 @@ def download_file_by_id():
                             for i, item in enumerate(metadata[selected_field]):
                                 print(f"{i + 1}. {item}")
 
-                            item_choice = int(input("Enter the number of the item you want to edit (or 0 to go back): "))
+                            item_choice = int(
+                                input(
+                                    "Enter the number of the item you want to edit (or 0 to go back): "
+                                )
+                            )
 
                             if item_choice == 0:
                                 break
@@ -460,16 +535,26 @@ def download_file_by_id():
                                 for i, subfield in enumerate(selected_item.keys()):
                                     print(f"{i + 1}. {subfield}")
 
-                                subfield_choice = int(input("Enter the number of the subfield you want to edit (or 0 to go back): "))
+                                subfield_choice = int(
+                                    input(
+                                        "Enter the number of the subfield you want to edit (or 0 to go back): "
+                                    )
+                                )
 
                                 if subfield_choice == 0:
                                     break
 
-                                selected_subfield = list(selected_item.keys())[subfield_choice - 1]
+                                selected_subfield = list(selected_item.keys())[
+                                    subfield_choice - 1
+                                ]
 
-                                new_value = input(f"Enter the new value for {selected_subfield}: ")
+                                new_value = input(
+                                    f"Enter the new value for {selected_subfield}: "
+                                )
 
-                                metadata[selected_field][item_choice - 1][selected_subfield] = new_value
+                                metadata[selected_field][item_choice - 1][
+                                    selected_subfield
+                                ] = new_value
 
                                 with open(file_name, "w") as file:
                                     json.dump(metadata, file, indent=2)
@@ -479,17 +564,27 @@ def download_file_by_id():
                     else:
                         while True:
                             print(f"Subfields for {selected_field}:")
-                            for i, subfield in enumerate(metadata[selected_field].keys()):
+                            for i, subfield in enumerate(
+                                metadata[selected_field].keys()
+                            ):
                                 print(f"{i + 1}. {subfield}")
 
-                            subfield_choice = int(input("Enter the number of the subfield you want to edit (or 0 to go back): "))
+                            subfield_choice = int(
+                                input(
+                                    "Enter the number of the subfield you want to edit (or 0 to go back): "
+                                )
+                            )
 
                             if subfield_choice == 0:
                                 break
 
-                            selected_subfield = list(metadata[selected_field].keys())[subfield_choice - 1]
+                            selected_subfield = list(metadata[selected_field].keys())[
+                                subfield_choice - 1
+                            ]
 
-                            new_value = input(f"Enter the new value for {selected_subfield}: ")
+                            new_value = input(
+                                f"Enter the new value for {selected_subfield}: "
+                            )
 
                             metadata[selected_field][selected_subfield] = new_value
 
@@ -502,7 +597,8 @@ def download_file_by_id():
                 print(f"Failed to download file. Status code: {response.status_code}")
         except Exception as e:
             print(f"An error occurred: {e}")
-    return file_name, record_ids
+    return file_name
+
 
 if __name__ == "__main__":
     main()
