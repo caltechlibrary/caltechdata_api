@@ -166,7 +166,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'uploader=caltechdata_api.uploader:main',
+            'cli=caltechdata_api.cli:main',
         ],
     },
 )
