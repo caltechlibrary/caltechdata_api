@@ -69,6 +69,7 @@ EXTRAS = {
 
 files = package_files("caltechdata_api", "vocabularies")
 files.append("vocabularies.yaml")
+files.append("uploader.py")
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------
@@ -162,5 +163,10 @@ setup(
     # $ setup.py publish support.
     cmdclass={
         "upload": UploadCommand,
+    },
+    entry_points={
+        'console_scripts': [
+            'uploader=caltechdata_api.uploader:main',
+        ],
     },
 )
