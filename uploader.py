@@ -4,7 +4,7 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from md_to_json import parse_readme_to_json
 import json
 import os
-import keyring
+import configparser
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
 ORCID_API = "https://orcid.org/"
@@ -21,21 +21,27 @@ funderIdentifierType = ""
 funderName = ""
 
 
+CONFIG_FILE = 'caltechdata_config.ini'
+
 def get_or_set_token():
-    stored_token = keyring.get_password("caltechdata_cli", "rdmtok")
-    if stored_token:
-        return stored_token
+    config = configparser.ConfigParser()
 
-    # If token is not stored, ask the user for input and store it securely
-    while True:
-        token = get_user_input("Enter your CaltechDATA token: ")
-        confirm_token = get_user_input("Confirm your CaltechDATA token: ")
-        if token == confirm_token:
-            keyring.set_password("caltechdata_cli", "rdmtok", token)
-            return token
-        else:
-            print("Tokens do not match. Please try again.")
-
+    if os.path.isfile(CONFIG_FILE):
+        config.read(CONFIG_FILE)
+        if 'CaltechDATA' in config and 'token' in config['CaltechDATA']:
+            return config['CaltechDATA']['token']
+    else:
+        while True:
+            token = get_user_input("Enter your CaltechDATA token: ")
+            confirm_token = get_user_input("Confirm your CaltechDATA token: ")
+            if token == confirm_token:
+                config.add_section('CaltechDATA')
+                config.set('CaltechDATA', 'token', token)
+                with open(CONFIG_FILE, 'w') as configfile:
+                    config.write(configfile)
+                return token
+            else:
+                print("Tokens do not match. Please try again.")
 
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
@@ -274,7 +280,7 @@ def create_record():
                 if filepath != "":
                     response = caltechdata_write(existing_data, token, filepath, production=False, publish=True)
                 elif file_link != "":
-                    response = caltechdata_write(existing_data, token, s3=file_link, s3_link=file_link, production=False, publish=True)
+                    response = caltechdata_write(existing_data, token, file_links=[file_link], s3_link=file_link, production=False, publish=True)
                 else:
                     response = caltechdata_write(existing_data, token, production=False, publish=True)
                 print(response)
@@ -322,7 +328,7 @@ def create_record():
                 if filepath != "":
                     response = caltechdata_write(metadata, token, filepath, production=False, publish=True)
                 elif file_link != "":
-                    response = caltechdata_write(metadata, token, s3=file_link, s3_link=file_link, production=False, publish=True)
+                    response = caltechdata_write(metadata, token,  file_links=[file_link], production=False, publish=True)
                 else:
                     response = caltechdata_write(metadata, token, production=False, publish=True)
                 print(response)
@@ -337,7 +343,7 @@ def create_record():
 
 
 def edit_record():
-    choice = get_user_input("Do you want to edit metadata or files? (metadata/files): ").lower()
+    choice = get_user_input("Do you want to edit metadata or upload files in server? (metadata/files): ").lower()
     if choice == 'metadata':
         edit_metadata()
     elif choice == 'files':
@@ -385,7 +391,7 @@ def upload_file():
                     file_size = os.path.getsize(file_names)
                     if file_size > 1024 * 1024:  # 1 MB
                         file_link = input("File larger than 1MB. Please put the S3 link: ")
-                        response = caltechdata_edit(id, metadata, token, s3=file_link, s3_link=file_link, production=False, publish=True)
+                        response = caltechdata_edit(id, metadata, token, file_links=[file_link], production=False, publish=True)
                     else:
                         with open(file_names, "rb") as file:
                             response = caltechdata_edit(id, metadata, token, file_names, production=False, publish=True)
