@@ -218,7 +218,7 @@ def get_names(orcid):
     return family_name, given_name
 
 
-def upload_supporting_file():
+def upload_supporting_file(record_id=None):
     filepath = ""
     file_link = ""
     while True:
@@ -226,35 +226,42 @@ def upload_supporting_file():
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
+            
             endpoint = "https://sdsc.osn.xsede.org/"
+            path = 'ini230004-bucket01/'
+
+            if not record_id:
+                record_id = get_user_input("Folder where OSN files are uploaded")
 
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
-            files = s3.glob(path + "/*")
+            files = s3.glob( path + record_id + "/*")
 
-            file_links = []
+            file_links = []    
+
             for link in files:
                 fname = link.split("/")[-1]
-            if "." not in fname:
-                # If there is a directory, get files
-                folder_files = s3.glob(link + "/*")
-                for file in folder_files:
-                    name = file.split("/")[-1]
-                    if "." not in name:
-                        level_2_files = s3.glob(file + "/*")
-                        for f in level_2_files:
-                            name = f.split("/")[-1]
-                            if "." not in name:
-                                level_3_files = s3.glob(f + "/*")
-                                for l3 in level_3_files:
-                                    file_links.append(endpoint + l3)
-                            else:
-                                file_links.append(endpoint + f)
-                    else:
-                        file_links.append(endpoint + file)
-            else:
-                file_links.append(endpoint + link)
-        if choice == "upload":
+                if "." not in fname:
+                    # If there is a directory, get files
+                    folder_files = s3.glob(link + "/*")
+                    for file in folder_files:
+                        name = file.split("/")[-1]
+                        if "." not in name:
+                            level_2_files = s3.glob(file + "/*")
+                            for f in level_2_files:
+                                name = f.split("/")[-1]
+                                if "." not in name:
+                                    level_3_files = s3.glob(f + "/*")
+                                    for l3 in level_3_files:
+                                        file_links.append(endpoint + l3)
+                                else:
+                                    file_links.append(endpoint + f)
+                        else:
+                            file_links.append(endpoint + file)
+                else:
+                    file_links.append(endpoint + link)
+            return filepath, file_links
+        elif choice == "upload":
             print("Current files in the directory:")
             files = [
                 f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
@@ -265,14 +272,14 @@ def upload_supporting_file():
             )
             if filename in files:
                 file_size = os.path.getsize(filename)
-                if file_size > 1024 * 1024:
+                if file_size > 1024 * 1024 * 1024 :
                     file_link = get_user_input(
-                        "Enter the S3 link to the file (File size is more than 1MB): "
+                        "Enter the S3 link to the file (File size is more than 1GB): "
                     )
                     if file_link:
                         return filepath, file_link
                     else:
-                        print("Link is required for files larger than 1MB.")
+                        print("Link is required for files larger than 1GB.")
                         continue
                 else:
                     filepath = os.path.abspath(filename)
@@ -284,7 +291,7 @@ def upload_supporting_file():
         elif choice == "n":
             break
         else:
-            print("Invalid input. Please enter 'y' or 'n'.")
+            print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
 
     return filepath, file_link
 
@@ -428,10 +435,7 @@ def create_record():
 
 
 def edit_record():
-    record_id = input("Enter the ID (or 'exit' to quit): ")
-    if record_id.lower() == "exit":
-        print("Exiting the program.")
-        break
+    record_id = input("Enter the CaltechDATA record ID: ")
     file_name = download_file_by_id(record_id)
     if file_name:
         try:
@@ -452,7 +456,7 @@ def edit_record():
         print("No metadata file found.")
     choice = get_user_input("Do you want to add files? (y/n): ").lower()
     if choice == "y":
-        filepath, file_link = upload_supporting_file()
+        filepath, file_link = upload_supporting_file(record_id)
         if filepath != "":
             response = caltechdata_edit(
                 record_id, metadata, token, filepath, production=False, publish=True
@@ -462,8 +466,7 @@ def edit_record():
                 record_id,
                 metadata,
                 token,
-                file_links=[file_link],
-                s3_link=file_link,
+                file_links=file_link,
                 production=False,
                 publish=True,
             )
@@ -482,7 +485,6 @@ def edit_record():
 
 
 def download_file_by_id(record_id):
-    while True:
         url = (
             f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
         )
@@ -597,7 +599,7 @@ def download_file_by_id(record_id):
                 print(f"Failed to download file. Status code: {response.status_code}")
         except Exception as e:
             print(f"An error occurred: {e}")
-    return file_name
+        return file_name
 
 
 if __name__ == "__main__":

@@ -166,7 +166,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "cli=caltechdata_api.cli:main",
+            "caltechdata_api=caltechdata_api.cli:main",
         ],
     },
 )
