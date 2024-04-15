@@ -46,10 +46,11 @@ def parse_readme_to_json(readme_path):
     for line_number, line in enumerate(lines, 1):
         if not line.strip():
             if current_object and current_section:
-                # check if current_object needs special treatment before appending
-                if len(current_object) == 1:
+                if current_section == "types":
+                    json_data[current_section] = current_object
+                elif len(current_object) == 1:
                     key, value = next(iter(current_object.items()))
-                    if key in ["language", "publicationYear", "publisher", "version", "types"]:
+                    if key in ["language", "publicationYear", "publisher", "version"]:
                         json_data[current_section].append(value)
                     else:
                         json_data[current_section].append(current_object)
@@ -61,8 +62,9 @@ def parse_readme_to_json(readme_path):
         section_match = section_pattern.match(line)
         if section_match:
             if current_section and current_object:
-                # same check as above before starting a new section
-                if len(current_object) == 1:
+                if current_section == "types":
+                    json_data[current_section] = current_object
+                elif len(current_object) == 1:
                     key, value = next(iter(current_object.items()))
                     if key in ["language", "publicationYear", "publisher", "version"]:
                         json_data[current_section].append(value)
@@ -72,7 +74,7 @@ def parse_readme_to_json(readme_path):
                     json_data[current_section].append(current_object)
                 current_object = {}
             current_section = camel_case(section_match.group(1))
-            json_data[current_section] = []
+            json_data[current_section] = [] if current_section != "types" else {}
             continue
 
         key_value_match = key_value_pattern.match(line)
@@ -82,6 +84,7 @@ def parse_readme_to_json(readme_path):
 
             if key in ["affiliation", "nameIdentifiers"]:
                 value = expand_special_keys(key, value)
+                print(value)
             else:
                 link_match = link_pattern.search(value)
                 if link_match:
@@ -93,8 +96,9 @@ def parse_readme_to_json(readme_path):
             raise ReadmeFormatException(f"Incorrect format detected at line {line_number}: {line}")
 
     if current_section and current_object:
-        # final check for the last object
-        if len(current_object) == 1:
+        if current_section == "types":
+            json_data[current_section] = current_object
+        elif len(current_object) == 1:
             key, value = next(iter(current_object.items()))
             if key in ["language", "publicationYear", "publisher", "version"]:
                 json_data[current_section].append(value)
@@ -105,13 +109,12 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-if __name__ == "__main__":
-    readme_path = '/Users/elizabethwon/downloads/exampleREADME.md'
-    try:
-        json_data = parse_readme_to_json(readme_path)
-        output_json_path = 'output1.json'
-        with open(output_json_path, 'w') as json_file:
-            json.dump(json_data, json_file, indent=4)
-        print(f"Converted JSON saved to {output_json_path}")
-    except ReadmeFormatException as e:
-        print(f"Error parsing README file: {e}")
+readme_path = '/Users/elizabethwon/downloads/exampleREADME.md'
+try:
+    json_data = parse_readme_to_json(readme_path)
+    output_json_path = 'output1.json'
+    with open(output_json_path, 'w') as json_file:
+        json.dump(json_data, json_file, indent=4)
+    print(f"Converted JSON saved to {output_json_path}")
+except ReadmeFormatException as e:
+    print(f"Error parsing README file: {e}")
