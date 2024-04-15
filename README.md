@@ -1,35 +1,53 @@
-# caltechdata_api
+# CaltechDATA API Python Library
 
-Python library for using the CaltechDATA API
+The `caltechdata_api` Python library provides a convenient interface for interacting with the CaltechDATA API. It allows users to write files, create DataCite 4 standard JSON records, edit existing records, and retrieve metadata from the CaltechDATA repository.
 
-- caltechdata_write write files and a DataCite 4 standard json record to CaltechDATA repository
-- caltechdata_edit edits records in CaltechDATA
-- get_metadata gets metadata from CaltechDATA records
+## Features
 
-Requires Python 3 (Recommended via Anaconda https://www.anaconda.com/download) with reqests library.
+### Writing and Editing Records
+- `caltechdata_write`: Writes files and a DataCite 4 standard JSON record to the CaltechDATA repository.
+- `caltechdata_edit`: Edits existing records in CaltechDATA.
+
+### Metadata Operations
+- `get_metadata`: Retrieves metadata from CaltechDATA records.
+
+## Requirements
+
+- Python 3 (Anaconda is recommended)
+- `requests` library
+
+## Installation
+
+Install the library via pip:
+
+```shell
+pip install caltechdata_api
+```
 
 ## Examples
 
 There are some example python scripts in the GitHub repository.
 
-Create a record:
+###Create a record:
 
 ```shell
 python write.py example.json -fnames logo.gif
-pbkn6-m9y63
+# Output: pbkn6-m9y63 (unique identifier)
 ```
-The response will be the unique identifier for the record. You can put this at
+> The response will be the unique identifier for the record. You can put this at
 the end of a url to visit the record (e.g.
 https://data.caltechlibrary.dev/records/pbkn6-m9y63)
 
-Edit a record (make changes to the example.json file to see a change)
+###Edit a record 
+Make changes to the example.json file to see a change)
 ```
 python edit.py example.json -id pbkn6-m9y63
 10.33569/pbkn6-m9y63
 ```
-The response is the DOI for the record, which includes the unique identifier
+> The response is the DOI for the record, which includes the unique identifier
 for the record in the default configuration.
 
+## Using Custom DOIs 
 Some groups have worked with the library to create custom DOIs. These can be
 passed in the metadata like:
 
@@ -46,17 +64,15 @@ python edit.py example_custom.json -id m6zxz-p4j22
 
 This returns the custom DOI of the record if it is successful.
 
-## Setup 
 
-Install by typing 'pip install caltechdata_api'
+## Setup and Authentication
 
-## Usage
+1. Acquire a personal access token from your CaltechDATA account (found under "Applications" at the top right of your screen).
+2. Copy the token to a file named token.bash.
+3. Load the token in the command line using source token.bash.
 
-You need to acquire a personal access token from your CaltechDATA account
-(find it at the top right of your screen under "Applications").
-Then copy the token to token.bash.  Type `source token.bash` in 
-the command line to load the token.  
+## Note on Testing
 
-Only test your application on the test repository (data.caltechlibrary.dev).  Testing the API on the public 
+Only test your application on the test repository (`data.caltechlibrary.dev`).  Testing the API on the public 
 repository will generate junk records that are annoying to delete.
 

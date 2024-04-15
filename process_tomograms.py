@@ -35,7 +35,7 @@ def parse_collaborators(collaborator_string):
     formatted = []
     # Logging the collaboration information to a file
     with open("collab.txt", "a") as myfile:
-            myfile.write(f"{collaborator_string} > {contributors}\n")
+        myfile.write(f"{collaborator_string} > {contributors}\n")
     for c in contributors:
         print(c)
         if len(c) == 3:
@@ -73,7 +73,7 @@ def create_detailed_description(information, annotation):
         species = information["species/Specimen"][0]
         if "name" in species:
             sp = species["name"]
-            if sp != 'Unspecified':
+            if sp != "Unspecified":
                 description += f"{s}Species / Specimen:{e} {sp}{sep}"
                 keywords.append(sp)
         if "strain" in species:
@@ -251,9 +251,9 @@ def process_record(source, edit=None):
     if "collaboratorsAndRoles" in annotation:
         with open("collab_not_completed.txt", "a") as myfile:
             myfile.write(f"{idv}\n")
-        #metadata["contributors"] = parse_collaborators(
+        # metadata["contributors"] = parse_collaborators(
         #    annotation["collaboratorsAndRoles"]
-        #)
+        # )
     creators = []
     for name in information["dataTakenBy"]:
         creator = {
@@ -443,21 +443,21 @@ else:
         if idv not in record_ids:
             print(f)
             with open(f, "r") as infile:
-                    try:
-                        source = json.load(infile)
-                    except json.decoder.JSONDecodeError:
-                        print("ERROR")
-                        error_ids.append(idv)
-                        with open("tomogram_error_ids.json", "w") as outfile:
-                            json.dump({"ids": error_ids}, outfile)
-                        os.rename(f, "errors/" + f)
-                        source = None
-                    except UnicodeDecodeError:
-                        print("ERROR")
-                        error_ids.append(idv)
-                        with open("tomogram_error_ids.json", "w") as outfile:
-                            json.dump({"ids": error_ids}, outfile)
-                        os.rename(f, "errors/" + f)
-                        source = None
-                    if source:
-                        process_record(source)
+                try:
+                    source = json.load(infile)
+                except json.decoder.JSONDecodeError:
+                    print("ERROR")
+                    error_ids.append(idv)
+                    with open("tomogram_error_ids.json", "w") as outfile:
+                        json.dump({"ids": error_ids}, outfile)
+                    os.rename(f, "errors/" + f)
+                    source = None
+                except UnicodeDecodeError:
+                    print("ERROR")
+                    error_ids.append(idv)
+                    with open("tomogram_error_ids.json", "w") as outfile:
+                        json.dump({"ids": error_ids}, outfile)
+                    os.rename(f, "errors/" + f)
+                    source = None
+                if source:
+                    process_record(source)

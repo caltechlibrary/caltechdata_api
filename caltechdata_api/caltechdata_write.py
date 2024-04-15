@@ -67,9 +67,9 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
 ):
-    # Currently configured for OSN S3 links
+    # Currently configured for S3 links, assuming all are at same endpoint
     link_string = ""
-    endpoint = "https://renc.osn.xsede.org/"
+    endpoint = "https://"+file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     index = 0
     for link in file_links:
