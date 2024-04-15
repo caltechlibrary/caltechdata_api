@@ -105,12 +105,13 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-readme_path = '/Users/elizabethwon/downloads/exampleREADME.md'
-try:
-    json_data = parse_readme_to_json(readme_path)
-    output_json_path = 'output1.json'
-    with open(output_json_path, 'w') as json_file:
-        json.dump(json_data, json_file, indent=4)
-    print(f"Converted JSON saved to {output_json_path}")
-except ReadmeFormatException as e:
-    print(f"Error parsing README file: {e}")
+if __name__ == "__main__":
+    readme_path = '/Users/elizabethwon/downloads/exampleREADME.md'
+    try:
+        json_data = parse_readme_to_json(readme_path)
+        output_json_path = 'output1.json'
+        with open(output_json_path, 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
+        print(f"Converted JSON saved to {output_json_path}")
+    except ReadmeFormatException as e:
+        print(f"Error parsing README file: {e}")
