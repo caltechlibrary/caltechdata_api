@@ -4,7 +4,7 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from md_to_json import parse_readme_to_json
 import json
 import os
-import configparser
+from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
 ORCID_API = "https://orcid.org/"
@@ -21,24 +21,46 @@ funderIdentifierType = ""
 funderName = ""
 
 
-CONFIG_FILE = 'caltechdata_config.ini'
+def generate_key():
+    return Fernet.generate_key()
 
-def get_or_set_token():
-    config = configparser.ConfigParser()
-
-    if os.path.isfile(CONFIG_FILE):
-        config.read(CONFIG_FILE)
-        if 'CaltechDATA' in config and 'token' in config['CaltechDATA']:
-            return config['CaltechDATA']['token']
+# Load the key from a file or generate a new one if not present
+def load_or_generate_key(key_file="key.key"):
+    if os.path.exists(key_file):
+        with open(key_file, "rb") as f:
+            return f.read()
     else:
+        key = generate_key()
+        with open(key_file, "wb") as f:
+            f.write(key)
+        return key
+
+# Encrypt the token
+def encrypt_token(token, key):
+    f = Fernet(key)
+    return f.encrypt(token.encode())
+
+# Decrypt the token
+def decrypt_token(encrypted_token, key):
+    f = Fernet(key)
+    return f.decrypt(encrypted_token).decode()
+
+# Function to get or set token
+def get_or_set_token():
+    key = load_or_generate_key()
+    try:
+        with open("token.txt", "rb") as f:
+            encrypted_token = f.read()
+            token = decrypt_token(encrypted_token, key)
+            return token
+    except FileNotFoundError:
         while True:
-            token = get_user_input("Enter your CaltechDATA token: ")
-            confirm_token = get_user_input("Confirm your CaltechDATA token: ")
+            token = input("Enter your CaltechDATA token: ").strip()
+            confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
-                config.add_section('CaltechDATA')
-                config.set('CaltechDATA', 'token', token)
-                with open(CONFIG_FILE, 'w') as configfile:
-                    config.write(configfile)
+                encrypted_token = encrypt_token(token, key)
+                with open("token.txt", "wb") as f:
+                    f.write(encrypted_token)
                 return token
             else:
                 print("Tokens do not match. Please try again.")
