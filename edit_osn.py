@@ -22,7 +22,7 @@ s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 folder = args.folder[0]
 
-path = "ini210004tommorrell/" + folder + "/"
+path = "ini210004tommorrell/" + folder
 
 idv = args.id[0]
 try:
@@ -33,9 +33,9 @@ except:
     headers = {
         "accept": "application/vnd.datacite.datacite+json",
         "Authorization": "Bearer %s" % token,
-        }
+    }
 
-    response = requests.get(url + idv +'/draft', headers=headers)
+    response = requests.get(url + idv + "/draft", headers=headers)
     if response.status_code != 200:
         raise Exception(response.text)
     metadata = response.json()

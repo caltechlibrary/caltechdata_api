@@ -201,8 +201,8 @@ for record in tqdm(records):
         # record_ids[old_id] = new_id
         # with open("new_ids.json", "w") as outfile:
         #    json.dump(record_ids, outfile)
-        
-        result = requests.get(f'https://api.datacite.org/dois/{doi}')
+
+        result = requests.get(f"https://api.datacite.org/dois/{doi}")
         if result.status_code != 200:
             doi = datacite.public_doi(doi=record, metadata=metadata, url=url)
         else:
@@ -210,4 +210,3 @@ for record in tqdm(records):
         completed.append(doi)
         with open("completed_dois.json", "w") as outfile:
             data = json.dump(completed, outfile)
-

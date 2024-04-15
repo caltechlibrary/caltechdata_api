@@ -33,11 +33,11 @@ for c in progressbar(range(1, pages + 1)):
     hits += response["hits"]["hits"]
 
 
-url = 'https://data.caltech.edu/api/records'
+url = "https://data.caltech.edu/api/records"
 
 for h in progressbar(hits):
     idv = str(h["id"])
-    
+
     response = requests.get(f"{url}/{idv}", headers=headers)
     if response.status_code != 200:
         print(response.text)
