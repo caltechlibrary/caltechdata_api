@@ -226,18 +226,17 @@ def upload_supporting_file(record_id=None):
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            
             endpoint = "https://sdsc.osn.xsede.org/"
-            path = 'ini230004-bucket01/'
+            path = "ini230004-bucket01/"
 
             if not record_id:
                 record_id = get_user_input("Folder where OSN files are uploaded")
 
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
-            files = s3.glob( path + record_id + "/*")
+            files = s3.glob(path + record_id + "/*")
 
-            file_links = []    
+            file_links = []
 
             for link in files:
                 fname = link.split("/")[-1]
@@ -272,7 +271,7 @@ def upload_supporting_file(record_id=None):
             )
             if filename in files:
                 file_size = os.path.getsize(filename)
-                if file_size > 1024 * 1024 * 1024 :
+                if file_size > 1024 * 1024 * 1024:
                     file_link = get_user_input(
                         "Enter the S3 link to the file (File size is more than 1GB): "
                     )
@@ -348,7 +347,7 @@ def create_record():
             if existing_data:
                 if filepath != "":
                     response = caltechdata_write(
-                        existing_data, token, filepath, production=False, publish=True
+                        existing_data, token, filepath, production=False, publish=False
                     )
                 elif file_link != "":
                     response = caltechdata_write(
@@ -357,11 +356,11 @@ def create_record():
                         file_links=[file_link],
                         s3_link=file_link,
                         production=False,
-                        publish=True,
+                        publish=False,
                     )
                 else:
                     response = caltechdata_write(
-                        existing_data, token, production=False, publish=True
+                        existing_data, token, production=False, publish=False
                     )
                 print(response)
                 break
@@ -409,7 +408,7 @@ def create_record():
             if confirm_upload():
                 if filepath != "":
                     response = caltechdata_write(
-                        metadata, token, filepath, production=False, publish=True
+                        metadata, token, filepath, production=False, publish=False
                     )
                 elif file_link != "":
                     response = caltechdata_write(
@@ -417,14 +416,13 @@ def create_record():
                         token,
                         file_links=[file_link],
                         production=False,
-                        publish=True,
+                        publish=False,
                     )
                 else:
                     response = caltechdata_write(
-                        metadata, token, production=False, publish=True
+                        metadata, token, production=False, publish=False
                     )
                 print(response)
-                print(family_name, given_name)
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
                 break
@@ -444,7 +442,7 @@ def edit_record():
                 metadata = json.load(file)
             token = get_or_set_token()
             response = caltechdata_edit(
-                record_id, metadata, token, production=False, publish=True
+                record_id, metadata, token, production=False, publish=False
             )
             if response:
                 print("Metadata edited successfully.")
@@ -459,7 +457,7 @@ def edit_record():
         filepath, file_link = upload_supporting_file(record_id)
         if filepath != "":
             response = caltechdata_edit(
-                record_id, metadata, token, filepath, production=False, publish=True
+                record_id, metadata, token, filepath, production=False, publish=False
             )
         elif file_link != "":
             response = caltechdata_edit(
@@ -468,16 +466,16 @@ def edit_record():
                 token,
                 file_links=file_link,
                 production=False,
-                publish=True,
+                publish=False,
             )
         else:
             response = caltechdata_edit(
-                record_id, metadata, token, production=False, publish=True
+                record_id, metadata, token, production=False, publish=False
             )
         print(response)
     elif choice == "n":
         response = caltechdata_edit(
-            record_id, metadata, token, production=False, publish=True
+            record_id, metadata, token, production=False, publish=False
         )
         print(response)
     else:
@@ -485,90 +483,54 @@ def edit_record():
 
 
 def download_file_by_id(record_id):
-        url = (
-            f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
-        )
+    url = f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
 
-        try:
-            response = requests.get(url)
-            if response.status_code == 200:
-                file_content = response.content
-                file_name = f"downloaded_data_{record_id}.json"
-                with open(file_name, "wb") as file:
-                    file.write(file_content)
-                print(f"Metadata downloaded successfully: {file_name}")
-                with open(file_name, "r") as file:
-                    metadata = json.load(file)
-                while True:
-                    print("Fields:")
-                    for i, field in enumerate(metadata.keys()):
-                        print(f"{i + 1}. {field}")
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            file_content = response.content
+            file_name = f"downloaded_data_{record_id}.json"
+            with open(file_name, "wb") as file:
+                file.write(file_content)
+            print(f"Metadata downloaded successfully: {file_name}")
+            with open(file_name, "r") as file:
+                metadata = json.load(file)
+            while True:
+                print("Fields:")
+                for i, field in enumerate(metadata.keys()):
+                    print(f"{i + 1}. {field}")
 
-                    field_choice = int(
-                        input(
-                            "Enter the number of the field you want to edit (or 0 to skip, 'exit' to exit): "
-                        )
+                field_choice = int(
+                    input(
+                        "Enter the number of the field you want to edit (or 0 to skip, 'exit' to exit): "
                     )
+                )
 
-                    if field_choice == 0:
-                        break
+                if field_choice == 0:
+                    break
 
-                    selected_field = list(metadata.keys())[field_choice - 1]
+                selected_field = list(metadata.keys())[field_choice - 1]
 
-                    if isinstance(metadata[selected_field], list):
-                        while True:
-                            print(f"Items in {selected_field}:")
-                            for i, item in enumerate(metadata[selected_field]):
-                                print(f"{i + 1}. {item}")
+                if isinstance(metadata[selected_field], list):
+                    while True:
+                        print(f"Items in {selected_field}:")
+                        for i, item in enumerate(metadata[selected_field]):
+                            print(f"{i + 1}. {item}")
 
-                            item_choice = int(
-                                input(
-                                    "Enter the number of the item you want to edit (or 0 to go back): "
-                                )
+                        item_choice = int(
+                            input(
+                                "Enter the number of the item you want to edit (or 0 to go back): "
                             )
+                        )
 
-                            if item_choice == 0:
-                                break
+                        if item_choice == 0:
+                            break
 
-                            selected_item = metadata[selected_field][item_choice - 1]
+                        selected_item = metadata[selected_field][item_choice - 1]
 
-                            while True:
-                                print(f"Subfields for {selected_field}:")
-                                for i, subfield in enumerate(selected_item.keys()):
-                                    print(f"{i + 1}. {subfield}")
-
-                                subfield_choice = int(
-                                    input(
-                                        "Enter the number of the subfield you want to edit (or 0 to go back): "
-                                    )
-                                )
-
-                                if subfield_choice == 0:
-                                    break
-
-                                selected_subfield = list(selected_item.keys())[
-                                    subfield_choice - 1
-                                ]
-
-                                new_value = input(
-                                    f"Enter the new value for {selected_subfield}: "
-                                )
-
-                                metadata[selected_field][item_choice - 1][
-                                    selected_subfield
-                                ] = new_value
-
-                                with open(file_name, "w") as file:
-                                    json.dump(metadata, file, indent=2)
-
-                                print(f"File updated successfully.")
-
-                    else:
                         while True:
                             print(f"Subfields for {selected_field}:")
-                            for i, subfield in enumerate(
-                                metadata[selected_field].keys()
-                            ):
+                            for i, subfield in enumerate(selected_item.keys()):
                                 print(f"{i + 1}. {subfield}")
 
                             subfield_choice = int(
@@ -580,7 +542,7 @@ def download_file_by_id(record_id):
                             if subfield_choice == 0:
                                 break
 
-                            selected_subfield = list(metadata[selected_field].keys())[
+                            selected_subfield = list(selected_item.keys())[
                                 subfield_choice - 1
                             ]
 
@@ -588,18 +550,50 @@ def download_file_by_id(record_id):
                                 f"Enter the new value for {selected_subfield}: "
                             )
 
-                            metadata[selected_field][selected_subfield] = new_value
+                            metadata[selected_field][item_choice - 1][
+                                selected_subfield
+                            ] = new_value
 
                             with open(file_name, "w") as file:
                                 json.dump(metadata, file, indent=2)
 
                             print(f"File updated successfully.")
 
-            else:
-                print(f"Failed to download file. Status code: {response.status_code}")
-        except Exception as e:
-            print(f"An error occurred: {e}")
-        return file_name
+                else:
+                    while True:
+                        print(f"Subfields for {selected_field}:")
+                        for i, subfield in enumerate(metadata[selected_field].keys()):
+                            print(f"{i + 1}. {subfield}")
+
+                        subfield_choice = int(
+                            input(
+                                "Enter the number of the subfield you want to edit (or 0 to go back): "
+                            )
+                        )
+
+                        if subfield_choice == 0:
+                            break
+
+                        selected_subfield = list(metadata[selected_field].keys())[
+                            subfield_choice - 1
+                        ]
+
+                        new_value = input(
+                            f"Enter the new value for {selected_subfield}: "
+                        )
+
+                        metadata[selected_field][selected_subfield] = new_value
+
+                        with open(file_name, "w") as file:
+                            json.dump(metadata, file, indent=2)
+
+                        print(f"File updated successfully.")
+
+        else:
+            print(f"Failed to download file. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    return file_name
 
 
 if __name__ == "__main__":
