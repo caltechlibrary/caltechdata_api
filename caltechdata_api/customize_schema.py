@@ -57,7 +57,6 @@ def get_vocabularies():
 
 
 def customize_schema(json_record, schema="43"):
-
     if schema == "43":
         return customize_schema_rdm(json_record)
     else:
@@ -134,7 +133,6 @@ def rdm_creators_contributors(person_list, peopleroles):
 
 
 def customize_schema_rdm(json_record):
-
     # Get vocabularies used in InvenioRDM
     vocabularies = get_vocabularies()
 

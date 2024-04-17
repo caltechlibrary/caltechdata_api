@@ -33,7 +33,6 @@ def caltechdata_accept(ids, token=None, production=False):
     }
 
     for idv in ids:
-
         result = requests.get(
             url + "/api/records/" + idv + "/draft/review", headers=headers
         )

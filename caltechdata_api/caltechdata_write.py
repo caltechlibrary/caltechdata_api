@@ -69,7 +69,7 @@ def add_file_links(
 ):
     # Currently configured for S3 links, assuming all are at same endpoint
     link_string = ""
-    endpoint = "https://"+file_links[0].split("/")[2]
+    endpoint = "https://" + file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     index = 0
     for link in file_links:
@@ -102,7 +102,6 @@ def add_file_links(
 
 
 def send_to_community(review_link, data, headers, publish, community, message=None):
-
     if not message:
         message = "This record is submitted automatically with the CaltechDATA API"
 

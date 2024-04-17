@@ -1,37 +1,36 @@
 import re
 import json
 
+
 class ReadmeFormatException(Exception):
     """Custom exception for errors in the README format."""
+
 
 def camel_case(s):
     """Converts a string to camelCase."""
     s = re.sub(r"(\s|_|-)+", " ", s).title().replace(" ", "")
     return s[0].lower() + s[1:] if s else ""
 
+
 def expand_special_keys(key, value):
     """Expand special keys into their structured format (affiliation, nameIdentifiers)."""
     if key == "affiliation":
-        return [
-            {
-                "affiliationIdentifier": value,
-                "affiliationIdentifierScheme": "ROR"
-            }
-        ]
+        return [{"affiliationIdentifier": value, "affiliationIdentifierScheme": "ROR"}]
     elif key == "nameIdentifiers":
         return [
             {
                 "nameIdentifier": value,
                 "nameIdentifierScheme": "ORCID",
-                "schemeUri": f"https://orcid.org/{value}"
+                "schemeUri": f"https://orcid.org/{value}",
             }
         ]
     return value
 
+
 def parse_readme_to_json(readme_path):
     try:
-        with open(readme_path, 'r') as file:
-            lines = file.read().split('\n')
+        with open(readme_path, "r") as file:
+            lines = file.read().split("\n")
     except IOError as e:
         raise ReadmeFormatException(f"Failed to open or read the file: {e}")
 
@@ -39,9 +38,9 @@ def parse_readme_to_json(readme_path):
     current_section = None
     current_object = {}
 
-    section_pattern = re.compile(r'^##\s+(.*)$')
-    key_value_pattern = re.compile(r'^-\s+(.*?):\s+(.*)$')
-    link_pattern = re.compile(r'\[.*?\]\((.*?)\)')
+    section_pattern = re.compile(r"^##\s+(.*)$")
+    key_value_pattern = re.compile(r"^-\s+(.*?):\s+(.*)$")
+    link_pattern = re.compile(r"\[.*?\]\((.*?)\)")
 
     for line_number, line in enumerate(lines, 1):
         if not line.strip():
@@ -93,7 +92,9 @@ def parse_readme_to_json(readme_path):
             current_object[key] = value
 
         elif line.strip() and not section_match:
-            raise ReadmeFormatException(f"Incorrect format detected at line {line_number}: {line}")
+            raise ReadmeFormatException(
+                f"Incorrect format detected at line {line_number}: {line}"
+            )
 
     if current_section and current_object:
         if current_section == "types":
@@ -109,11 +110,12 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-readme_path = '/Users/elizabethwon/downloads/exampleREADME.md'
+
+readme_path = "/Users/elizabethwon/downloads/exampleREADME.md"
 try:
     json_data = parse_readme_to_json(readme_path)
-    output_json_path = 'output1.json'
-    with open(output_json_path, 'w') as json_file:
+    output_json_path = "output1.json"
+    with open(output_json_path, "w") as json_file:
         json.dump(json_data, json_file, indent=4)
     print(f"Converted JSON saved to {output_json_path}")
 except ReadmeFormatException as e:

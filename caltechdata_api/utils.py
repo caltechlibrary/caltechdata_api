@@ -54,7 +54,6 @@ def humanbytes(num: Union[int, float], metric: bool = True, precision: int = 1) 
 
 
 if __name__ == "__main__":
-
     print(humanbytes(2251799813685247))  # 2 pebibytes
     print(humanbytes(2000000000000000, True))  # 2 petabytes
     print(humanbytes(1099511627776))  # 1 tebibyte
