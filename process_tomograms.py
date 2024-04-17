@@ -1,3 +1,4 @@
+# import necessary libraries
 import json
 import os
 import openai
@@ -7,10 +8,12 @@ import sys
 from caltechdata_api import caltechdata_write, caltechdata_edit
 from iga.name_utils import split_name
 
+# Set OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
+# Function to parse collaborators using OpenAI API
 def parse_collaborators(collaborator_string):
+    # Using OpenAI API to extract names and contributions
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=f"""Take the string '{collaborator_string}', find the names and
@@ -25,10 +28,12 @@ def parse_collaborators(collaborator_string):
 
     contributors = []
     raw = response["choices"][0]["text"].split("\n\n")[1]
+    # Processing and formatting the extracted information
     for line in raw.split(","):
         split = line.strip("[]").split(";")
         contributors.append(split)
     formatted = []
+    # Logging the collaboration information to a file
     with open("collab.txt", "a") as myfile:
         myfile.write(f"{collaborator_string} > {contributors}\n")
     for c in contributors:
@@ -38,6 +43,7 @@ def parse_collaborators(collaborator_string):
             last = c[1].strip("' [']")
             if first != last:
                 if last != "":
+                    # Preparing the metadata into a specific format
                     new = {
                         "nameType": "Personal",
                         "familyName": last,
@@ -49,13 +55,14 @@ def parse_collaborators(collaborator_string):
                         formatted.append(new)
     return formatted
 
-
+# Function to create a description based on the metadata
 def create_detailed_description(information, annotation):
     keywords = []
     description = "<p>"
     sep = "&lt;/p&gt;</p><p>"
     s = "&lt;strong&gt;"
     e = "&lt;/strong&gt;"
+    # Here, we are extracting relevant information from the metadata to use in the description
     if "tiltSeriesDate" in information:
         description += f'{s}Tilt Series Date:{e} {information["tiltSeriesDate"]}{sep}'
     if "dataTakenBy" in information:
@@ -135,7 +142,7 @@ def create_detailed_description(information, annotation):
             )
     return description, keywords
 
-
+# Function for processing files and extracting information
 def process_files(files, embargoed):
     formats = []
     file_paths = []
@@ -199,7 +206,7 @@ def process_files(files, embargoed):
         default_preview,
     )
 
-
+# List of funding resources
 funding = [
     {"funderName": "NIH"},
     {"funderName": "HHMI"},
@@ -221,8 +228,9 @@ funding = [
     },
 ]
 
-
+# Function for processing a single tomogram record
 def process_record(source, edit=None):
+    # Extract information from the record
     annotation = source["annotation"][0]
     information = source["information"][0]
     files = source["Files"]
@@ -406,14 +414,17 @@ def process_record(source, edit=None):
             except FileNotFoundError:
                 print("Not deleting remaned files")
 
-
+# Read record IDs from a file
 with open("tomogram_ids.json", "r") as infile:
     record_ids = json.load(infile)
+# Read error IDs from a file
 with open("tomogram_error_ids.json", "r") as infile:
     error_ids = json.load(infile)["ids"]
 
+# Directory containing tomogram files
 directory = "jensen"
 
+# Check command-line arguments
 if len(sys.argv) > 1:
     if sys.argv[1] == "edit":
         # We will edit all existing records
