@@ -1,5 +1,4 @@
-# Metadata Information
-(using https://github.com/caltechlibrary/caltechdata_api/blob/main/example.json, please delete lines 1-2 when using this template.)
+
 ## Identifiers
 - Identifier: 1924MNRAS..84..308E
 - Identifier Type: bibcode
