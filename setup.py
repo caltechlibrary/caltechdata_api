@@ -60,7 +60,14 @@ name = meta["name"]
 REQUIRES_PYTHON = ">=3.6.0"
 
 # What packages are required for this module to be executed?
-REQUIRED = ["requests", "datacite>1.1.0", "tqdm>=4.62.3", "pyyaml", "s3fs", "keyring"]
+REQUIRED = [
+    "requests",
+    "datacite>1.1.0",
+    "tqdm>=4.62.3",
+    "pyyaml",
+    "s3fs",
+    "configparser",
+]
 
 # What packages are optional?
 EXTRAS = {
@@ -69,7 +76,6 @@ EXTRAS = {
 
 files = package_files("caltechdata_api", "vocabularies")
 files.append("vocabularies.yaml")
-files.append("uploader.py")
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------
