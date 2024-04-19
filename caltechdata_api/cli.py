@@ -360,7 +360,9 @@ def create_record():
                         existing_data, token, production=False, publish=False
                     )
                 rec_id = response
-                print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
+                print(
+                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                )
                 break
             else:
                 print("Going back to the main menu.")
@@ -421,7 +423,9 @@ def create_record():
                         metadata, token, production=False, publish=False
                     )
                 rec_id = response
-                print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
+                print(
+                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
                 break
@@ -434,15 +438,15 @@ def create_record():
 def edit_record():
     record_id = input("Enter the CaltechDATA record ID: ")
     token = get_or_set_token()
-    file_name = download_file_by_id(record_id,token)
+    file_name = download_file_by_id(record_id, token)
     if file_name:
         try:
             # Read the edited metadata file
             with open(file_name, "r") as file:
                 metadata = json.load(file)
             response = caltechdata_edit(
-                    record_id, metadata, token, production=False, publish=False
-                )
+                record_id, metadata, token, production=False, publish=False
+            )
             if response:
                 print("Metadata edited successfully.")
             else:
@@ -469,12 +473,14 @@ def edit_record():
                 publish=False,
             )
         rec_id = response
-        print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
+        print(
+            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+        )
 
 
-def download_file_by_id(record_id,token=None):
+def download_file_by_id(record_id, token=None):
     url = f"https://data.caltechlibrary.dev/api/records/{record_id}"
-    
+
     headers = {
         "accept": "application/vnd.datacite.datacite+json",
     }
@@ -483,12 +489,12 @@ def download_file_by_id(record_id,token=None):
         headers["Authorization"] = "Bearer %s" % token
 
     try:
-        response = requests.get(url,headers=headers)
+        response = requests.get(url, headers=headers)
         if response.status_code != 200:
             # Might have a draft
             response = requests.get(
-            url + "/draft",
-            headers=headers,
+                url + "/draft",
+                headers=headers,
             )
             if response.status_code != 200:
                 raise Exception(f"Record {record_id} does not exist, cannot edit")

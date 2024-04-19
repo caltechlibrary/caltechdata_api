@@ -16,13 +16,19 @@ def camel_case(s):
 def expand_special_keys(key, value):
     """Expand special keys into their structured format (affiliation, nameIdentifiers)."""
     if key == "affiliation":
-        if 'ror.org' not in value:
-            raise ValueError('Affiliation Identifier is not a ROR')
-        ror = value.split('ror.org/')[1].split(']')[0]
-        response = requests.get(f'https://api.ror.org/organizations/{ror}').json()
-        return [{"affiliationIdentifier": ror, "affiliationIdentifierScheme": "ROR","name":response['name']}]
+        if "ror.org" not in value:
+            raise ValueError("Affiliation Identifier is not a ROR")
+        ror = value.split("ror.org/")[1].split("]")[0]
+        response = requests.get(f"https://api.ror.org/organizations/{ror}").json()
+        return [
+            {
+                "affiliationIdentifier": ror,
+                "affiliationIdentifierScheme": "ROR",
+                "name": response["name"],
+            }
+        ]
     elif key == "nameIdentifiers":
-        orcid = value.split('orcid.org/')[1].split(']')[0]
+        orcid = value.split("orcid.org/")[1].split("]")[0]
         return [
             {
                 "nameIdentifier": orcid,
@@ -44,10 +50,10 @@ def parse_readme_to_json(readme_path):
     current_object = {}
 
     title_line = lines.pop(0)
-    if title_line.startswith('#') == False:
+    if title_line.startswith("#") == False:
         raise ValueError('README.md needs to start with "# Title"')
     else:
-        json_data['titles'] = [{'title':title_line.replace("# ","")}]
+        json_data["titles"] = [{"title": title_line.replace("# ", "")}]
 
     section_pattern = re.compile(r"^##\s+(.*)$")
     key_value_pattern = re.compile(r"^-\s+(.*?):\s+(.*)$")
@@ -61,7 +67,7 @@ def parse_readme_to_json(readme_path):
                 elif len(current_object) == 1:
                     key, value = next(iter(current_object.items()))
                     if key in ["language", "publicationYear", "publisher", "version"]:
-                        json_data[current_section]=value
+                        json_data[current_section] = value
                     else:
                         json_data[current_section].append(current_object)
                 else:
@@ -120,7 +126,8 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     readme_path = "exampleREADME.md"
     try:
         json_data = parse_readme_to_json(readme_path)

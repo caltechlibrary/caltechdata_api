@@ -11,6 +11,7 @@ from iga.name_utils import split_name
 # Set OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # Function to parse collaborators using OpenAI API
 def parse_collaborators(collaborator_string):
     # Using OpenAI API to extract names and contributions
@@ -54,6 +55,7 @@ def parse_collaborators(collaborator_string):
                         print(last, first)
                         formatted.append(new)
     return formatted
+
 
 # Function to create a description based on the metadata
 def create_detailed_description(information, annotation):
@@ -142,6 +144,7 @@ def create_detailed_description(information, annotation):
             )
     return description, keywords
 
+
 # Function for processing files and extracting information
 def process_files(files, embargoed):
     formats = []
@@ -206,6 +209,7 @@ def process_files(files, embargoed):
         default_preview,
     )
 
+
 # List of funding resources
 funding = [
     {"funderName": "NIH"},
@@ -227,6 +231,7 @@ funding = [
         "funderName": "John Templeton Foundation",
     },
 ]
+
 
 # Function for processing a single tomogram record
 def process_record(source, edit=None):
@@ -413,6 +418,7 @@ def process_record(source, edit=None):
                 os.remove(file.split("/")[-1])
             except FileNotFoundError:
                 print("Not deleting remaned files")
+
 
 # Read record IDs from a file
 with open("tomogram_ids.json", "r") as infile:
