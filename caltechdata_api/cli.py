@@ -433,16 +433,16 @@ def create_record():
 
 def edit_record():
     record_id = input("Enter the CaltechDATA record ID: ")
-    file_name = download_file_by_id(record_id)
+    token = get_or_set_token()
+    file_name = download_file_by_id(record_id,token)
     if file_name:
         try:
             # Read the edited metadata file
             with open(file_name, "r") as file:
                 metadata = json.load(file)
-            token = get_or_set_token()
             response = caltechdata_edit(
-                record_id, metadata, token, production=False, publish=False
-            )
+                    record_id, metadata, token, production=False, publish=False
+                )
             if response:
                 print("Metadata edited successfully.")
             else:
@@ -454,48 +454,51 @@ def edit_record():
     choice = get_user_input("Do you want to add files? (y/n): ").lower()
     if choice == "y":
         filepath, file_link = upload_supporting_file(record_id)
+        print(file_link)
         if filepath != "":
             response = caltechdata_edit(
-                record_id, metadata, token, filepath, production=False, publish=False
+                record_id, token=token, files=filepath, production=False, publish=False
             )
         elif file_link != "":
             response = caltechdata_edit(
                 record_id,
                 metadata,
-                token,
+                token=token,
                 file_links=file_link,
                 production=False,
                 publish=False,
             )
-        else:
-            response = caltechdata_edit(
-                record_id, metadata, token, production=False, publish=False
-            )
         rec_id = response
         print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
-    elif choice == "n":
-        response = caltechdata_edit(
-            record_id, metadata, token, production=False, publish=False
-        )
-        rec_id = response
-        print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
-    else:
-        print("Invalid choice. Please enter 'metadata' or 'files'.")
 
 
-def download_file_by_id(record_id):
-    url = f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
+def download_file_by_id(record_id,token=None):
+    url = f"https://data.caltechlibrary.dev/api/records/{record_id}"
+    
+    headers = {
+        "accept": "application/vnd.datacite.datacite+json",
+    }
+
+    if token:
+        headers["Authorization"] = "Bearer %s" % token
 
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            file_content = response.content
-            file_name = f"downloaded_data_{record_id}.json"
-            with open(file_name, "wb") as file:
-                file.write(file_content)
-            print(f"Metadata downloaded successfully: {file_name}")
-            with open(file_name, "r") as file:
-                metadata = json.load(file)
+        response = requests.get(url,headers=headers)
+        if response.status_code != 200:
+            # Might have a draft
+            response = requests.get(
+            url + "/draft",
+            headers=headers,
+            )
+            if response.status_code != 200:
+                raise Exception(f"Record {record_id} does not exist, cannot edit")
+        file_content = response.content
+        file_name = f"downloaded_data_{record_id}.json"
+        with open(file_name, "wb") as file:
+            file.write(file_content)
+        print(f"Metadata downloaded successfully: {file_name}")
+        with open(file_name, "r") as file:
+            metadata = json.load(file)
             while True:
                 print("Fields:")
                 for i, field in enumerate(metadata.keys()):
@@ -590,8 +593,6 @@ def download_file_by_id(record_id):
 
                         print(f"File updated successfully.")
 
-        else:
-            print(f"Failed to download file. Status code: {response.status_code}")
     except Exception as e:
         print(f"An error occurred: {e}")
     return file_name

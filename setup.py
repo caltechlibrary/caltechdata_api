@@ -67,6 +67,7 @@ REQUIRED = [
     "pyyaml",
     "s3fs",
     "configparser",
+    "awscli"
 ]
 
 # What packages are optional?
