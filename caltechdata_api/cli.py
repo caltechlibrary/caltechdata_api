@@ -96,8 +96,6 @@ def get_funding_entries():
 
 def validate_funder_identifier(funder_identifier):
     response = requests.get(f"https://api.ror.org/organizations/{funder_identifier}")
-    print(response.status_code)
-    print(response.url)
     if response.status_code == 200:
         return True
     else:
@@ -310,7 +308,6 @@ def upload_data_from_file():
 
         if filename == "README.md":
             data = parse_readme_to_json(filename)
-            print(json.dumps(data))
             return data
         else:
             try:
@@ -362,7 +359,8 @@ def create_record():
                     response = caltechdata_write(
                         existing_data, token, production=False, publish=False
                     )
-                print(response)
+                rec_id = response
+                print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
                 break
             else:
                 print("Going back to the main menu.")
@@ -422,7 +420,8 @@ def create_record():
                     response = caltechdata_write(
                         metadata, token, production=False, publish=False
                     )
-                print(response)
+                rec_id = response
+                print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
                 break
@@ -472,12 +471,14 @@ def edit_record():
             response = caltechdata_edit(
                 record_id, metadata, token, production=False, publish=False
             )
-        print(response)
+        rec_id = response
+        print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
     elif choice == "n":
         response = caltechdata_edit(
             record_id, metadata, token, production=False, publish=False
         )
-        print(response)
+        rec_id = response
+        print(f'You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}')
     else:
         print("Invalid choice. Please enter 'metadata' or 'files'.")
 
