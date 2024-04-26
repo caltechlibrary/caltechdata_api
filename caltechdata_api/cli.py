@@ -5,7 +5,8 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from .md_to_json import parse_readme_to_json
 import json
 import os
-import configparser
+#import configparser
+from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
 ORCID_API = "https://orcid.org/"
@@ -22,30 +23,61 @@ funderIdentifierType = ""
 funderName = ""
 
 
-CONFIG_FILE = "caltechdata_config.ini"
+#CONFIG_FILE = "caltechdata_config.ini"
 
 
-def get_or_set_token():
-    config = configparser.ConfigParser()
+home_directory = os.path.expanduser("~")
+caltechdata_directory = os.path.join(home_directory, ".caltechdata")
 
-    if os.path.isfile(CONFIG_FILE):
-        config.read(CONFIG_FILE)
-        if "CaltechDATA" in config and "token" in config["CaltechDATA"]:
-            return config["CaltechDATA"]["token"]
+
+if not os.path.exists(caltechdata_directory):
+    os.makedirs(caltechdata_directory)
+
+def generate_key():
+    return Fernet.generate_key()
+
+# Load the key from a file or generate a new one if not present
+def load_or_generate_key(key_file="key.key"):
+    if os.path.exists(key_file):
+        with open(key_file, "rb") as f:
+            return f.read()
     else:
+        key = generate_key()
+        with open(key_file, "wb") as f:
+            f.write(key)
+        return key
+
+# Encrypt the token
+def encrypt_token(token, key):
+    f = Fernet(key)
+    return f.encrypt(token.encode())
+
+# Decrypt the token
+def decrypt_token(encrypted_token, key):
+    f = Fernet(key)
+    return f.decrypt(encrypted_token).decode()
+
+# Function to get or set token
+def get_or_set_token():
+    
+    key = load_or_generate_key()
+    try:
+        with open("token.txt", "rb") as f:
+            encrypted_token = f.read()
+            token = decrypt_token(encrypted_token, key)
+            return token
+    except FileNotFoundError:
         while True:
-            token = get_user_input("Enter your CaltechDATA token: ")
-            confirm_token = get_user_input("Confirm your CaltechDATA token: ")
+            token = input("Enter your CaltechDATA token: ").strip()
+            confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
-                config.add_section("CaltechDATA")
-                config.set("CaltechDATA", "token", token)
-                with open(CONFIG_FILE, "w") as configfile:
-                    config.write(configfile)
+                encrypted_token = encrypt_token(token, key)
+                with open("token.txt", "wb") as f:
+                    f.write(encrypted_token)
                 return token
             else:
                 print("Tokens do not match. Please try again.")
-
-
+                
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
 
@@ -218,6 +250,7 @@ def get_names(orcid):
 
 def upload_supporting_file(record_id=None):
     filepath = ""
+    filepaths = []
     file_link = ""
     while True:
         choice = get_user_input(
@@ -264,34 +297,38 @@ def upload_supporting_file(record_id=None):
                 f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
             ]
             print("\n".join(files))
-            filename = get_user_input(
-                "Enter the filename to upload as a supporting file: "
-            )
-            if filename in files:
-                file_size = os.path.getsize(filename)
-                if file_size > 1024 * 1024 * 1024:
-                    file_link = get_user_input(
-                        "Enter the S3 link to the file (File size is more than 1GB): "
-                    )
-                    if file_link:
-                        return filepath, file_link
-                    else:
-                        print("Link is required for files larger than 1GB.")
-                        continue
-                else:
-                    filepath = os.path.abspath(filename)
-                    break
-            else:
-                print(
-                    f"Error: File '{filename}' not found. Please enter a valid filename."
+            while True:
+                filename = get_user_input(
+                    "Enter the filename to upload as a supporting file (or 'n' to finish): "
                 )
+                if filename == "n":
+                    break
+                if filename in files:
+                    file_size = os.path.getsize(filename)
+                    if file_size > 1024 * 1024 * 1024:
+                        file_link = get_user_input(
+                            "Enter the S3 link to the file (File size is more than 1GB): "
+                        )
+                        if file_link:
+                            file_links.append(file_link)
+                    else:
+                        filepath = os.path.abspath(filename)
+                        filepaths.append(filepath)
+                else:
+                    print(
+                        f"Error: File '{filename}' not found. Please enter a valid filename."
+                    )
+
+            add_more = get_user_input("Do you want to add more files? (y/n): ").lower()
+            if add_more != "y":
+                break
+
         elif choice == "n":
             break
         else:
             print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
 
-    return filepath, file_link
-
+    return filepaths, file_links
 
 def upload_data_from_file():
     while True:
