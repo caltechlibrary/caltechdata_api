@@ -1,5 +1,6 @@
 import re
 import json
+import requests
 
 
 class ReadmeFormatException(Exception):
@@ -15,11 +16,22 @@ def camel_case(s):
 def expand_special_keys(key, value):
     """Expand special keys into their structured format (affiliation, nameIdentifiers)."""
     if key == "affiliation":
-        return [{"affiliationIdentifier": value, "affiliationIdentifierScheme": "ROR"}]
-    elif key == "nameIdentifiers":
+        if "ror.org" not in value:
+            raise ValueError("Affiliation Identifier is not a ROR")
+        ror = value.split("ror.org/")[1].split("]")[0]
+        response = requests.get(f"https://api.ror.org/organizations/{ror}").json()
         return [
             {
-                "nameIdentifier": value,
+                "affiliationIdentifier": ror,
+                "affiliationIdentifierScheme": "ROR",
+                "name": response["name"],
+            }
+        ]
+    elif key == "nameIdentifiers":
+        orcid = value.split("orcid.org/")[1].split("]")[0]
+        return [
+            {
+                "nameIdentifier": orcid,
                 "nameIdentifierScheme": "ORCID",
                 "schemeUri": f"https://orcid.org/{value}",
             }
@@ -56,7 +68,7 @@ def parse_readme_to_json(readme_path):
                 elif len(current_object) == 1:
                     key, value = next(iter(current_object.items()))
                     if key in ["language", "publicationYear", "publisher", "version"]:
-                        json_data[current_section].append(value)
+                        json_data[current_section] = value
                     else:
                         json_data[current_section].append(current_object)
                 elif current_section in ["creators", "contributors"]:
@@ -127,8 +139,13 @@ def parse_readme_to_json(readme_path):
                 current_object = {}
             elif current_section in ["subjects"]:
                 item_list.append({key: value})
-            elif current_section in ["dates"]:
-                item_list.append({key: value})
+            elif current_section == "dates":
+                if key == "date":
+                    current_object["date"] = value
+                elif key == "dateType":
+                    current_object["dateType"] = value
+                    item_list.append(current_object)
+                    current_object = {}
             else:
                 link_match = link_pattern.search(value)
                 if link_match:
@@ -158,13 +175,13 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-
-readme_path = "/Users/elizabethwon/downloads/exampleREADME.md"
-try:
-    json_data = parse_readme_to_json(readme_path)
-    output_json_path = "output1.json"
-    with open(output_json_path, "w") as json_file:
-        json.dump(json_data, json_file, indent=4)
-    print(f"Converted JSON saved to {output_json_path}")
-except ReadmeFormatException as e:
-    print(f"Error parsing README file: {e}")
+if __name__ == "__main__":
+    readme_path = "/Users/elizabethwon/downloads/exampleREADME.md"
+    try:
+        json_data = parse_readme_to_json(readme_path)
+        output_json_path = "output1.json"
+        with open(output_json_path, "w") as json_file:
+            json.dump(json_data, json_file, indent=4)
+        print(f"Converted JSON saved to {output_json_path}")
+    except ReadmeFormatException as e:
+        print(f"Error parsing README file: {e}")
