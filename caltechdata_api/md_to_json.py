@@ -49,6 +49,13 @@ def parse_readme_to_json(readme_path):
     json_data = {}
     current_section = None
     current_object = {}
+
+    title_line = lines.pop(0)
+    if title_line.startswith("#") == False:
+        raise ValueError('README.md needs to start with "# Title"')
+    else:
+        json_data["titles"] = [{"title": title_line.replace("# ", "")}]
+        
     contributors = []
     identifiers = []
     item_list = []
