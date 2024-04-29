@@ -268,8 +268,7 @@ def upload_supporting_file(record_id=None):
 
             if not record_id:
                 print(
-                    """Please upload the
-                        metadata to CaltechDATA, and you'll be provided
+                    """Please upload the metadata to CaltechDATA, and you'll be provided
                         instructions to upload the files to S3 directly."""
                 )
                 break
@@ -407,7 +406,10 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type `s3cmd
+            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
+            s3://ini210004tommorrell/{rec_id}"""
                 )
                 break
             else:
@@ -470,7 +472,10 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type `s3cmd
+            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
+            s3://ini210004tommorrell/{rec_id}"""
                 )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
@@ -520,11 +525,7 @@ def edit_record():
             )
         rec_id = response
         print(
-            f"""You can view and publish this record at
-            https://data.caltechlibrary.dev/uploads/{rec_id}\n
-            If you need to upload large files to S3, you can type `s3cmd
-            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
-            s3://ini210004tommorrell/{rec_id}"""
+            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}\n"
         )
 
 
