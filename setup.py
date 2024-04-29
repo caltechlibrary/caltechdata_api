@@ -66,8 +66,8 @@ REQUIRED = [
     "tqdm>=4.62.3",
     "pyyaml",
     "s3fs",
-    "configparser",
-    "awscli",
+    "cryptography",
+    "s3cmd",
 ]
 
 # What packages are optional?
