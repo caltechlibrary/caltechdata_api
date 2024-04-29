@@ -33,6 +33,7 @@ def expand_special_keys(key, value):
             {
                 "nameIdentifier": orcid,
                 "nameIdentifierScheme": "ORCID",
+                "schemeUri": f"https://orcid.org/{value}",
             }
         ]
     return value
@@ -54,6 +55,10 @@ def parse_readme_to_json(readme_path):
         raise ValueError('README.md needs to start with "# Title"')
     else:
         json_data["titles"] = [{"title": title_line.replace("# ", "")}]
+        
+    contributors = []
+    identifiers = []
+    item_list = []
 
     section_pattern = re.compile(r"^##\s+(.*)$")
     key_value_pattern = re.compile(r"^-\s+(.*?):\s+(.*)$")
@@ -61,7 +66,10 @@ def parse_readme_to_json(readme_path):
 
     for line_number, line in enumerate(lines, 1):
         if not line.strip():
-            if current_object and current_section:
+            if item_list and current_section:
+                json_data[current_section] = item_list
+                item_list = []
+            elif current_object and current_section:
                 if current_section == "types":
                     json_data[current_section] = current_object
                 elif len(current_object) == 1:
@@ -70,6 +78,12 @@ def parse_readme_to_json(readme_path):
                         json_data[current_section] = value
                     else:
                         json_data[current_section].append(current_object)
+                elif current_section in ["creators", "contributors"]:
+                    contributors.append(current_object)
+                    current_object = {}
+                elif current_section == "identifiers":
+                    identifiers.append(current_object)
+                    current_object = {}
                 else:
                     json_data[current_section].append(current_object)
                 current_object = {}
@@ -77,7 +91,30 @@ def parse_readme_to_json(readme_path):
 
         section_match = section_pattern.match(line)
         if section_match:
-            if current_section and current_object:
+            if item_list:
+                json_data[current_section] = item_list
+            elif current_object:
+                if current_section in json_data:
+                    if isinstance(json_data[current_section], list):
+                        json_data[current_section].append(current_object)
+                    elif isinstance(json_data[current_section], dict):
+                        json_data[current_section].update(current_object)
+                else:
+                    json_data[current_section] = (
+                        [current_object]
+                        if current_section != "types"
+                        else current_object
+                    )
+                current_object = {}
+
+            elif contributors and current_section in ["creators", "contributors"]:
+                json_data[current_section] = contributors
+                contributors = []
+            elif identifiers and current_section == "identifiers":
+                json_data[current_section] = identifiers
+                identifiers = []
+
+            elif current_section and current_object:
                 if current_section == "types":
                     json_data[current_section] = current_object
                 elif len(current_object) == 1:
@@ -100,19 +137,38 @@ def parse_readme_to_json(readme_path):
 
             if key in ["affiliation", "nameIdentifiers"]:
                 value = expand_special_keys(key, value)
+            elif (
+                key == "nameType"
+                and current_object
+                and current_section in ["creators", "contributors"]
+            ):
+                contributors.append(current_object)
+                current_object = {}
+            elif current_section in ["subjects"]:
+                item_list.append({key: value})
+            elif current_section == "dates":
+                if key == "date":
+                    current_object["date"] = value
+                elif key == "dateType":
+                    current_object["dateType"] = value
+                    item_list.append(current_object)
+                    current_object = {}
             else:
                 link_match = link_pattern.search(value)
                 if link_match:
                     value = link_match.group(1)
-
-            current_object[key] = value
+                current_object[key] = value
 
         elif line.strip() and not section_match:
             raise ReadmeFormatException(
                 f"Incorrect format detected at line {line_number}: {line}"
             )
 
-    if current_section and current_object:
+    if contributors and current_section in ["creators", "contributors"]:
+        json_data[current_section] = contributors
+    elif identifiers and current_section == "identifiers":
+        json_data[current_section] = identifiers
+    elif current_section and current_object:
         if current_section == "types":
             json_data[current_section] = current_object
         elif len(current_object) == 1:
@@ -126,9 +182,8 @@ def parse_readme_to_json(readme_path):
 
     return json_data
 
-
 if __name__ == "__main__":
-    readme_path = "exampleREADME.md"
+    readme_path = "/Users/elizabethwon/downloads/exampleREADME.md"
     try:
         json_data = parse_readme_to_json(readme_path)
         output_json_path = "output1.json"
