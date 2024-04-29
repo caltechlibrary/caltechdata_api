@@ -257,7 +257,7 @@ def get_names(orcid):
 def upload_supporting_file(record_id=None):
     filepath = ""
     filepaths = []
-    file_link = ""
+    file_links = []
     while True:
         choice = get_user_input(
             "Do you want to upload or link data files? (upload/link/n): "
@@ -276,8 +276,6 @@ def upload_supporting_file(record_id=None):
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
-
-            file_links = []
 
             for link in files:
                 fname = link.split("/")[-1]
