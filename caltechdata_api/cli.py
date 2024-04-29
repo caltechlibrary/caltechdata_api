@@ -5,7 +5,8 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from .md_to_json import parse_readme_to_json
 import json
 import os
-#import configparser
+
+# import configparser
 from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
@@ -23,7 +24,7 @@ funderIdentifierType = ""
 funderName = ""
 
 
-#CONFIG_FILE = "caltechdata_config.ini"
+# CONFIG_FILE = "caltechdata_config.ini"
 
 
 home_directory = os.path.expanduser("~")
@@ -33,8 +34,10 @@ caltechdata_directory = os.path.join(home_directory, ".caltechdata")
 if not os.path.exists(caltechdata_directory):
     os.makedirs(caltechdata_directory)
 
+
 def generate_key():
     return Fernet.generate_key()
+
 
 # Load the key from a file or generate a new one if not present
 def load_or_generate_key(key_file="key.key"):
@@ -47,19 +50,21 @@ def load_or_generate_key(key_file="key.key"):
             f.write(key)
         return key
 
+
 # Encrypt the token
 def encrypt_token(token, key):
     f = Fernet(key)
     return f.encrypt(token.encode())
+
 
 # Decrypt the token
 def decrypt_token(encrypted_token, key):
     f = Fernet(key)
     return f.decrypt(encrypted_token).decode()
 
+
 # Function to get or set token
 def get_or_set_token():
-    
     key = load_or_generate_key()
     try:
         with open("token.txt", "rb") as f:
@@ -77,7 +82,8 @@ def get_or_set_token():
                 return token
             else:
                 print("Tokens do not match. Please try again.")
-                
+
+
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
 
@@ -261,8 +267,12 @@ def upload_supporting_file(record_id=None):
             path = "ini230004-bucket01/"
 
             if not record_id:
-                record_id = get_user_input("Folder where OSN files are uploaded")
-
+                print(
+                    """Please upload the
+                        metadata to CaltechDATA, and you'll be provided
+                        instructions to upload the files to S3 directly."""
+                )
+                break
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
@@ -306,11 +316,11 @@ def upload_supporting_file(record_id=None):
                 if filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
-                        file_link = get_user_input(
-                            "Enter the S3 link to the file (File size is more than 1GB): "
+                        print(
+                            """The file is greater than 1 GB. Please upload the
+                        metadata to CaltechDATA, and you'll be provided
+                        instructions to upload the files to S3 directly."""
                         )
-                        if file_link:
-                            file_links.append(file_link)
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
@@ -329,6 +339,7 @@ def upload_supporting_file(record_id=None):
             print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
 
     return filepaths, file_links
+
 
 def upload_data_from_file():
     while True:
@@ -511,7 +522,11 @@ def edit_record():
             )
         rec_id = response
         print(
-            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+            f"""You can view and publish this record at
+            https://data.caltechlibrary.dev/uploads/{rec_id}\n
+            If you need to upload large files to S3, you can type `s3cmd
+            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
+            s3://ini210004tommorrell/{rec_id}"""
         )
 
 

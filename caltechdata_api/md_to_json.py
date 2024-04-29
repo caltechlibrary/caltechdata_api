@@ -55,7 +55,7 @@ def parse_readme_to_json(readme_path):
         raise ValueError('README.md needs to start with "# Title"')
     else:
         json_data["titles"] = [{"title": title_line.replace("# ", "")}]
-        
+
     contributors = []
     identifiers = []
     item_list = []
@@ -181,6 +181,7 @@ def parse_readme_to_json(readme_path):
             json_data[current_section].append(current_object)
 
     return json_data
+
 
 if __name__ == "__main__":
     readme_path = "/Users/elizabethwon/downloads/exampleREADME.md"
