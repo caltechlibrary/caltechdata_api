@@ -61,9 +61,9 @@ def decrypt_token(encrypted_token, key):
 # Function to get or set token
 def get_or_set_token():
     key = load_or_generate_key()
+    token_file = os.path.join(caltechdata_directory, "token.txt")
     try:
-        token = os.path.join(caltechdata_directory, "token.txt")
-        with open(token, "rb") as f:
+        with open(token_file, "rb") as f:
             encrypted_token = f.read()
             token = decrypt_token(encrypted_token, key)
             return token
@@ -73,7 +73,7 @@ def get_or_set_token():
             confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
                 encrypted_token = encrypt_token(token, key)
-                with open("token.txt", "wb") as f:
+                with open(token_file, "wb") as f:
                     f.write(encrypted_token)
                 return token
             else:
