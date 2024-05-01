@@ -35,7 +35,7 @@ def generate_key():
 
 # Load the key from a file or generate a new one if not present
 def load_or_generate_key():
-    key_file = os.path.join(caltechdata_directory, key_file)
+    key_file = os.path.join(caltechdata_directory, "key.key")
     if os.path.exists(key_file):
         with open(key_file, "rb") as f:
             return f.read()
