@@ -5,8 +5,6 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from .md_to_json import parse_readme_to_json
 import json
 import os
-
-# import configparser
 from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
@@ -23,10 +21,6 @@ funderIdentifier = ""
 funderIdentifierType = ""
 funderName = ""
 
-
-# CONFIG_FILE = "caltechdata_config.ini"
-
-
 home_directory = os.path.expanduser("~")
 caltechdata_directory = os.path.join(home_directory, ".caltechdata")
 
@@ -40,7 +34,8 @@ def generate_key():
 
 
 # Load the key from a file or generate a new one if not present
-def load_or_generate_key(key_file="key.key"):
+def load_or_generate_key():
+    key_file = os.path.join(caltechdata_directory, key_file)
     if os.path.exists(key_file):
         with open(key_file, "rb") as f:
             return f.read()
@@ -67,7 +62,8 @@ def decrypt_token(encrypted_token, key):
 def get_or_set_token():
     key = load_or_generate_key()
     try:
-        with open("token.txt", "rb") as f:
+        token = os.path.join(caltechdata_directory, "token.txt")
+        with open(token, "rb") as f:
             encrypted_token = f.read()
             token = decrypt_token(encrypted_token, key)
             return token
@@ -255,7 +251,8 @@ def get_names(orcid):
 
 
 def write_s3cmd_config(access_key, secret_key):
-    with open("~/.s3cfg", "w") as file:
+    configf = os.path.join(home_directory, ".s3cfg")
+    with open(configf, "w") as file:
         file.write(
             f"""[default]
             access_key = {access_key}
