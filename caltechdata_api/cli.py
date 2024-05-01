@@ -254,6 +254,18 @@ def get_names(orcid):
     return family_name, given_name
 
 
+def write_s3cmd_config(access_key, secret_key):
+    with open("~/.s3cfg", "w") as file:
+        file.write(
+            f"""[default]
+            access_key = {access_key}
+            host_base = sdsc.osn.xsede.org
+            host_bucket = %(bucket).sdsc.osn.xsede.org
+            secret_key = {secret_key}
+            """
+        )
+
+
 def upload_supporting_file(record_id=None):
     filepath = ""
     filepaths = []
@@ -263,14 +275,11 @@ def upload_supporting_file(record_id=None):
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            endpoint = "https://sdsc.osn.xsede.org/"
-            path = "ini230004-bucket01/"
-
             if not record_id:
-                print(
-                    """Please upload the metadata to CaltechDATA, and you'll be provided
-                        instructions to upload the files to S3 directly."""
-                )
+                access_key = get_user_input("Enter the access key: ")
+                secret_key = get_user_input("Enter the secret key: ")
+                write_s3cmd_config(access_key, secret_key)
+                print("""S3 connection configured.""")
                 break
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
@@ -407,9 +416,8 @@ def create_record():
                 rec_id = response
                 print(
                     f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
-                    If you need to upload large files to S3, you can type `s3cmd
-            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
-            s3://ini210004tommorrell/{rec_id}"""
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}"""
                 )
                 break
             else:
@@ -473,9 +481,8 @@ def create_record():
                 rec_id = response
                 print(
                     f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
-                    If you need to upload large files to S3, you can type `s3cmd
-            --endpoint-url https://renc.osn.xsede.org:443 cp DATA_FILE
-            s3://ini210004tommorrell/{rec_id}"""
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}"""
                 )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
