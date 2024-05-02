@@ -1,4 +1,4 @@
-name: InvenioRDM GitHub Archiver
+name: InvenioRDM GitHub Archiver and CodeMeta2CFF
 env:
   INVENIO_SERVER: https://data.caltech.edu
 
@@ -32,6 +32,19 @@ on:
       parent_record:
         description: "ID of parent record (for versioning):"
 jobs:
+  CodeMeta2CFF:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Convert CFF
+        uses: caltechlibrary/codemeta2cff@main
+      - name: Commit CFF
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: 'Add CITATION.cff for release'
+          add: 'CITATION.cff'
+          branch: 'main'
   Send_to_InvenioRDM:
     runs-on: ubuntu-latest
     steps:
