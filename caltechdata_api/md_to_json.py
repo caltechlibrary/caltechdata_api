@@ -157,7 +157,8 @@ def parse_readme_to_json(readme_path):
                 link_match = link_pattern.search(value)
                 if link_match:
                     value = link_match.group(1)
-                current_object[key] = value
+            
+            current_object[key] = value
 
         elif line.strip() and not section_match:
             raise ReadmeFormatException(
