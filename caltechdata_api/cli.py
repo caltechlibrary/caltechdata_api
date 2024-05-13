@@ -5,7 +5,7 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from .md_to_json import parse_readme_to_json
 import json
 import os
-import configparser
+from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
 ORCID_API = "https://orcid.org/"
@@ -21,26 +21,60 @@ funderIdentifier = ""
 funderIdentifierType = ""
 funderName = ""
 
+home_directory = os.path.expanduser("~")
+caltechdata_directory = os.path.join(home_directory, ".caltechdata")
 
-CONFIG_FILE = "caltechdata_config.ini"
+
+if not os.path.exists(caltechdata_directory):
+    os.makedirs(caltechdata_directory)
 
 
-def get_or_set_token():
-    config = configparser.ConfigParser()
+def generate_key():
+    return Fernet.generate_key()
 
-    if os.path.isfile(CONFIG_FILE):
-        config.read(CONFIG_FILE)
-        if "CaltechDATA" in config and "token" in config["CaltechDATA"]:
-            return config["CaltechDATA"]["token"]
+
+# Load the key from a file or generate a new one if not present
+def load_or_generate_key():
+    key_file = os.path.join(caltechdata_directory, "key.key")
+    if os.path.exists(key_file):
+        with open(key_file, "rb") as f:
+            return f.read()
     else:
+        key = generate_key()
+        with open(key_file, "wb") as f:
+            f.write(key)
+        return key
+
+
+# Encrypt the token
+def encrypt_token(token, key):
+    f = Fernet(key)
+    return f.encrypt(token.encode())
+
+
+# Decrypt the token
+def decrypt_token(encrypted_token, key):
+    f = Fernet(key)
+    return f.decrypt(encrypted_token).decode()
+
+
+# Function to get or set token
+def get_or_set_token():
+    key = load_or_generate_key()
+    token_file = os.path.join(caltechdata_directory, "token.txt")
+    try:
+        with open(token_file, "rb") as f:
+            encrypted_token = f.read()
+            token = decrypt_token(encrypted_token, key)
+            return token
+    except FileNotFoundError:
         while True:
-            token = get_user_input("Enter your CaltechDATA token: ")
-            confirm_token = get_user_input("Confirm your CaltechDATA token: ")
+            token = input("Enter your CaltechDATA token: ").strip()
+            confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
-                config.add_section("CaltechDATA")
-                config.set("CaltechDATA", "token", token)
-                with open(CONFIG_FILE, "w") as configfile:
-                    config.write(configfile)
+                encrypted_token = encrypt_token(token, key)
+                with open(token_file, "wb") as f:
+                    f.write(encrypted_token)
                 return token
             else:
                 print("Tokens do not match. Please try again.")
@@ -216,25 +250,41 @@ def get_names(orcid):
     return family_name, given_name
 
 
+def write_s3cmd_config(access_key, secret_key, endpoint):
+    configf = os.path.join(home_directory, ".s3cfg")
+    if not os.path.exists(key_file):
+        with open(configf, "w") as file:
+            file.write(
+                f"""[default]
+            access_key = {access_key}
+            host_base = {endpoint}
+            host_bucket = %(bucket).{endpoint}
+            secret_key = {secret_key}
+            """
+            )
+
+
 def upload_supporting_file(record_id=None):
     filepath = ""
-    file_link = ""
+    filepaths = []
+    file_links = []
     while True:
         choice = get_user_input(
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            endpoint = "https://sdsc.osn.xsede.org/"
+            endpoint = "sdsc.osn.xsede.org"
             path = "ini230004-bucket01/"
-
             if not record_id:
-                record_id = get_user_input("Folder where OSN files are uploaded")
-
+                access_key = get_user_input("Enter the access key: ")
+                secret_key = get_user_input("Enter the secret key: ")
+                write_s3cmd_config(access_key, secret_key, endpoint)
+                print("""S3 connection configured.""")
+                break
+            endpoint = f"https://{endpoint}/"
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
-
-            file_links = []
 
             for link in files:
                 fname = link.split("/")[-1]
@@ -264,33 +314,38 @@ def upload_supporting_file(record_id=None):
                 f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
             ]
             print("\n".join(files))
-            filename = get_user_input(
-                "Enter the filename to upload as a supporting file: "
-            )
-            if filename in files:
-                file_size = os.path.getsize(filename)
-                if file_size > 1024 * 1024 * 1024:
-                    file_link = get_user_input(
-                        "Enter the S3 link to the file (File size is more than 1GB): "
-                    )
-                    if file_link:
-                        return filepath, file_link
-                    else:
-                        print("Link is required for files larger than 1GB.")
-                        continue
-                else:
-                    filepath = os.path.abspath(filename)
-                    break
-            else:
-                print(
-                    f"Error: File '{filename}' not found. Please enter a valid filename."
+            while True:
+                filename = get_user_input(
+                    "Enter the filename to upload as a supporting file (or 'n' to finish): "
                 )
+                if filename == "n":
+                    break
+                if filename in files:
+                    file_size = os.path.getsize(filename)
+                    if file_size > 1024 * 1024 * 1024:
+                        print(
+                            """The file is greater than 1 GB. Please upload the
+                        metadata to CaltechDATA, and you'll be provided
+                        instructions to upload the files to S3 directly."""
+                        )
+                    else:
+                        filepath = os.path.abspath(filename)
+                        filepaths.append(filepath)
+                else:
+                    print(
+                        f"Error: File '{filename}' not found. Please enter a valid filename."
+                    )
+
+            add_more = get_user_input("Do you want to add more files? (y/n): ").lower()
+            if add_more != "y":
+                break
+
         elif choice == "n":
             break
         else:
             print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
 
-    return filepath, file_link
+    return filepaths, file_links
 
 
 def upload_data_from_file():
@@ -361,7 +416,9 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
                 break
             else:
@@ -424,7 +481,9 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
@@ -474,7 +533,7 @@ def edit_record():
             )
         rec_id = response
         print(
-            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}\n"
         )
 
 

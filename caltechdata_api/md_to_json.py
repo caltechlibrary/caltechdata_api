@@ -60,6 +60,10 @@ def parse_readme_to_json(readme_path):
     identifiers = []
     item_list = []
 
+    contributors = []
+    identifiers = []
+    item_list = []
+
     section_pattern = re.compile(r"^##\s+(.*)$")
     key_value_pattern = re.compile(r"^-\s+(.*?):\s+(.*)$")
     link_pattern = re.compile(r"\[.*?\]\((.*?)\)")
