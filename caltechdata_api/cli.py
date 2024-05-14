@@ -2,7 +2,7 @@ import argparse
 import requests
 import s3fs
 from caltechdata_api import caltechdata_write, caltechdata_edit
-from .md_to_json import parse_readme_to_json
+from md_to_json import parse_readme_to_json
 import json
 import os
 #import configparser
@@ -252,6 +252,7 @@ def upload_supporting_file(record_id=None):
     filepath = ""
     filepaths = []
     file_link = ""
+    file_links = []
     while True:
         choice = get_user_input(
             "Do you want to upload or link data files? (upload/link/n): "
@@ -259,16 +260,11 @@ def upload_supporting_file(record_id=None):
         if choice == "link":
             endpoint = "https://sdsc.osn.xsede.org/"
             path = "ini230004-bucket01/"
-
             if not record_id:
                 record_id = get_user_input("Folder where OSN files are uploaded")
-
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
-
-            file_links = []
-
             for link in files:
                 fname = link.split("/")[-1]
                 if "." not in fname:
@@ -318,18 +314,15 @@ def upload_supporting_file(record_id=None):
                     print(
                         f"Error: File '{filename}' not found. Please enter a valid filename."
                     )
-
-            add_more = get_user_input("Do you want to add more files? (y/n): ").lower()
-            if add_more != "y":
-                break
-
+                add_more = get_user_input("Do you want to add more files? (y/n): ").lower()
+                if add_more != "y":
+                    break
+            break
         elif choice == "n":
             break
         else:
             print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
-
     return filepaths, file_links
-
 def upload_data_from_file():
     while True:
         print("Current JSON files in the directory:")
@@ -494,11 +487,22 @@ def edit_record():
         print("No metadata file found.")
     choice = get_user_input("Do you want to add files? (y/n): ").lower()
     if choice == "y":
+        API_URL_TEMPLATE = "https://data.caltechlibrary.dev/api/records/{record_id}/files"
+        url = API_URL_TEMPLATE.format(record_id=record_id)
+        response = requests.get(url)
         filepath, file_link = upload_supporting_file(record_id)
         print(file_link)
+        if response.status_code == 404:
+            keepfile = False
+        else: 
+            keepfile = input("Do you want to keep existing files? y/n: ")
+            if keepfile == "y":
+                keepfile = True
+            else:
+                keepfile = False
         if filepath != "":
             response = caltechdata_edit(
-                record_id, token=token, files=filepath, production=False, publish=False
+                record_id, token=token, files=filepath, production=False, publish=False, keepfiles=keepfile,
             )
         elif file_link != "":
             response = caltechdata_edit(
@@ -508,6 +512,7 @@ def edit_record():
                 file_links=file_link,
                 production=False,
                 publish=False,
+                keepfile=keepfile
             )
         rec_id = response
         print(
