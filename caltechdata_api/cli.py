@@ -2,10 +2,9 @@ import argparse
 import requests
 import s3fs
 from caltechdata_api import caltechdata_write, caltechdata_edit
-from md_to_json import parse_readme_to_json
+from .md_to_json import parse_readme_to_json
 import json
 import os
-#import configparser
 from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
@@ -23,9 +22,6 @@ funderIdentifierType = ""
 funderName = ""
 
 
-#CONFIG_FILE = "caltechdata_config.ini"
-
-
 home_directory = os.path.expanduser("~")
 caltechdata_directory = os.path.join(home_directory, ".caltechdata")
 
@@ -35,7 +31,8 @@ if not os.path.exists(caltechdata_directory):
 
 def generate_key():
     return Fernet.generate_key()
-
+def load_or_generate_key():
+    key_file = os.path.join(caltechdata_directory, "key.key")
 # Load the key from a file or generate a new one if not present
 def load_or_generate_key(key_file="key.key"):
     if os.path.exists(key_file):
@@ -61,8 +58,9 @@ def decrypt_token(encrypted_token, key):
 def get_or_set_token():
     
     key = load_or_generate_key()
+    token_file = os.path.join(caltechdata_directory, "token.txt")
     try:
-        with open("token.txt", "rb") as f:
+        with open("token.file", "rb") as f:
             encrypted_token = f.read()
             token = decrypt_token(encrypted_token, key)
             return token
@@ -72,7 +70,7 @@ def get_or_set_token():
             confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
                 encrypted_token = encrypt_token(token, key)
-                with open("token.txt", "wb") as f:
+                with open("token.file", "wb") as f:
                     f.write(encrypted_token)
                 return token
             else:
@@ -247,7 +245,18 @@ def get_names(orcid):
             return None, None
     return family_name, given_name
 
-
+def write_s3cmd_config(access_key, secret_key, endpoint):
+    configf = os.path.join(home_directory, ".s3cfg")
+    if not os.path.exists(key_file):
+        with open(configf, "w") as file:
+            file.write(
+                f"""[default]
+            access_key = {access_key}
+            host_base = {endpoint}
+            host_bucket = %(bucket).{endpoint}
+            secret_key = {secret_key}
+            """
+            )
 def upload_supporting_file(record_id=None):
     filepath = ""
     filepaths = []
@@ -261,6 +270,12 @@ def upload_supporting_file(record_id=None):
             endpoint = "https://sdsc.osn.xsede.org/"
             path = "ini230004-bucket01/"
             if not record_id:
+                access_key = get_user_input("Enter the access key: ")
+                secret_key = get_user_input("Enter the secret key: ")
+                write_s3cmd_config(access_key, secret_key, endpoint)
+                print("""S3 connection configured.""")
+                break
+            endpoint = f"https://{endpoint}/"
                 record_id = get_user_input("Folder where OSN files are uploaded")
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
@@ -302,6 +317,10 @@ def upload_supporting_file(record_id=None):
                 if filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
+                        print(
+                            """The file is greater than 1 GB. Please upload the
+                        metadata to CaltechDATA, and you'll be provided
+                        instructions to upload the files to S3 directly."""
                         file_link = get_user_input(
                             "Enter the S3 link to the file (File size is more than 1GB): "
                         )
@@ -391,7 +410,9 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
                 break
             else:
@@ -454,7 +475,9 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
+                    If you need to upload large files to S3, you can type
+                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
@@ -520,7 +543,7 @@ def edit_record():
             )
         rec_id = response
         print(
-            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
+            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}\n"
         )
 
 
