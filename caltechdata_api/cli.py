@@ -5,6 +5,7 @@ from caltechdata_api import caltechdata_write, caltechdata_edit
 from md_to_json import parse_readme_to_json
 import json
 import os
+#import configparser
 from cryptography.fernet import Fernet
 
 CALTECHDATA_API = "https://data.caltech.edu/api/names?q=identifiers.identifier:{}"
@@ -21,6 +22,8 @@ funderIdentifier = ""
 funderIdentifierType = ""
 funderName = ""
 
+
+#CONFIG_FILE = "caltechdata_config.ini"
 
 
 home_directory = os.path.expanduser("~")
@@ -74,7 +77,7 @@ def get_or_set_token():
                 return token
             else:
                 print("Tokens do not match. Please try again.")
-       
+                
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
 
@@ -245,20 +248,6 @@ def get_names(orcid):
     return family_name, given_name
 
 
-def write_s3cmd_config(access_key, secret_key, endpoint):
-    configf = os.path.join(home_directory, ".s3cfg")
-    if not os.path.exists(key_file):
-        with open(configf, "w") as file:
-            file.write(
-                f"""[default]
-            access_key = {access_key}
-            host_base = {endpoint}
-            host_bucket = %(bucket).{endpoint}
-            secret_key = {secret_key}
-            """
-            )
-
-
 def upload_supporting_file(record_id=None):
     filepath = ""
     filepaths = []
@@ -269,19 +258,13 @@ def upload_supporting_file(record_id=None):
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            endpoint = "sdsc.osn.xsede.org"
+            endpoint = "https://sdsc.osn.xsede.org/"
             path = "ini230004-bucket01/"
             if not record_id:
-                access_key = get_user_input("Enter the access key: ")
-                secret_key = get_user_input("Enter the secret key: ")
-                write_s3cmd_config(access_key, secret_key, endpoint)
-                print("""S3 connection configured.""")
-                break
-            endpoint = f"https://{endpoint}/"
+                record_id = get_user_input("Folder where OSN files are uploaded")
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
-            
             for link in files:
                 fname = link.split("/")[-1]
                 if "." not in fname:
@@ -319,12 +302,11 @@ def upload_supporting_file(record_id=None):
                 if filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
-
-                        print(
-                            """The file is greater than 1 GB. Please upload the
-                        metadata to CaltechDATA, and you'll be provided
-                        instructions to upload the files to S3 directly."""
+                        file_link = get_user_input(
+                            "Enter the S3 link to the file (File size is more than 1GB): "
                         )
+                        if file_link:
+                            file_links.append(file_link)
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
@@ -341,7 +323,6 @@ def upload_supporting_file(record_id=None):
         else:
             print("Invalid input. Please enter 'link' or 'upload' or 'n'.")
     return filepaths, file_links
-
 def upload_data_from_file():
     while True:
         print("Current JSON files in the directory:")
@@ -410,9 +391,7 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
-                    If you need to upload large files to S3, you can type
-                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
+                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
                 )
                 break
             else:
@@ -475,9 +454,7 @@ def create_record():
                     )
                 rec_id = response
                 print(
-                    f"""You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}
-                    If you need to upload large files to S3, you can type
-                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
+                    f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
                 )
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
@@ -512,10 +489,14 @@ def edit_record():
     if choice == "y":
         API_URL_TEMPLATE = "https://data.caltechlibrary.dev/api/records/{record_id}/files"
         url = API_URL_TEMPLATE.format(record_id=record_id)
+
+        API_URL_TEMPLATE2 = "https://data.caltechlibrary.dev/api/records/{record_id}/draft/files"
+        url2 = API_URL_TEMPLATE2.format(record_id=record_id)
         response = requests.get(url)
+        response2 = requests.get(url2)
         filepath, file_link = upload_supporting_file(record_id)
         print(file_link)
-        if response.status_code == 404:
+        if response.status_code == 404 and response2.status_code == 404:
             keepfile = False
         else: 
             keepfile = input("Do you want to keep existing files? y/n: ")
@@ -539,12 +520,13 @@ def edit_record():
             )
         rec_id = response
         print(
-            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}\n"
+            f"You can view and publish this record at https://data.caltechlibrary.dev/uploads/{rec_id}"
         )
 
 
 def download_file_by_id(record_id, token=None):
     url = f"https://data.caltechlibrary.dev/api/records/{record_id}"
+    
 
     headers = {
         "accept": "application/vnd.datacite.datacite+json",
@@ -555,6 +537,7 @@ def download_file_by_id(record_id, token=None):
 
     try:
         response = requests.get(url, headers=headers)
+        
         if response.status_code != 200:
             # Might have a draft
             response = requests.get(
