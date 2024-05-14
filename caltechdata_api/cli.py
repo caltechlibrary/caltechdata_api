@@ -31,10 +31,10 @@ if not os.path.exists(caltechdata_directory):
 
 def generate_key():
     return Fernet.generate_key()
+
+# Load the key from a file or generate a new one if not present
 def load_or_generate_key():
     key_file = os.path.join(caltechdata_directory, "key.key")
-# Load the key from a file or generate a new one if not present
-def load_or_generate_key(key_file="key.key"):
     if os.path.exists(key_file):
         with open(key_file, "rb") as f:
             return f.read()
@@ -60,7 +60,7 @@ def get_or_set_token():
     key = load_or_generate_key()
     token_file = os.path.join(caltechdata_directory, "token.txt")
     try:
-        with open("token.file", "rb") as f:
+        with open(token_file, "rb") as f:
             encrypted_token = f.read()
             token = decrypt_token(encrypted_token, key)
             return token
@@ -70,7 +70,7 @@ def get_or_set_token():
             confirm_token = input("Confirm your CaltechDATA token: ").strip()
             if token == confirm_token:
                 encrypted_token = encrypt_token(token, key)
-                with open("token.file", "wb") as f:
+                with open(token_file, "wb") as f:
                     f.write(encrypted_token)
                 return token
             else:
@@ -267,7 +267,7 @@ def upload_supporting_file(record_id=None):
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            endpoint = "https://sdsc.osn.xsede.org/"
+            endpoint = "sdsc.osn.xsede.org"
             path = "ini230004-bucket01/"
             if not record_id:
                 access_key = get_user_input("Enter the access key: ")
@@ -276,7 +276,6 @@ def upload_supporting_file(record_id=None):
                 print("""S3 connection configured.""")
                 break
             endpoint = f"https://{endpoint}/"
-                record_id = get_user_input("Folder where OSN files are uploaded")
             s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
             # Find the files
             files = s3.glob(path + record_id + "/*")
@@ -321,11 +320,7 @@ def upload_supporting_file(record_id=None):
                             """The file is greater than 1 GB. Please upload the
                         metadata to CaltechDATA, and you'll be provided
                         instructions to upload the files to S3 directly."""
-                        file_link = get_user_input(
-                            "Enter the S3 link to the file (File size is more than 1GB): "
                         )
-                        if file_link:
-                            file_links.append(file_link)
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
