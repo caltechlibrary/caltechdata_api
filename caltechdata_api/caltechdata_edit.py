@@ -65,6 +65,7 @@ def caltechdata_edit(
     s3_link=None,
     default_preview=None,
     authors=False,
+    keepfiles=False,
 ):
     # Make a copy of the metadata to make sure our local changes don't leak
     metadata = copy.deepcopy(metadata)
@@ -246,7 +247,7 @@ def caltechdata_edit(
         if result.status_code != 200:
             raise Exception(result.text)
         file_link = result.json()["links"]["files"]
-        write_files_rdm(files, file_link, headers, f_headers)
+        write_files_rdm(files, file_link, headers, f_headers, keepfiles=keepfiles)
 
     else:
         # Check for existing draft

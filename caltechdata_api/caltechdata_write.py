@@ -9,7 +9,7 @@ from caltechdata_api import customize_schema
 from caltechdata_api.utils import humanbytes
 
 
-def write_files_rdm(files, file_link, headers, f_headers, s3=None):
+def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=False):
     f_json = []
     f_list = {}
     fnames = []
@@ -59,10 +59,10 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None):
                 raise Exception(result.text)
         else:
             # Delete any files not included in this write command
-            result = requests.delete(self, headers=f_headers)
-            if result.status_code != 204:
-                raise Exception(result.text)
-
+            if (keepfiles == False): 
+                result = requests.delete(self, headers=f_headers)
+                if result.status_code != 204:
+                    raise Exception(result.text)
 
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
