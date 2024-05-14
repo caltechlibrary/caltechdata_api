@@ -8,6 +8,13 @@
 - Given Name: Given Name
 - Name Identifiers: [https://orcid.org/0000-0002-1825-0097](https://orcid.org/0000-0002-1825-0097)
 
+- Name Type: Personal
+- Affiliation: [https://ror.org/04wxnsj81](https://ror.org/04wxnsj81)
+- Name: Name2
+- Family Name: Family Name 2
+- Given Name: Given Name 2
+- Name Identifiers: [https://orcid.org/0000-0002-1825-0097](https://orcid.org/0000-0002-1825-0097)
+
 ## Descriptions
 - Description: Description
 - Description Type: Abstract
