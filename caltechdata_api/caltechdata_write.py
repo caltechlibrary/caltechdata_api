@@ -59,10 +59,11 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                 raise Exception(result.text)
         else:
             # Delete any files not included in this write command
-            if (keepfiles == False): 
+            if keepfiles == False:
                 result = requests.delete(self, headers=f_headers)
                 if result.status_code != 204:
                     raise Exception(result.text)
+
 
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
