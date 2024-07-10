@@ -40,9 +40,9 @@ version = meta["version"]
 author = ""
 author_email = ""
 for obj in meta["author"]:
-    given = obj["givenName"]
-    family = obj["familyName"]
-    email = obj["email"]
+    given = obj.get("givenName", "")
+    family = obj.get("familyName", "")
+    email = obj.get("email", "")
     if len(author) == 0:
         author = given + " " + family
     else:
