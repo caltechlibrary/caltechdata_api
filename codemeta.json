@@ -6,7 +6,7 @@
   "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
   "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
   "license": "https://data.caltech.edu/license",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "author": [
     {
       "@type": "Person",
@@ -18,6 +18,25 @@
             },
       "email": "tmorrell@caltech.edu",
       "@id": "https://orcid.org/0000-0001-9266-5146"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Bhattarai",
+      "familyName": "Rohan ",
+      "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech"
+            },
+      "@id": "https://orcid.org/0009-0007-0323-4733"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Won",
+      "familyName": "Elizabeth",
+      "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech"
+            }
     }],
   "developmentStatus": "active",
   "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.6.1.zip",
@@ -39,5 +58,15 @@
       "email": "tmorrell@caltech.edu",
       "@id": "https://orcid.org/0000-0001-9266-5146"
     }],
+  "funding": {
+      "@type": "Grant",
+      "identifier":"2322420",
+      "name": "CC* Data Storage: Closing Caltech's data storage gap: from ad-hoc to well-managed stewardship of large-scale datasets",
+      "funder": {
+          "@id": "https://doi.org/10.13039/100000001",
+          "@type": "Organization",
+          "name": "National Science Foundation"
+     }
+  },
   "programmingLanguage": "Python"
 }
