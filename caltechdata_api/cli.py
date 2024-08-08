@@ -254,7 +254,7 @@ def get_names(orcid):
 
 def write_s3cmd_config(access_key, secret_key, endpoint):
     configf = os.path.join(home_directory, ".s3cfg")
-    if not os.path.exists(key_file):
+    if not os.path.exists(configf):
         with open(configf, "w") as file:
             file.write(
                 f"""[default]
