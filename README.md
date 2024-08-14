@@ -13,8 +13,7 @@ The `caltechdata_api` Python library provides a convenient interface for interac
 
 ## Requirements
 
-- Python 3 (Anaconda is recommended)
-- `requests` library
+- Python 3.6+
 
 ## Installation
 
