@@ -211,6 +211,17 @@ def caltechdata_edit(
             "provider": "datacite",
             "client": "datacite",
         }
+    # If we are making a new version, we only want to look for custom DOIs
+    if version == True and "identifiers" in metadata:
+        for identifier in metadata["identifiers"]:
+            if identifier["identifierType"] == "DOI":
+                doi = identifier["identifier"]
+                prefix = doi.split("/")[0]
+                if prefix != repo_prefix:
+                    pids["doi"] = {
+                        "identifier": doi,
+                        "provider": "external",
+                    }
 
     # If no metadata is provided, use existing. Otherwise customize provided
     # metadata
