@@ -423,7 +423,7 @@ def create_record(production):
                         token,
                         file_links=[file_link],
                         s3_link=file_link,
-                        production=production,
+                        production=True,
                         publish=False,
                     )
                 else:
@@ -506,18 +506,17 @@ def create_record(production):
                         metadata, token, production=production, publish=False
                     )
                 rec_id = response
-                if production == True: 
+                
 
-                    print(
-                        f"""You can view and publish this record at
-                        https://data.caltech.edu/uploads/{rec_id}
-                        If you need to upload large files to S3, you can type
-                        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
-                    )
+                if production == True: 
+                    site_url = f" https://data.caltech.edu/uploads/{rec_id}"
+                    
                 else: 
-                    print(
+                    site_url = f" https://data.caltechlibrary.dev/uploads/{rec_id}"
+
+                print(
                     f"""You can view and publish this record at
-                    https://data.caltechlibrary.dev/uploads/{rec_id}
+                    {site_url}
                     If you need to upload large files to S3, you can type
                     `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
