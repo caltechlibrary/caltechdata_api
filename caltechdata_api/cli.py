@@ -375,20 +375,34 @@ def upload_data_from_file():
             except json.JSONDecodeError as e:
                 print(f"Error: Invalid JSON format in the file '{filename}'. {str(e)}")
 
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="CaltechDATA CLI tool.")
+    parser.add_argument(
+        "-test", 
+        action="store_true", 
+        help="Use test mode, sets production to False"
+    )
+    args = parser.parse_args()
+    return args
 
 def main():
+    args = parse_args()
+    
+    production = not args.test  # Set production to False if -test flag is provided
+    
     choice = get_user_input(
         "Do you want to create or edit a CaltechDATA record? (create/edit): "
     ).lower()
     if choice == "create":
-        create_record()
+        create_record(production)
     elif choice == "edit":
-        edit_record()
+        edit_record(production)
     else:
         print("Invalid choice. Please enter 'create' or 'edit'.")
 
 
-def create_record():
+def create_record(production):
     token = get_or_set_token()
     print("Using CaltechDATA token:", token)
     while True:
@@ -401,7 +415,7 @@ def create_record():
             if existing_data:
                 if filepath != "":
                     response = caltechdata_write(
-                        existing_data, token, filepath, production=True, publish=False
+                        existing_data, token, filepath, production=production, publish=False
                     )
                 elif file_link != "":
                     response = caltechdata_write(
@@ -409,17 +423,26 @@ def create_record():
                         token,
                         file_links=[file_link],
                         s3_link=file_link,
-                        production=True,
+                        production=production,
                         publish=False,
                     )
                 else:
                     response = caltechdata_write(
-                        existing_data, token, production=True, publish=False
+                        existing_data, token, production=production, publish=False
                     )
                 rec_id = response
-                print(
+                if production == True: 
+
+                    print(
+                        f"""You can view and publish this record at
+                        https://data.caltech.edu/uploads/{rec_id}
+                        If you need to upload large files to S3, you can type
+                        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
+                    )
+                else: 
+                    print(
                     f"""You can view and publish this record at
-                    https://data.caltech.edu/uploads/{rec_id}
+                    https://data.caltechlibrary.dev/uploads/{rec_id}
                     If you need to upload large files to S3, you can type
                     `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
@@ -468,24 +491,33 @@ def create_record():
             if confirm_upload():
                 if filepath != "":
                     response = caltechdata_write(
-                        metadata, token, filepath, production=True, publish=False
+                        metadata, token, filepath, production=production, publish=False
                     )
                 elif file_link != "":
                     response = caltechdata_write(
                         metadata,
                         token,
                         file_links=[file_link],
-                        production=True,
+                        production=production,
                         publish=False,
                     )
                 else:
                     response = caltechdata_write(
-                        metadata, token, production=True, publish=False
+                        metadata, token, production=production, publish=False
                     )
                 rec_id = response
-                print(
+                if production == True: 
+
+                    print(
+                        f"""You can view and publish this record at
+                        https://data.caltech.edu/uploads/{rec_id}
+                        If you need to upload large files to S3, you can type
+                        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
+                    )
+                else: 
+                    print(
                     f"""You can view and publish this record at
-                    https://data.caltech.edu/uploads/{rec_id}
+                    https://data.caltechlibrary.dev/uploads/{rec_id}
                     If you need to upload large files to S3, you can type
                     `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
                 )
@@ -498,7 +530,7 @@ def create_record():
             print("Invalid choice. Please enter 'existing' or 'create'.")
 
 
-def edit_record():
+def edit_record(production):
     record_id = input("Enter the CaltechDATA record ID: ")
     token = get_or_set_token()
     file_name = download_file_by_id(record_id, token)
@@ -508,7 +540,7 @@ def edit_record():
             with open(file_name, "r") as file:
                 metadata = json.load(file)
             response = caltechdata_edit(
-                record_id, metadata, token, production=True, publish=False
+                record_id, metadata, token, production=production, publish=False
             )
             if response:
                 print("Metadata edited successfully.")
