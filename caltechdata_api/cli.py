@@ -431,21 +431,7 @@ def create_record(production):
                         existing_data, token, production=production, publish=False
                     )
                 rec_id = response
-                if production == True: 
-
-                    print(
-                        f"""You can view and publish this record at
-                        https://data.caltech.edu/uploads/{rec_id}
-                        If you need to upload large files to S3, you can type
-                        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
-                    )
-                else: 
-                    print(
-                    f"""You can view and publish this record at
-                    https://data.caltechlibrary.dev/uploads/{rec_id}
-                    If you need to upload large files to S3, you can type
-                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
-                )
+                print_upload_message(rec_id, production)
                 break
             else:
                 print("Going back to the main menu.")
@@ -508,18 +494,7 @@ def create_record(production):
                 rec_id = response
                 
 
-                if production == True: 
-                    site_url = f" https://data.caltech.edu/uploads/{rec_id}"
-                    
-                else: 
-                    site_url = f" https://data.caltechlibrary.dev/uploads/{rec_id}"
-
-                print(
-                    f"""You can view and publish this record at
-                    {site_url}
-                    If you need to upload large files to S3, you can type
-                    `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/"""
-                )
+                print_upload_message(rec_id, production)
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
                 break
@@ -528,11 +503,20 @@ def create_record(production):
         else:
             print("Invalid choice. Please enter 'existing' or 'create'.")
 
+def print_upload_message(rec_id, production):
+    base_url = "https://data.caltech.edu/uploads/" if production else "https://data.caltechlibrary.dev/uploads/"
+    print(
+        f"""You can view and publish this record at
+        {base_url}{rec_id}
+        If you need to upload large files to S3, you can type
+        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`"""
+    )
 
 def edit_record(production):
     record_id = input("Enter the CaltechDATA record ID: ")
     token = get_or_set_token()
     file_name = download_file_by_id(record_id, token)
+    
     if file_name:
         try:
             # Read the edited metadata file
@@ -549,33 +533,36 @@ def edit_record(production):
             print(f"An error occurred during metadata editing: {e}")
     else:
         print("No metadata file found.")
+    
     choice = get_user_input("Do you want to add files? (y/n): ").lower()
     if choice == "y":
-        API_URL_TEMPLATE = "https://data.caltech.edu/api/records/{record_id}/files"
+        if production:
+            API_URL_TEMPLATE = "https://data.caltech.edu/api/records/{record_id}/files"
+            API_URL_TEMPLATE_DRAFT = "https://data.caltech.edu/api/records/{record_id}/draft/files"
+        else:
+            API_URL_TEMPLATE = "https://data.caltechlibrary.dev/api/records/{record_id}/files"
+            API_URL_TEMPLATE_DRAFT = "https://data.caltechlibrary.dev/api/records/{record_id}/draft/files"
+        
         url = API_URL_TEMPLATE.format(record_id=record_id)
-
-        API_URL_TEMPLATE2 = (
-            "https://data.caltech.edu/api/records/{record_id}/draft/files"
-        )
-        url2 = API_URL_TEMPLATE2.format(record_id=record_id)
+        url_draft = API_URL_TEMPLATE_DRAFT.format(record_id=record_id)
+        
         response = requests.get(url)
-        response2 = requests.get(url2)
+        response_draft = requests.get(url_draft)
+        
         filepath, file_link = upload_supporting_file(record_id)
         print(file_link)
-        if response.status_code == 404 and response2.status_code == 404:
+        
+        if response.status_code == 404 and response_draft.status_code == 404:
             keepfile = False
         else:
-            keepfile = input("Do you want to keep existing files? y/n: ")
-            if keepfile == "y":
-                keepfile = True
-            else:
-                keepfile = False
+            keepfile = input("Do you want to keep existing files? (y/n): ").lower() == "y"
+        
         if filepath != "":
             response = caltechdata_edit(
                 record_id,
                 token=token,
                 files=filepath,
-                production=True,
+                production=production,
                 publish=False,
                 keepfiles=keepfile,
             )
@@ -585,14 +572,16 @@ def edit_record(production):
                 metadata,
                 token=token,
                 file_links=file_link,
-                production=True,
+                production=production,
                 publish=False,
                 keepfile=keepfile,
             )
+        
         rec_id = response
-        print(
-            f"You can view and publish this record at https://data.caltech.edu/uploads/{rec_id}\n"
-        )
+        print_upload_message(rec_id, production)
+        
+        
+
 
 
 def download_file_by_id(record_id, token=None):
