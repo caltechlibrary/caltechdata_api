@@ -1,7 +1,7 @@
 import copy
 import json
-import os, requests
-
+import os
+import requests
 import s3fs
 from requests import session
 from json.decoder import JSONDecodeError
@@ -49,8 +49,6 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                 infile = open(name, "rb")
             else:
                 infile = open(f_list[name], "rb")
-            # size = infile.seek(0, 2)
-            # infile.seek(0, 0)  # reset at beginning
             result = requests.put(link, headers=f_headers, data=infile)
             if result.status_code != 200:
                 raise Exception(result.text)
@@ -65,10 +63,11 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                     raise Exception(result.text)
 
 
+
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
 ):
-    # Currently configured for S3 links, assuming all are at same endpoint
+    # Currently configured for S3 links, assuming all are at the same endpoint
     link_string = ""
     endpoint = "https://" + file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
@@ -152,13 +151,8 @@ def caltechdata_write(
     s3_link=None,
     default_preview=None,
     review_message=None,
+    keep_file=False,  # New parameter
 ):
-    """
-    File links are links to files existing in external systems that will
-    be added directly in a CaltechDATA record, instead of uploading the file.
-
-    S3 is a s3sf object for directly opening files
-    """
     # Make a copy so that none of our changes leak out
     metadata = copy.deepcopy(metadata)
 
@@ -167,7 +161,7 @@ def caltechdata_write(
         token = os.environ["RDMTOK"]
 
     # If files is a string - change to single value array
-    if isinstance(files, str) == True:
+    if isinstance(files, str):
         files = [files]
 
     if file_links:
@@ -176,14 +170,13 @@ def caltechdata_write(
         )
 
     # Pull out pid information
-    if production == True:
+    if production:
         repo_prefix = "10.22002"
     else:
         repo_prefix = "10.33569"
     pids = {}
     identifiers = []
     if "metadata" in metadata:
-        # we have rdm schema
         if "identifiers" in metadata["metadata"]:
             identifiers = metadata["metadata"]["identifiers"]
     elif "identifiers" in metadata:
@@ -200,11 +193,10 @@ def caltechdata_write(
                     "provider": "oai",
                 }
         elif "scheme" in identifier:
-            # We have RDM internal metadata
             if identifier["scheme"] == "doi":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-        if doi != False:
+        if doi:
             if prefix == repo_prefix:
                 pids["doi"] = {
                     "identifier": doi,
@@ -220,25 +212,25 @@ def caltechdata_write(
     if "pids" not in metadata:
         metadata["pids"] = pids
 
-    if authors == False:
+    if not authors:
         data = customize_schema.customize_schema(metadata, schema=schema)
-        if production == True:
+        if production:
             url = "https://data.caltech.edu/"
         else:
             url = "https://data.caltechlibrary.dev/"
     else:
         data = metadata
-        if production == True:
+        if production:
             url = "https://authors.library.caltech.edu/"
         else:
             url = "https://authors.caltechlibrary.dev/"
 
     headers = {
-        "Authorization": "Bearer %s" % token,
+        "Authorization": f"Bearer {token}",
         "Content-type": "application/json",
     }
     f_headers = {
-        "Authorization": "Bearer %s" % token,
+        "Authorization": f"Bearer {token}",
         "Content-type": "application/octet-stream",
     }
 
@@ -256,7 +248,7 @@ def caltechdata_write(
 
     if files:
         file_link = result.json()["links"]["files"]
-        write_files_rdm(files, file_link, headers, f_headers, s3)
+        write_files_rdm(files, file_link, headers, f_headers, s3, keep_file)
 
     if community:
         review_link = result.json()["links"]["review"]
