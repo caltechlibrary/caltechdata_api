@@ -60,10 +60,13 @@ def decrypt_token(encrypted_token, key):
 
 
 # Function to get or set token
-def get_or_set_token():
-
+def get_or_set_token(production=True):
     key = load_or_generate_key()
-    token_file = os.path.join(caltechdata_directory, "token.txt")
+    
+    # Use different token files for production and test environments
+    token_filename = "token.txt" if production else "token_test.txt"
+    token_file = os.path.join(caltechdata_directory, token_filename)
+
     try:
         with open(token_file, "rb") as f:
             encrypted_token = f.read()
@@ -71,8 +74,8 @@ def get_or_set_token():
             return token
     except FileNotFoundError:
         while True:
-            token = input("Enter your CaltechDATA token: ").strip()
-            confirm_token = input("Confirm your CaltechDATA token: ").strip()
+            token = input(f"Enter your {'Production' if production else 'Test'} CaltechDATA token: ").strip()
+            confirm_token = input(f"Confirm your {'Production' if production else 'Test'} CaltechDATA token: ").strip()
             if token == confirm_token:
                 encrypted_token = encrypt_token(token, key)
                 with open(token_file, "wb") as f:
@@ -403,7 +406,7 @@ def main():
 
 
 def create_record(production):
-    token = get_or_set_token()
+    token = get_or_set_token(production)
     print("Using CaltechDATA token:", token)
     while True:
         choice = get_user_input(
@@ -526,7 +529,7 @@ def print_upload_message(rec_id, production):
 
 def edit_record(production):
     record_id = input("Enter the CaltechDATA record ID: ")
-    token = get_or_set_token()
+    token = get_or_set_token(production)
     file_name = download_file_by_id(record_id, token)
 
     if file_name:
