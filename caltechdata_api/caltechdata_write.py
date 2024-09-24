@@ -151,8 +151,13 @@ def caltechdata_write(
     s3_link=None,
     default_preview=None,
     review_message=None,
-    keep_file=False,  # New parameter
 ):
+    """
+    File links are links to files existing in external systems that will
+    be added directly in a CaltechDATA record, instead of uploading the file.
+
+    S3 is a s3sf object for directly opening files
+    """
     # Make a copy so that none of our changes leak out
     metadata = copy.deepcopy(metadata)
 
@@ -161,7 +166,7 @@ def caltechdata_write(
         token = os.environ["RDMTOK"]
 
     # If files is a string - change to single value array
-    if isinstance(files, str):
+    if isinstance(files, str) == True:
         files = [files]
 
     if file_links:
@@ -170,13 +175,14 @@ def caltechdata_write(
         )
 
     # Pull out pid information
-    if production:
+    if production == True:
         repo_prefix = "10.22002"
     else:
         repo_prefix = "10.33569"
     pids = {}
     identifiers = []
     if "metadata" in metadata:
+        # we have rdm schema
         if "identifiers" in metadata["metadata"]:
             identifiers = metadata["metadata"]["identifiers"]
     elif "identifiers" in metadata:
@@ -193,10 +199,11 @@ def caltechdata_write(
                     "provider": "oai",
                 }
         elif "scheme" in identifier:
+            # We have RDM internal metadata
             if identifier["scheme"] == "doi":
                 doi = identifier["identifier"]
                 prefix = doi.split("/")[0]
-        if doi:
+        if doi != False:
             if prefix == repo_prefix:
                 pids["doi"] = {
                     "identifier": doi,
@@ -212,25 +219,25 @@ def caltechdata_write(
     if "pids" not in metadata:
         metadata["pids"] = pids
 
-    if not authors:
+    if authors == False:
         data = customize_schema.customize_schema(metadata, schema=schema)
-        if production:
+        if production == True:
             url = "https://data.caltech.edu/"
         else:
             url = "https://data.caltechlibrary.dev/"
     else:
         data = metadata
-        if production:
+        if production == True:
             url = "https://authors.library.caltech.edu/"
         else:
             url = "https://authors.caltechlibrary.dev/"
 
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": "Bearer %s" % token,
         "Content-type": "application/json",
     }
     f_headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": "Bearer %s" % token,
         "Content-type": "application/octet-stream",
     }
 
@@ -248,7 +255,7 @@ def caltechdata_write(
 
     if files:
         file_link = result.json()["links"]["files"]
-        write_files_rdm(files, file_link, headers, f_headers, s3, keep_file)
+        write_files_rdm(files, file_link, headers, f_headers, s3)
 
     if community:
         review_link = result.json()["links"]["review"]
