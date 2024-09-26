@@ -1,7 +1,7 @@
 import copy
 import json
-import os, requests
-
+import os
+import requests
 import s3fs
 from requests import session
 from json.decoder import JSONDecodeError
@@ -49,8 +49,6 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                 infile = open(name, "rb")
             else:
                 infile = open(f_list[name], "rb")
-            # size = infile.seek(0, 2)
-            # infile.seek(0, 0)  # reset at beginning
             result = requests.put(link, headers=f_headers, data=infile)
             if result.status_code != 200:
                 raise Exception(result.text)
@@ -68,7 +66,7 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
 ):
-    # Currently configured for S3 links, assuming all are at same endpoint
+    # Currently configured for S3 links, assuming all are at the same endpoint
     link_string = ""
     endpoint = "https://" + file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})

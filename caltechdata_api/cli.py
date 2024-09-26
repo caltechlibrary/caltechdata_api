@@ -59,7 +59,7 @@ def decrypt_token(encrypted_token, key):
     return f.decrypt(encrypted_token).decode()
 
 
-# Function to get or set token
+# Function to get or set token with support for test system
 def get_or_set_token(production=True):
     key = load_or_generate_key()
 
@@ -411,6 +411,7 @@ def main():
 
 def create_record(production):
     token = get_or_set_token(production)
+    # keep_file = input("Do you want to keep your existing files? (yes/no): ").lower() == "yes"
     print("Using CaltechDATA token:", token)
     while True:
         choice = get_user_input(
@@ -521,13 +522,10 @@ def print_upload_message(rec_id, production):
         else "https://data.caltechlibrary.dev/uploads/"
     )
     print(
-        f"""
-        You can view and publish this record at
-        
+        f"""You can view and publish this record at
         {base_url}{rec_id}
-        
-        If you need to upload large files to S3, you can type `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`
-        """
+        If you need to upload large files to S3, you can type
+        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`"""
     )
 
 
@@ -552,7 +550,6 @@ def edit_record(production):
             print(f"An error occurred during metadata editing: {e}")
     else:
         print("No metadata file found.")
-
     choice = get_user_input("Do you want to add files? (y/n): ").lower()
     if choice == "y":
         if production:
@@ -571,18 +568,31 @@ def edit_record(production):
         url = API_URL_TEMPLATE.format(record_id=record_id)
         url_draft = API_URL_TEMPLATE_DRAFT.format(record_id=record_id)
 
-        response = requests.get(url)
-        response_draft = requests.get(url_draft)
+        headers = {
+            "accept": "application/json",
+        }
 
-        filepath, file_link = upload_supporting_file(record_id)
-        print(file_link)
+        if token:
+            headers["Authorization"] = "Bearer %s" % token
 
-        if response.status_code == 404 and response_draft.status_code == 404:
+        response = requests.get(url, headers=headers)
+        response_draft = requests.get(url_draft, headers=headers)
+        data = response.json()
+        data_draft = response_draft.json()
+        # Check if 'entries' exists and its length
+        if (
+            len(data.get("entries", [])) == 0
+            and len(data_draft.get("entries", [])) == 0
+        ):
             keepfile = False
         else:
             keepfile = (
                 input("Do you want to keep existing files? (y/n): ").lower() == "y"
             )
+
+        filepath, file_link = upload_supporting_file(record_id)
+        if file_link:
+            print(file_link)
 
         if filepath != "":
             response = caltechdata_edit(
@@ -601,7 +611,7 @@ def edit_record(production):
                 file_links=file_link,
                 production=production,
                 publish=False,
-                keepfile=keepfile,
+                keepfiles=keepfile,
             )
 
         rec_id = response
@@ -620,7 +630,6 @@ def download_file_by_id(record_id, token=None):
 
     try:
         response = requests.get(url, headers=headers)
-
         if response.status_code != 200:
             # Might have a draft
             response = requests.get(
@@ -628,7 +637,21 @@ def download_file_by_id(record_id, token=None):
                 headers=headers,
             )
             if response.status_code != 200:
-                raise Exception(f"Record {record_id} does not exist, cannot edit")
+                url = f"https://data.caltechlibrary.dev/api/records/{record_id}"
+                response = requests.get(
+                    url,
+                    headers=headers,
+                )
+                if response.status_code != 200:
+                    # Might have a draft
+                    response = requests.get(
+                        url + "/draft",
+                        headers=headers,
+                    )
+                    if response.status_code != 200:
+                        raise Exception(
+                            f"Record {record_id} does not exist, cannot edit"
+                        )
         file_content = response.content
         file_name = f"downloaded_data_{record_id}.json"
         with open(file_name, "wb") as file:
