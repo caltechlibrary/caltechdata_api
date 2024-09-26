@@ -89,7 +89,6 @@ def get_or_set_token(production=True):
                 print("Tokens do not match. Please try again.")
 
 
-
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
 
@@ -383,22 +382,22 @@ def upload_data_from_file():
             except json.JSONDecodeError as e:
                 print(f"Error: Invalid JSON format in the file '{filename}'. {str(e)}")
 
+
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="CaltechDATA CLI tool.")
     parser.add_argument(
-        "-test", 
-        action="store_true", 
-        help="Use test mode, sets production to False"
+        "-test", action="store_true", help="Use test mode, sets production to False"
     )
     args = parser.parse_args()
     return args
 
+
 def main():
     args = parse_args()
-    
+
     production = not args.test  # Set production to False if -test flag is provided
-    
+
     choice = get_user_input(
         "Do you want to create or edit a CaltechDATA record? (create/edit): "
     ).lower()
@@ -412,7 +411,7 @@ def main():
 
 def create_record(production):
     token = get_or_set_token(production)
-    #keep_file = input("Do you want to keep your existing files? (yes/no): ").lower() == "yes"
+    # keep_file = input("Do you want to keep your existing files? (yes/no): ").lower() == "yes"
     print("Using CaltechDATA token:", token)
     while True:
         choice = get_user_input(
@@ -424,7 +423,11 @@ def create_record(production):
             if existing_data:
                 if filepath != "":
                     response = caltechdata_write(
-                        existing_data, token, filepath, production=production, publish=False
+                        existing_data,
+                        token,
+                        filepath,
+                        production=production,
+                        publish=False,
                     )
                 elif file_link != "":
                     response = caltechdata_write(
@@ -501,7 +504,6 @@ def create_record(production):
                         metadata, token, production=production, publish=False
                     )
                 rec_id = response
-                
 
                 print_upload_message(rec_id, production)
                 with open(response + ".json", "w") as file:
@@ -512,8 +514,13 @@ def create_record(production):
         else:
             print("Invalid choice. Please enter 'existing' or 'create'.")
 
+
 def print_upload_message(rec_id, production):
-    base_url = "https://data.caltech.edu/uploads/" if production else "https://data.caltechlibrary.dev/uploads/"
+    base_url = (
+        "https://data.caltech.edu/uploads/"
+        if production
+        else "https://data.caltechlibrary.dev/uploads/"
+    )
     print(
         f"""You can view and publish this record at
         {base_url}{rec_id}
@@ -521,11 +528,12 @@ def print_upload_message(rec_id, production):
         `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`"""
     )
 
+
 def edit_record(production):
     record_id = input("Enter the CaltechDATA record ID: ")
     token = get_or_set_token(production)
     file_name = download_file_by_id(record_id, token)
-    
+
     if file_name:
         try:
             # Read the edited metadata file
@@ -546,16 +554,22 @@ def edit_record(production):
     if choice == "y":
         if production:
             API_URL_TEMPLATE = "https://data.caltech.edu/api/records/{record_id}/files"
-            API_URL_TEMPLATE_DRAFT = "https://data.caltech.edu/api/records/{record_id}/draft/files"
+            API_URL_TEMPLATE_DRAFT = (
+                "https://data.caltech.edu/api/records/{record_id}/draft/files"
+            )
         else:
-            API_URL_TEMPLATE = "https://data.caltechlibrary.dev/api/records/{record_id}/files"
-            API_URL_TEMPLATE_DRAFT = "https://data.caltechlibrary.dev/api/records/{record_id}/draft/files"
-        
+            API_URL_TEMPLATE = (
+                "https://data.caltechlibrary.dev/api/records/{record_id}/files"
+            )
+            API_URL_TEMPLATE_DRAFT = (
+                "https://data.caltechlibrary.dev/api/records/{record_id}/draft/files"
+            )
+
         url = API_URL_TEMPLATE.format(record_id=record_id)
         url_draft = API_URL_TEMPLATE_DRAFT.format(record_id=record_id)
-        
+
         headers = {
-        "accept": "application/json",
+            "accept": "application/json",
         }
 
         if token:
@@ -563,30 +577,35 @@ def edit_record(production):
 
         response = requests.get(url, headers=headers)
         response_draft = requests.get(url_draft, headers=headers)
-        
-        #print(production, response, response_draft)
-        #print(response.status_code, response_draft.status_code)
+
+        # print(production, response, response_draft)
+        # print(response.status_code, response_draft.status_code)
 
         data = response.json()
         data_draft = response_draft.json()
 
-        #print(data_draft)
+        # print(data_draft)
         # Check if 'entries' exists and its length
-        if len(data.get('entries', [])) == 0 and len(data_draft.get('entries', [])) == 0:
+        if (
+            len(data.get("entries", [])) == 0
+            and len(data_draft.get("entries", [])) == 0
+        ):
             keepfile = False
         else:
-            keepfile = input("Do you want to keep existing files? (y/n): ").lower() == "y"
-   
+            keepfile = (
+                input("Do you want to keep existing files? (y/n): ").lower() == "y"
+            )
+
         # if response.status_code == 404 and response_draft.status_code == 404:
         #     keepfile = False
         # else:
-            
+
         #     keepfile = input("Do you want to keep existing files? (y/n): ").lower() == "y"
-        
+
         filepath, file_link = upload_supporting_file(record_id)
         if file_link:
             print(file_link)
-        
+
         if filepath != "":
             response = caltechdata_edit(
                 record_id,
@@ -604,14 +623,11 @@ def edit_record(production):
                 file_links=file_link,
                 production=production,
                 publish=False,
-                keepfile=keepfile,
+                keepfiles=keepfile,
             )
-        
+
         rec_id = response
         print_upload_message(rec_id, production)
-        
-        
-
 
 
 def download_file_by_id(record_id, token=None):
@@ -632,12 +648,12 @@ def download_file_by_id(record_id, token=None):
                 url + "/draft",
                 headers=headers,
             )
-            if response.status_code != 200: 
+            if response.status_code != 200:
                 url = f"https://data.caltechlibrary.dev/api/records/{record_id}"
                 response = requests.get(
-                url,
-                headers=headers,
-            )
+                    url,
+                    headers=headers,
+                )
                 if response.status_code != 200:
                     # Might have a draft
                     response = requests.get(
@@ -645,7 +661,9 @@ def download_file_by_id(record_id, token=None):
                         headers=headers,
                     )
                     if response.status_code != 200:
-                        raise Exception(f"Record {record_id} does not exist, cannot edit")
+                        raise Exception(
+                            f"Record {record_id} does not exist, cannot edit"
+                        )
         file_content = response.content
         file_name = f"downloaded_data_{record_id}.json"
         with open(file_name, "wb") as file:
