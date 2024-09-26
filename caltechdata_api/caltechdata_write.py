@@ -63,7 +63,6 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                     raise Exception(result.text)
 
 
-
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
 ):
