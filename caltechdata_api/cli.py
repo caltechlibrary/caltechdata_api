@@ -62,7 +62,7 @@ def decrypt_token(encrypted_token, key):
 # Function to get or set token with support for test system
 def get_or_set_token(production=True):
     key = load_or_generate_key()
-    
+
     # Use different token files for production and test environments
     token_filename = "token.txt" if production else "token_test.txt"
     token_file = os.path.join(caltechdata_directory, token_filename)
@@ -74,8 +74,12 @@ def get_or_set_token(production=True):
             return token
     except FileNotFoundError:
         while True:
-            token = input(f"Enter your {'Production' if production else 'Test'} CaltechDATA token: ").strip()
-            confirm_token = input(f"Confirm your {'Production' if production else 'Test'} CaltechDATA token: ").strip()
+            token = input(
+                f"Enter your {'Production' if production else 'Test'} CaltechDATA token: "
+            ).strip()
+            confirm_token = input(
+                f"Confirm your {'Production' if production else 'Test'} CaltechDATA token: "
+            ).strip()
             if token == confirm_token:
                 encrypted_token = encrypt_token(token, key)
                 with open(token_file, "wb") as f:
