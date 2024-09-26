@@ -577,14 +577,8 @@ def edit_record(production):
 
         response = requests.get(url, headers=headers)
         response_draft = requests.get(url_draft, headers=headers)
-
-        # print(production, response, response_draft)
-        # print(response.status_code, response_draft.status_code)
-
         data = response.json()
         data_draft = response_draft.json()
-
-        # print(data_draft)
         # Check if 'entries' exists and its length
         if (
             len(data.get("entries", [])) == 0
@@ -595,12 +589,6 @@ def edit_record(production):
             keepfile = (
                 input("Do you want to keep existing files? (y/n): ").lower() == "y"
             )
-
-        # if response.status_code == 404 and response_draft.status_code == 404:
-        #     keepfile = False
-        # else:
-
-        #     keepfile = input("Do you want to keep existing files? (y/n): ").lower() == "y"
 
         filepath, file_link = upload_supporting_file(record_id)
         if file_link:
