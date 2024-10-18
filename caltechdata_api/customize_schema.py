@@ -415,24 +415,7 @@ def validate_metadata(json_record):
                     "Each entry in 'titles' must be a dictionary with a 'title' key."
                 )
 
-    # Check for 'publication_date'
-    if "publicationYear" not in json_record and "dates" not in json_record:
-        errors.append(
-            "A publication date is required ('publicationYear' or 'dates' field is missing)."
-        )
-    if "dates" in json_record:
-        if not isinstance(json_record["dates"], list):
-            errors.append("'dates' should be a list.")
-        else:
-            for date_entry in json_record["dates"]:
-                if (
-                    not isinstance(date_entry, dict)
-                    or "dateType" not in date_entry
-                    or "date" not in date_entry
-                ):
-                    errors.append(
-                        "Each entry in 'dates' must be a dictionary with 'dateType' and 'date' keys."
-                    )
+    # Publication date is handled by customize function
 
     # Check for 'creators'
     if "creators" not in json_record:
