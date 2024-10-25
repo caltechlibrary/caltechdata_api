@@ -140,7 +140,7 @@ def get_funding_entries():
 def validate_funder_identifier(funder_identifier):
     response = requests.get(f"https://api.ror.org/organizations/{funder_identifier}")
     if response.status_code == 200:
-        return True
+        return response.json().get("name")
     else:
         return False
 
@@ -157,7 +157,8 @@ def get_funding_details():
     award_title = get_user_input("Enter the award title for funding: ")
     while True:
         funder_identifier = get_user_input("Enter the funder ROR (https://ror.org): ")
-        if validate_funder_identifier(funder_identifier):
+        name = validate_funder_identifier(funder_identifier)
+        if name:
             break
         else:
             print(
@@ -169,6 +170,7 @@ def get_funding_details():
     return {
         "awardNumber": award_number,
         "awardTitle": award_title,
+        "funderName": name,
         "funderIdentifier": funder_identifier,
         "funderIdentifierType": "ROR",
     }
@@ -194,9 +196,18 @@ def parse_arguments():
         if license_number.isdigit() and 1 <= int(license_number) <= 8:
             # Valid license number selected
             args["license"] = {
-                "1": "cc0-1.0",
-                "2": "cc-by-4.0",
-                "3": "cc-by-nc-4.0",
+                "1": {
+                    "rights": "Creative Commons Zero v1.0 Universal",
+                    "rightsIdentifier": "cc0-1.0",
+                },
+                "2": {
+                    "rights": "Creative Commons Attribution v4.0 Universal",
+                    "rightsIdentifier": "cc-by-4.0",
+                },
+                "3": {
+                    "rights": "Creative Commons Attribution Non-Commercial v4.0 Universal",
+                    "rightsIdentifier": "cc-by-nc-4.0",
+                },
             }[license_number]
             break
         else:
@@ -259,9 +270,11 @@ def get_names(orcid):
     return family_name, given_name
 
 
-def write_s3cmd_config(access_key, secret_key, endpoint):
+def write_s3cmd_config(endpoint):
     configf = os.path.join(home_directory, ".s3cfg")
     if not os.path.exists(configf):
+        access_key = get_user_input("Enter the access key: ")
+        secret_key = get_user_input("Enter the secret key: ")
         with open(configf, "w") as file:
             file.write(
                 f"""[default]
@@ -286,9 +299,7 @@ def upload_supporting_file(record_id=None):
             endpoint = "sdsc.osn.xsede.org"
             path = "ini230004-bucket01/"
             if not record_id:
-                access_key = get_user_input("Enter the access key: ")
-                secret_key = get_user_input("Enter the secret key: ")
-                write_s3cmd_config(access_key, secret_key, endpoint)
+                write_s3cmd_config(endpoint)
                 print("""S3 connection configured.""")
                 break
             endpoint = f"https://{endpoint}/"
@@ -478,9 +489,7 @@ def create_record(production):
                 ],
                 "types": {"resourceType": "", "resourceTypeGeneral": "Dataset"},
                 "rightsList": [
-                    {
-                        "rightsIdentifier": args["license"],
-                    }
+                    args["license"],
                 ],
                 "fundingReferences": args["fundingReferences"],
                 "schemaVersion": "http://datacite.org/schema/kernel-4",

@@ -6,7 +6,7 @@
   "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
   "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
   "license": "https://data.caltech.edu/license",
-  "version": "1.7.1",
+  "version": "1.8.1",
   "author": [
     {
       "@type": "Person",
@@ -39,7 +39,7 @@
             }
     }],
   "developmentStatus": "active",
-  "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.7.1.zip",
+  "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.8.1.zip",
   "keywords": [
     "GitHub",
     "metadata",
