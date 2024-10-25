@@ -1,5 +1,4 @@
-# Convert a DataCite 4 or 4.3 standard schema json record to the customized internal
-# schema used by TIND in CaltechDATA
+# Convert a DataCite 4.3 standard schema json record to the InvenioRDM schema
 import argparse
 import json
 from datetime import date
