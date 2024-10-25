@@ -404,26 +404,25 @@ def validate_metadata(json_record):
                 errors.append("Each entry in 'titles' must be a dictionary with a 'title' key.")
     
     # Check for 'contributors'
-    if "contributors" not in json_record:
-        errors.append("'contributors' field is missing.")
-    elif not isinstance(json_record["contributors"], list) or len(json_record["contributors"]) == 0:
-        errors.append("'contributors' should be a non-empty list.")
-    else:
-        for contributor in json_record["contributors"]:
-            if not isinstance(contributor, dict) or "name" not in contributor or "contributorType" not in contributor:
-                errors.append("Each 'contributor' must have 'name' and 'contributorType'.")
-            if "nameIdentifiers" in contributor:
-                if not isinstance(contributor["nameIdentifiers"], list):
-                    errors.append("'nameIdentifiers' should be a list.")
-                for name_id in contributor["nameIdentifiers"]:
-                    if not isinstance(name_id, dict) or "nameIdentifier" not in name_id or "nameIdentifierScheme" not in name_id:
-                        errors.append("Each 'nameIdentifier' should have 'nameIdentifier' and 'nameIdentifierScheme'.")
-            if "affiliation" in contributor:
-                if not isinstance(contributor["affiliation"], list):
-                    errors.append("'affiliation' should be a list.")
-                for affiliation in contributor["affiliation"]:
-                    if not isinstance(affiliation, dict) or "name" not in affiliation:
-                        errors.append("Each 'affiliation' should have a 'name' key.")
+    if "contributors" in json_record:
+        if not isinstance(json_record["contributors"], list) or len(json_record["contributors"]) == 0:
+            errors.append("'contributors' should be a non-empty list.")
+        else:
+            for contributor in json_record["contributors"]:
+                if not isinstance(contributor, dict) or "name" not in contributor or "contributorType" not in contributor:
+                    errors.append("Each 'contributor' must have 'name' and 'contributorType'.")
+                if "nameIdentifiers" in contributor:
+                    if not isinstance(contributor["nameIdentifiers"], list):
+                        errors.append("'nameIdentifiers' should be a list.")
+                    for name_id in contributor["nameIdentifiers"]:
+                        if not isinstance(name_id, dict) or "nameIdentifier" not in name_id or "nameIdentifierScheme" not in name_id:
+                            errors.append("Each 'nameIdentifier' should have 'nameIdentifier' and 'nameIdentifierScheme'.")
+                if "affiliation" in contributor:
+                    if not isinstance(contributor["affiliation"], list):
+                        errors.append("'affiliation' should be a list.")
+                    for affiliation in contributor["affiliation"]:
+                        if not isinstance(affiliation, dict) or "name" not in affiliation:
+                            errors.append("Each 'affiliation' should have a 'name' key.")
 
     # Check for 'descriptions'
     if "descriptions" not in json_record:
@@ -531,10 +530,9 @@ def validate_metadata(json_record):
         errors.append("'formats' should be a non-empty list.")
 
     # Check for 'language'
-    if "language" not in json_record:
-        errors.append("'language' field is missing.")
-    elif not isinstance(json_record["language"], str):
-        errors.append("'language' should be a string.")
+    if "language" in json_record:
+        if not isinstance(json_record["language"], str):
+            errors.append("'language' should be a string.")
 
     # Check for 'version'
     if "version" in json_record and not isinstance(json_record["version"], str):
