@@ -1,4 +1,3 @@
-name: InvenioRDM GitHub Archiver
 env:
   INVENIO_SERVER: https://data.caltech.edu
 
