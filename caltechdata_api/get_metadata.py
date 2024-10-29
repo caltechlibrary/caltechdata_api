@@ -27,7 +27,6 @@ def get_metadata(
         headers["Authorization"] = "Bearer %s" % token
 
     response = requests.get(url + idv, headers=headers, verify=verify)
-    print(response.headers)
     if response.status_code != 200:
         raise Exception(response.text)
     else:
