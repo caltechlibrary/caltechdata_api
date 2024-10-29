@@ -71,6 +71,11 @@ def get_or_set_token(production=True):
         with open(token_file, "rb") as f:
             encrypted_token = f.read()
             token = decrypt_token(encrypted_token, key)
+            print(
+                "Using saved CaltechDATA production token."
+                if production
+                else "Using saved CaltechDATA test token."
+            )
             return token
     except FileNotFoundError:
         while True:
@@ -422,8 +427,6 @@ def main():
 
 def create_record(production):
     token = get_or_set_token(production)
-    # keep_file = input("Do you want to keep your existing files? (yes/no): ").lower() == "yes"
-    print("Using CaltechDATA token:", token)
     while True:
         choice = get_user_input(
             "Do you want to use metadata from an existing file or create new metadata? (existing/create): "
