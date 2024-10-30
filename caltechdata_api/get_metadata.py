@@ -8,20 +8,38 @@ from datacite import schema43
 
 
 def get_metadata(
-    idv, production=True, validate=True, emails=False, schema="43", token=False
+    idv,
+    production=True,
+    validate=True,
+    emails=False,
+    schema="43",
+    token=False,
+    authors=False,
 ):
     # Returns just DataCite metadata or DataCite metadata with emails
 
     if production == True:
-        url = "https://data.caltech.edu/api/records/"
+        if authors:
+            url = "https://authors.library.caltech.edu/api/records/"
+        else:
+            url = "https://data.caltech.edu/api/records/"
         verify = True
     else:
-        url = "https://data.caltechlibrary.dev/api/records/"
+        if authors:
+            url = "https://authors.caltechlibrary.dev/api/records/"
+        else:
+            url = "https://data.caltechlibrary.dev/api/records/"
         verify = True
 
-    headers = {
-        "accept": "application/vnd.datacite.datacite+json",
-    }
+    if authors:
+        headers = {
+            "accept": "application/json",
+        }
+        validate = False
+    else:
+        headers = {
+            "accept": "application/vnd.datacite.datacite+json",
+        }
 
     if token:
         headers["Authorization"] = "Bearer %s" % token
@@ -58,6 +76,7 @@ if __name__ == "__main__":
         help="The CaltechDATA ID for each record of interest",
     )
     parser.add_argument("-test", dest="production", action="store_false")
+    parser.add_argument("-authors", dest="authors", action="store_true")
     parser.add_argument("-xml", dest="save_xml", action="store_true")
     parser.add_argument(
         "-skip_validate",
@@ -71,6 +90,7 @@ if __name__ == "__main__":
 
     production = args.production
     schema = args.schema
+    authors = args.authors
     skip_validate = args.skip_validate
     if skip_validate:
         validate = False
@@ -78,7 +98,9 @@ if __name__ == "__main__":
         validate = True
 
     for idv in args.ids:
-        metadata = get_metadata(idv, production, validate, schema)
+        metadata = get_metadata(
+            idv, production, validate, schema=schema, authors=authors
+        )
         outfile = open(str(idv) + ".json", "w")
         outfile.write(json.dumps(metadata, indent=4))
         outfile.close()
