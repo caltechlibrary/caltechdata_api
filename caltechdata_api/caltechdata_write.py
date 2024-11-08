@@ -63,6 +63,7 @@ def write_files_rdm(files, file_link, headers, f_headers, s3=None, keepfiles=Fal
                     raise Exception(result.text)
 
 
+
 def add_file_links(
     metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
 ):
@@ -248,7 +249,10 @@ def caltechdata_write(
     # Make draft and publish
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
-        raise Exception(result.text)
+        if result.status_code == 400 and "Referer checking failed" in result.text:
+            raise Exception("Token is incorrect or missing referer.")
+        else:
+            raise Exception(result.text)
     idv = result.json()["id"]
     publish_link = result.json()["links"]["publish"]
 
