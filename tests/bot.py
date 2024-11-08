@@ -9,20 +9,21 @@ from datetime import datetime
 import pytest
 from customize_schema import validate_metadata as validator43  # Import validator
 
+
 class CaltechDataTester:
     def __init__(self):
         self.test_dir = "caltech_test_data"
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         if not os.path.exists(self.test_dir):
             os.makedirs(self.test_dir)
-        
+
         # Create test data directory with timestamp
         self.test_run_dir = os.path.join(self.test_dir, f"test_run_{self.timestamp}")
         os.makedirs(self.test_run_dir)
-        
+
         # Initialize logging
         self.log_file = os.path.join(self.test_run_dir, "test_log.txt")
-        
+
     def log(self, message):
         """Log message to both console and file"""
         print(message)
@@ -38,7 +39,7 @@ class CaltechDataTester:
             f.write("2023-01-01,25.5,60\n")
             f.write("2023-01-02,26.0,62\n")
             f.write("2023-01-03,24.8,65\n")
-        
+
         self.log(f"Created test CSV file: {csv_path}")
         return csv_path
 
@@ -64,9 +65,9 @@ class CaltechDataTester:
     def extract_record_id(self, output_text):
         """Extract record ID from CLI output"""
         try:
-            for line in output_text.split('\n'):
-                if 'uploads/' in line:
-                    return line.strip().split('/')[-1]
+            for line in output_text.split("\n"):
+                if "uploads/" in line:
+                    return line.strip().split("/")[-1]
         except Exception as e:
             self.log(f"Error extracting record ID: {e}")
         return None
@@ -76,22 +77,22 @@ class CaltechDataTester:
         try:
             # Wait for record to be available
             time.sleep(5)
-            
+
             # Download metadata
-            url = f"https://data.caltech.edu/records/{record_id}/export/datacite-json?preview=1"
+            url = f"https://data.caltechlibrary.dev/records/{record_id}/export/datacite-json"
             response = requests.get(url)
             response.raise_for_status()
-            
+
             # Save metadata
             json_path = os.path.join(self.test_run_dir, f"{record_id}.json")
-            with open(json_path, 'w') as f:
+            with open(json_path, "w") as f:
                 json.dump(response.json(), f, indent=2)
-            
+
             self.log(f"Downloaded metadata to: {json_path}")
-            
+
             # Validate metadata using the imported validator
             validation_errors = validator43(response.json())
-            
+
             if validation_errors:
                 self.log("❌ Validation errors found:")
                 for error in validation_errors:
@@ -100,7 +101,7 @@ class CaltechDataTester:
             else:
                 self.log("✅ Validation passed successfully")
                 return True
-                
+
         except Exception as e:
             self.log(f"Error in download and validation: {e}")
             return False
@@ -109,28 +110,31 @@ class CaltechDataTester:
         """Run the complete test submission process"""
         try:
             self.log("Starting test submission process...")
-            
+
             # Create test files
             test_csv = self.create_test_files()
-            
+
             # Generate responses
             responses = self.generate_test_responses()
-            
+
             # Setup output capture
             class OutputCapture:
                 def __init__(self):
                     self.output = []
+
                 def write(self, text):
                     self.output.append(text)
                     sys.__stdout__.write(text)
+
                 def flush(self):
                     pass
+
                 def get_output(self):
-                    return ''.join(self.output)
-            
+                    return "".join(self.output)
+
             output_capture = OutputCapture()
             sys.stdout = output_capture
-            
+
             # Mock input and run CLI
             def mock_input(prompt):
                 self.log(f"Prompt: {prompt}")
@@ -139,31 +143,32 @@ class CaltechDataTester:
                     self.log(f"Response: {response}")
                     return response
                 return ""
-            
-            with patch('builtins.input', side_effect=mock_input):
+
+            with patch("builtins.input", side_effect=mock_input):
                 try:
                     import cli
+
                     cli.main()
                 except Exception as e:
                     self.log(f"Error during CLI execution: {e}")
                     return False
-            
+
             # Restore stdout
             sys.stdout = sys.__stdout__
-            
+
             # Get output and extract record ID
             cli_output = output_capture.get_output()
             record_id = self.extract_record_id(cli_output)
-            
+
             if not record_id:
                 self.log("Failed to extract record ID")
                 return False
-            
+
             self.log(f"Successfully created record with ID: {record_id}")
-            
+
             # Validate the record
             return self.download_and_validate_record(record_id)
-            
+
         except Exception as e:
             self.log(f"Error in test submission: {e}")
             return False
@@ -173,17 +178,19 @@ class CaltechDataTester:
                 os.remove(test_csv)
             self.log("Test files cleaned up")
 
+
 def main():
     tester = CaltechDataTester()
-    
+
     success = tester.run_test_submission()
-    
+
     if success:
         tester.log("\n🎉 Test submission and validation completed successfully!")
     else:
         tester.log("\n❌ Test submission or validation failed - check logs for details")
-    
+
     tester.log(f"\nTest logs available at: {tester.log_file}")
+
 
 if __name__ == "__main__":
     main()
