@@ -1,0 +1,22 @@
+{
+    "titles": [
+        {
+            "title": "Sample Title"
+        }
+    ],
+    "creators": [
+        {
+            "name": "John Doe"
+        }
+    ],
+    "descriptions": [
+        {
+            "description": "Sample Description"
+        }
+    ],
+    "publisher": "Caltech",
+    "publicationYear": "2023",
+    "types": {
+        "resourceTypeGeneral": "Dataset"
+    }
+}

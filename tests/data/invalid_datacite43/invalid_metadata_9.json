@@ -1,0 +1,16 @@
+{
+    "titles": [
+        {
+            "title": "Sample Title"
+        }
+    ],
+    "creators": [
+        {
+            "name": "John Doe"
+        }
+    ],
+    "publicationYear": "2023",
+    "types": {
+        "resourceTypeGeneral": "Dataset"
+    }
+}
