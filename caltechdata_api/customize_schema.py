@@ -596,7 +596,6 @@ def validate_metadata(json_record):
             errors.append("'types' must have 'resourceTypeGeneral'.")
         if "resourceType" in json_record["types"] and not isinstance(json_record["types"]["resourceType"], str):
             errors.append("'resourceType' should be a string if provided.")
-=======
             for location in json_record["geoLocations"]:
                 if not isinstance(location, dict):
                     errors.append("Each entry in 'geoLocations' must be a dictionary.")
