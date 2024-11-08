@@ -1,72 +1,75 @@
 {
-  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-  "@type": "SoftwareSourceCode",
-  "description": "Python wrapper for CaltechDATA API.",
-  "name": "caltechdata_api",
-  "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
-  "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
-  "license": "https://data.caltech.edu/license",
-  "version": "1.8.1",
-  "author": [
-    {
-      "@type": "Person",
-      "givenName": "Thomas E",
-      "familyName": "Morrell",
-      "affiliation": {
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "description": "Python wrapper for CaltechDATA API.",
+    "name": "caltechdata_api",
+    "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
+    "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
+    "license": "https://data.caltech.edu/license",
+    "version": "1.8.2",
+    "author": [
+        {
+            "@type": "Person",
+            "givenName": "Thomas E",
+            "familyName": "Morrell",
+            "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech Library"
             },
-      "email": "tmorrell@caltech.edu",
-      "@id": "https://orcid.org/0000-0001-9266-5146"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Bhattarai",
-      "familyName": "Rohan ",
-      "affiliation": {
+            "email": "tmorrell@caltech.edu",
+            "@id": "https://orcid.org/0000-0001-9266-5146"
+        },
+        {
+            "@type": "Person",
+            "givenName": "Bhattarai",
+            "familyName": "Rohan ",
+            "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech"
             },
-      "@id": "https://orcid.org/0009-0007-0323-4733"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Won",
-      "familyName": "Elizabeth",
-      "affiliation": {
+            "@id": "https://orcid.org/0009-0007-0323-4733"
+        },
+        {
+            "@type": "Person",
+            "givenName": "Won",
+            "familyName": "Elizabeth",
+            "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech"
             }
-    }],
-  "developmentStatus": "active",
-  "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.8.1.zip",
-  "keywords": [
-    "GitHub",
-    "metadata",
-    "software",
-    "InvenioRDM"
-  ],
-  "maintainer": [
-    {
-      "@type": "Person",
-      "givenName": "Thomas E",
-      "familyName": "Morrell",
-      "affiliation": {
+        }
+    ],
+    "developmentStatus": "active",
+    "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.8.1.zip",
+    "keywords": [
+        "GitHub",
+        "metadata",
+        "software",
+        "InvenioRDM"
+    ],
+    "maintainer": [
+        {
+            "@type": "Person",
+            "givenName": "Thomas E",
+            "familyName": "Morrell",
+            "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech Library"
             },
-      "email": "tmorrell@caltech.edu",
-      "@id": "https://orcid.org/0000-0001-9266-5146"
-    }],
-  "funding": {
-      "@type": "Grant",
-      "identifier":"2322420",
-      "name": "CC* Data Storage: Closing Caltech's data storage gap: from ad-hoc to well-managed stewardship of large-scale datasets",
-      "funder": {
-          "@id": "https://doi.org/10.13039/100000001",
-          "@type": "Organization",
-          "name": "National Science Foundation"
-     }
-  },
-  "programmingLanguage": "Python"
+            "email": "tmorrell@caltech.edu",
+            "@id": "https://orcid.org/0000-0001-9266-5146"
+        }
+    ],
+    "funding": {
+        "@type": "Grant",
+        "identifier": "2322420",
+        "name": "CC* Data Storage: Closing Caltech's data storage gap: from ad-hoc to well-managed stewardship of large-scale datasets",
+        "funder": {
+            "@id": "https://doi.org/10.13039/100000001",
+            "@type": "Organization",
+            "name": "National Science Foundation"
+        }
+    },
+    "programmingLanguage": "Python",
+    "identifier": "10.22002/wfjr5-kw507"
 }

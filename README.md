@@ -1,5 +1,7 @@
 # CaltechDATA API Python Library
 
+[![DOI](https://img.shields.io/badge/dynamic/json.svg?label=DOI&query=$.pids.doi.identifier&uri=https://data.caltech.edu/api/records/wfjr5-kw507/versions/latest)](https://data.caltech.edu/records/wfjr5-kw507/latest)
+
 The `caltechdata_api` Python library provides a convenient interface for interacting with the CaltechDATA API. It allows users to write files, create DataCite 4 standard JSON records, edit existing records, and retrieve metadata from the CaltechDATA repository.
 
 ## Features
