@@ -248,7 +248,10 @@ def caltechdata_write(
     # Make draft and publish
     result = requests.post(url + "/api/records", headers=headers, json=data)
     if result.status_code != 201:
-        raise Exception(result.text)
+        if result.status_code == 400 and "Referer checking failed" in result.text:
+            raise Exception("Token is incorrect or missing referer.")
+        else:
+            raise Exception(result.text)
     idv = result.json()["id"]
     publish_link = result.json()["links"]["publish"]
 
