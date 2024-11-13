@@ -393,20 +393,12 @@ def validate_metadata(json_record):
     """
     errors = []
 
-    # Check for 'types' and 'resourceTypeGeneral'
-    if "types" not in json_record:
-        errors.append("'types' field is missing.")
-    elif not isinstance(json_record["types"], dict):
-        errors.append("'types' field should be a dictionary.")
-    elif "resourceTypeGeneral" not in json_record["types"]:
-        errors.append("'resourceTypeGeneral' field is missing in 'types'.")
-
-    # Check for 'title'
     if "titles" not in json_record:
         errors.append("'titles' field is missing.")
     elif not isinstance(json_record["titles"], list) or len(json_record["titles"]) == 0:
         errors.append("'titles' should be a non-empty list.")
     else:
+
         # Ensure each title is a dictionary with 'title' field
         for title in json_record["titles"]:
             if not isinstance(title, dict) or "title" not in title:
@@ -480,6 +472,7 @@ def validate_metadata(json_record):
             errors.append("'relatedIdentifiers' should be a list.")
         else:
             for related_id in json_record["relatedIdentifiers"]:
+
                 if (
                     not isinstance(related_id, dict)
                     or "relatedIdentifier" not in related_id
@@ -493,6 +486,76 @@ def validate_metadata(json_record):
         if not isinstance(json_record["rightsList"], list):
             errors.append("'rightsList' should be a list.")
         else:
+
+            for right in json_record["rightsList"]:
+                if not isinstance(right, dict) or "rights" not in right:
+                    errors.append("Each 'rightsList' entry must have 'rights'.")
+                if "rightsURI" in right and not isinstance(right["rightsURI"], str):
+                    errors.append("'rightsURI' should be a string.")
+
+    # Check for 'subjects'
+    if "subjects" in json_record:
+        if not isinstance(json_record["subjects"], list):
+            errors.append("'subjects' should be a list.")
+        else:
+            for subject in json_record["subjects"]:
+                if not isinstance(subject, dict) or "subject" not in subject:
+                    errors.append("Each 'subject' must have a 'subject' key.")
+
+    # Check for 'dates'
+    if "dates" not in json_record:
+        errors.append("'dates' field is missing.")
+    elif not isinstance(json_record["dates"], list) or len(json_record["dates"]) == 0:
+        errors.append("'dates' should be a non-empty list.")
+    else:
+        for date in json_record["dates"]:
+            if (
+                not isinstance(date, dict)
+                or "date" not in date
+                or "dateType" not in date
+            ):
+                errors.append("Each 'date' must have 'date' and 'dateType'.")
+
+    # Check for 'identifiers'
+    if "identifiers" not in json_record:
+        errors.append("'identifiers' field is missing.")
+    elif (
+        not isinstance(json_record["identifiers"], list)
+        or len(json_record["identifiers"]) == 0
+    ):
+        errors.append("'identifiers' should be a non-empty list.")
+    else:
+        for identifier in json_record["identifiers"]:
+            if (
+                not isinstance(identifier, dict)
+                or "identifier" not in identifier
+                or "identifierType" not in identifier
+            ):
+                errors.append(
+                    "Each 'identifier' must have 'identifier' and 'identifierType'."
+                )
+
+    # Check for 'creators'
+    if "creators" not in json_record:
+        errors.append("'creators' field is missing.")
+    elif (
+        not isinstance(json_record["creators"], list)
+        or len(json_record["creators"]) == 0
+    ):
+        errors.append("'creators' should be a non-empty list.")
+    else:
+        for creator in json_record["creators"]:
+            if not isinstance(creator, dict) or "name" not in creator:
+                errors.append("Each 'creator' must have 'name'.")
+            if "affiliation" in creator:
+                if not isinstance(creator["affiliation"], list):
+                    errors.append("'affiliation' in 'creators' should be a list.")
+                for affiliation in creator["affiliation"]:
+                    if not isinstance(affiliation, dict) or "name" not in affiliation:
+                        errors.append(
+                            "Each 'affiliation' in 'creators' must have a 'name'."
+                        )
+
             for rights in json_record["rightsList"]:
                 if not isinstance(rights, dict) or "rights" not in rights:
                     errors.append(
@@ -504,6 +567,60 @@ def validate_metadata(json_record):
         if not isinstance(json_record["geoLocations"], list):
             errors.append("'geoLocations' should be a list.")
         else:
+
+            for geo_loc in json_record["geoLocations"]:
+                if not isinstance(geo_loc, dict) or "geoLocationPlace" not in geo_loc:
+                    errors.append("Each 'geoLocation' must have 'geoLocationPlace'.")
+                if "geoLocationPoint" in geo_loc:
+                    point = geo_loc["geoLocationPoint"]
+                    if (
+                        not isinstance(point, dict)
+                        or "pointLatitude" not in point
+                        or "pointLongitude" not in point
+                    ):
+                        errors.append(
+                            "'geoLocationPoint' must have 'pointLatitude' and 'pointLongitude'."
+                        )
+
+    # Check for 'formats'
+    if "formats" in json_record and (
+        not isinstance(json_record["formats"], list) or len(json_record["formats"]) == 0
+    ):
+        errors.append("'formats' should be a non-empty list.")
+
+    # Check for 'language'
+    if "language" in json_record:
+        if not isinstance(json_record["language"], str):
+            errors.append("'language' should be a string.")
+
+    # Check for 'version'
+    if "version" in json_record and not isinstance(json_record["version"], str):
+        errors.append("'version' should be a string.")
+
+    # Check for 'publisher'
+    if "publisher" not in json_record:
+        errors.append("'publisher' field is missing.")
+    elif not isinstance(json_record["publisher"], str):
+        errors.append("'publisher' should be a string.")
+
+    # Check for 'publicationYear'
+    if "publicationYear" not in json_record:
+        errors.append("'publicationYear' field is missing.")
+    elif not isinstance(json_record["publicationYear"], str):
+        errors.append("'publicationYear' should be a string.")
+
+    # Check for 'types'
+    if "types" not in json_record:
+        errors.append("'types' field is missing.")
+    elif not isinstance(json_record["types"], dict):
+        errors.append("'types' should be a dictionary.")
+    else:
+        if "resourceTypeGeneral" not in json_record["types"]:
+            errors.append("'types' must have 'resourceTypeGeneral'.")
+        if "resourceType" in json_record["types"] and not isinstance(
+            json_record["types"]["resourceType"], str
+        ):
+            errors.append("'resourceType' should be a string if provided.")
             for location in json_record["geoLocations"]:
                 if not isinstance(location, dict):
                     errors.append("Each entry in 'geoLocations' must be a dictionary.")

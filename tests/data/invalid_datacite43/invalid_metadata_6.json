@@ -1,0 +1,22 @@
+{
+    "titles": [
+        {
+            "title": "Sample Title"
+        }
+    ],
+    "creators": [
+        {
+            "name": "John Doe"
+        }
+    ],
+    "fundingReferences": [
+        {
+            "funderIdentifier": "1234"
+        }
+    ],
+    "publisher": "Caltech",
+    "publicationYear": "2023",
+    "types": {
+        "resourceTypeGeneral": "Dataset"
+    }
+}
