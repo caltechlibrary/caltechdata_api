@@ -80,7 +80,7 @@ def rdm_creators_contributors(person_list, peopleroles):
             else:
                 print(f"Name type {ntype} not known")
         else:
-            # We default to organizational if not known
+            # We default to personal if not known
             cre["type"] = "personal"
         change_label(cre, "givenName", "given_name")
         change_label(cre, "familyName", "family_name")
