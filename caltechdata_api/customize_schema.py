@@ -522,12 +522,14 @@ def validate_metadata(json_record):
             if not isinstance(creator, dict):
                 errors.append("Each 'creator' must be a dictionry")
             if "nameType" in creator:
-                if creator["nameType"] == "Organizational"
+                if creator["nameType"] == "Organizational":
                     if "name" not in creator:
                         errors.append("Each organizational 'creator' must have 'name'.")
-            else
+            else:
                 if "familyName" not in creator:
-                    errors.append("Each 'creator' must have a "familyName" or have type Organizational")
+                    errors.append(
+                        "Each 'creator' must have a 'familyName' or have type Organizational"
+                    )
             if "affiliation" in creator:
                 if not isinstance(creator["affiliation"], list):
                     errors.append("'affiliation' in 'creators' should be a list.")
@@ -542,28 +544,37 @@ def validate_metadata(json_record):
         if (
             not isinstance(json_record["contributors"], list)
             or len(json_record["contributors"]) == 0
-            ):
+        ):
             errors.append("'creators' should be a non-empty list.")
         else:
             for contributor in json_record["contributors"]:
                 if not isinstance(contributor, dict):
                     errors.append("Each 'contributor' must be a dictionry")
                 if "nameType" in contributor:
-                    if contributor["nameType"] == "Organizational"
+                    if contributor["nameType"] == "Organizational":
                         if "name" not in creator:
-                            errors.append("Each organizational 'contributor' must have 'name'.")
-                else
+                            errors.append(
+                                "Each organizational 'contributor' must have 'name'."
+                            )
+                else:
                     if "familyName" not in contributor:
-                        errors.append("Each 'contributor' must have a "familyName" or have type Organizational")
+                        errors.append(
+                            "Each 'contributor' must have a 'familyName' or have type Organizational"
+                        )
                 if "affiliation" in contributor:
                     if not isinstance(contributor["affiliation"], list):
-                        errors.append("'affiliation' in 'contributors' should be a list.")
+                        errors.append(
+                            "'affiliation' in 'contributors' should be a list."
+                        )
                     for affiliation in contributor["affiliation"]:
-                        if not isinstance(affiliation, dict) or "name" not in affiliation:
+                        if (
+                            not isinstance(affiliation, dict)
+                            or "name" not in affiliation
+                        ):
                             errors.append(
                                 "Each 'affiliation' in 'contributors' must have a 'name'."
                             )
-    
+
     # Check for 'geoLocations'
     if "geoLocations" in json_record:
         if not isinstance(json_record["geoLocations"], list):
