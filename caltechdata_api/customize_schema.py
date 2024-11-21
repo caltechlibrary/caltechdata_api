@@ -252,7 +252,7 @@ def customize_schema_rdm(json_record):
 
     if "identifiers" in json_record:
         identifiers = []
-        system_pids = ["DOI", "oai"]
+        system_pids = ["oai"]
         for identifier in json_record["identifiers"]:
             if identifier["identifierType"] not in system_pids:
                 identifier["scheme"] = identifiertypes[identifier.pop("identifierType")]
