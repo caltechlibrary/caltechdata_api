@@ -61,6 +61,12 @@ def decrypt_token(encrypted_token, key):
 
 # Function to get or set token with support for test system
 def get_or_set_token(production=True):
+    # First check for environment variable
+    env_token = os.environ.get('CALTECHDATA_TOKEN')
+    if env_token:
+        print("Using token from environment variable")
+        return env_token
+        
     key = load_or_generate_key()
 
     # Use different token files for production and test environments
@@ -92,7 +98,6 @@ def get_or_set_token(production=True):
                 return token
             else:
                 print("Tokens do not match. Please try again.")
-
 
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
