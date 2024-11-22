@@ -1,0 +1,36 @@
+name: CaltechDATA CLI Validation
+
+on:
+  pull_request:
+    paths:
+      - '**.py'
+      - '**.md'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history to compare changes
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: Check for required environment variable
+      run: |
+        if [[ -z "${{ secrets.CALTECHDATA_TOKEN }}" ]]; then
+          echo "Error: CALTECHDATA_TOKEN environment variable is not set"
+          exit 1
+        fi
+
+    - name: Check for publisher field removal in cli.py
+      if: contains(github.event.pull_request.changed_files, 'cli.py')
+      run: |
+        git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
+        if [ $? -eq 1 ]; then
+          echo "Error: The publisher field must not be removed from cli.py"
+          exit 1
