@@ -1,43 +1,30 @@
-name: CaltechDATA CLI Validation
+name: Validate Changes in CLI.py and README.md
 
 on:
+  push:
+    paths:
+      - '**/cli.py'
   pull_request:
     paths:
       - '**/cli.py'
-      - '**.md'
+      - 'README.md'
 
 jobs:
-  validate:
+  validate-cli:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch all history to compare changes
-        
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-        
-    - name: Check for required environment variable
-      run: |
-        if [[ -z "${{ secrets.CALTECHDATA_TOKEN }}" ]]; then
-          echo "Error: CALTECHDATA_TOKEN environment variable is not set"
-          exit 1
-        fi
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Check for publisher field removal in cli.py
-      if: contains(github.event.pull_request.changed_files, 'cli.py')
-      run: |
-        git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
-        if [ $? -eq 1 ]; then
-          echo "Error: The publisher field must not be removed from cli.py"
-          exit 1
-        fi
-        
-    - name: Allow README changes
-      if: contains(github.event.pull_request.changed_files, 'README.md')
-      run: |
-        echo "README.md changes are allowed"
-        exit 0
+      - name: Fail on publisher removal in cli.py
+        run: |
+          if git diff --exit-code HEAD^ HEAD -- cli.py | grep -E '^-.*publisher'; then
+            echo "Error: Publisher field was removed from cli.py"
+            exit 1
+          fi
+        shell: bash
+      - name: Validate README.md changes
+        run: echo "README.md changes detected; validation passed."
+        if: github.event_name == 'pull_request' && github.event.pull_request.changed_files == 1 && contains(github.event.pull_request.files, 'README.md')
+
