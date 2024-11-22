@@ -3,10 +3,10 @@ name: Validate Changes in CLI.py and README.md
 on:
   push:
     paths:
-      - '**/cli.py'
+      - 'caltechdata_api/cli.py'
   pull_request:
     paths:
-      - '**/cli.py'
+      - 'caltechdata_api/cli.py'
       - 'README.md'
 
 jobs:
