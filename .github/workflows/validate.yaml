@@ -1,7 +1,9 @@
+name: CaltechDATA CLI Validation
+
 on:
   pull_request:
     paths:
-      - '**.py'
+      - '**/cli.py'
       - '**.md'
 
 jobs:
@@ -25,23 +27,17 @@ jobs:
           exit 1
         fi
 
-    - name: Fetch changed files
-      id: changes
-      run: |
-        git fetch origin ${{ github.base_ref }}
-        git diff --name-only origin/${{ github.base_ref }} > changed_files.txt
-
-    - name: Validate cli.py changes
-      if: ${{ steps.changes.outputs.files && contains(steps.changes.outputs.files, 'cli.py') }}
+    - name: Check for publisher field removal in cli.py
+      if: contains(github.event.pull_request.changed_files, 'cli.py')
       run: |
         git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
         if [ $? -eq 1 ]; then
           echo "Error: The publisher field must not be removed from cli.py"
           exit 1
         fi
-
+        
     - name: Allow README changes
-      if: ${{ steps.changes.outputs.files && contains(steps.changes.outputs.files, 'README.md') }}
+      if: contains(github.event.pull_request.changed_files, 'README.md')
       run: |
         echo "README.md changes are allowed"
         exit 0
