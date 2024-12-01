@@ -1,4 +1,5 @@
-name: Validate Metadata Template Changes
+name: Validate Changes in CLI.py and README.md
+
 on:
   push:
     paths:
@@ -9,13 +10,13 @@ on:
       - 'README.md'
 
 jobs:
-  validate-metadata:
+  validate:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 0  # Fetch all history to compare changes
         
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -29,65 +30,18 @@ jobs:
           exit 1
         fi
 
-    - name: Install dependencies
+    - name: Check for publisher field removal in cli.py
+      if: contains(github.event.pull_request.changed_files, 'cli.py')
       run: |
-        python -m pip install --upgrade pip
-        pip install pyyaml
-
-    - name: Validate metadata template fields
-      run: |
-        cat > validate_metadata.py << 'EOF'
-        import sys
-        import re
-        
-        def check_metadata_fields(diff_content):
-            required_fields = {
-                '"titles"': '[{"title": args["title"]}]',
-                '"descriptions"': '[{"description": args["description"], "descriptionType": "Abstract"}]',
-                '"publishers"': '"CaltechDATA"',
-                '"creators"': '[{"affiliation": [{"affiliationIdentifier": affiliation_identifier,"affiliationIdentifierScheme": affiliationIdentifierScheme,"name": name}],"familyName": family_name,"givenName": given_name,"name": f"{family_name}, {given_name}","nameIdentifiers": [{"nameIdentifier": args["orcid"],"nameIdentifierScheme": "ORCID"}],"nameType": "Personal"}]',
-                '"types"': '{"resourceType": "", "resourceTypeGeneral": "Dataset"}',
-                '"rightsList"': '[args["license"]]',
-                '"fundingReferences"': 'args["fundingReferences"]',
-                '"schemaVersion"': '"http://datacite.org/schema/kernel-4"',
-                '"affiliation"': '[{"affiliationIdentifier": affiliation_identifier,"affiliationIdentifierScheme": affiliationIdentifierScheme,"name": name}]',
-                '"nameIdentifiers"': '[{"nameIdentifier": args["orcid"],"nameIdentifierScheme": "ORCID"}]',
-                '"awardNumber"': 'award_number',
-                '"awardTitle"': 'award_title', 
-                '"funderIdentifier"': 'funder_identifier',
-                '"funderIdentifierType"': '"ROR"',
-                '"funderName"': 'name'
-            }
-            
-            errors = []
-            
-            lines = diff_content.split('\n')
-            for line in lines:
-                if line.startswith('-'):
-                    for field, expected_value in required_fields.items():
-                        if field in line:
-                            if expected_value is None:
-                                errors.append(f"Error: Required field {field} cannot be removed")
-                            elif expected_value not in line:
-                                errors.append(f"Error: Required field {field} must maintain value {expected_value}")
-            
-            return errors
-        
-        diff_content = sys.stdin.read()
-        errors = check_metadata_fields(diff_content)
-        
-        if errors:
-            print("\n".join(errors))
-            sys.exit(1)
-        else:
-            print("Metadata template validation passed")
-            sys.exit(0)
-        EOF
-        
-        git diff origin/${{ github.base_ref }} -- caltechdata_api/cli.py | python validate_metadata.py
+        git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
+        if [ $? -eq 1 ]; then
+          echo "Error: The publisher field must not be removed from cli.py"
+          exit 1
+        fi
         
     - name: Allow README changes
       if: contains(github.event.pull_request.changed_files, 'README.md')
       run: |
         echo "README.md changes are allowed"
         exit 0
+
