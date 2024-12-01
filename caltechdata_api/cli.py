@@ -475,7 +475,6 @@ def create_record(production):
                 "descriptions": [
                     {"description": args["description"], "descriptionType": "Abstract"}
                 ],
-                "publishdsr": "CaltechDATA",
                 "creators": [
                     {
                         "affiliation": [
