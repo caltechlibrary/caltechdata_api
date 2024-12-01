@@ -470,6 +470,7 @@ def create_record(production):
         elif choice == "create":
             args = parse_arguments()
             family_name, given_name = get_names(args["orcid"])
+            '''
             metadata = {
                 "titles": [{"title": args["title"]}],
                 "descriptions": [
@@ -504,6 +505,7 @@ def create_record(production):
                 "fundingReferences": args["fundingReferences"],
                 "schemaVersion": "http://datacite.org/schema/kernel-4",
             }
+            '''
             filepath, file_link = upload_supporting_file()
             if confirm_upload():
                 if filepath != "":
