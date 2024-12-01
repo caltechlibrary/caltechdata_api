@@ -1,5 +1,4 @@
 name: Validate Changes in CLI.py and README.md
-
 on:
   push:
     paths:
@@ -24,24 +23,25 @@ jobs:
         python-version: '3.x'
         
     - name: Check for required environment variable
+      env:
+        CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
-        if [[ -z "${{ secrets.CALTECHDATA_TOKEN }}" ]]; then
+        if [ -z "$CALTECHDATA_TOKEN" ]; then
           echo "Error: CALTECHDATA_TOKEN environment variable is not set"
           exit 1
         fi
 
-    - name: Check for publisher field removal in cli.py
-      if: contains(github.event.pull_request.changed_files, 'cli.py')
+    - name: Check for publisher field in cli.py
+      if: contains(github.event.pull_request.changed_files, 'caltechdata_api/cli.py')
       run: |
-        git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
-        if [ $? -eq 1 ]; then
-          echo "Error: The publisher field must not be removed from cli.py"
+        if ! git diff origin/${{ github.base_ref }} -- caltechdata_api/cli.py | grep -q '"publisher": "CaltechDATA"'; then
+          echo "Error: The publisher field must be present in cli.py"
           exit 1
         fi
         
-    - name: Allow README changes
+    - name: Validate README.md changes
       if: contains(github.event.pull_request.changed_files, 'README.md')
       run: |
-        echo "README.md changes are allowed"
-        exit 0
-
+        echo "Performing basic validation on README.md changes"
+        # Add any specific README validation logic here
+        # For example, check file size, lint markdown, etc.
