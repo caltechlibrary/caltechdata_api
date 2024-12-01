@@ -1,4 +1,4 @@
-name: Validate Changes in CLI.py and README.md
+name: Validate Changes in CLI and README
 
 on:
   push:
@@ -14,15 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Fetch all history to compare changes
-        
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-        
+
     - name: Check for required environment variable
       run: |
         if [[ -z "${{ secrets.CALTECHDATA_TOKEN }}" ]]; then
@@ -31,17 +32,35 @@ jobs:
         fi
 
     - name: Check for publisher field removal in cli.py
-      if: contains(github.event.pull_request.changed_files, 'cli.py')
+      if: contains(github.event.pull_request.changed_files, 'caltechdata_api/cli.py')
       run: |
-        git diff origin/${{ github.base_ref }} -- cli.py | grep -q '"publisher": "CaltechDATA",'
-        if [ $? -eq 1 ]; then
-          echo "Error: The publisher field must not be removed from cli.py"
-          exit 1
-        fi
-        
-    - name: Allow README changes
+        echo "Checking publisher field in cli.py..."
+        python3 -c "
+import sys
+with open('caltechdata_api/cli.py', 'r') as f:
+    content = f.read()
+    if '\"publisher\": \"CaltechDATA\"' not in content:
+        print('Error: Publisher field must not be removed from cli.py')
+        sys.exit(1)
+    print('Publisher field check passed.')
+"
+
+    - name: Validate README changes
       if: contains(github.event.pull_request.changed_files, 'README.md')
       run: |
         echo "README.md changes are allowed"
-        exit 0
+        # Add any additional README validation checks here if needed
 
+    - name: Run Python linter
+      run: |
+        pip install flake8
+        flake8 caltechdata_api/cli.py
+
+    - name: Run Python type checking
+      run: |
+        pip install mypy
+        mypy caltechdata_api/cli.py
+
+    - name: Additional CLI script validation
+      run: |
+        python3 -m py_compile caltechdata_api/cli.py
