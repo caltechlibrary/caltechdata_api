@@ -34,19 +34,11 @@ jobs:
 
     - name: Check for publisher field in cli.py
       run: |
-        # Debug: Print the diff to understand what's happening
-        echo "Checking changes in cli.py:"
-        git diff --name-only
-
-        # Check if cli.py is in the list of changed files
-        if git diff --name-only | grep -q 'caltechdata_api/cli.py'; then
-          echo "Changes detected in cli.py"
-          
-          # Explicitly check for the publisher field
+        # Check if the file was modified
+        if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q 'caltechdata_api/cli.py'; then
+          # Use grep to check the content of the cli.py file for the publisher field
           if ! grep -q '"publisher": "CaltechDATA"' caltechdata_api/cli.py; then
             echo "Error: The publisher field must be present in cli.py with the value 'CaltechDATA'"
-            echo "Current cli.py content:"
-            cat caltechdata_api/cli.py
             exit 1
           else
             echo "Publisher field validation passed for cli.py"
@@ -57,7 +49,7 @@ jobs:
 
     - name: Validate README.md changes
       run: |
-        if git diff --name-only | grep -q 'README.md'; then
+        if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q 'README.md'; then
           echo "Performing basic validation on README.md changes"
           # Add your README validation logic here
           echo "README.md validation passed"
