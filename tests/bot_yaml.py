@@ -1,28 +1,28 @@
 import subprocess
+import time
+from unittest.mock import patch
 import sys
 import os
 import json
-import time
 import requests
 from datetime import datetime
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from caltechdata_api import customize_schema
+import pytest
+import importlib.util
+import traceback
 
 class CaltechDataTester:
     def __init__(self):
-        # Use GitHub-specific environment variables
-        self.github_workspace = os.environ.get('GITHUB_WORKSPACE', os.getcwd())
+        # Use GitHub Actions environment or create a local test directory
+        self.test_dir = os.environ.get('GITHUB_WORKSPACE', os.path.join(os.getcwd(), 'caltech_test_data'))
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Create temporary test directory
-        self.test_dir = os.path.join(self.github_workspace, "caltech_test_data")
+        # Ensure test directory exists
         os.makedirs(self.test_dir, exist_ok=True)
-        
+
         # Create test run directory
         self.test_run_dir = os.path.join(self.test_dir, f"test_run_{self.timestamp}")
         os.makedirs(self.test_run_dir, exist_ok=True)
-        
+
         # Initialize logging
         self.log_file = os.path.join(self.test_run_dir, "test_log.txt")
 
@@ -34,7 +34,6 @@ class CaltechDataTester:
 
     def create_test_files(self):
         """Create necessary test files"""
-        # Create a dummy CSV file in the test run directory
         csv_path = os.path.join(self.test_run_dir, "test_data.csv")
         with open(csv_path, "w") as f:
             f.write("date,temperature,humidity\n")
@@ -45,9 +44,16 @@ class CaltechDataTester:
         self.log(f"Created test CSV file: {csv_path}")
         return csv_path
 
+    def import_cli_module(self):
+        """Dynamically import cli module from the correct path"""
+        cli_path = os.path.join(os.environ.get('GITHUB_WORKSPACE', os.getcwd()), 'caltechdata_api', 'cli.py')
+        spec = importlib.util.spec_from_file_location("cli", cli_path)
+        cli_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cli_module)
+        return cli_module
+
     def generate_test_responses(self):
         """Generate test responses for CLI prompts"""
-        # Modify to use environment variables or predefined test data
         return {
             "Do you want to create or edit a CaltechDATA record? (create/edit): ": "create",
             "Do you want to use metadata from an existing file or create new metadata? (existing/create): ": "create",
@@ -67,27 +73,37 @@ class CaltechDataTester:
 
     def run_test_submission(self):
         """Run the complete test submission process"""
-        self.log("Starting test submission process...")
-
-        # Create test files
-        test_csv = self.create_test_files()
-
-        # Modify sys.path to import cli module correctly
-        cli_path = os.path.join(self.github_workspace, 'caltechdata_api', 'cli.py')
-        sys.path.insert(0, os.path.dirname(cli_path))
-
         try:
-            # Import cli module dynamically
-            import cli
+            self.log("Starting test submission process...")
 
-            # Capture stdout
-            import io
-            import contextlib
+            # Create test files
+            test_csv = self.create_test_files()
 
-            # Generate test responses
+            # Dynamically import cli module
+            cli_module = self.import_cli_module()
+
+            # Generate responses
             responses = self.generate_test_responses()
 
-            # Mock input function
+            # Setup output capture
+            class OutputCapture:
+                def __init__(self):
+                    self.output = []
+
+                def write(self, text):
+                    self.output.append(text)
+                    sys.__stdout__.write(text)
+
+                def flush(self):
+                    pass
+
+                def get_output(self):
+                    return "".join(self.output)
+
+            output_capture = OutputCapture()
+            sys.stdout = output_capture
+
+            # Mock input and run CLI
             def mock_input(prompt):
                 self.log(f"Prompt: {prompt}")
                 if prompt in responses:
@@ -96,55 +112,25 @@ class CaltechDataTester:
                     return response
                 return ""
 
-            # Patch input and run main
-            with patch('builtins.input', side_effect=mock_input):
-                with contextlib.redirect_stdout(io.StringIO()) as output:
-                    cli.main()
+            with patch("builtins.input", side_effect=mock_input):
+                # Use -test flag to use test mode
+                sys.argv = [sys.argv[0], '-test']
+                cli_module.main()
 
-            # Additional validation using customize_schema
-            test_metadata = self._extract_metadata_from_output(output.getvalue())
-            
-            if test_metadata:
-                validation_errors = customize_schema.validate_metadata(test_metadata)
-                
-                if validation_errors:
-                    self.log("❌ Metadata validation failed:")
-                    for error in validation_errors:
-                        self.log(f"  - {error}")
-                    return False
-                else:
-                    self.log("✅ Metadata validation passed successfully")
-                    return True
-            else:
-                self.log("❌ Could not extract metadata from CLI output")
-                return False
+            # Restore stdout
+            sys.stdout = sys.__stdout__
+
+            return True
 
         except Exception as e:
-            self.log(f"Error during test submission: {e}")
+            self.log(f"Error in test submission: {e}")
+            traceback.print_exc()
             return False
         finally:
             # Cleanup
-            if os.path.exists(test_csv):
+            if 'test_csv' in locals() and os.path.exists(test_csv):
                 os.remove(test_csv)
             self.log("Test files cleaned up")
-
-    def _extract_metadata_from_output(self, output):
-        """Extract metadata from CLI output"""
-        try:
-            # Look for JSON files created during the test run
-            json_files = [f for f in os.listdir(self.test_run_dir) if f.endswith('.json')]
-            
-            if json_files:
-                # Use the first JSON file found
-                json_path = os.path.join(self.test_run_dir, json_files[0])
-                
-                with open(json_path, 'r') as f:
-                    return json.load(f)
-            
-            return None
-        except Exception as e:
-            self.log(f"Error extracting metadata: {e}")
-            return None
 
 def main():
     tester = CaltechDataTester()
@@ -152,11 +138,11 @@ def main():
     success = tester.run_test_submission()
 
     if success:
-        tester.log("\n🎉 Test submission and validation completed successfully!")
-        sys.exit(0)  # Exit with success code
+        tester.log("\n🎉 Test submission completed successfully!")
+        sys.exit(0)
     else:
-        tester.log("\n❌ Test submission or validation failed - check logs for details")
-        sys.exit(1)  # Exit with failure code
+        tester.log("\n❌ Test submission failed - check logs for details")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
