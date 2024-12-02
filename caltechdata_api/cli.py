@@ -499,7 +499,16 @@ def create_record(production):
                 ],
                 "publisher": "CaltechDATA",
                 "publicationYear": "2024",
-                "identifiers":,
+                  "identifiers": [
+                    {
+                      "identifier": "10.22002",
+                      "identifierType": "DOI"
+                    },
+                    {
+                      "identifier": "oai:data.caltech.edu:",
+                      "identifierType": "oai"
+                    }
+                  ],
                 "creators": [
                     {
                         "affiliation": [
