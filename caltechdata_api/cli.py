@@ -498,6 +498,8 @@ def create_record(production):
                     }
                 ],
                 "publisher": "CaltechDATA",
+                "publicationYear": "2024",
+                "identifiers":,
                 "creators": [
                     {
                         "affiliation": [
