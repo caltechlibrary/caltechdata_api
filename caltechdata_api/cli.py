@@ -491,7 +491,7 @@ def create_record(production):
                         "nameIdentifiers": [
                             {
                                 "nameIdentifier": args["orcid"],
-                                "nameIdentifierScheme": "ORCsID",
+                                "nameIdentifierScheme": "ORCID",
                             }
                         ],
                         "nameType": "Personal",
