@@ -1,4 +1,5 @@
-name: Bot running CLI Py
+name: Validate CaltechDATA Metadata Integrity
+
 on:
   push:
     paths:
@@ -8,6 +9,7 @@ on:
     paths:
       - 'caltechdata_api/cli.py'
       - 'README.md'
+
 jobs:
   validate-metadata:
     runs-on: ubuntu-latest
@@ -16,16 +18,11 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest requests s3fs cryptography caltechdata_api
+        python-version: '3.x'
     
     - name: Check for Required Environment Variables
       env:
@@ -36,36 +33,29 @@ jobs:
           exit 1
         fi
     
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest requests s3fs cryptography caltechdata_api
+    
     - name: Validate README Documentation
       run: |
-        # Check for presence of key sections
         if ! grep -q "# CaltechDATA CLI" README.md; then
           echo "Error: README.md is missing the main project title section"
           exit 1
         fi
-        
         if ! grep -q "## Installation" README.md; then
           echo "Error: README.md is missing the Installation section"
           exit 1
         fi
-        
         if ! grep -q "## Usage" README.md; then
           echo "Error: README.md is missing the Usage section"
           exit 1
         fi
-        
         echo "README.md documentation validation passed"
     
-    - name: Run Metadata Validation
+    - name: Run CaltechDATA Metadata Validation
       env:
         CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
-        # Clone the repository
-        git clone https://github.com/${{ github.repository }} repo
-        cd repo
-        
-        # Navigate to the tests directory
-        cd tests
-        
-        # Run the bot.py script
-        python bot.py
+        python tests/bot_yaml.py
