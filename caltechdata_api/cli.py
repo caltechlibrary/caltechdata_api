@@ -498,33 +498,6 @@ def create_record(production):
                     }
                 ],
                 "publisher": "CaltechDATA",
-                "publicationYear": "2019",
-                "identifiers": [
-                    {
-                        "identifier": "10.14291/tccon.ggg2014.eureka01.R3",
-                        "identifierType": "DOI"
-                    },
-                    {
-                        "identifier": "1171",
-                        "identifierType": "CaltechDATA_Identifier"
-                    },
-                    {
-                        "identifier": "GGG2014",
-                        "identifierType": "Software_Version"
-                    },
-                    {
-                        "identifier": "eu",
-                        "identifierType": "id"
-                    },
-                    {
-                        "identifier": "eureka01",
-                        "identifierType": "longName"
-                    },
-                    {
-                        "identifier": "R1",
-                        "identifierType": "Data_Revision"
-                    }
-                ],
                 "creators": [
                     {
                         "affiliation": [
