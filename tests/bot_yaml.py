@@ -10,12 +10,15 @@ import pytest
 import importlib.util
 import traceback
 
+
 class CaltechDataTester:
     def __init__(self):
         # Use GitHub Actions environment or create a local test directory
-        self.test_dir = os.environ.get('GITHUB_WORKSPACE', os.path.join(os.getcwd(), 'caltech_test_data'))
+        self.test_dir = os.environ.get(
+            "GITHUB_WORKSPACE", os.path.join(os.getcwd(), "caltech_test_data")
+        )
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
+
         # Ensure test directory exists
         os.makedirs(self.test_dir, exist_ok=True)
 
@@ -46,7 +49,9 @@ class CaltechDataTester:
 
     def import_cli_module(self):
         """Dynamically import cli module from the correct path"""
-        cli_path = os.path.join(os.environ.get('GITHUB_WORKSPACE', os.getcwd()), 'caltechdata_api', 'cli.py')
+        cli_path = os.path.join(
+            os.environ.get("GITHUB_WORKSPACE", os.getcwd()), "caltechdata_api", "cli.py"
+        )
         spec = importlib.util.spec_from_file_location("cli", cli_path)
         cli_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cli_module)
@@ -60,7 +65,9 @@ class CaltechDataTester:
             "Enter the title of the dataset: ": f"Test Dataset {self.timestamp}",
             "Enter the abstract or description of the dataset: ": "This is an automated test dataset containing sample climate data for validation purposes.",
             "Enter the number corresponding to the desired license: ": "1",
-            "Enter your ORCID identifier: ": os.environ.get('TEST_ORCID', '0000-0002-1825-0097'),
+            "Enter your ORCID identifier: ": os.environ.get(
+                "TEST_ORCID", "0000-0002-1825-0097"
+            ),
             "How many funding entries do you want to provide? ": "1",
             "Enter the award number for funding: ": "NSF-1234567",
             "Enter the award title for funding: ": "Automated Testing Grant",
@@ -114,7 +121,7 @@ class CaltechDataTester:
 
             with patch("builtins.input", side_effect=mock_input):
                 # Use -test flag to use test mode
-                sys.argv = [sys.argv[0], '-test']
+                sys.argv = [sys.argv[0], "-test"]
                 cli_module.main()
 
             # Restore stdout
@@ -128,9 +135,10 @@ class CaltechDataTester:
             return False
         finally:
             # Cleanup
-            if 'test_csv' in locals() and os.path.exists(test_csv):
+            if "test_csv" in locals() and os.path.exists(test_csv):
                 os.remove(test_csv)
             self.log("Test files cleaned up")
+
 
 def main():
     tester = CaltechDataTester()
@@ -143,6 +151,7 @@ def main():
     else:
         tester.log("\n❌ Test submission failed - check logs for details")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
