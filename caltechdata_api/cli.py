@@ -475,40 +475,19 @@ def create_record(production):
                 "descriptions": [
                     {"description": args["description"], "descriptionType": "Abstract"}
                 ],
-                 "dates": [
-                    {
-                        "date": "2019-01-31",
-                        "dateType": "Created"
-                    },
-                    {
-                        "date": "2020-07-01",
-                        "dateType": "Updated"
-                    },
-                    {
-                        "date": "2010-07-24/2019-08-15",
-                        "dateType": "Collected"
-                    },
-                    {
-                        "date": "2019-01-31",
-                        "dateType": "Submitted"
-                    },
-                    {
-                        "date": "2019-01-31",
-                        "dateType": "Issued"
-                    }
+                "dates": [
+                    {"date": "2019-01-31", "dateType": "Created"},
+                    {"date": "2020-07-01", "dateType": "Updated"},
+                    {"date": "2010-07-24/2019-08-15", "dateType": "Collected"},
+                    {"date": "2019-01-31", "dateType": "Submitted"},
+                    {"date": "2019-01-31", "dateType": "Issued"},
                 ],
                 "publisher": "CaltechDATA",
                 "publicationYear": "2024",
-                  "identifiers": [
-                    {
-                      "identifier": "10.22002",
-                      "identifierType": "DOI"
-                    },
-                    {
-                      "identifier": "oai:data.caltech.edu:",
-                      "identifierType": "oai"
-                    }
-                  ],
+                "identifiers": [
+                    {"identifier": "10.22002", "identifierType": "DOI"},
+                    {"identifier": "oai:data.caltech.edu:", "identifierType": "oai"},
+                ],
                 "creators": [
                     {
                         "affiliation": [
