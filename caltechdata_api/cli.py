@@ -475,7 +475,56 @@ def create_record(production):
                 "descriptions": [
                     {"description": args["description"], "descriptionType": "Abstract"}
                 ],
+                 "dates": [
+                    {
+                        "date": "2019-01-31",
+                        "dateType": "Created"
+                    },
+                    {
+                        "date": "2020-07-01",
+                        "dateType": "Updated"
+                    },
+                    {
+                        "date": "2010-07-24/2019-08-15",
+                        "dateType": "Collected"
+                    },
+                    {
+                        "date": "2019-01-31",
+                        "dateType": "Submitted"
+                    },
+                    {
+                        "date": "2019-01-31",
+                        "dateType": "Issued"
+                    }
+                ],
                 "publisher": "CaltechDATA",
+                "publicationYear": "2019",
+                "identifiers": [
+                    {
+                        "identifier": "10.14291/tccon.ggg2014.eureka01.R3",
+                        "identifierType": "DOI"
+                    },
+                    {
+                        "identifier": "1171",
+                        "identifierType": "CaltechDATA_Identifier"
+                    },
+                    {
+                        "identifier": "GGG2014",
+                        "identifierType": "Software_Version"
+                    },
+                    {
+                        "identifier": "eu",
+                        "identifierType": "id"
+                    },
+                    {
+                        "identifier": "eureka01",
+                        "identifierType": "longName"
+                    },
+                    {
+                        "identifier": "R1",
+                        "identifierType": "Data_Revision"
+                    }
+                ],
                 "creators": [
                     {
                         "affiliation": [
