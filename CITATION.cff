@@ -11,7 +11,7 @@ authors:
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
-doi: 10.22002/ncces-b9d28
+doi: 10.22002/bv2pv-2b295
 version: 1.9.1
 license-url: "https://data.caltech.edu/license"
 keywords:
