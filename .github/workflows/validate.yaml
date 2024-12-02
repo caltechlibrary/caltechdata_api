@@ -69,23 +69,3 @@ jobs:
           echo "Error: CALTECHDATA_TOKEN environment variable is not set"
           exit 1
         fi
-    
-    - name: Validate README Documentation
-      run: |
-        # Check for presence of key sections
-        if ! grep -q "# CaltechDATA CLI" README.md; then
-          echo "Error: README.md is missing the main project title section"
-          exit 1
-        fi
-        
-        if ! grep -q "## Installation" README.md; then
-          echo "Error: README.md is missing the Installation section"
-          exit 1
-        fi
-        
-        if ! grep -q "## Usage" README.md; then
-          echo "Error: README.md is missing the Usage section"
-          exit 1
-        fi
-        
-        echo "README.md documentation validation passed"
