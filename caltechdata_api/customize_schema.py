@@ -416,8 +416,12 @@ def validate_metadata(json_record):
 
     # Check for 'identifiers'
     if "identifiers" in json_record:
-        if not isinstance(json_record["identifiers"], list):
-            errors.append("'identifiers' should be a list.")
+
+        if (
+            not isinstance(json_record["identifiers"], list)
+            or len(json_record["identifiers"]) == 0
+        ):
+            errors.append("'identifiers' should be a non-empty list.")
         else:
             for identifier in json_record["identifiers"]:
                 if (
@@ -489,25 +493,6 @@ def validate_metadata(json_record):
                 or "dateType" not in date
             ):
                 errors.append("Each 'date' must have 'date' and 'dateType'.")
-
-    # Check for 'identifiers'
-    if "identifiers" not in json_record:
-        errors.append("'identifiers' field is missing.")
-    elif (
-        not isinstance(json_record["identifiers"], list)
-        or len(json_record["identifiers"]) == 0
-    ):
-        errors.append("'identifiers' should be a non-empty list.")
-    else:
-        for identifier in json_record["identifiers"]:
-            if (
-                not isinstance(identifier, dict)
-                or "identifier" not in identifier
-                or "identifierType" not in identifier
-            ):
-                errors.append(
-                    "Each 'identifier' must have 'identifier' and 'identifierType'."
-                )
 
     # Check for 'creators'
     if "creators" not in json_record:
