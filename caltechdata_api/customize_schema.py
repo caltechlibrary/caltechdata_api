@@ -416,7 +416,6 @@ def validate_metadata(json_record):
 
     # Check for 'identifiers'
     if "identifiers" in json_record:
-
         if (
             not isinstance(json_record["identifiers"], list)
             or len(json_record["identifiers"]) == 0
