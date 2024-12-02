@@ -475,7 +475,7 @@ def create_record(production):
                 "descriptions": [
                     {"description": args["description"], "descriptionType": "Abstract"}
                 ],
-                "publisherss": "CaltechDATA",
+                "publisher": "CaltechDATA",
                 "creators": [
                     {
                         "affiliation": [
@@ -491,7 +491,7 @@ def create_record(production):
                         "nameIdentifiers": [
                             {
                                 "nameIdentifier": args["orcid"],
-                                "nameIdentifierScheme": "ORCID",
+                                "nameIdentifierScheme": "ORCsID",
                             }
                         ],
                         "nameType": "Personal",
