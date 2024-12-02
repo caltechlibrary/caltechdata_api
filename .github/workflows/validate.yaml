@@ -1,29 +1,67 @@
-name: Validate Changes in CLI.py and README.md
-#adding validator.py code running
+name: Validate CaltechDATA Metadata Integrity
+
 on:
   push:
     paths:
       - 'caltechdata_api/cli.py'
+      - 'README.md'
   pull_request:
     paths:
       - 'caltechdata_api/cli.py'
       - 'README.md'
 
 jobs:
-  validate:
+  validate-metadata:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Fetch all history to compare changes
+        fetch-depth: 0
         
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
         
-    - name: Check for required environment variable
+    - name: Validate Critical Metadata Fields
+      run: |
+        # Validate Publisher
+        if ! grep -q '"publisher": "CaltechDATA"' caltechdata_api/cli.py; then
+          echo "Error: The publisher field must be present in cli.py with the value 'CaltechDATA'"
+          exit 1
+        fi
+        
+        # Validate Schema Version
+        if ! grep -q '"schemaVersion": "http://datacite.org/schema/kernel-4"' caltechdata_api/cli.py; then
+          echo "Error: The schemaVersion must be present with the value 'http://datacite.org/schema/kernel-4'"
+          exit 1
+        fi
+        
+        # Validate Resource Type Structure
+        if ! grep -q '"types": {"resourceType": "", "resourceTypeGeneral": "Dataset"}' caltechdata_api/cli.py; then
+          echo "Error: The types field must be present with empty resourceType and resourceTypeGeneral set to 'Dataset'"
+          exit 1
+        fi
+        
+        # Validate License Options
+        license_options=$(grep -A10 'License options:' caltechdata_api/cli.py)
+        if [[ ! "$license_options" =~ "Creative Commons Zero Waiver (cc-zero)" ]] || 
+           [[ ! "$license_options" =~ "Creative Commons Attribution (cc-by)" ]] || 
+           [[ ! "$license_options" =~ "Creative Commons Attribution Non Commercial (cc-by-nc)" ]]; then
+          echo "Error: Required license options are missing"
+          exit 1
+        fi
+        
+        # Validate ORCID Handling
+        if ! grep -q 'nameIdentifierScheme": "ORCID"' caltechdata_api/cli.py; then
+          echo "Error: ORCID identifier scheme validation is missing"
+          exit 1
+        fi
+        
+        echo "All critical metadata field validations passed!"
+    
+    - name: Check for Required Environment Variables
       env:
         CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
@@ -31,19 +69,23 @@ jobs:
           echo "Error: CALTECHDATA_TOKEN environment variable is not set"
           exit 1
         fi
-
-    - name: Check for publisher field in cli.py
+    
+    - name: Validate README Documentation
       run: |
-        # Always run the check for push or pull request
-        if ! grep -q '"publisher": "CaltechDATA"' caltechdata_api/cli.py; then
-          echo "Error: The publisher field must be present in cli.py with the value 'CaltechDATA'"
+        # Check for presence of key sections
+        if ! grep -q "# CaltechDATA CLI" README.md; then
+          echo "Error: README.md is missing the main project title section"
           exit 1
-        else
-          echo "Publisher field validation passed for cli.py"
         fi
-
-    - name: Validate README.md changes
-      run: |
-        echo "Performing basic validation on README.md"
-        # Add your README validation logic here
-        echo "README.md validation passed"
+        
+        if ! grep -q "## Installation" README.md; then
+          echo "Error: README.md is missing the Installation section"
+          exit 1
+        fi
+        
+        if ! grep -q "## Usage" README.md; then
+          echo "Error: README.md is missing the Usage section"
+          exit 1
+        fi
+        
+        echo "README.md documentation validation passed"
