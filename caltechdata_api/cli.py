@@ -229,7 +229,7 @@ def parse_arguments():
         family_name, given_name = get_names(orcid)
         if family_name is not None and given_name is not None:
             args["orcid"] = orcid
-            break  # Break out of the loop if names are successfully retrieved
+            break  # Break out of the loop if names are successfully retrieveds
         retry = input("Do you want to try again? (y/n): ")
         if retry.lower() != "y":
             print("Exiting program.")
