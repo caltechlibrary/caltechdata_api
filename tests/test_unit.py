@@ -63,10 +63,7 @@ def test_invalid_json(invalid_file):
             logger.error(f"Validation exception for {invalid_file}: {str(e)}")
             raise
     
-    with pytest.raises(
-        (ValueError, KeyError, AssertionError, TypeError), 
-        reason=f"Expected validation to fail for file: {invalid_file}"
-    ):
+    with pytest.raises((ValueError, KeyError, AssertionError, TypeError)):
         validate_wrapper()
 
 @pytest.mark.parametrize(
