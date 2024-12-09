@@ -59,7 +59,7 @@ def decrypt_token(encrypted_token, key):
     return f.decrypt(encrypted_token).decode()
 
 
-# Function to get or set token with support for test system
+# Function to get or set token with support for test systems
 def get_or_set_token(production=True):
     # First check for environment variable
     env_token = os.environ.get("CALTECHDATA_TOKEN")
