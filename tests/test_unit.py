@@ -8,8 +8,8 @@ import sys
 
 # Adjust paths to be more robust across different execution environments
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-VALID_DATACITE43_DIR = os.path.join(BASE_DIR, "tests", "data", "datacite43")
-INVALID_DATACITE43_DIR = os.path.join(BASE_DIR, "tests", "data", "invalid_datacite43")
+VALID_DATACITE43_DIR = os.path.join(BASE_DIR, "data", "datacite43")
+INVALID_DATACITE43_DIR = os.path.join(BASE_DIR, "data", "invalid_datacite43")
 
 # Function to get all JSON files in the directory
 def get_all_json_files(directory):
