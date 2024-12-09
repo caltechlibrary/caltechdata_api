@@ -482,7 +482,7 @@ def create_record(production):
                     {"date": "2019-01-31", "dateType": "Submitted"},
                     {"date": "2019-01-31", "dateType": "Issued"},
                 ],
-                "publishers": "CaltechDATA",
+                "publisher": "CaltechDATA",
                 "publicationYear": "2024",
                 "identifiers": [
                     {"identifier": "10.22002", "identifierType": "DOI"},
