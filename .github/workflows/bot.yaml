@@ -43,3 +43,7 @@ jobs:
         CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
         python tests/bot_yaml.py
+    - name: Run Unit Tests
+      run: |
+        cd tests
+        pytest test_unit.py
