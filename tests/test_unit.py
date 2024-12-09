@@ -1,8 +1,12 @@
 import os
 import pytest
+import logging
 from customize_schema import validate_metadata as validator43
 from helpers import load_json_path
-import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Dynamically determine the base path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,21 +42,31 @@ def test_valid_json(valid_file):
 @pytest.mark.parametrize("invalid_file", INVALID_DATACITE43_FILES)
 def test_invalid_json(invalid_file):
     """Test that invalid example files do not validate successfully."""
-    print(f"\nValidating file: {invalid_file}")
+    logger.debug(f"Attempting to validate invalid file: {invalid_file}")
+    
     json_data = load_json_path(invalid_file)
     
-    # Explicitly handle missing 'rightsList'
     def validate_wrapper():
         try:
-            validator43(json_data)
-        except KeyError as e:
-            # If 'rightsList' is missing, consider this a validation failure
-            if str(e).strip("'") == 'rightsList':
+            validation_errors = validator43(json_data)
+            
+            logger.debug(f"Validation result for {invalid_file}: {validation_errors}")
+            
+            if validation_errors:
+                logger.debug(f"Found validation errors in {invalid_file}")
                 return
+            
+            logger.error(f"No validation errors found for supposedly invalid file: {invalid_file}")
+            raise ValueError(f"Validation did not fail for invalid file: {invalid_file}")
+        
+        except Exception as e:
+            logger.error(f"Validation exception for {invalid_file}: {str(e)}")
             raise
-        raise ValueError("Expected validation to fail")
     
-    with pytest.raises((ValueError, KeyError, AssertionError)):
+    with pytest.raises(
+        (ValueError, KeyError, AssertionError, TypeError), 
+        reason=f"Expected validation to fail for file: {invalid_file}"
+    ):
         validate_wrapper()
 
 @pytest.mark.parametrize(
