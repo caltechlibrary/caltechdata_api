@@ -418,7 +418,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    production = not args.test  # Set production to False if -test flag is provideds
+    production = not args.test  # Set production to False if -test flag is provided
 
     choice = get_user_input(
         "Do you want to create or edit a CaltechDATA record? (create/edit): "
