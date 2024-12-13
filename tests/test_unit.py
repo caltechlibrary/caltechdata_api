@@ -1,7 +1,7 @@
 import os
 import pytest
 import logging
-from customize_schema import validate_metadata as validator43
+from caltechdata_api import validate_metadata as validator43
 from helpers import load_json_path
 
 # Configure logging
