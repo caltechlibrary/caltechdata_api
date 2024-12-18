@@ -8,6 +8,9 @@ authors:
   - family-names: Rohan 
     given-names: Bhattarai
     orcid: https://orcid.org/0009-0007-0323-4733
+  - family-names: Abakah
+    given-names: Alexander A
+    orcid: https://orcid.org/0009-0003-5640-6691
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
