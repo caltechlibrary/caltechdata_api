@@ -37,6 +37,17 @@
                 "@type": "Organization",
                 "name": "Caltech"
             }
+        },
+        {
+            "@type": "Person",
+            "givenName": "Alexander A",
+            "familyName": "Abakah",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech Library"
+            },
+            "email": "aabakah@caltech.edu",
+            "@id": "https://orcid.org/0009-0003-5640-6691"
         }
     ],
     "developmentStatus": "active",
