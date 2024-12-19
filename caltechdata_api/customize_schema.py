@@ -480,18 +480,17 @@ def validate_metadata(json_record):
                     errors.append("Each 'subject' must have a 'subject' key.")
 
     # Check for 'dates'
-    if "dates" not in json_record:
-        errors.append("'dates' field is missing.")
-    elif not isinstance(json_record["dates"], list) or len(json_record["dates"]) == 0:
-        errors.append("'dates' should be a non-empty list.")
-    else:
-        for date in json_record["dates"]:
-            if (
-                not isinstance(date, dict)
-                or "date" not in date
-                or "dateType" not in date
-            ):
-                errors.append("Each 'date' must have 'date' and 'dateType'.")
+    if "dates" in json_record:
+        if not isinstance(json_record["dates"], list) or len(json_record["dates"]) == 0:
+            errors.append("'dates' should be a non-empty list.")
+        else:
+            for date in json_record["dates"]:
+                if (
+                    not isinstance(date, dict)
+                    or "date" not in date
+                    or "dateType" not in date
+                ):
+                    errors.append("Each 'date' must have 'date' and 'dateType'.")
 
     # Check for 'creators'
     if "creators" not in json_record:
@@ -601,10 +600,9 @@ def validate_metadata(json_record):
         errors.append("'publisher' should be a string.")
 
     # Check for 'publicationYear'
-    if "publicationYear" not in json_record:
-        errors.append("'publicationYear' field is missing.")
-    elif not isinstance(json_record["publicationYear"], str):
-        errors.append("'publicationYear' should be a string.")
+    if "publicationYear" in json_record:
+        if not isinstance(json_record["publicationYear"], str):
+            errors.append("'publicationYear' should be a string.")
 
     # Check for 'types'
     if "types" not in json_record:
