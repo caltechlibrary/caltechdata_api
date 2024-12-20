@@ -1,8 +1,7 @@
 import argparse
 import requests
 import s3fs
-from caltechdata_api import caltechdata_write, caltechdata_edit
-from md_to_json import parse_readme_to_json
+from caltechdata_api import caltechdata_write, caltechdata_edit, parse_readme_to_json
 import json
 import os
 from cryptography.fernet import Fernet
