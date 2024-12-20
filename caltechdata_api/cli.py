@@ -186,10 +186,11 @@ def get_funding_details():
         "funderIdentifierType": "ROR",
     }
 
+
 # Add profile handling functions
 def save_profile():
     profile_file = os.path.join(caltechdata_directory, "profile.json")
-    
+
     # Get ORCID
     while True:
         orcid = get_user_input("Enter your ORCID identifier: ")
@@ -210,14 +211,15 @@ def save_profile():
         "orcid": orcid,
         "family_name": family_name,
         "given_name": given_name,
-        "funding_references": funding_references
+        "funding_references": funding_references,
     }
 
     with open(profile_file, "w") as f:
         json.dump(profile_data, f, indent=2)
-    
+
     print("Profile saved successfully!")
     return profile_data
+
 
 def load_profile():
     profile_file = os.path.join(caltechdata_directory, "profile.json")
@@ -227,15 +229,17 @@ def load_profile():
     except FileNotFoundError:
         return None
 
+
 def get_or_create_profile():
     profile = load_profile()
     if profile:
         use_saved = input("Use saved profile? (y/n): ").lower()
-        if use_saved == 'y':
+        if use_saved == "y":
             return profile
-    
+
     print("Creating new profile...")
     return save_profile()
+
 
 def parse_arguments():
     welcome_message()
@@ -467,7 +471,7 @@ def main():
         choice = get_user_input(
             "What would you like to do? (create/edit/profile/exit): "
         ).lower()
-        
+
         if choice == "create":
             create_record(production)
         elif choice == "edit":
@@ -477,8 +481,10 @@ def main():
         elif choice == "exit":
             break
         else:
-            print("Invalid choice. Please enter 'create', 'edit', 'profile', or 'exit'.")
-            
+            print(
+                "Invalid choice. Please enter 'create', 'edit', 'profile', or 'exit'."
+            )
+
 
 def create_record(production):
     token = get_or_set_token(production)
