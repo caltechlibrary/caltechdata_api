@@ -68,7 +68,7 @@ def get_or_set_token(production=True):
 
     key = load_or_generate_key()
 
-    # Use different token files for production and test environments
+    # Use different token files for production and test environment
     token_filename = "token.txt" if production else "token_test.txt"
     token_file = os.path.join(caltechdata_directory, token_filename)
 
