@@ -30,15 +30,6 @@ jobs:
       with:
         python-version: '3.x'
     
-    - name: Check for Required Environment Variables
-      env:
-        CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
-      run: |
-        if [ -z "$CALTECHDATA_TOKEN" ]; then
-          echo "Error: CALTECHDATA_TOKEN environment variable is not set"
-          exit 1
-        fi
-    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
