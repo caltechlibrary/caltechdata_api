@@ -1,8 +1,7 @@
 import argparse
 import requests
 import s3fs
-from caltechdata_api import caltechdata_write, caltechdata_edit
-from md_to_json import parse_readme_to_json
+from caltechdata_api import caltechdata_write, caltechdata_edit, parse_readme_to_json
 import json
 import os
 from cryptography.fernet import Fernet
@@ -34,7 +33,7 @@ def generate_key():
     return Fernet.generate_key()
 
 
-# Load the key from a file or generate a new one if not present
+# Load the key from a file or generate a new one if not present.
 def load_or_generate_key():
     key_file = os.path.join(caltechdata_directory, "key.key")
     if os.path.exists(key_file):
@@ -59,11 +58,17 @@ def decrypt_token(encrypted_token, key):
     return f.decrypt(encrypted_token).decode()
 
 
-# Function to get or set token with support for test system
+# Function to get or set token with support for test systems
 def get_or_set_token(production=True):
+    # First check for environment variable
+    env_token = os.environ.get("CALTECHDATA_TOKEN")
+    if env_token:
+        print("Using token from environment variable")
+        return env_token
+
     key = load_or_generate_key()
 
-    # Use different token files for production and test environments
+    # Use different token files for production and test environment
     token_filename = "token.txt" if production else "token_test.txt"
     token_file = os.path.join(caltechdata_directory, token_filename)
 
