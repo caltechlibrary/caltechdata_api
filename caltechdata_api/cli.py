@@ -1,7 +1,8 @@
 import argparse
 import requests
 import s3fs
-from caltechdata_api import caltechdata_write, caltechdata_edit, parse_readme_to_json
+from caltechdata_api import caltechdata_write, caltechdata_edit
+from md_to_json import parse_readme_to_json
 import json
 import os
 from cryptography.fernet import Fernet
@@ -97,6 +98,16 @@ def get_or_set_token(production=True):
                 return token
             else:
                 print("Tokens do not match. Please try again.")
+
+
+# Delete the saved token file.
+def delete_saved_token():
+    token_file = os.path.join(caltechdata_directory, "token.txt")
+    if os.path.exists(token_file):
+        os.remove(token_file)
+        print("Token deleted successfully.")
+    else:
+        print("No token found to delete.")
 
 
 def welcome_message():
@@ -458,6 +469,9 @@ def parse_args():
     parser.add_argument(
         "-test", action="store_true", help="Use test mode, sets production to False"
     )
+    parser.add_argument(
+        "--delete-token", action="store_true", help="Delete the saved token."
+    )
     args = parser.parse_args()
     return args
 
@@ -465,7 +479,8 @@ def parse_args():
 def main():
     args = parse_args()
     production = not args.test
-
+    if args.delete_token:
+        delete_saved_token()
     while True:
         choice = get_user_input(
             "What would you like to do? (create/edit/profile/exit): "
