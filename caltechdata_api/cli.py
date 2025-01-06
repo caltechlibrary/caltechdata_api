@@ -204,6 +204,7 @@ def save_profile():
     # Get ORCID
     while True:
         orcid = get_user_input("Enter your ORCID identifier: ")
+        orcid = normalize_orcid(orcid)
         family_name, given_name = get_names(orcid)
         if family_name is not None and given_name is not None:
             break
@@ -474,6 +475,19 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
+
+def normalize_orcid(val):
+    orcid_urls = ["https://orcid.org/", "http://orcid.org/", "orcid.org/"]
+    for orcid_url in orcid_urls:
+        if val.startswith(orcid_url):
+            val = val[len(orcid_url) :]
+            break
+
+    val = val.replace("-", "").replace(" ", "")
+    if len(val) != 16 or not val.isdigit():
+        raise ValueError(f"Invalid ORCID identifier: {val}")
+    return "-".join([val[0:4], val[4:8], val[8:12], val[12:16]])
 
 
 def main():
