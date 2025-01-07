@@ -26,16 +26,16 @@ jobs:
         # Extract values from codemeta.json
         NAME=$(jq -r '.name' codemeta.json)
         VERSION=$(jq -r '.version' codemeta.json)
-        AUTHOR=$(jq -r '.author[] | .name' codemeta.json | paste -sd ", " -)
-        AUTHOR_EMAIL=$(jq -r '.author[] | .email // "missing@example.com"' codemeta.json | paste -sd ", " -)
+        AUTHORS=$(jq -r '[.author[] | .givenName + " " + .familyName] | join(", ")' codemeta.json)
+        AUTHOR_EMAILS=$(jq -r '[.author[] | .email // empty] | join(", ")' codemeta.json)
         DESCRIPTION=$(jq -r '.description' codemeta.json)
-        URL=$(jq -r '.url' codemeta.json)
+        URL=$(jq -r '.codeRepository // .url' codemeta.json)
 
         # Update setup.cfg fields
         sed -i "s/^name = .*/name = $NAME/" setup.cfg
         sed -i "s/^version = .*/version = $VERSION/" setup.cfg
-        sed -i "s/^author = .*/author = $AUTHOR/" setup.cfg
-        sed -i "s/^author_email = .*/author_email = $AUTHOR_EMAIL/" setup.cfg
+        sed -i "s/^author = .*/author = $AUTHORS/" setup.cfg
+        sed -i "s/^author_email = .*/author_email = $AUTHOR_EMAILS/" setup.cfg
         sed -i "s/^description = .*/description = $DESCRIPTION/" setup.cfg
         sed -i "s|^url = .*|url = $URL|" setup.cfg
 
