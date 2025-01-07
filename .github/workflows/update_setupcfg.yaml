@@ -1,0 +1,50 @@
+name: Sync Codemeta with Setup
+
+on:
+  push:
+    paths:
+      - codemeta.json
+
+jobs:
+  sync-codemeta:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install jq for JSON parsing
+      run: sudo apt-get install -y jq
+
+    - name: Parse and update setup.cfg
+      run: |
+        # Extract values from codemeta.json
+        NAME=$(jq -r '.name' codemeta.json)
+        VERSION=$(jq -r '.version' codemeta.json)
+        AUTHOR=$(jq -r '.author[] | .name' codemeta.json | paste -sd ", " -)
+        AUTHOR_EMAIL=$(jq -r '.author[] | .email // "missing@example.com"' codemeta.json | paste -sd ", " -)
+        DESCRIPTION=$(jq -r '.description' codemeta.json)
+        URL=$(jq -r '.url' codemeta.json)
+
+        # Update setup.cfg fields
+        sed -i "s/^name = .*/name = $NAME/" setup.cfg
+        sed -i "s/^version = .*/version = $VERSION/" setup.cfg
+        sed -i "s/^author = .*/author = $AUTHOR/" setup.cfg
+        sed -i "s/^author_email = .*/author_email = $AUTHOR_EMAIL/" setup.cfg
+        sed -i "s/^description = .*/description = $DESCRIPTION/" setup.cfg
+        sed -i "s|^url = .*|url = $URL|" setup.cfg
+
+    - name: Commit changes
+      run: |
+        if ! git diff --quiet; then
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add setup.cfg
+          git commit -m "Sync setup.cfg with codemeta.json changes"
+          git push
+        fi
