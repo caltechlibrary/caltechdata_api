@@ -31,8 +31,8 @@
         },
         {
             "@type": "Person",
-            "givenName": "Won",
-            "familyName": "Elizabeth",
+            "givenName": "Elizabeth",
+            "familyName": "Won",
             "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech"
