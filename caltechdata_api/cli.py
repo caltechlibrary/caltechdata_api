@@ -99,6 +99,16 @@ def get_or_set_token(production=True):
                 print("Tokens do not match. Please try again.")
 
 
+# Delete the saved token file.
+def delete_saved_token():
+    token_file = os.path.join(caltechdata_directory, "token.txt")
+    if os.path.exists(token_file):
+        os.remove(token_file)
+        print("Token deleted successfully.")
+    else:
+        print("No token found to delete.")
+
+
 def welcome_message():
     print("Welcome to CaltechDATA CLI")
 
@@ -186,6 +196,61 @@ def get_funding_details():
     }
 
 
+# Add profile handling functions
+def save_profile():
+    profile_file = os.path.join(caltechdata_directory, "profile.json")
+
+    # Get ORCID
+    while True:
+        orcid = get_user_input("Enter your ORCID identifier: ")
+        orcid = normalize_orcid(orcid)
+        family_name, given_name = get_names(orcid)
+        if family_name is not None and given_name is not None:
+            break
+        retry = input("Do you want to try again? (y/n): ")
+        if retry.lower() != "y":
+            return None
+
+    # Get funding details
+    funding_references = []
+    num_funding_entries = get_funding_entries()
+    for _ in range(num_funding_entries):
+        funding_references.append(get_funding_details())
+
+    profile_data = {
+        "orcid": orcid,
+        "family_name": family_name,
+        "given_name": given_name,
+        "funding_references": funding_references,
+    }
+
+    with open(profile_file, "w") as f:
+        json.dump(profile_data, f, indent=2)
+
+    print("Profile saved successfully!")
+    return profile_data
+
+
+def load_profile():
+    profile_file = os.path.join(caltechdata_directory, "profile.json")
+    try:
+        with open(profile_file, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+
+
+def get_or_create_profile():
+    profile = load_profile()
+    if profile:
+        use_saved = input("Use saved profile? (y/n): ").lower()
+        if use_saved == "y":
+            return profile
+
+    print("Creating new profile...")
+    return save_profile()
+
+
 def parse_arguments():
     welcome_message()
     args = {}
@@ -222,23 +287,17 @@ def parse_arguments():
             break
         else:
             print("Invalid input. Please enter a number between 1 and 8.")
+    # Load or create profile
+    profile = get_or_create_profile()
+    if profile:
+        args["orcid"] = profile["orcid"]
+        args["family_name"] = profile["family_name"]
+        args["given_name"] = profile["given_name"]
+        args["fundingReferences"] = profile["funding_references"]
+    else:
+        print("Failed to load or create profile. Exiting.")
+        return None
 
-    while True:
-        orcid = get_user_input("Enter your ORCID identifier: ")
-        family_name, given_name = get_names(orcid)
-        if family_name is not None and given_name is not None:
-            args["orcid"] = orcid
-            break  # Break out of the loop if names are successfully retrieved
-        retry = input("Do you want to try again? (y/n): ")
-        if retry.lower() != "y":
-            print("Exiting program.")
-            return
-    # Optional arguments
-    num_funding_entries = get_funding_entries()
-    funding_references = []
-    for _ in range(num_funding_entries):
-        funding_references.append(get_funding_details())
-    args["fundingReferences"] = funding_references
     return args
 
 
@@ -410,24 +469,48 @@ def parse_args():
     parser.add_argument(
         "-test", action="store_true", help="Use test mode, sets production to False"
     )
+    parser.add_argument(
+        "--delete-token", action="store_true", help="Delete the saved token."
+    )
     args = parser.parse_args()
     return args
 
 
+def normalize_orcid(val):
+    orcid_urls = ["https://orcid.org/", "http://orcid.org/", "orcid.org/"]
+    for orcid_url in orcid_urls:
+        if val.startswith(orcid_url):
+            val = val[len(orcid_url) :]
+            break
+
+    val = val.replace("-", "").replace(" ", "")
+    if len(val) != 16 or not val.isdigit():
+        raise ValueError(f"Invalid ORCID identifier: {val}")
+    return "-".join([val[0:4], val[4:8], val[8:12], val[12:16]])
+
+
 def main():
     args = parse_args()
+    production = not args.test
+    if args.delete_token:
+        delete_saved_token()
+    while True:
+        choice = get_user_input(
+            "What would you like to do? (create/edit/profile/exit): "
+        ).lower()
 
-    production = not args.test  # Set production to False if -test flag is provided
-
-    choice = get_user_input(
-        "Do you want to create or edit a CaltechDATA record? (create/edit): "
-    ).lower()
-    if choice == "create":
-        create_record(production)
-    elif choice == "edit":
-        edit_record(production)
-    else:
-        print("Invalid choice. Please enter 'create' or 'edit'.")
+        if choice == "create":
+            create_record(production)
+        elif choice == "edit":
+            edit_record(production)
+        elif choice == "profile":
+            save_profile()
+        elif choice == "exit":
+            break
+        else:
+            print(
+                "Invalid choice. Please enter 'create', 'edit', 'profile', or 'exit'."
+            )
 
 
 def create_record(production):

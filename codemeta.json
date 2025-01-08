@@ -21,8 +21,8 @@
         },
         {
             "@type": "Person",
-            "givenName": "Bhattarai",
-            "familyName": "Rohan ",
+            "givenName": "Rohan",
+            "familyName": "Bhattarai",
             "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech"
