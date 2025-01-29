@@ -46,41 +46,41 @@ Install the Caltechdata_api Library via pip using the command shown:
 #### Step 1: 
 Go to https://github.com/caltechlibrary/caltechdata_api.git and click the green button that says "<> Code". Then choose the option that says "Download ZIP".
 
-![alt text](<pictures-documentation/Screenshot%202024-12-03%20095802.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 095802 (1).png>)
 
 #### Step 2: 
 Extract the files from the downloaded zip file to a new folder (we recommend this folder be on the desktop and that you name this folder something easy to recall).
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 100551.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 100551 (1).png>)
 
 #### Step 3: 
 In the next few steps, we shall change the directory to the folder called "caltechdata_api" inside the folder you extracted from the downloaded ZIP file. To do this, go to the file you saved either on the file manager or on its location (this would be the desktop if you saved it there). Open the folder called "caltechdata_api_main" and then right click on the folder inside it called "caltechdata_api" and choose the option that says "copy as path".
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 102205.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 102205 (1).png>)
 
 Above: Open the file on file manager as shown.
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 102022.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 102022 (1).png>)
 
 Above: Go into the folder caltechdata_api_main.
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 102033.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 102033 (1).png>)
 
 Above: Right click on the folder called caltechdata_api and choose the option that says copy as path.
 
 #### Step 4: 
 Open a the Windows PowerShell or a code editor (we recommend using VSCode if you choose to use a code editor) and then open its Terminal.
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 101040.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 101040 (1).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 085423.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 085423 (1).png>)
 Above: Using Windows PowerShell
 
 #### Step 5: 
 Open the dropdown menu near the "+" icon on the top right hand corner of the terminal and choose the option that says "Git Bash". You can skip this step and go directly to the next step if you are using the Windows Powershell.
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 101159.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 101159 (1).png>)
 
 #### Step 6: 
 Type in the command as shown:
@@ -91,10 +91,10 @@ For example, it could look like this:
 
 ```cd "C:\Users\kshem\Desktop\Demonstration\caltechdata_api-main\caltechdata_api"```
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 103050.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 103050 (1).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 121453.png>)
+![alt text](<pictures-documentation//Screenshot 2024-12-16 121453 (1).png>)
 Above: Using Windows PowerShell
 
 ### Windows Subsystem for Linux Users:
@@ -142,20 +142,20 @@ To interact with the CaltechDATA Repository, type in this command as shown to op
 
 ```python cli.py```
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 103511.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 103511 (1).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 121512.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 121512 (1).png>)
 Above: Using Windows PowerShell
 
 To interact with the test instance of the CaltechDATA Repository, type in this command as shown to open and run the CaltechDATA Command Line Interface (CLI):
 
 ```python cli.py -test```
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 090338.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 090338 (1).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 091234.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 091234 (1).png>)
 Above: Using Windows PowerShell
 
 #### Step 2:
@@ -165,13 +165,13 @@ Note that the terminal is now present in the "caltechdata_api" folder or directo
 
 ```dir```
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 115919.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 115919 (1).png>)
 Above: Adding your files to the directory
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-03 120012.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-03 120012 (1).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<Images-and-screenshots-for-CLI-documentation/Screenshot 2024-12-16 121606.png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 121606 (1).png>)
 Above: Using Windows PowerShell
 
 ## Additional Steps:
