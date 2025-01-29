@@ -46,7 +46,7 @@ Install the Caltechdata_api Library via pip using the command shown:
 #### Step 1: 
 Go to https://github.com/caltechlibrary/caltechdata_api.git and click the green button that says "<> Code". Then choose the option that says "Download ZIP".
 
-![alt text](<caltechdata_api/pictures-documentation/Screenshot%202024-12-03%20095802.png>)
+![alt text](<pictures-documentation/Screenshot%202024-12-03%20095802.png>)
 
 #### Step 2: 
 Extract the files from the downloaded zip file to a new folder (we recommend this folder be on the desktop and that you name this folder something easy to recall).
