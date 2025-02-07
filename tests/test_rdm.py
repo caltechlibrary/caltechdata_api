@@ -15,7 +15,7 @@ def test_datacite_rdm_conversion(full_datacite43_record, full_rdm_record):
 
 
 def test_datacite_rdm_create_edit(full_datacite43_record):
-    env_token = os.environ.get("CALTECHDATA_TOKEN")
+    env_token = os.environ.get("RDMTOK")
     doi = caltechdata_write(
         full_datacite43_record,
         schema="43",
