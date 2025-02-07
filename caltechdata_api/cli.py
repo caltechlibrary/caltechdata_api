@@ -609,7 +609,7 @@ def create_record(production):
                 print_upload_message(rec_id, production)
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
-                exit() 
+                exit()
                 break
             else:
                 break
