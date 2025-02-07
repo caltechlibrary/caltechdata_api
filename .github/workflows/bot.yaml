@@ -43,7 +43,9 @@ jobs:
         pytest test_unit.py
         pytest test_rdm.py
     - name: Run Medata Validation Test and RDM
+      env:
+        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
         cd tests
-        python tests/bot_yaml.py
+        python bot_yaml.py
         
