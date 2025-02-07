@@ -60,11 +60,12 @@ class CaltechDataTester:
     def generate_test_responses(self):
         """Generate test responses for CLI prompts"""
         return {
-            "Do you want to create or edit a CaltechDATA record? (create/edit): ": "create",
+            "What would you like to do? (create/edit/profile/exit): ": "create",
             "Do you want to use metadata from an existing file or create new metadata? (existing/create): ": "create",
             "Enter the title of the dataset: ": f"Test Dataset {self.timestamp}",
             "Enter the abstract or description of the dataset: ": "This is an automated test dataset containing sample climate data for validation purposes.",
             "Enter the number corresponding to the desired license: ": "1",
+            "Use saved profile? (y/n): ": "n",
             "Enter your ORCID identifier: ": os.environ.get(
                 "TEST_ORCID", "0000-0002-1825-0097"
             ),
