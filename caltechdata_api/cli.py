@@ -58,7 +58,7 @@ def decrypt_token(encrypted_token, key):
     return f.decrypt(encrypted_token).decode()
 
 
-# Function to get or set token with support for test systems
+# Function to get or set token with support for test system.
 def get_or_set_token(production=True):
     # First check for environment variable
     env_token = os.environ.get("CALTECHDATA_TOKEN")
@@ -68,7 +68,7 @@ def get_or_set_token(production=True):
 
     key = load_or_generate_key()
 
-    # Use different token files for production and test environment
+    # Use different token files for production and test environment.
     token_filename = "token.txt" if production else "token_test.txt"
     token_file = os.path.join(caltechdata_directory, token_filename)
 
@@ -609,6 +609,7 @@ def create_record(production):
                 print_upload_message(rec_id, production)
                 with open(response + ".json", "w") as file:
                     json.dump(metadata, file, indent=2)
+                exit() 
                 break
             else:
                 break
