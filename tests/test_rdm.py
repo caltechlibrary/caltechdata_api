@@ -17,7 +17,11 @@ def test_datacite_rdm_conversion(full_datacite43_record, full_rdm_record):
 def test_datacite_rdm_create_edit(full_datacite43_record):
     env_token = os.environ.get("CALTECHDATA_TOKEN")
     doi = caltechdata_write(
-        full_datacite43_record, schema="43", production=False, publish=True, token=env_token
+        full_datacite43_record,
+        schema="43",
+        production=False,
+        publish=True,
+        token=env_token,
     )
 
     assert doi.startswith("10.33569")
@@ -28,20 +32,27 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
         production=False,
         files=["codemeta.json"],
         publish=True,
-        token=env_token
+        token=env_token,
     )
 
     assert doi.startswith("10.33569")
 
     # If we don't publish, don't get back a DOI
-    idv = caltechdata_write(full_datacite43_record, schema="43", production=False, token=env_token)
+    idv = caltechdata_write(
+        full_datacite43_record, schema="43", production=False, token=env_token
+    )
 
     assert idv.startswith("10.33569") == False
 
     full_datacite43_record["publisher"] = "Edited"
 
     doi = caltechdata_edit(
-        idv, full_datacite43_record, schema="43", production=False, publish=True, token=env_token
+        idv,
+        full_datacite43_record,
+        schema="43",
+        production=False,
+        publish=True,
+        token=env_token,
     )
 
     assert doi.startswith("10.33569")
@@ -60,7 +71,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
         schema="43",
         production=False,
         publish=True,
-        token=env_token
+        token=env_token,
     )
 
     assert new_doi != doi
