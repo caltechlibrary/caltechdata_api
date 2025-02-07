@@ -38,7 +38,7 @@ jobs:
 
     - name: Run CaltechDATA Metadata Validation
       env:
-        CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
+        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
         python tests/bot_yaml.py
     - name: Run Unit Tests
