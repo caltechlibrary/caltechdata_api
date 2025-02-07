@@ -56,29 +56,29 @@ class CaltechDataTester:
         cli_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(cli_module)
         return cli_module
-        
+
     def generate_test_responses(self):
-            """Generate test responses for CLI prompts"""
-            return {
-                "What would you like to do? (create/edit/profile/exit): ": "create",
-                "Do you want to use metadata from an existing file or create new metadata? (existing/create): ": "create",
-                "Enter the title of the dataset: ": f"Test Dataset {self.timestamp}",
-                "Enter the abstract or description of the dataset: ": "This is an automated test dataset containing sample climate data for validation purposes.",
-                "Enter the number corresponding to the desired license: ": "1",
-                "Use saved profile? (y/n): ": "n",
-                "Enter your ORCID identifier: ": os.environ.get(
-                    "TEST_ORCID", "0000-0002-1825-0097"
-                ),
-                "How many funding entries do you want to provide? ": "1",
-                "Enter the award number for funding: ": "NSF-1234567",
-                "Enter the award title for funding: ": "Automated Testing Grant",
-                "Enter the funder ROR (https://ror.org): ": "021nxhr62",
-                "Do you want to upload or link data files? (upload/link/n): ": "upload",
-                "Enter the filename to upload as a supporting file (or 'n' to finish): ": "test_data.csv",
-                "Do you want to add more files? (y/n): ": "n",
-                "Do you want to send this record to CaltechDATA? (y/n): ": "y",
-            }
-    
+        """Generate test responses for CLI prompts"""
+        return {
+            "What would you like to do? (create/edit/profile/exit): ": "create",
+            "Do you want to use metadata from an existing file or create new metadata? (existing/create): ": "create",
+            "Enter the title of the dataset: ": f"Test Dataset {self.timestamp}",
+            "Enter the abstract or description of the dataset: ": "This is an automated test dataset containing sample climate data for validation purposes.",
+            "Enter the number corresponding to the desired license: ": "1",
+            "Use saved profile? (y/n): ": "n",
+            "Enter your ORCID identifier: ": os.environ.get(
+                "TEST_ORCID", "0000-0002-1825-0097"
+            ),
+            "How many funding entries do you want to provide? ": "1",
+            "Enter the award number for funding: ": "NSF-1234567",
+            "Enter the award title for funding: ": "Automated Testing Grant",
+            "Enter the funder ROR (https://ror.org): ": "021nxhr62",
+            "Do you want to upload or link data files? (upload/link/n): ": "upload",
+            "Enter the filename to upload as a supporting file (or 'n' to finish): ": "test_data.csv",
+            "Do you want to add more files? (y/n): ": "n",
+            "Do you want to send this record to CaltechDATA? (y/n): ": "y",
+        }
+
     def run_test_submission(self):
         """Run the complete test submission process"""
         try:
