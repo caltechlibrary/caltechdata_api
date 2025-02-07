@@ -36,16 +36,13 @@ jobs:
         pip install pytest requests s3fs cryptography 
         pip install .
 
-    - name: Run against CaltechData Test system
+    - name: Run CaltechDATA Metadata Validation
       env:
-        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
+        CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
-        pytest test_unit.py
-        pytest test_rdm.py
-    - name: Run Medata Validation Test and RDM
-      env:
-        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
+        python tests/bot_yaml.py
+    - name: Run Unit Tests
       run: |
         cd tests
-        python bot_yaml.py
-        
+        pytest test_unit.py
+        pytest test_rdm.py
