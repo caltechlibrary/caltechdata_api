@@ -66,6 +66,7 @@ def caltechdata_edit(
     default_preview=None,
     authors=False,
     keepfiles=False,
+    return_id=False,
 ):
     # Make a copy of the metadata to make sure our local changes don't leak
     metadata = copy.deepcopy(metadata)
@@ -299,10 +300,13 @@ def caltechdata_edit(
         result = requests.post(publish_link, headers=headers)
         if result.status_code != 202:
             raise Exception(result.text)
-        pids = result.json()["pids"]
-        if "doi" in pids:
-            return pids["doi"]["identifier"]
+        if return_id:
+            return result.json()["id"]
         else:
-            return pids["oai"]["identifier"]
+            pids = result.json()["pids"]
+            if "doi" in pids:
+                return pids["doi"]["identifier"]
+            else:
+                return pids["oai"]["identifier"]
     else:
         return idv
