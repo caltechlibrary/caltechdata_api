@@ -80,7 +80,7 @@ Above: Using Windows PowerShell
 #### Step 5: 
 Open the dropdown menu near the "+" icon on the top right hand corner of the terminal and choose the option that says "Git Bash". You can skip this step and go directly to the next step if you are using the Windows Powershell.
 
-![alt text](<pictures-documentation/Screenshot 2024-12-03 101159 (1).png>)
+![alt text](<pictures-documentation/Screenshot 2024-12-16 085423 (1).png>)
 
 #### Step 6: 
 Type in the command as shown:
