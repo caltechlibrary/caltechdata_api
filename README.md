@@ -39,7 +39,7 @@ python write.py example.json -fnames logo.gif
 the end of a url to visit the record (e.g.
 https://data.caltechlibrary.dev/records/pbkn6-m9y63)
 
-###Edit a record 
+### Edit a record 
 Make changes to the example.json file to see a change)
 ```
 python edit.py example.json -id pbkn6-m9y63
@@ -77,3 +77,7 @@ This returns the custom DOI of the record if it is successful.
 Only test your application on the test repository (`data.caltechlibrary.dev`).  Testing the API on the public 
 repository will generate junk records that are annoying to delete.
 
+## Using the Command Line Interface
+
+If you would like to interact with the CaltechDATA API using the Command line Interface (CLI), please refer to the documentation linked here:
+[link to CLI documentation for users] (./caltechdata_api/cli-documentation-for-users.md)
