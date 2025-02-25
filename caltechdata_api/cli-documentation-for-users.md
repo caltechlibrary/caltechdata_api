@@ -4,7 +4,7 @@
 
 1. Introduction
 
-2. [Setup and Installation](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#setup-and-installation)
+2. [Setup and Installation](d#setup-and-installation)
    
    2.1 [For Mac OS Users](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#for-mac-os-users)
    
