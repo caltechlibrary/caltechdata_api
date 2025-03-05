@@ -1,0 +1,112 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Law",
+      "givenName": "Casey",
+      "name": "Casey Law",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-4119-9963",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2023",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2023-04-21",
+      "dateType": "Created"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Data associated with DSA-110 candidate transient. Each filterbank is saved at maximum native resolution (32.7 microseconds, 30.4 kHz) and contains ~0.669696 seconds (20480 samples) around the burst across the full DSA-110 187 MHz (6144 channels) frequency band. The Stokes parameters have been calibrated using observations of the 3C48 and 3C286 Very Large Array (VLA) calibrators as described in Sherman et al., 2024 (https://doi.org/10.3847/1538-4357/ad275e ; see Appendices D and E). Note that there may be minute differences between the data contained here and that reported in Sherman et al., 2024 due to being calibrated at maximum time resolution, rather than being downsampled first.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "formats": [
+    "png"
+  ],
+  "fundingReferences": [
+    {
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "OVRO",
+      "geoLocationPoint": {
+        "pointLatitude": 37.2339,
+        "pointLongitude": -118.282
+      }
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/4yxbs-4mj38",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:4yxbs-4mj38",
+      "identifierType": "oai"
+    },
+    {
+      "identifier": "220506aabd",
+      "identifierType": "dsa-110-id"
+    },
+    {
+      "identifier": "byyt8-y6a26",
+      "identifierType": "cdid"
+    }
+  ],
+  "publicationYear": "2023",
+  "publisher": "Caltech Data",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "http://deepsynoptic.org",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsDocumentedBy"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "cc-by-4.0"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "OVRO"
+    },
+    {
+      "subject": "Astrophysics"
+    },
+    {
+      "subject": "Fast Radio Bursts"
+    }
+  ],
+  "titles": [
+    {
+      "title": "DSA-110 Data for Candidate Fast Radio Burst 220506aabd"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "2.0"
+}

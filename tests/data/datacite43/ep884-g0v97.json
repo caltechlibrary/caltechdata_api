@@ -1,0 +1,48 @@
+{
+  "creators": [
+    {
+      "familyName": "Chen",
+      "givenName": "Zibo",
+      "name": "Chen, Zibo",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-06-19",
+      "dateType": "Issued"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/ep884-g0v97",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:ep884-g0v97",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "A synthetic protein-level neural network in mammalian cells"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "2.0"
+}

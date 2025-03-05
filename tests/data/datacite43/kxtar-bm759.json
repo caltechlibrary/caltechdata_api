@@ -1,0 +1,78 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Bird",
+      "givenName": "Eli",
+      "name": "Bird, Eli",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-9428-0650",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Zhan",
+      "givenName": "Zhongwen",
+      "name": "Zhan, Zhongwen",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-5586-2607",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-09-23",
+      "dateType": "Issued"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/kxtar-bm759",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:kxtar-bm759",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "Ambient Noise Cross-Correlation Data associated with Constraining Dike Opening Models With Seismic Velocity Changes Associated with the 2023-2024 Eruption Sequence on the Reykjanes Peninsula\" by Bird et al."
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  }
+}

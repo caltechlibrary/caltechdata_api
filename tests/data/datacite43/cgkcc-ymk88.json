@@ -1,0 +1,378 @@
+{
+  "contributors": [
+    {
+      "contributorType": "HostingInstitution",
+      "name": "California Institute of Technology",
+      "nameIdentifiers": [],
+      "nameType": "Organizational"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "contributorType": "DataCurator",
+      "familyName": "Roehl",
+      "givenName": "C. M.",
+      "name": "Roehl, C. M.",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0001-5383-8462",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "contributorType": "ResearchGroup",
+      "name": "TCCON",
+      "nameIdentifiers": [],
+      "nameType": "Organizational"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "contributorType": "ContactPerson",
+      "familyName": "Hase",
+      "givenName": "Frank",
+      "name": "Hase, Frank",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Hase",
+      "givenName": "F.",
+      "name": "Hase, F.",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0001-7307-6266",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Herkommer",
+      "givenName": "B.",
+      "name": "Herkommer, B.",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0001-5784-2127",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Gro\u00df",
+      "givenName": "J.",
+      "name": "Gro\u00df, J.",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Blumenstock",
+      "givenName": "T.",
+      "name": "Blumenstock, T.",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Kiel",
+      "givenName": "M.\u00e4.",
+      "name": "Kiel, M.\u00e4.",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-9784-962X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "04t3en479",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Karlsruhe Institute of Technology"
+        }
+      ],
+      "familyName": "Dohe",
+      "givenName": "S.",
+      "name": "Dohe, S.",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-11-21",
+      "dateType": "Created"
+    },
+    {
+      "date": "2014-01-15/2023-06-26",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2025-03-03",
+      "dateType": "Updated"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "The Total Carbon Column Observing Network (TCCON) is\n    a network of ground-based Fourier Transform Spectrometers that record direct\n    solar absorption spectra of the atmosphere in the near-infrared. From these\n    spectra, accurate and precise column-averaged abundances of atmospheric\n    constituents including CO2, CH4, N2O, HF, CO, H2O, and HDO, are retrieved. This\n    is the GGG2020 data release of observations from the TCCON station at\n    Karlsruhe, Germany",
+      "descriptionType": "Abstract"
+    },
+    {
+      "description": "Files available via S3 at https://renc.osn.xsede.org/ini210004tommorrell/10.14291/tccon.ggg2020.karlsruhe01.R2/</p>README.txt,  50.5 kB  \n        \n<a role=\"button\" class=\"ui compact mini button\" href=\"https://renc.osn.xsede.org/ini210004tommorrell/10.14291/tccon.ggg2020.karlsruhe01.R2/README.txt\"\n        > <i class=\"download icon\"></i> Download </a></p>\n\n        ka20140115_20230626.public.qc.nc,  50.7 MB  \n        \n<a role=\"button\" class=\"ui compact mini button\" href=\"https://renc.osn.xsede.org/ini210004tommorrell/10.14291/tccon.ggg2020.karlsruhe01.R2/ka20140115_20230626.public.qc.nc\"\n        > <i class=\"download icon\"></i> Download </a></p>\n\n        LICENSE.txt,  2.2 kB  \n        \n<a role=\"button\" class=\"ui compact mini button\" href=\"https://renc.osn.xsede.org/ini210004tommorrell/10.14291/tccon.ggg2020.karlsruhe01.R2/LICENSE.txt\"\n        > <i class=\"download icon\"></i> Download </a></p>",
+      "descriptionType": "Other"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "Karlsruhe (DE)",
+      "geoLocationPoint": {
+        "pointLatitude": 49.1,
+        "pointLongitude": 8.438
+      }
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.14291/tccon.ggg2020.karlsruhe01.R2",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:cgkcc-ymk88",
+      "identifierType": "oai"
+    },
+    {
+      "identifier": "10.14291/tccon.ggg2020.karlsruhe01.R2",
+      "identifierType": "cdid"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.14291/tccon.ggg2014.documentation.R0/1221662",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsDocumentedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-9-683-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/acp-16-14003-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/acp-15-13023-2015",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-8-5023-2015",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/acp-16-12005-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/acp-16-1653-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-9-2223-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-9-669-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-9-3491-2016",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.3390/rs8050414",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.14291/tccon.ggg2014.karlsruhe01.R0/1149270",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsNewVersionOf"
+    },
+    {
+      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Main/DataUsePolicy",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsDocumentedBy"
+    },
+    {
+      "relatedIdentifier": "https://tccon-wiki.caltech.edu/Main/TCCONSites",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsDocumentedBy"
+    },
+    {
+      "relatedIdentifier": "10.14291/TCCON.GGG2020",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsPartOf"
+    },
+    {
+      "relatedIdentifier": "http://tccondata.org",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsPartOf"
+    },
+    {
+      "relatedIdentifier": "10.3390/rs9101033",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/acp-17-4781-2017",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-10-4135-2017",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-10-2209-2017",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-11-1251-2018",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.3390/atmos9050175",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/amt-11-3111-2018",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/gmd-10-1261-2017",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    },
+    {
+      "relatedIdentifier": "10.5194/gmd-10-1-2017",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsCitedBy"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "TCCON Data License",
+      "rightsUri": "https://renc.osn.xsede.org/ini210004tommorrell/10.14291/tccon.ggg2020.karlsruhe01.R2/LICENSE.txt"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "atmospheric trace gases"
+    },
+    {
+      "subject": "CO2"
+    },
+    {
+      "subject": "CH4"
+    },
+    {
+      "subject": "CO"
+    },
+    {
+      "subject": "N2O"
+    },
+    {
+      "subject": "column-averaged dry-air mole fractions"
+    },
+    {
+      "subject": "remote sensing"
+    },
+    {
+      "subject": "FTIR spectroscopy"
+    },
+    {
+      "subject": "TCCON"
+    }
+  ],
+  "titles": [
+    {
+      "title": "TCCON data from Karlsruhe (DE), Release GGG2020.R2"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "R2"
+}

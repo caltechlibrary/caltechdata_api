@@ -1,0 +1,97 @@
+{
+  "contributors": [
+    {
+      "affiliation": [
+        {
+          "name": "Department of Biological Sciences, California State University, Sacramento"
+        }
+      ],
+      "contributorType": "ContactPerson",
+      "familyName": "Gleason",
+      "givenName": "Lani U.",
+      "name": "Gleason, Lani U.",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "name": "Department of Biological Sciences, California State University, Sacramento"
+        }
+      ],
+      "familyName": "Gleason",
+      "givenName": "Lani U.",
+      "name": "Gleason, Lani U.",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2025-01-24",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2025-01-22",
+      "dateType": "Accepted"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Genes identified to be significantly differentially expressed for each component of the Venn diagram in Figure 1B. The annotation information, RPKM expression value for each individual in each of the four treatments, and the average RPKM expression value per treatment are provided for each gene.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "funderName": "This work was supported by a California State University, Sacramento Research & Creative Activity (RCA) Award and a Biological Sciences Genes to Ecosystems (G2E) Award to Lani Gleason. The California State University (CSU) Council on Ocean Affairs, Science, and Technology (COAST) also provided an Undergraduate Research Award to support Hanna Franklin."
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/n0y4x-xx706",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:n0y4x-xx706",
+      "identifierType": "oai"
+    }
+  ],
+  "language": "eng",
+  "publicationYear": "2025",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.17912/micropub.biology.001473",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsPartOf",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0 International",
+      "rightsIdentifier": "cc-by-4.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "haliotis rufescens"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Dataset: Heat Stress, Starvation, and Heat Stress Plus Starvation Cause Unique Transcriptomic Responses in the Economically Important Red Abalone Haliotis rufescens"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "1.0"
+}
