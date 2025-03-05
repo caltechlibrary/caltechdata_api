@@ -119,7 +119,7 @@ def full_datacite43_record():
         "fundingReferences": [
             {
                 "funderName": "European Commission",
-                "funderIdentifier": "1234",
+                "funderIdentifier": "00k4n6c32",
                 "funderIdentifierType": "ROR",
                 "awardTitle": "OpenAIRE",
                 "awardNumber": "246686",
