@@ -1,20 +1,6 @@
 name: Bot validation
 
-on:
-  push:
-    paths:
-      - 'caltechdata_api/cli.py'
-      - 'caltechdata_api/customize_schema.py'
-      - 'caltechdata_api/caltechdata_write.py'
-      - 'caltechdata_api/caltechdata_edit.py' 
-      - 'README.md'
-  pull_request:
-    paths:
-      - 'caltechdata_api/cli.py'
-      - 'caltechdata_api/customize_schema.py'
-      - 'caltechdata_api/caltechdata_write.py'
-      - 'caltechdata_api/caltechdata_edit.py' 
-      - 'README.md'
+on: [push, pull_request]
 
 jobs:
   validate-metadata:
