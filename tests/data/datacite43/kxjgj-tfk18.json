@@ -1,0 +1,73 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Ding",
+      "givenName": "Xiaozhe",
+      "name": "Ding, Xiaozhe",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-0267-0791",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-04-16",
+      "dateType": "Issued"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Raw data for Ding, X., Chen, X., Sullivan, E.E., Shay, T.F., and Gradinaru, V. (2024). Fast, accurate ranking of engineered proteins by target binding propensity using structure modeling. Molecular Therapy. https://doi.org/10.1016/j.ymthe.2024.04.003",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/kxjgj-tfk18",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:kxjgj-tfk18",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.1016/j.ymthe.2024.04.003",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsSupplementTo",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "Data for Fast, accurate ranking of engineered proteins by target-binding propensity using structure modeling"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Sherman",
+      "givenName": "Myles B",
+      "name": "Sherman, Myles B",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-6573-7316",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Ravi",
+      "givenName": "Vikram",
+      "name": "Ravi, Vikram",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-7252-5485",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "El-Badry",
+      "givenName": "Kareem",
+      "name": "El-Badry, Kareem",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-6871-1752",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Sharma",
+      "givenName": "Kritti",
+      "name": "Sharma, Kritti",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-4477-3625",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "03h4zjr91",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "Carnegie Observatories"
+        },
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Koch Ocker",
+      "givenName": "Stella",
+      "name": "Koch Ocker, Stella",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-4941-5333",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Kosogorov",
+      "givenName": "Nikita",
+      "name": "Kosogorov, Nikita",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-1226-118X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Connor",
+      "givenName": "Liam",
+      "name": "Connor, Liam",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-7587-6352",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Faber",
+      "givenName": "Jakob",
+      "name": "Faber, Jakob",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0001-9855-5781",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-05-17",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-04-07",
+      "dateInformation": "MNRAS",
+      "dateType": "Submitted"
+    },
+    {
+      "date": "2024-05-15",
+      "dateInformation": "MNRAS",
+      "dateType": "Accepted"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "This repository contains data associated with \"Searching for Magnetar Binaries Disrupted by Core-Collapse Supernovae\" by Myles B. Sherman, Vikram Ravi, Kareem El-Badry, Kritti Sharma, Stella Ocker, Nikita Kosogorov, Liam Connor, and Jakob Faber. For details on the data format, see the ReadMe.md file.\nAbstract: Core-collapse Supernovae (CCSNe) are considered to be the primary magnetar formation channel, with 15 magnetars associated with supernova remnants (SNRs). A large fraction of these should occur in massive stellar binaries that are disrupted by the explosion, meaning that $\\sim45\\%$ of magnetars should be nearby high-velocity stars. Here we conduct a multi-wavelength search for unbound stars, magnetar binaries, and SNR shells using public optical ($uvgrizy-$bands), infrared ($J-$, $H-$, $K-$, and $K_s-$bands), and radio ($888$\\,MHz, $1.4$\\,GHz, and $3$\\,GHz) catalogs. We use Monte Carlo analyses of candidates to estimate the probability of association with a given magnetar based on their proximity, distance, proper motion, and magnitude. In addition to recovering a proposed magnetar binary, a proposed unbound binary, and 13 of 15 magnetar SNRs, we identify two new candidate unbound systems: an OB star from the \\textit{Gaia} catalog we associate with SGR\\,J1822.3-1606, and an X-ray pulsar we associate with 3XMM\\,J185246.6+003317. Using a Markov-Chain Monte Carlo simulation that assumes all magnetars descend from CCSNe, we constrain the fraction of magnetars with unbound companions to $5\\lesssim f_u \\lesssim 24\\%$, which disagrees with population synthesis results. Alternate formation channels are unlikely to wholly account for the lack of unbound binaries as this would require $31\\lesssim f_{nc} \\lesssim 66\\%$ of magnetars to descend from such channels. Our results support a high fraction ($48\\lesssim f_m \\lesssim 86\\%$) of pre-CCSN mergers, which can amplify fossil magnetic fields to preferentially form magnetars.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "awardNumber": "2139433",
+      "awardTitle": "Graduate Research Fellowship Program",
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    },
+    {
+      "awardNumber": "1836018",
+      "awardTitle": "The DSA: A Fast Radio Burst Localization Machine",
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/fbdqe-hez98",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:fbdqe-hez98",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.1093/mnras/stae1289",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsSupplementTo",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "Physical sciences"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Searching for Magnetar Binaries Disrupted by Core-Collapse Supernovae"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "4.0.0"
+}

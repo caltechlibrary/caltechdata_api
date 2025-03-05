@@ -1,0 +1,121 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "035a68863",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "United States Geological Survey"
+        },
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Atterholt",
+      "givenName": "James",
+      "name": "Atterholt, James",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-1603-5518",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Wilding",
+      "givenName": "John",
+      "name": "Wilding, John",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-0914-2078",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Ross",
+      "givenName": "Zachary",
+      "name": "Ross, Zachary",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-6343-8400",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2025-01-01",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2025-01-01",
+      "dateType": "Available"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "There are two catalogs in this dataset produced for the study by Atterholt, Wilding, & Ross (2025):\n\nA relocated earthquake hypocenter location catalog made using PhaseNO (Sun et al., 2023) for phase picking, GaMMA (Zhu et al., 2022) for phase association, HypoSVI (Smith et al., 2021) for absolute location, and GrowClust (Trugman & Shearer, 2017) for cross-correlation-based relative relocation.\nA corresponding earthquake moment tensor catalog made using the picks from the hypocenter catalog and the Bayesian framework outlined in Wilding & Ross (2024).\nCitations:\n\nAtterholt, J., Wilding, J. D., & Ross., Z. E. (2025). The evolution of fault orientation in the 2019 Ridgecrest earthquake sequence with a new long-term catalogue of seismicity and moment tensors. Geophysical Journal International, 240(3), 1579\u20131592. https://doi.org/10.1093/gji/ggaf001\nSun, H., Ross, Z. E., Zhu, W., & Azizzadenesheli, K. (2023). Phase Neural Operator for Multi\u2010Station Picking of Seismic Arrivals. Geophysical Research Letters, 50(24), e2023GL106434. https://doi.org/10.1029/2023GL106434\nZhu, W., McBrearty, I. W., Mousavi, S. M., Ellsworth, W. L., & Beroza, G. C. (2022). Earthquake Phase Association Using a Bayesian Gaussian Mixture Model. Journal of Geophysical Research: Solid Earth, 127(5), e2021JB023249. https://doi.org/10.1029/2021JB023249\nSmith, J. D., Ross, Z. E., Azizzadenesheli, K., & Muir, J. B. (2021). HypoSVI: Hypocentre inversion with Stein variational inference and physics informed neural networks. Geophysical Journal International, 228(1), 698\u2013710. https://doi.org/10.1093/gji/ggab309\nTrugman, D. T., & Shearer, P. M. (2017). GrowClust: A Hierarchical Clustering Algorithm for Relative Earthquake Relocation, with Application to the Spanish Springs and Sheldon, Nevada, Earthquake Sequences. Seismological Research Letters, 88(2A), 379\u2013391. https://doi.org/10.1785/0220160188",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "awardNumber": "1745301",
+      "awardTitle": "Graduate Research Fellowship",
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/f40da-hww21",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:f40da-hww21",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2025",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "2019 Ridgecrest Earthquake Sequence Long-Term Hypocenter and Moment Tensor Catalog"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  }
+}

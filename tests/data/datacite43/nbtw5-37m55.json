@@ -1,0 +1,111 @@
+{
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "familyName": "Law",
+      "givenName": "Casey",
+      "name": "Casey Law",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-4119-9963",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-04-12",
+      "dateType": "Created"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Data associated with DSA-110 candidate transient.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "formats": [
+    "png"
+  ],
+  "fundingReferences": [
+    {
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "OVRO",
+      "geoLocationPoint": {
+        "pointLatitude": 37.2339,
+        "pointLongitude": -118.282
+      }
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.25800/3ghe-8e93",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:nbtw5-37m55",
+      "identifierType": "oai"
+    },
+    {
+      "identifier": "231120aabi",
+      "identifierType": "dsa-110-id"
+    },
+    {
+      "identifier": "nbtw5-37m55",
+      "identifierType": "cdid"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "Caltech Data",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "http://deepsynoptic.org",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsDocumentedBy"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "cc-by-4.0"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "OVRO"
+    },
+    {
+      "subject": "Astrophysics"
+    },
+    {
+      "subject": "Fast Radio Bursts"
+    }
+  ],
+  "titles": [
+    {
+      "title": "DSA-110 Data for Candidate Fast Radio Burst 231120aabi"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  }
+}

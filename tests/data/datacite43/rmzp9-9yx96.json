@@ -1,0 +1,94 @@
+{
+  "creators": [
+    {
+      "familyName": "Devey",
+      "givenName": "Sean",
+      "name": "Devey, Sean",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-8937-939X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-06-07",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2023-11-09",
+      "dateInformation": "DPIV, CTA data collection",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2023-10-22",
+      "dateInformation": "No FMS DPIV data collected",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2023-11-16",
+      "dateInformation": "Cylinder wake dye visualizations collected",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2024-05-13",
+      "dateInformation": "Shear layer dye visualization",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2024-06-07",
+      "dateInformation": "date of upload",
+      "dateType": "Submitted"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "DPIV, CTA measurements and dye visualizations demonstrating flow quality of the Free-surface, Low turbulence, Optically accessible, Water TUnnel in a Box (FLOWTUB) developed at GALCIT 2022-2024.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "awardNumber": "DGE-1745301",
+      "awardTitle": "Graduate Research Fellowships Program (GRFP)",
+      "funderIdentifier": "grid.431093.c",
+      "funderIdentifierType": "GRID",
+      "funderName": "National Science Foundation"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/rmzp9-9yx96",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:rmzp9-9yx96",
+      "identifierType": "oai"
+    }
+  ],
+  "language": "eng",
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0 International",
+      "rightsIdentifier": "cc-by-4.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "FLOWTUB Water Tunnel Validation Data"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "1"
+}
