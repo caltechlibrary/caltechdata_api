@@ -505,14 +505,9 @@ def validate_metadata(json_record):
             if not isinstance(creator, dict):
                 errors.append("Each 'creator' must be a dictionry")
             if "nameType" in creator:
-                if creator["nameType"] == "Organizational":
-                    if "name" not in creator:
-                        errors.append("Each organizational 'creator' must have 'name'.")
-                else:
+                if creator["nameType"] != "Organizational":
                     if "familyName" not in creator:
-                        errors.append(
-                            "Each 'creator' must have a 'familyName' or have type Organizational"
-                        )
+                        errors.append("Each 'creator' must have a 'familyName' or have type 'Organizational'.")
             if "affiliation" in creator:
                 if not isinstance(creator["affiliation"], list):
                     errors.append("'affiliation' in 'creators' should be a list.")
