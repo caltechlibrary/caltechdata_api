@@ -228,7 +228,7 @@ def full_rdm_record():
                 {
                     "funder": {
                         "name": "European Commission",
-                        "identifier": "01ggx4157",
+                        "identifier": "00k4n6c32",
                         "scheme": "ror",
                     },
                     "award": {
