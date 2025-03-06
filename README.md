@@ -80,4 +80,4 @@ repository will generate junk records that are annoying to delete.
 ## Using the Command Line Interface
 
 If you would like to interact with the CaltechDATA API using the Command line Interface (CLI), please refer to the documentation linked here:
-https://kshemaahna.github.io/caltechdata_api/caltechdata_api/cli-documentation-for-users
+https://caltechlibrary.github.io/caltechdata_api/caltechdata_api/cli-documentation-for-users
