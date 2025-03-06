@@ -6,25 +6,25 @@
 
 2. [Setup and Installation](#setup-and-installation)
    
-   2.1 [For Mac OS Users](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#for-mac-os-users)
+   2.1 [For Mac OS Users](#for-mac-os-users)
    
-   2.2 [For Windows Users](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#for-windows-users)
+   2.2 [For Windows Users](#for-windows-users)
 
-   2.3 [Windows Subsystem for Linux](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#windows-subsystem-for-linux-users)
+   2.3 [Windows Subsystem for Linux](#windows-subsystem-for-linux-users)
    
-3. [Interacting with the CaltechDATA CLI](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#interacting-with-the-caltechdata-cli)
+3. [Interacting with the CaltechDATA CLI](#interacting-with-the-caltechdata-cli)
 
    3.1 [CaltechDATA and the Test Instance of the Repository: Which Should I Use?]()
    
-   3.2 [For Mac OS Users](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#for-macos-users)
+   3.2 [For Mac OS Users](#for-macos-users)
    
-   3.3 [For Windows and Windows Subsystem for Linux Users](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#for-windows-users-1)
+   3.3 [For Windows and Windows Subsystem for Linux Users](#for-windows-users-1)
    
-4. [Additional Steps](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#additional-steps)
+4. [Additional Steps](#additional-steps)
    
-5. [Troubleshooting](https://github.com/Kshemaahna/research-data-assistants/blob/main/api-documentation/CLI-documentation-for-users.md#troubleshooting)
+5. [Troubleshooting](#troubleshooting)
 
-6. [Contact Us](https://github.com/Kshemaahna/research-data-assistants/edit/main/api-documentation/CLI-documentation-for-users.md#contact-us)
+6. [Contact Us](#contact-us)
 
 ## Introduction
 The CaltechData API repository houses the codebase for accessing, uploading, and editing research data and metadata from Caltech's collections through a program or CLI. This API provides developers with endpoints to interact with datasets and retrieve relevant information.
