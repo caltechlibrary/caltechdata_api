@@ -24,7 +24,7 @@
    
 5. [Troubleshooting](#troubleshooting)
 
-   5.1 [General](#General)
+   5.1 [General Troubleshooting FAQs](#general-troubleshooting-faqs)
    
    5.2 [Windows Subsystem for Linux](#insertlink)
    
