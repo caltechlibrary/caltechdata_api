@@ -2,7 +2,7 @@
 
 ## Contents
 
-1. About the API(#introduction)
+1. [About the API](#introduction)
 
 2. [Setup and Installation](#setup-and-installation)
    
