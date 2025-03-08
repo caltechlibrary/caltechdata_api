@@ -2,7 +2,7 @@
 
 ## Contents
 
-1. Introduction
+1. About the API(#introduction)
 
 2. [Setup and Installation](#setup-and-installation)
    
@@ -24,9 +24,9 @@
    
 5. [Troubleshooting](#troubleshooting)
 
-   5.1 [General Troubleshooting FAQs](#general-troubleshooting-faqs)
+   5.1 [General Troubleshooting FAQs](#general-troubleshooting-and-faqs)
    
-   5.2 [Windows Subsystem for Linux](#windows-subsystem-for-linux-troubleshooting-faqs)
+   5.2 [Windows Subsystem for Linux](#windows-subsystem-for-linux-troubleshooting-and-faqs)
    
 7. [Contact Us](#contact-us)
 
