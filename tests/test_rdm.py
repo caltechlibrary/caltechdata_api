@@ -9,6 +9,15 @@ import os
 
 
 def test_datacite_rdm_conversion(full_datacite43_record, full_rdm_record):
+
+    # Remove DOI from full_datacite43_record
+    # since it's prcessed by caltechdata_write or caltechdata_edit
+    identifiers = []
+    for identifier in full_datacite43_record["identifiers"]:
+        if identifier["identifierType"] != "DOI":
+            identifiers.append(identifier)
+    full_datacite43_record["identifiers"] = identifiers
+
     converted = customize_schema(full_datacite43_record, schema="43")
 
     assert converted == full_rdm_record

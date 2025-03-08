@@ -373,7 +373,8 @@ def customize_schema_rdm(json_record):
     if "community" in json_record:
         com = json_record.pop("community")
         parent["communities"] = {"ids": [com], "default": com}
-    final["parent"] = parent
+    if parent != {}:
+        final["parent"] = parent
     # Not technically datacite, but transfer pids information
     if "pids" in json_record:
         final["pids"] = json_record.pop("pids")

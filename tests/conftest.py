@@ -147,7 +147,10 @@ def full_rdm_record():
                             {"scheme": "orcid", "identifier": "0000-0001-8135-3489"}
                         ],
                     },
-                    "affiliations": [{"name": "free-text"}, {"id": "01ggx4157"}],
+                    "affiliations": [
+                        {"name": "free-text"},
+                        {"name": "CERN", "id": "01ggx4157"},
+                    ],
                 }
             ],
             "title": "InvenioRDM",
@@ -176,7 +179,7 @@ def full_rdm_record():
                         ],
                     },
                     "role": {"id": "other"},
-                    "affiliations": [{"id": "01ggx4157"}],
+                    "affiliations": [{"name": "CERN", "id": "01ggx4157"}],
                 }
             ],
             "dates": [
@@ -227,7 +230,9 @@ def full_rdm_record():
             "funding": [
                 {
                     "funder": {
-                        "name": "European Commission",
+                        "title": {
+                            "en": "OpenAIRE",
+                        },
                         "identifier": "00k4n6c32",
                         "scheme": "ror",
                     },
