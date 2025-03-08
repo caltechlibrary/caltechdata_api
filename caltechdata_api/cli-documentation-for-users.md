@@ -26,7 +26,7 @@
 
    5.1 [General Troubleshooting FAQs](#general-troubleshooting-faqs)
    
-   5.2 [Windows Subsystem for Linux](#insertlink)
+   5.2 [Windows Subsystem for Linux](#windows-subsystem-for-linux-troubleshooting-faqs)
    
 7. [Contact Us](#contact-us)
 
@@ -215,14 +215,18 @@ We use a customised version of Datacite 4.3 Schema which you can download [here]
 
 ## Troubleshooting
 
-### General Troubleshooting FAQs:
+### General Troubleshooting and FAQs:
 #### My ORCID doesn't work:
 Please try to input the ORCID without any hyphens.
 
 #### What is my unique identifier/record id?
 Your record id is the last part of the DOI link your dataset is linked to. It is the part that comes after the last forward slash. For example: if your DOI link is https://doi.org/10.33569/5t2wh-1e586, then your record id is 5t2wh-1e586.
 
-### Windows Subsystem for Linux Troubleshooting FAQs:
+### Windows Subsystem for Linux Troubleshooting and FAQs:
+#### How can I open the Windows Subsystem for Linux after installation?
+To do this, please run the following command in a Windows Powershell terminal:
+
+```wsl```
 
 ## Contact Us
 For further questions, email data@caltech.edu or visit the FAQs at [CaltechDATA](https://libanswers.caltech.edu/search/?t=0&adv=1&topics=CaltechDATA).
