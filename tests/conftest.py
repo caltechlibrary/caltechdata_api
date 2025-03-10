@@ -27,6 +27,24 @@ def full_datacite43_record():
                 ],
             }
         ],
+        "titles": [
+            {"title": "InvenioRDM"},
+            {
+                "title": "a research data management platform",
+                "titleType": "Subtitle",
+                "lang": "eng",
+            },
+        ],
+        "publisher": "InvenioRDM",
+        "publicationYear": "2018",
+        "subjects": [
+            {"subject": "custom"},
+            {
+                "subject": "Abdominal Injuries",
+                "subjectScheme": "MeSH",
+                "valueURI": "http://id.nlm.nih.gov/mesh/A-D000007",
+            },
+        ],
     }
 
 
