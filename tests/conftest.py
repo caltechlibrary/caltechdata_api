@@ -205,38 +205,5 @@ def full_rdm_record():
                 },
                 {"id": "cc-by-4.0"},
             ],
-            "description": "A description",
-            "additional_descriptions": [
-                {
-                    "description": "Bla bla bla",
-                    "type": {"id": "methods"},
-                    "lang": {"id": "eng"},
-                }
-            ],
-            "locations": {
-                "features": [
-                    {
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [-32.94682, -60.63932],
-                        },
-                        "place": "test location place",
-                    }
-                ]
-            },
-            "funding": [
-                {
-                    "funder": {
-                        "name": "European Commission",
-                        "identifier": "1234",
-                        "scheme": "ror",
-                    },
-                    "award": {
-                        "title": "OpenAIRE",
-                        "number": "246686",
-                        "identifier": ".../246686",
-                    },
-                }
-            ],
         }
     }
