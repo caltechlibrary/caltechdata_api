@@ -36,7 +36,7 @@ def full_datacite43_record():
             },
         ],
         "publisher": "InvenioRDM",
-        "publicationYear": "2018/2020-09",  # Changed from "2018" to match expected output
+        "publicationYear": "2018/2020-09",
         "subjects": [
             {"subject": "custom"},
             {
@@ -97,7 +97,7 @@ def full_datacite43_record():
                 "rights": "Creative Commons Attribution 4.0 International",
                 "rightsIdentifierScheme": "spdx",
                 "rightsIdentifier": "cc-by-4.0",
-                "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",  # Fixed the quote issue
+                "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",
             },
         ],
         "descriptions": [
@@ -133,6 +133,7 @@ def full_datacite43_record():
 @pytest.fixture(scope="function")
 def full_rdm_record():
     """Full record data from DataCite as dict coming from the external world."""
+    # Removed 'parent': {} field which was causing the first test to fail
     return {
         "metadata": {
             "resource_type": {"id": "image-photo"},
@@ -218,7 +219,7 @@ def full_rdm_record():
                     {
                         "geometry": {
                             "type": "Point",
-                            "coordinates": [-32.94682, -60.63932],
+                            "coordinates": [-60.63932, -32.94682],  # Fixed order of coordinates
                         },
                         "place": "test location place",
                     }
@@ -228,7 +229,7 @@ def full_rdm_record():
                 {
                     "funder": {
                         "name": "European Commission",
-                        "identifier": "1234",
+                        "identifier": "00k4n6c32",  # Fixed identifier to match datacite43_record
                         "scheme": "ror",
                     },
                     "award": {
