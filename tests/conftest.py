@@ -116,6 +116,16 @@ def full_datacite43_record():
                 "geoLocationPlace": "test location place",
             }
         ],
+        "fundingReferences": [
+            {
+                "funderName": "European Commission",
+                "funderIdentifier": "00k4n6c32",
+                "funderIdentifierType": "ROR",
+                "awardTitle": "OpenAIRE",
+                "awardNumber": "246686",
+                "awardURI": ".../246686",
+            }
+        ],
         "schemaVersion": "http://datacite.org/schema/kernel-4",
     }
 
@@ -214,19 +224,5 @@ def full_rdm_record():
                     }
                 ]
             },
-            "funding": [
-                {
-                    "funder": {
-                        "name": "European Commission",
-                        "identifier": "1234",
-                        "scheme": "ror",
-                    },
-                    "award": {
-                        "title": "OpenAIRE",
-                        "number": "246686",
-                        "identifier": ".../246686",
-                    },
-                }
-            ],
         }
     }
