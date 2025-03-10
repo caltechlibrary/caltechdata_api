@@ -4,7 +4,6 @@ import pytest
 @pytest.fixture(scope="function")
 def full_datacite43_record():
     return {
-        "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
         "creators": [
             {
                 "name": "Nielsen, Lars Holm",
