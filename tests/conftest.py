@@ -4,28 +4,7 @@ import pytest
 @pytest.fixture(scope="function")
 def full_datacite43_record():
     return {
-        "creators": [
-            {
-                "name": "Nielsen, Lars Holm",
-                "nameType": "Personal",
-                "givenName": "Lars Holm",
-                "familyName": "Nielsen",
-                "nameIdentifiers": [
-                    {
-                        "nameIdentifier": "0000-0001-8135-3489",
-                        "nameIdentifierScheme": "ORCID",
-                    }
-                ],
-                "affiliation": [
-                    {"name": "free-text"},
-                    {
-                        "name": "CERN",
-                        "affiliationIdentifier": "01ggx4157",
-                        "affiliationIdentifierScheme": "ROR",
-                    },
-                ],
-            }
-        ],
+        "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
         "titles": [
             {"title": "InvenioRDM"},
             {
