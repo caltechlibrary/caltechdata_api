@@ -11,12 +11,6 @@ def full_datacite43_record():
                 "nameType": "Personal",
                 "givenName": "Lars Holm",
                 "familyName": "Nielsen",
-                "nameIdentifiers": [
-                    {
-                        "nameIdentifier": "0000-0001-8135-3489",
-                        "nameIdentifierScheme": "ORCID",
-                    }
-                ],
             }
         ],
         "titles": [
