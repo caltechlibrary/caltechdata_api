@@ -3,7 +3,31 @@ import pytest
 
 @pytest.fixture(scope="function")
 def full_datacite43_record():
-    return 
+    return {
+        "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
+        "creators": [
+            {
+                "name": "Nielsen, Lars Holm",
+                "nameType": "Personal",
+                "givenName": "Lars Holm",
+                "familyName": "Nielsen",
+                "nameIdentifiers": [
+                    {
+                        "nameIdentifier": "0000-0001-8135-3489",
+                        "nameIdentifierScheme": "ORCID",
+                    }
+                ],
+                "affiliation": [
+                    {"name": "free-text"},
+                    {
+                        "name": "CERN",
+                        "affiliationIdentifier": "01ggx4157",
+                        "affiliationIdentifierScheme": "ROR",
+                    },
+                ],
+            }
+        ],
+    }
 
 
 @pytest.fixture(scope="function")
