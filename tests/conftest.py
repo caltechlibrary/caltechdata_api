@@ -6,10 +6,6 @@ def full_datacite43_record():
     return {
         "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
         "creators": [
-            {
-                "name": "Nielsen, Lars Holm",
-                "nameType": "Personal",
-            }
         ],
         "titles": [
             {"title": "InvenioRDM"},
