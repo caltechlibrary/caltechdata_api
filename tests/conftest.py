@@ -116,16 +116,6 @@ def full_datacite43_record():
                 "geoLocationPlace": "test location place",
             }
         ],
-        "fundingReferences": [
-            {
-                "funderName": "European Commission",
-                "funderIdentifier": "00k4n6c32",
-                "funderIdentifierType": "ROR",
-                "awardTitle": "OpenAIRE",
-                "awardNumber": "246686",
-                "awardURI": ".../246686",
-            }
-        ],
         "schemaVersion": "http://datacite.org/schema/kernel-4",
     }
 
