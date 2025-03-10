@@ -6,6 +6,7 @@ def full_datacite43_record():
     return {
         "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
         "creators": [
+            "name": "dd",
         ],
         "titles": [
             {"title": "InvenioRDM"},
