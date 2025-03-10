@@ -100,13 +100,6 @@ def full_datacite43_record():
                 "rightsUri": "https://creativecommons.org/licenses/by/4.0/" "legalcode",
             },
         ],
-        "descriptions": [
-            {
-                "description": "<h1>A description</h1> <p>with HTML tags</p>",
-                "descriptionType": "Abstract",
-            },
-            {"description": "Bla bla bla", "descriptionType": "Methods", "lang": "eng"},
-        ],
         "geoLocations": [
             {
                 "geoLocationPoint": {
@@ -224,5 +217,19 @@ def full_rdm_record():
                     }
                 ]
             },
+            "funding": [
+                {
+                    "funder": {
+                        "name": "European Commission",
+                        "identifier": "1234",
+                        "scheme": "ror",
+                    },
+                    "award": {
+                        "title": "OpenAIRE",
+                        "number": "246686",
+                        "identifier": ".../246686",
+                    },
+                }
+            ],
         }
     }
