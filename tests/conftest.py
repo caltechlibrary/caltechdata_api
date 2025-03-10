@@ -5,6 +5,20 @@ import pytest
 def full_datacite43_record():
     return {
         "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
+        "creators": [
+            {
+                "name": "Nielsen, Lars Holm",
+                "nameType": "Personal",
+                "givenName": "Lars Holm",
+                "familyName": "Nielsen",
+                "nameIdentifiers": [
+                    {
+                        "nameIdentifier": "0000-0001-8135-3489",
+                        "nameIdentifierScheme": "ORCID",
+                    }
+                ],
+            }
+        ],
         "titles": [
             {"title": "InvenioRDM"},
             {
