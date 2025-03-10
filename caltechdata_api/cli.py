@@ -33,7 +33,7 @@ def generate_key():
     return Fernet.generate_key()
 
 
-# Load the key from a file or generate a new one if not present
+# Load the key from a file or generate a new one if not presents
 def load_or_generate_key():
     key_file = os.path.join(caltechdata_directory, "key.key")
     if os.path.exists(key_file):
