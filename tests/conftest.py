@@ -205,7 +205,7 @@ def full_rdm_record():
                 },
                 {"id": "cc-by-4.0"},
             ],
-            "description": "<h1>A description</h1> <p>with HTML tags</p>",
+            "description": "A description",
             "additional_descriptions": [
                 {
                     "description": "Bla bla bla",
