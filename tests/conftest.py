@@ -1,29 +1,156 @@
 import pytest
 
+
+@pytest.fixture(scope="function")
+def full_datacite43_record():
+    return {
+        "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
+        "creators": [
+            {
+                "name": "Nielsen, Lars Holm",
+                "nameType": "Personal",
+                "givenName": "Lars Holm",
+                "familyName": "Nielsen",
+                "nameIdentifiers": [
+                    {
+                        "nameIdentifier": "0000-0001-8135-3489",
+                        "nameIdentifierScheme": "ORCID",
+                    }
+                ],
+                "affiliation": [
+                    {"name": "free-text"},
+                    {
+                        "name": "CERN",
+                        "affiliationIdentifier": "01ggx4157",
+                        "affiliationIdentifierScheme": "ROR",
+                    },
+                ],
+            }
+        ],
+        "titles": [
+            {"title": "InvenioRDM"},
+            {
+                "title": "a research data management platform",
+                "titleType": "Subtitle",
+                "lang": "eng",
+            },
+        ],
+        "publisher": "InvenioRDM",
+        "publicationYear": "2018",
+        "subjects": [
+            {"subject": "custom"},
+            {
+                "subject": "Abdominal Injuries",
+                "subjectScheme": "MeSH",
+                "valueURI": "http://id.nlm.nih.gov/mesh/A-D000007",
+            },
+        ],
+        "contributors": [
+            {
+                "name": "Nielsen, Lars Holm",
+                "nameType": "Personal",
+                "contributorType": "Other",
+                "givenName": "Lars Holm",
+                "familyName": "Nielsen",
+                "nameIdentifiers": [
+                    {
+                        "nameIdentifier": "0000-0001-8135-3489",
+                        "nameIdentifierScheme": "ORCID",
+                    }
+                ],
+                "affiliation": [
+                    {
+                        "name": "CERN",
+                        "affiliationIdentifier": "01ggx4157",
+                        "affiliationIdentifierScheme": "ROR",
+                    }
+                ],
+            }
+        ],
+        "dates": [
+            {"date": "2018/2020-09", "dateType": "Issued"},
+            {"date": "1939/1945", "dateType": "Other", "dateInformation": "A date"},
+        ],
+        "language": "dan",
+        "identifiers": [
+            {"identifier": "10.5281/inveniordm.1234", "identifierType": "DOI"},
+            {"identifier": "1924MNRAS..84..308E", "identifierType": "bibcode"},
+        ],
+        "relatedIdentifiers": [
+            {
+                "relatedIdentifier": "10.1234/foo.bar",
+                "relatedIdentifierType": "DOI",
+                "relationType": "IsCitedBy",
+                "resourceTypeGeneral": "Dataset",
+            }
+        ],
+        "sizes": ["11 pages"],
+        "formats": ["application/pdf"],
+        "version": "v1.0",
+        "rightsList": [
+            {
+                "rights": "A custom license",
+                "rightsUri": "https://customlicense.org/licenses/by/4.0/",
+            },
+            {"rights": "No rightsUri license"},
+            {
+                "rights": "Creative Commons Attribution 4.0 International",
+                "rightsIdentifierScheme": "spdx",
+                "rightsIdentifier": "cc-by-4.0",
+                "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode",
+            },
+        ],
+        "descriptions": [
+            {
+                "description": "<h1>A description</h1> <p>with HTML tags</p>",
+                "descriptionType": "Abstract",
+            },
+            {"description": "Bla bla bla", "descriptionType": "Methods", "lang": "eng"},
+        ],
+        "geoLocations": [
+            {
+                "geoLocationPoint": {
+                    "pointLatitude": -32.94682,
+                    "pointLongitude": -60.63932,
+                },
+                "geoLocationPlace": "test location place",
+            }
+        ],
+        "fundingReferences": [
+            {
+                "funderName": "European Commission",
+                "funderIdentifier": "00k4n6c32",
+                "funderIdentifierType": "ROR",
+                "awardTitle": "OpenAIRE",
+                "awardNumber": "246686",
+                "awardURI": ".../246686",
+            }
+        ],
+        "schemaVersion": "http://datacite.org/schema/kernel-4",
+    }
+
+
 @pytest.fixture(scope="function")
 def full_rdm_record():
     """Full record data from DataCite as dict coming from the external world."""
     return {
         "metadata": {
-            "resource_type": {"id": "dataset"},
+            "resource_type": {"id": "image-photo"},
             "creators": [
                 {
                     "person_or_org": {
-                        "name": "Reid-McLaughlin, Auden",
+                        "name": "Nielsen, Lars Holm",
                         "type": "personal",
-                        "given_name": "Auden",
-                        "family_name": "Reid-McLaughlin",
+                        "given_name": "Lars Holm",
+                        "family_name": "Nielsen",
                         "identifiers": [
-                            {
-                                "scheme": "orcid",
-                                "identifier": "0009-0004-5513-2817",
-                            }
+                            {"scheme": "orcid", "identifier": "0000-0001-8135-3489"}
                         ],
                     },
-                    "affiliations": [{"id": "05dxps055"}],
+                    "affiliations": [{"name": "free-text"}, {"id": "01ggx4157"}],
                 }
             ],
-            "title": "South Pole Shot Stacks for Constraining Temperature and Sedimentary Conditions under the South Pole with Distributed Acoustic Sensing (Reid-McLaughlin et al.)",
+            "title": "InvenioRDM",
             "additional_titles": [
                 {
                     "title": "a research data management platform",
@@ -31,8 +158,8 @@ def full_rdm_record():
                     "lang": {"id": "eng"},
                 }
             ],
-            "publisher": "CaltechDATA",
-            "publication_date": "2025-03-06",
+            "publisher": "InvenioRDM",
+            "publication_date": "2018/2020-09",
             "subjects": [
                 {"subject": "custom"},
                 {"id": "http://id.nlm.nih.gov/mesh/A-D000007"},
@@ -45,10 +172,7 @@ def full_rdm_record():
                         "given_name": "Lars Holm",
                         "family_name": "Nielsen",
                         "identifiers": [
-                            {
-                                "scheme": "orcid",
-                                "identifier": "0000-0001-8135-3489",
-                            }
+                            {"scheme": "orcid", "identifier": "0000-0001-8135-3489"}
                         ],
                     },
                     "role": {"id": "other"},
@@ -56,22 +180,10 @@ def full_rdm_record():
                 }
             ],
             "dates": [
-                {
-                    "date": "2025-03-06",
-                    "type": {"id": "issued"},
-                }
+                {"date": "1939/1945", "type": {"id": "other"}, "description": "A date"}
             ],
             "languages": [{"id": "dan"}],
-            "identifiers": [
-                {
-                    "identifier": "10.22002/6x9nn-n3559",
-                    "scheme": "doi"
-                },
-                {
-                    "identifier": "oai:data.caltech.edu:6x9nn-n3559",
-                    "scheme": "oai"
-                }
-            ],
+            "identifiers": [{"identifier": "1924MNRAS..84..308E", "scheme": "bibcode"}],
             "related_identifiers": [
                 {
                     "identifier": "10.1234/foo.bar",
@@ -85,16 +197,15 @@ def full_rdm_record():
             "version": "v1.0",
             "rights": [
                 {
-                    "title": {"en": "Creative Commons Zero v1.0 Universal"},
-                    "id": "cc0-1.0",
-                    "link": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+                    "title": {"en": "A custom license"},
+                    "link": "https://customlicense.org/licenses/by/4.0/",
                 },
                 {
                     "title": {"en": "No rightsUri license"},
                 },
                 {"id": "cc-by-4.0"},
             ],
-            "description": "Stacked_SP1_1-1066.mat: 1066 Shots Stacked at Shot Point 1\nStacked_SP1_1-40.mat: 40 Shots Stacked at Shot Point 1",
+            "description": "<h1>A description</h1> <p>with HTML tags</p>",
             "additional_descriptions": [
                 {
                     "description": "Bla bla bla",
@@ -127,5 +238,5 @@ def full_rdm_record():
                     },
                 }
             ],
-        },
+        }
     }
