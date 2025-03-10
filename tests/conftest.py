@@ -9,8 +9,6 @@ def full_datacite43_record():
             {
                 "name": "Nielsen, Lars Holm",
                 "nameType": "Personal",
-                "givenName": "Lars Holm",
-                "familyName": "Nielsen",
             }
         ],
         "titles": [
