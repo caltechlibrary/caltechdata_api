@@ -48,7 +48,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
         full_datacite43_record,
         schema="43",
         production=False,
-        files=["codemeta.json"],
+        files=["helpers.py"],
         publish=True,
         token=env_token,
     )
@@ -78,7 +78,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
     new_doi = caltechdata_edit(
         recid,
         full_datacite43_record,
-        files=["codemeta.json"],
+        files=["helpers.py"],
         schema="43",
         production=False,
         publish=True,
