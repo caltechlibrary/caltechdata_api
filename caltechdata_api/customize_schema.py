@@ -409,11 +409,11 @@ def validate_metadata(json_record):
 
     # Publication date is handled by customize function
 
-    # Check for 'resourceType'
-    if "resourceType" not in json_record["types"]:
-        errors.append("'resourceType' field is missing in 'types'.")
-    elif not isinstance(json_record["types"]["resourceType"], str):
-        errors.append("'resourceType' should be a string.")
+    # Check for 'resourceTypeGeneral'
+    if "resourceTypeGeneral" not in json_record["types"]:
+        errors.append("'resourceTypeGeneral' field is missing in 'types'.")
+    elif not isinstance(json_record["types"]["resourceTypeGeneral"], str):
+        errors.append("'resourceTypeGeneral' should be a string.")
 
     # Check for 'identifiers'
     if "identifiers" in json_record:
