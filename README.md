@@ -29,7 +29,7 @@ pip install caltechdata_api
 
 There are some example python scripts in the GitHub repository.
 
-###Create a record:
+### Create a record:
 
 ```shell
 python write.py example.json -fnames logo.gif
@@ -39,7 +39,7 @@ python write.py example.json -fnames logo.gif
 the end of a url to visit the record (e.g.
 https://data.caltechlibrary.dev/records/pbkn6-m9y63)
 
-###Edit a record 
+### Edit a record 
 Make changes to the example.json file to see a change)
 ```
 python edit.py example.json -id pbkn6-m9y63
