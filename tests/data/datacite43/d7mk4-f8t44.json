@@ -1,0 +1,102 @@
+{
+  "contributors": [
+    {
+      "contributorType": "DataCurator",
+      "familyName": "Civilini",
+      "givenName": "Francesco",
+      "name": "Civilini, Francesco",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-0669-0404",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "affiliation": [
+        {
+          "affiliationIdentifier": "05dxps055",
+          "affiliationIdentifierScheme": "ROR",
+          "name": "California Institute of Technology"
+        }
+      ],
+      "contributorType": "Other",
+      "familyName": "Husker",
+      "givenName": "Allen",
+      "name": "Husker, Allen",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-1139-0502",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    },
+    {
+      "contributorType": "Other",
+      "familyName": "Weber",
+      "givenName": "Renee",
+      "name": "Weber, Renee",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-1649-483X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "familyName": "Civilini",
+      "givenName": "Francesco",
+      "name": "Civilini, Francesco",
+      "nameIdentifiers": [],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-10-24",
+      "dateType": "Issued"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "This dataset contains data from the Lunar Seismic Profiling Experiment as well as results from the JGR: Planets publication \"Thermal moonquake characterization and cataloging using frequency-based algorithms and stochastic gradient descent\".\u00a0\nThe code to compute the results can be found in the GitHub here:\nhttps://github.com/civilinifr/thermal_mq_analysis\nalso published through Zenodo here:\nhttp://doi.org/10.5281/zenodo.8025056\n\u00a0\nv2: Fixed files in LSPE_sac_hourly.zip to contain correct start and end times.\u00a0\n\u00a0\nIncludes:\n\nThermal moonquake catalog of Grade-A LSPE events\nDaily ASCII files in units of decompressed volts (filenames daily_ascii_YYYYMMDD_YYYYMMDD.zip)\nHourly SAC files in units of decompressed volts (filename LSPE_sac_hourly.zip)\nHourly SAC files in units of nm/s (filenames LSPE_sac_hourly_phys_p1.zip and LSPE_sac_hourly_phys_p2.zip)\nAnalysis results from the manuscript (filename lunar_output.zip)",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/d7mk4-f8t44",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:d7mk4-f8t44",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "Apollo 17 Lunar Seismic Profiling Experiment Seismic Data and Thermal Moonquake Catalog"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "v2.0"
+}

@@ -373,7 +373,8 @@ def customize_schema_rdm(json_record):
     if "community" in json_record:
         com = json_record.pop("community")
         parent["communities"] = {"ids": [com], "default": com}
-    final["parent"] = parent
+    if parent != {}:
+        final["parent"] = parent
     # Not technically datacite, but transfer pids information
     if "pids" in json_record:
         final["pids"] = json_record.pop("pids")
@@ -408,11 +409,11 @@ def validate_metadata(json_record):
 
     # Publication date is handled by customize function
 
-    # Check for 'resourceType'
-    if "resourceType" not in json_record["types"]:
-        errors.append("'resourceType' field is missing in 'types'.")
-    elif not isinstance(json_record["types"]["resourceType"], str):
-        errors.append("'resourceType' should be a string.")
+    # Check for 'resourceTypeGeneral'
+    if "resourceTypeGeneral" not in json_record["types"]:
+        errors.append("'resourceTypeGeneral' field is missing in 'types'.")
+    elif not isinstance(json_record["types"]["resourceTypeGeneral"], str):
+        errors.append("'resourceTypeGeneral' should be a string.")
 
     # Check for 'identifiers'
     if "identifiers" in json_record:
@@ -508,11 +509,11 @@ def validate_metadata(json_record):
                 if creator["nameType"] == "Organizational":
                     if "name" not in creator:
                         errors.append("Each organizational 'creator' must have 'name'.")
-            else:
-                if "familyName" not in creator:
-                    errors.append(
-                        "Each 'creator' must have a 'familyName' or have type Organizational"
-                    )
+                else:
+                    if "familyName" not in creator:
+                        errors.append(
+                            "Each 'creator' must have a 'familyName' or have type Organizational"
+                        )
             if "affiliation" in creator:
                 if not isinstance(creator["affiliation"], list):
                     errors.append("'affiliation' in 'creators' should be a list.")

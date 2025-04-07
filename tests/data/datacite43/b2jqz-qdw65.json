@@ -1,0 +1,107 @@
+{
+  "contributors": [
+    {
+      "affiliation": [
+        {
+          "name": "Department of Biological Sciences, Tata Institute of Fundamental Research, Mumbai, Maharashtra, India"
+        }
+      ],
+      "contributorType": "ContactPerson",
+      "familyName": "Koushika",
+      "givenName": "Sandhya P.",
+      "name": "Koushika, Sandhya P.",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-1742-7356",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "name": "Department of Biological Sciences, Tata Institute of Fundamental Research, Mumbai, Maharashtra, India"
+        }
+      ],
+      "familyName": "Vasudevan",
+      "givenName": "Amruta",
+      "name": "Vasudevan, Amruta",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-5777-9508",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-06-25",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-06-24",
+      "dateType": "Accepted"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Raw data for figure 1",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "funderName": "The authors gratefully acknowledge support from the Department of Atomic Energy, Government of India (DAE) grants 12-R\\&D-IMS-5.02-0202 and 1303/2/2019/R\\&DII/DAE/2079 (dated 11.02.2020 to S.P.K.), the Howard Hughes Medical Institute (HHMI) International Early Career Scientist (IECS) grant 55007425 (to S.P.K.), CSIR (to S.P.K.), and funding from the PRISM project at the Institute of Mathematical Sciences (to S.P.K.) for research costs. The authors gratefully acknowledge salary support from TIFR-DAE (for A.V.)."
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/b2jqz-qdw65",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:b2jqz-qdw65",
+      "identifierType": "oai"
+    }
+  ],
+  "language": "eng",
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.17912/micropub.biology.001204",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsPartOf",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0 International",
+      "rightsIdentifier": "cc-by-4.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "c. elegans"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Dataset: Physical presence of chemical synapses is necessary for turning behavior of anterograde synaptic vesicles at the branch point of PLM neurons in C. elegans"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "1.0"
+}

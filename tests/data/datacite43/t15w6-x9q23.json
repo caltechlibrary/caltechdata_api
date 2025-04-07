@@ -1,0 +1,109 @@
+{
+  "contributors": [
+    {
+      "affiliation": [
+        {
+          "name": "National Eye Institute, National Institutes of Health, Bethesda, Maryland, United States"
+        },
+        {
+          "name": "Intramural Research Program, National Library of Medicine, National Institutes of Health, Bethesda, Maryland, United States"
+        }
+      ],
+      "contributorType": "ContactPerson",
+      "familyName": "Pal",
+      "givenName": "Soumitra",
+      "name": "Pal, Soumitra",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-4840-3944",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "name": "National Eye Institute, National Institutes of Health, Bethesda, Maryland, United States"
+        },
+        {
+          "name": "Intramural Research Program, National Library of Medicine, National Institutes of Health, Bethesda, Maryland, United States"
+        }
+      ],
+      "familyName": "Pal",
+      "givenName": "Soumitra",
+      "name": "Pal, Soumitra",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-4840-3944",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2025-02-21",
+      "dateType": "Issued"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "This MS-Excel workbook contains spreadsheets detailing the FCA datasets, clustering resolutions, and the results of our analysis at both the cell and cluster levels.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "funderName": "This research was supported in part by the Intramural Research Program of the National Institutes of Health, USA: The National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK) Grant No. ZIADK015600 to B.O. and National Library of Medicine (NLM) Grant No. LM200887 to T.M.P."
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/t15w6-x9q23",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:t15w6-x9q23",
+      "identifierType": "oai"
+    }
+  ],
+  "language": "eng",
+  "publicationYear": "2025",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.17912/micropub.biology.001501",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsPartOf",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0 International",
+      "rightsIdentifier": "cc-by-4.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "drosophila"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Dataset: Cell-Type Specific Variation in X-Chromosome Dosage Compensation in Drosophila"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "1.0"
+}

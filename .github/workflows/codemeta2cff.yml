@@ -19,8 +19,27 @@ jobs:
         uses: actions/checkout@v4
       - name: Convert CFF
         uses: caltechlibrary/codemeta2cff@main
+      - name: Install jq for JSON parsing
+        run: sudo apt-get install -y jq
+      - name: Parse and update setup.cfg
+        run: |
+            # Extract values from codemeta.json
+            NAME=$(jq -r '.name' codemeta.json)
+            VERSION=$(jq -r '.version' codemeta.json)
+            AUTHORS=$(jq -r '[.author[] | .givenName + " " + .familyName] | join(", ")' codemeta.json)
+            AUTHOR_EMAILS=$(jq -r '[.author[] | .email // empty] | join(", ")' codemeta.json)
+            DESCRIPTION=$(jq -r '.description' codemeta.json)
+            URL=$(jq -r '.codeRepository // .url' codemeta.json)
+
+            # Update setup.cfg fields
+            sed -i "s/^name = .*/name = $NAME/" setup.cfg
+            sed -i "s/^version = .*/version = $VERSION/" setup.cfg
+            sed -i "s/^author = .*/author = $AUTHORS/" setup.cfg
+            sed -i "s/^author_email = .*/author_email = $AUTHOR_EMAILS/" setup.cfg
+            sed -i "s/^description = .*/description = $DESCRIPTION/" setup.cfg
+            sed -i "s|^url = .*|url = $URL|" setup.cfg
       - name: Commit CFF
         uses: EndBug/add-and-commit@v9
         with:
-          message: 'Add updated CITATION.cff from codemeta.json file'
-          add: 'CITATION.cff'
+          message: 'Add updated CITATION.cff and setup.cfg from codemeta.json file'
+          add: '["setup.cfg", "CITATION.cff"]'

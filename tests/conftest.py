@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture(scope="function")
 def full_datacite43_record():
     return {
-        "types": {"resourceTypeGeneral": "Image", "resourceType": "Photo"},
+        "types": {"resourceTypeGeneral": "Dataset"},
         "creators": [
             {
                 "name": "Nielsen, Lars Holm",
@@ -40,9 +40,9 @@ def full_datacite43_record():
         "subjects": [
             {"subject": "custom"},
             {
-                "subject": "Abdominal Injuries",
-                "subjectScheme": "MeSH",
-                "valueURI": "http://id.nlm.nih.gov/mesh/A-D000007",
+                "subject": "Chemical sciences",
+                "subjectScheme": "FOS",
+                "valueURI": "http://www.oecd.org/science/inno/38235147.pdf?1.4",
             },
         ],
         "contributors": [
@@ -119,7 +119,7 @@ def full_datacite43_record():
         "fundingReferences": [
             {
                 "funderName": "European Commission",
-                "funderIdentifier": "1234",
+                "funderIdentifier": "00k4n6c32",
                 "funderIdentifierType": "ROR",
                 "awardTitle": "OpenAIRE",
                 "awardNumber": "246686",
@@ -135,7 +135,7 @@ def full_rdm_record():
     """Full record data from DataCite as dict coming from the external world."""
     return {
         "metadata": {
-            "resource_type": {"id": "image-photo"},
+            "resource_type": {"id": "dataset"},
             "creators": [
                 {
                     "person_or_org": {
@@ -147,7 +147,10 @@ def full_rdm_record():
                             {"scheme": "orcid", "identifier": "0000-0001-8135-3489"}
                         ],
                     },
-                    "affiliations": [{"name": "free-text"}, {"id": "01ggx4157"}],
+                    "affiliations": [
+                        {"name": "free-text"},
+                        {"name": "CERN", "id": "01ggx4157"},
+                    ],
                 }
             ],
             "title": "InvenioRDM",
@@ -162,7 +165,7 @@ def full_rdm_record():
             "publication_date": "2018/2020-09",
             "subjects": [
                 {"subject": "custom"},
-                {"id": "http://id.nlm.nih.gov/mesh/A-D000007"},
+                {"id": "http://www.oecd.org/science/inno/38235147.pdf?1.4"},
             ],
             "contributors": [
                 {
@@ -176,7 +179,7 @@ def full_rdm_record():
                         ],
                     },
                     "role": {"id": "other"},
-                    "affiliations": [{"id": "01ggx4157"}],
+                    "affiliations": [{"name": "CERN", "id": "01ggx4157"}],
                 }
             ],
             "dates": [
@@ -228,11 +231,10 @@ def full_rdm_record():
                 {
                     "funder": {
                         "name": "European Commission",
-                        "identifier": "1234",
-                        "scheme": "ror",
+                        "id": "00k4n6c32",
                     },
                     "award": {
-                        "title": "OpenAIRE",
+                        "title": {"en": "OpenAIRE"},
                         "number": "246686",
                         "identifier": ".../246686",
                     },

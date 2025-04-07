@@ -1,0 +1,63 @@
+{
+  "creators": [
+    {
+      "familyName": "Sloan",
+      "givenName": "Julia",
+      "name": "Sloan, Julia",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0003-0200-063X",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-10-25",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-10-31",
+      "dateInformation": "Correct file added",
+      "dateType": "Updated"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "This artifact contains two datasets: one corresponding to a simulation solving Richards Equation in clay, and another solving it in sand. These experiments were conducted in Gordon Bonan's \"Climate Change and Terrestrial Ecosystem Modeling\" textbook, Chapter 8 supplementary program 1.\nFull citation: Bonan, Gordon. Climate Change and Terrestrial Ecosystem Modeling. Cambridge University Press, 2019.",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/asjw8-cd908",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:asjw8-cd908",
+      "identifierType": "oai"
+    }
+  ],
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Zero v1.0 Universal",
+      "rightsIdentifier": "cc0-1.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "titles": [
+    {
+      "title": "Bonan 2019 Richards Eqn Data"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  }
+}

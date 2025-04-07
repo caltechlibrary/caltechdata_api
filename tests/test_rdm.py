@@ -5,64 +5,91 @@ from caltechdata_api import (
     get_metadata,
 )
 import json
+import os
 
 
 def test_datacite_rdm_conversion(full_datacite43_record, full_rdm_record):
-    converted = customize_schema(full_datacite43_record, schema="43", pilot=True)
+
+    # Remove DOI from full_datacite43_record
+    # since it's prcessed by caltechdata_write or caltechdata_edit
+    identifiers = []
+    for identifier in full_datacite43_record["identifiers"]:
+        if identifier["identifierType"] != "DOI":
+            identifiers.append(identifier)
+    full_datacite43_record["identifiers"] = identifiers
+
+    converted = customize_schema(full_datacite43_record, schema="43")
 
     assert converted == full_rdm_record
 
 
 def test_datacite_rdm_create_edit(full_datacite43_record):
-    doi = caltechdata_write(
-        full_datacite43_record, schema="43", pilot=True, publish=True
-    )
+    env_token = os.environ.get("RDMTOK")
 
-    assert doi.startswith("10.33569")
+    # Remove DOI from full_datacite43_record
+    # since we want the test system to create one
+    identifiers = []
+    for identifier in full_datacite43_record["identifiers"]:
+        if identifier["identifierType"] != "DOI":
+            identifiers.append(identifier)
+    full_datacite43_record["identifiers"] = identifiers
 
-    doi = caltechdata_write(
+    recid = caltechdata_write(
         full_datacite43_record,
         schema="43",
-        pilot=True,
-        files=["codemeta.json"],
+        production=False,
         publish=True,
+        token=env_token,
     )
 
-    assert doi.startswith("10.33569")
+    assert len(recid) == 11
 
-    # If we don't publish, don't get back a DOI
-    idv = caltechdata_write(full_datacite43_record, schema="43", pilot=True)
+    recid = caltechdata_write(
+        full_datacite43_record,
+        schema="43",
+        production=False,
+        files=["helpers.py"],
+        publish=True,
+        token=env_token,
+    )
 
-    assert idv.startswith("10.33569") == False
+    assert len(recid) == 11
 
     full_datacite43_record["publisher"] = "Edited"
 
     doi = caltechdata_edit(
-        idv, full_datacite43_record, schema="43", pilot=True, publish=True
+        recid,
+        full_datacite43_record,
+        schema="43",
+        production=False,
+        publish=True,
+        token=env_token,
     )
 
     assert doi.startswith("10.33569")
-    idv = doi.split("/")[1]
 
-    new_metadata = get_metadata(idv, production=False, pilot=True)
+    # Validate is false until geolocation points are fixed/we move to 4.6
+    new_metadata = get_metadata(recid, production=False, validate=False)
 
     assert new_metadata["publisher"] == "Edited"
 
     full_datacite43_record["publisher"] = "Again!"
 
     new_doi = caltechdata_edit(
-        idv,
+        recid,
         full_datacite43_record,
-        files=["codemeta.json"],
+        files=["helpers.py"],
         schema="43",
-        pilot=True,
+        production=False,
         publish=True,
+        token=env_token,
     )
 
     assert new_doi != doi
 
-    idv = new_doi.split("/")[1]
+    recid = new_doi.split("/")[1]
 
-    new_metadata = get_metadata(idv, production=False, pilot=True)
+    # Validate is false until geolocation points are fixed/we move to 4.6
+    new_metadata = get_metadata(recid, production=False, validate=False)
 
     assert new_metadata["publisher"] == "Again!"

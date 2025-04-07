@@ -6,7 +6,7 @@
     "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
     "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
     "license": "https://data.caltech.edu/license",
-    "version": "1.9.1",
+    "version": "1.10.0",
     "author": [
         {
             "@type": "Person",
@@ -36,7 +36,8 @@
             "affiliation": {
                 "@type": "Organization",
                 "name": "Caltech"
-            }
+            },
+            "@id": "https://orcid.org/0009-0002-2450-6471"
         },
         {
             "@type": "Person",
@@ -82,5 +83,5 @@
         }
     },
     "programmingLanguage": "Python",
-    "identifier": "10.22002/bv2pv-2b295"
+    "identifier": "10.22002/3gdk4-j5504"
 }

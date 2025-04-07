@@ -1,20 +1,6 @@
 name: Bot validation
 
-on:
-  push:
-    paths:
-      - 'caltechdata_api/cli.py'
-      - 'caltechdata_api/customize_schema.py'
-      - 'caltechdata_api/caltechdata_write.py'
-      - 'caltechdata_api/caltechdata_edit.py' 
-      - 'README.md'
-  pull_request:
-    paths:
-      - 'caltechdata_api/cli.py'
-      - 'caltechdata_api/customize_schema.py'
-      - 'caltechdata_api/caltechdata_write.py'
-      - 'caltechdata_api/caltechdata_edit.py' 
-      - 'README.md'
+on: [push, pull_request]
 
 jobs:
   validate-metadata:
@@ -36,13 +22,17 @@ jobs:
         pip install pytest requests s3fs cryptography 
         pip install .
 
-    - name: Run CaltechDATA Metadata Validation
+    - name: Run against CaltechData Test system
       env:
-        CALTECHDATA_TOKEN: ${{ secrets.CALTECHDATA_TOKEN }}
-      run: |
-        python tests/bot_yaml.py
-    - name: Run Unit Tests
+        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
       run: |
         cd tests
         pytest test_unit.py
         pytest test_rdm.py
+    - name: Run Medata Validation Test and RDM
+      env:
+        RDMTOK: ${{ secrets.CALTECHDATA_TOKEN }}
+      run: |
+        cd tests
+        python bot_yaml.py
+        

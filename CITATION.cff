@@ -8,14 +8,17 @@ authors:
   - family-names: Bhattarai
     given-names: Rohan
     orcid: https://orcid.org/0009-0007-0323-4733
+  - family-names: Won
+    given-names: Elizabeth
+    orcid: https://orcid.org/0009-0002-2450-6471
   - family-names: Abakah
     given-names: Alexander A
     orcid: https://orcid.org/0009-0003-5640-6691
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
-doi: 10.22002/bv2pv-2b295
-version: 1.9.1
+doi: 10.22002/3gdk4-j5504
+version: 1.10.0
 license-url: "https://data.caltech.edu/license"
 keywords:
   - GitHub
@@ -23,3 +26,4 @@ keywords:
   - software
   - InvenioRDM
 date-released: 2025-01-15
+

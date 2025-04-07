@@ -1,0 +1,113 @@
+{
+  "contributors": [
+    {
+      "affiliation": [
+        {
+          "name": "Molecular Biophysics & Biochemistry, Yale University, New Haven, Connecticut, United States"
+        },
+        {
+          "name": "Cell Biology, Yale University School of Medicine"
+        }
+      ],
+      "contributorType": "ContactPerson",
+      "familyName": "Berro",
+      "givenName": "Julien",
+      "name": "Berro, Julien",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-9560-8646",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "creators": [
+    {
+      "affiliation": [
+        {
+          "name": "Molecular Biophysics & Biochemistry, Yale University, New Haven, Connecticut, United States"
+        },
+        {
+          "name": "Cell Biology, Yale University School of Medicine"
+        }
+      ],
+      "familyName": "Berro",
+      "givenName": "Julien",
+      "name": "Berro, Julien",
+      "nameIdentifiers": [
+        {
+          "nameIdentifier": "0000-0002-9560-8646",
+          "nameIdentifierScheme": "ORCID"
+        }
+      ],
+      "nameType": "Personal"
+    }
+  ],
+  "dates": [
+    {
+      "date": "2024-05-08",
+      "dateType": "Issued"
+    },
+    {
+      "date": "2024-05-03",
+      "dateType": "Accepted"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Primers used in this study",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "fundingReferences": [
+    {
+      "funderName": "This work was partly supported by the National Institutes of Health (R01 GM11563601)."
+    }
+  ],
+  "identifiers": [
+    {
+      "identifier": "10.22002/wbty9-bqy29",
+      "identifierType": "DOI"
+    },
+    {
+      "identifier": "oai:data.caltech.edu:wbty9-bqy29",
+      "identifierType": "oai"
+    }
+  ],
+  "language": "eng",
+  "publicationYear": "2024",
+  "publisher": "CaltechDATA",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "10.17912/micropub.biology.001191",
+      "relatedIdentifierType": "DOI",
+      "relationType": "IsPartOf",
+      "resourceTypeGeneral": "Text"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0 International",
+      "rightsIdentifier": "cc-by-4.0",
+      "rightsIdentifierScheme": "spdx",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "subjects": [
+    {
+      "subject": "s. pombe"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Dataset: CRISPR-Cas9 editing efficiency in fission yeast is not limited by homology search and is improved by combining gap-repair with fluoride selection"
+    }
+  ],
+  "types": {
+    "resourceType": "",
+    "resourceTypeGeneral": "Dataset"
+  },
+  "version": "1.0"
+}
