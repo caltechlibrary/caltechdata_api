@@ -77,3 +77,7 @@ This returns the custom DOI of the record if it is successful.
 Only test your application on the test repository (`data.caltechlibrary.dev`).  Testing the API on the public 
 repository will generate junk records that are annoying to delete.
 
+## Using the Command Line Interface
+
+If you would like to interact with the CaltechDATA API using the Command line Interface (CLI), please refer to the documentation linked here:
+https://caltechlibrary.github.io/caltechdata_api/caltechdata_api/cli-documentation-for-users
