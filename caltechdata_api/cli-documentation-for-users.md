@@ -2,7 +2,7 @@
 
 ## Contents
 
-1. [About the API](#introduction)
+1. [About the CLI](#introduction)
 
 2. [Setup and Installation](#setup-and-installation)
    
@@ -14,24 +14,29 @@
    
 3. [Interacting with the CaltechDATA CLI](#interacting-with-the-caltechdata-cli)
 
-   3.1 [CaltechDATA and the Test Instance of the Repository: Which Should I Use?]()
+   3.1 [CaltechDATA and the CaltechDATA Test Instance: Which Should I Use?](#the-test-instance-or-the-caltechdata-repository)
    
-   3.2 [For Mac OS Users and and Windows Subsystem for Linux Users](#for-macos-users)
-   
-   3.3 [For Windows Users](#for-windows-users-1)
-   
-4. [Additional Steps](#additional-steps)
-   
-5. [Troubleshooting](#troubleshooting)
+   3.2 [Creating A Token](#creating-a-token)
 
-   5.1 [General Troubleshooting FAQs](#general-troubleshooting-and-faqs)
+   3.3 [What Files You'll Need to Create A New Dataset](#what-files-youll-need-to-create-a-new-dataset)
+
+   3.4 [For Mac OS Users and and Windows Subsystem for Linux Users](#for-macos-users-and-windows-subsystem-for-linux-wsl-users)
    
-   5.2 [Windows Subsystem for Linux](#windows-subsystem-for-linux-troubleshooting-and-faqs)
+   3.5 [For Windows Users](#for-windows-users-1)
    
-7. [Contact Us](#contact-us)
+4. [Troubleshooting](#troubleshooting)
+
+   4.1 [General Troubleshooting FAQs](#general-troubleshooting-and-faqs)
+   
+   4.2 [Windows Subsystem for Linux](#windows-subsystem-for-linux-troubleshooting-and-faqs)
+   
+5. [Contact Us](#contact-us)
 
 ## Introduction
-The CaltechData API repository houses the codebase for accessing, uploading, and editing research data and metadata from Caltech's collections through a program or CLI. This API provides developers with endpoints to interact with datasets and retrieve relevant information.
+The CaltechData CLI is a command line interface that automates creation and
+upload of records to CaltechDATA. Large data uploads are currently for test
+purposes only; please email data@caltech.edu if you have large data
+distribution needs.  
 
 
 ## Setup and Installation:
@@ -138,14 +143,39 @@ Now, we shall install caltechdata_api. To do this, please run the following comm
 
 
 ## Interacting with the CaltechDATA CLI
-The CaltechDATA Command Line Interface (CLI) helps you interact with the CaltechDATA repository to upload research data, link your data with your publications, and assign a permanent DOI to your dataset so that others can reference the dataset. You can access the datasets you create or edit at https://data.caltech.edu/.
+The CaltechDATA Command Line Interface (CLI) helps you interact with the CaltechDATA repository to upload research data, link your data with your publications, 
+and assign a permanent DOI to your dataset so that others can reference the
+dataset. You can access the datasets you create or edit at
+[https://data.caltech.edu/](https://data.caltech.edu).
 
 ### The Test Instance or the CaltechDATA Repository
-If you would like to create and edit a test record of your datset before uploading it to the CaltechDATA Repository and generating a permanent DOI, you can also use the CaltechDATA Command Line Interface (CLI) to interact with the test instance of the CaltechDATA Repository that you can access at https://data.caltechlibrary.dev/.
+If you would like to create and edit a test record of your datset before uploading 
+it to the CaltechDATA Repository and generating a permanent DOI, you can also 
+use the CaltechDATA Command Line Interface (CLI) to interact with the test instance 
+of the CaltechDATA Repository that you can access at
+[https://data.caltechlibrary.dev/](https://data.caltechlibrary.dev/).
 
-We recommend using the CLI to interact with the test instance if you are not ready to generate a permanent DOI but would like to experiment to avoid creating junk records on the original CaltechDATA Repository. In general, users create and edit datasets in the same way regardless of whether the dataset exists on the original CaltechDATA Repository or the test instance.
+We recommend using the CLI to interact with the test instance if you
+experimenting and are not ready to generate a permanent DOI. It is difficult to
+remove records in the main CaltechDATA repository, but easy to do so in the
+test repository. In general, users create and edit datasets in the same way regardless of whether the dataset exists on the original CaltechDATA Repository or the test instance.
 
-Now we shall outline the steps to interact with the CLI.
+### Creating A Token:
+In order to create or edit datasets you'll need to create a token. In order to this, you'll need to open the platform you are uploading your dataset to (the original CaltechDATA Repository or the test instance of it) and log in. Then follow these steps:
+
+#### Step 1:
+Please click the person icon appearing on the top right and choose "Applications" from the dropdown menu that appears.
+
+#### Step 2:
+Next, please click the option that says "New Token" and name your token.
+
+### What Files You'll Need to Create A New Dataset:
+In order to create a new dataset, you will need a:
+
+1) File containing your dataset (csv or json file)
+2) A metadata file (json file)
+
+We use a customised version of Datacite 4.3 Schema which you can download [here](https://github.com/datacite/schema/blob/master/source/json/kernel-4.3/datacite_4.3_schema.json). Otherwise you can use your own.
 
 ### For MacOS Users and Windows Subsystem for Linux (WSL) Users:
 Please run the command shown in order to interact with the CaltechDATA Repository:
@@ -194,24 +224,6 @@ Above: Using Visual Studio Code (VSCode)
 ![PowerShell cli](<pictures-documentation/Interact CLI Step 2(c).png>)
 Above: Using Windows PowerShell
 
-## Additional Steps:
-
-### Creating A Token:
-In order to create or edit datasets you'll need to create a token. In order to this, you'll need to open the platform you are uploading your dataset to (the original CaltechDATA Repository or the test instance of it) and log in. Then follow these steps:
-
-#### Step 1: 
-Please click the person icon appearing on the top right and choose "Applications" from the dropdown menu that appears.
-
-#### Step 2: 
-Next, please click the option that says "New Token" and name your token.
-
-### What Files You'll Need to Create A New Dataset:
-In order to create a new dataset, you will need a:
-
-1) File containing your dataset (csv or json file)
-2) A metadata file (json file)
-
-We use a customised version of Datacite 4.3 Schema which you can download [here](https://github.com/datacite/schema/blob/master/source/json/kernel-4.3/datacite_4.3_schema.json). Otherwise you can use your own.
 
 ## Troubleshooting
 
