@@ -51,41 +51,41 @@ Please install the Caltechdata_api Library via pip using the command shown:
 #### Step 1: 
 Please go to https://github.com/caltechlibrary/caltechdata_api.git and click the green button that says "<> Code". Then choose the option that says "Download ZIP".
 
-![alt text](<pictures-documentation/Step 1.png>)
+![Interface with a Download xip button](<pictures-documentation/Step 1.png>)
 
 #### Step 2: 
 Please extract the files from the downloaded zip file to a new folder (we recommend this folder be on the desktop and that you name this folder something easy to recall).
 
-![alt text](<pictures-documentation/Step 2.png>)
+![Interface for extracting zip files](<pictures-documentation/Step 2.png>)
 
 #### Step 3: 
 In the next few steps, we shall change the directory to the folder called "caltechdata_api" inside the folder you extracted from the downloaded ZIP file. To do this, please go to the file you saved either on the file manager or on its location (this would be the desktop if you saved it there). Then, please open the folder called "caltechdata_api_main" and then right click on the folder inside it called "caltechdata_api" and choose the option that says "copy as path".
 
-![alt text](<pictures-documentation/Step 3(a).png>)
+![Interface for changing directory](<pictures-documentation/Step 3(a).png>)
 
 Above: Open the file on file manager as shown.
 
-![alt text](<pictures-documentation/Step 3(b).png>)
+![Interface of the file manager](<pictures-documentation/Step 3(b).png>)
 
 Above: Go into the folder caltechdata_api_main.
 
-![alt text](<pictures-documentation/Step 3(c).png>)
+![Navigating the file manager](<pictures-documentation/Step 3(c).png>)
 
 Above: Right click on the folder called caltechdata_api and choose the option that says copy as path.
 
 #### Step 4: 
 Next, please open a the Windows PowerShell or a code editor (we recommend using VSCode if you choose to use a code editor) and then open its Terminal.
 
-![alt text](<pictures-documentation/Step 4(a).png>)
+![Visual studio code terminal](<pictures-documentation/Step 4(a).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<pictures-documentation/Step 4(b).png>)
+![Windows PowerShell terminal](<pictures-documentation/Step 4(b).png>)
 Above: Using Windows PowerShell
 
 #### Step 5: 
 Next, please open the dropdown menu near the "+" icon on the top right hand corner of the terminal and choose the option that says "Git Bash". You can skip this step and go directly to the next step if you are using the Windows Powershell.
 
-![alt text](<pictures-documentation/Step 5.png>)
+![Git bash selection](<pictures-documentation/Step 5.png>)
 
 #### Step 6: 
 Then, please type in the command as shown:
@@ -96,10 +96,10 @@ For example, it could look like this:
 
 ```cd "C:\Users\kshem\Desktop\Demonstration\caltechdata_api-main\caltechdata_api"```
 
-![alt text](<pictures-documentation/Step 6(a).png>)
+![VSCode Path settings](<pictures-documentation/Step 6(a).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<pictures-documentation//Step 6(b).png>)
+![PowerShell path settings](<pictures-documentation//Step 6(b).png>)
 Above: Using Windows PowerShell
 
 ### Windows Subsystem for Linux Users:
@@ -162,20 +162,20 @@ To interact with the CaltechDATA Repository, please type in this command as show
 
 ```python cli.py```
 
-![alt text](<pictures-documentation/Interact CLI Step 1(a).png>)
+![VSCode interface for cli](<pictures-documentation/Interact CLI Step 1(a).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<pictures-documentation/Interact CLI Step 1(b).png>)
+![PowerShell interface for cli](<pictures-documentation/Interact CLI Step 1(b).png>)
 Above: Using Windows PowerShell
 
 Otherwise, to interact with the test instance of the CaltechDATA Repository, please type in this command as shown to open and run the CaltechDATA Command Line Interface (CLI):
 
 ```python cli.py -test```
 
-![alt text](<pictures-documentation/Interact CLI Step 1(c) Test Instance.png>)
+![VSCode test cli](<pictures-documentation/Interact CLI Step 1(c) Test Instance.png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<pictures-documentation/Interact CLI Step 1(d) Test Instance.png>)
+![PowerShell test cli](<pictures-documentation/Interact CLI Step 1(d) Test Instance.png>)
 Above: Using Windows PowerShell
 
 #### Step 2:
@@ -185,13 +185,13 @@ Note that the terminal is now present in the "caltechdata_api" folder or directo
 
 ```dir```
 
-![alt text](<pictures-documentation/Interact CLI Step 2(a).png>)
+![PowerShell attached files](<pictures-documentation/Interact CLI Step 2(a).png>)
 Above: Adding your files to the directory
 
-![alt text](<pictures-documentation/Interact CLI Step 2(b).png>)
+![VSCode attached files](<pictures-documentation/Interact CLI Step 2(b).png>)
 Above: Using Visual Studio Code (VSCode)
 
-![alt text](<pictures-documentation/Interact CLI Step 2(c).png>)
+![PowerShell cli](<pictures-documentation/Interact CLI Step 2(c).png>)
 Above: Using Windows PowerShell
 
 ## Additional Steps:
