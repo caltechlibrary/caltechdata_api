@@ -412,9 +412,9 @@ def upload_supporting_file(record_id=None):
                         filepath = os.path.abspath(files_name)
                         filepaths.append(filepath)
                     print("All files added successfully")
-                if filename == "n":
+                elif filename == "n":
                     break
-                if filename in files:
+                elif filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
                         print(
