@@ -405,8 +405,13 @@ def upload_supporting_file(record_id=None):
             print("\n".join(files))
             while True:
                 filename = get_user_input(
-                    "Enter the filename to upload as a supporting file (or 'n' to finish): "
+                    "Enter the filename to upload as a supporting file (or '*' to get all files currently in the directory, otherwise 'n' to finish): "
                 )
+                if filename == "*":
+                    for files_name in files:
+                        filepath = os.path.abspath(files_name)
+                        filepaths.append(filepath)
+                    print("All files added successfully")
                 if filename == "n":
                     break
                 if filename in files:
@@ -420,6 +425,7 @@ def upload_supporting_file(record_id=None):
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
+                        print("File added successfully")
                 else:
                     print(
                         f"Error: File '{filename}' not found. Please enter a valid filename."
