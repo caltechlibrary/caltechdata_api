@@ -416,7 +416,7 @@ def upload_supporting_file(record_id=None):
                     print("All files added successfully")
                 elif filename == "n":
                     break
-                elif filename[len(filename)-1] == '/':
+                elif len(filename) != 0 and filename[len(filename)-1] == '/':
                     files_name = files[int(filename[0])-1]
                     filepath = os.path.abspath(files_name)
                     filepaths.append(filepath)
