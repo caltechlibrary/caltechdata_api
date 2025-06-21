@@ -58,6 +58,7 @@
                 "@type": "Organization",
                 "name": "Caltech"
             },
+            "email": "knagi@caltech.edu",
             "@id": "https://orcid.org/0009-0002-8113-3763"
         },
     ],
