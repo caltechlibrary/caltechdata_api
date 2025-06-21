@@ -404,7 +404,7 @@ def upload_supporting_file(record_id=None):
                 f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
             ]
             idx+=1
-            print((""+ str(idx) + "/ \n").join(files))
+            print((f"{idx}/ \n").join(files))
             while True:
                 filename = get_user_input(
                     "Enter the filename to upload as a supporting file (or '*' to get all files currently in the directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish): "
