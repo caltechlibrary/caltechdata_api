@@ -417,10 +417,13 @@ def upload_supporting_file(record_id=None):
                 elif filename == "n":
                     break
                 elif (not len(filename) == 0) and (filename[len(filename) - 1] == '/'):
-                    files_name = files[int(filename[0])-1]
-                    filepath = os.path.abspath(files_name)
-                    filepaths.append(filepath)
-                    print("File added successfully")
+                    try:
+                        files_name = files[int(filename[0])-1]
+                        filepath = os.path.abspath(files_name)
+                        filepaths.append(filepath)
+                        print("File added successfully")
+                    except ValueError:
+                        continue
                 elif filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
