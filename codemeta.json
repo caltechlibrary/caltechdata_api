@@ -49,7 +49,17 @@
             },
             "email": "aabakah@caltech.edu",
             "@id": "https://orcid.org/0009-0003-5640-6691"
-        }
+        },
+        {
+            "@type": "Person",
+            "givenName": "Kshemaahna",
+            "familyName": "Nagi",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech"
+            },
+            "@id": "https://orcid.org/0009-0002-8113-3763"
+        },
     ],
     "developmentStatus": "active",
     "downloadUrl": "https://github.com/caltechlibrary/caltechdata_api/archive/1.9.1.zip",
