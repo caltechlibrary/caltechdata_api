@@ -407,7 +407,7 @@ def upload_supporting_file(record_id=None):
             print((f"{idx}/ \n").join(files))
             while True:
                 filename = get_user_input(
-                    "Enter the filename to upload as a supporting file (or '*' to get all files currently in the directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish): "
+                    "Enter the filename to upload as a supporting file (or '*' to get all files currently in this directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish): "
                 )
                 if filename == "*":
                     for files_name in files:
@@ -416,7 +416,7 @@ def upload_supporting_file(record_id=None):
                     print("All files added successfully")
                 elif filename == "n":
                     break
-                elif filename == "":
+                elif (not len(filename) == 0) and (filename[len(filename) - 1] == '/'):
                     files_name = files[int(filename[0])-1]
                     filepath = os.path.abspath(files_name)
                     filepaths.append(filepath)
