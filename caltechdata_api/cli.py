@@ -360,6 +360,7 @@ def upload_supporting_file(record_id=None):
     filepaths = []
     file_link = ""
     file_links = []
+    idx = 0
     while True:
         choice = get_user_input(
             "Do you want to upload or link data files? (upload/link/n): "
@@ -402,14 +403,28 @@ def upload_supporting_file(record_id=None):
             files = [
                 f for f in os.listdir() if not f.endswith(".json") and os.path.isfile(f)
             ]
-            print("\n".join(files))
+            idx+=1
+            print((f"{idx}/ \n").join(files))
             while True:
                 filename = get_user_input(
-                    "Enter the filename to upload as a supporting file (or 'n' to finish): "
+                    "Enter the filename to upload as a supporting file (or '*' to get all files currently in this directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish): "
                 )
-                if filename == "n":
+                if filename == "*":
+                    for files_name in files:
+                        filepath = os.path.abspath(files_name)
+                        filepaths.append(filepath)
+                    print("All files added successfully")
+                elif filename == "n":
                     break
-                if filename in files:
+                elif (not len(filename) == 0) and (filename[len(filename) - 1] == '/'):
+                    try:
+                        files_name = files[int(filename[0])-1]
+                        filepath = os.path.abspath(files_name)
+                        filepaths.append(filepath)
+                        print("File added successfully")
+                    except ValueError:
+                        continue
+                elif filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
                         print(
@@ -420,6 +435,7 @@ def upload_supporting_file(record_id=None):
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
+                        print("File added successfully")
                 else:
                     print(
                         f"Error: File '{filename}' not found. Please enter a valid filename."
