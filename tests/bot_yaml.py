@@ -74,7 +74,7 @@ class CaltechDataTester:
             "Enter the award title for funding: ": "Automated Testing Grant",
             "Enter the funder ROR (https://ror.org): ": "021nxhr62",
             "Do you want to upload or link data files? (upload/link/n): ": "upload",
-            "Enter the filename to upload as a supporting file (or '*' to get all files currently in this directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish):": "test_data.csv",
+            "Enter the filename to upload as a supporting file (or '*' to get all files currently in this directory, or the index number of the file as displayed followed by a /, otherwise 'n' to finish): ": "test_data.csv",
             "Do you want to add more files? (y/n): ": "n",
             "Do you want to send this record to CaltechDATA? (y/n): ": "y",
         }
