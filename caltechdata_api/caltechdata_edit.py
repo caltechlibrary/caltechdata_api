@@ -48,6 +48,7 @@ def caltechdata_accept(ids, token=None, production=False):
         if result.status_code != 200:
             raise Exception(result.text)
 
+
 def caltechdata_reject(ids, token=None, production=False, authors=False):
     # Reject a record from a community
 
