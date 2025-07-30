@@ -48,6 +48,47 @@ def caltechdata_accept(ids, token=None, production=False):
         if result.status_code != 200:
             raise Exception(result.text)
 
+def caltechdata_reject(ids, token=None, production=False, authors=False):
+    # Reject a record from a community
+
+    # If no token is provided, get from RDMTOK environment variable
+    if not token:
+        token = os.environ["RDMTOK"]
+
+    if production == True:
+        if authors:
+            url = "https://authors.library.caltech.edu"
+        else:
+            url = "https://data.caltech.edu"
+    else:
+        if authors:
+            url = "https://authors.caltechlibrary.dev"
+        else:
+            url = "https://data.caltechlibrary.dev"
+
+    headers = {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+    }
+
+    for idv in ids:
+        result = requests.get(
+            url + "/api/records/" + idv + "/draft/review", headers=headers
+        )
+        print(url + "/api/records/" + idv + "/draft/review")
+        if result.status_code != 200:
+            raise Exception(result.text)
+        accept_link = result.json()["links"]["actions"]["decline"]
+        data = comment = {
+            "payload": {
+                "content": "This record was declined automatically with the CaltechDATA API",
+                "format": "html",
+            }
+        }
+        result = requests.post(accept_link, json=data, headers=headers)
+        if result.status_code != 200:
+            raise Exception(result.text)
+
 
 def caltechdata_edit(
     idv,

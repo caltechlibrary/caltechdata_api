@@ -8,6 +8,7 @@ from .caltechdata_edit import (
     caltechdata_edit,
     caltechdata_unembargo,
     caltechdata_accept,
+    caltechdata_reject,
 )
 from .customize_schema import customize_schema, validate_metadata
 from .get_metadata import get_metadata
