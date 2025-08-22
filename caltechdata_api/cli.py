@@ -159,10 +159,14 @@ def get_funding_entries():
 
 def validate_funder_identifier(funder_identifier):
     response = requests.get(f"https://api.ror.org/organizations/{funder_identifier}")
+    returnv = False
     if response.status_code == 200:
-        return response.json().get("name")
-    else:
-        return False
+        names = response.json().get("names", [])
+        for name in names:
+            types = name.get("types", [])
+            if "ror_display" in types:
+                returnv = name.get("value")
+    return returnv
 
 
 def get_funding_details():
