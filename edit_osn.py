@@ -15,7 +15,7 @@ args = parser.parse_args()
 # Get access token as environment variable
 token = os.environ["RDMTOK"]
 
-endpoint = "https://renc.osn.xsede.org/"
+endpoint = "https://sdsc.osn.xsede.org/"
 
 # Get metadata and files from bucket
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
@@ -69,6 +69,6 @@ for link in files:
 production = True
 
 response = caltechdata_edit(
-    idv, metadata, token, [], production, "43", publish=False, file_links=file_links
+    idv, metadata, token, [], production, "43", publish=True, file_links=file_links
 )
 print(response)
