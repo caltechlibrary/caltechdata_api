@@ -31,10 +31,12 @@ def get_metadata(
             url = "https://data.caltechlibrary.dev/api/records/"
         verify = True
 
+    base_headers = {
+        "accept": "application/json",
+    }
+
     if authors:
-        headers = {
-            "accept": "application/json",
-        }
+        headers = base_headers
         validate = False
     else:
         headers = {
@@ -49,7 +51,25 @@ def get_metadata(
         raise Exception(response.text)
     else:
         metadata = response.json()
-
+        if not authors:
+            response = requests.get(url + idv, headers=base_headers, verify=verify)
+            if response.status_code != 200:
+                raise Exception(response.text)
+            else:
+                instance = response.json()
+                base_metadata = instance["metadata"]
+                metadata["descriptions"][0]["description"] = base_metadata.get(
+                    "description"
+                )
+                additional_descriptions = base_metadata.get(
+                    "additional_descriptions", []
+                )
+                count = 1
+                for desc in additional_descriptions:
+                    metadata["descriptions"][count]["description"] = desc["description"]
+                    count += 1
+            if "formats" in metadata:
+                metadata["formats"] = list(set(metadata["formats"]))
         if validate:
             if schema == "43":
                 try:

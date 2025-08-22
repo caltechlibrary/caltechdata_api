@@ -81,7 +81,11 @@ def add_file_links(
         size = s3.info(path)["size"]
         size = humanbytes(size)
         try:
-            desc = file_descriptions[index] + ","
+            description = file_descriptions[index]
+            if description != " ":
+                desc = description + ","
+            else:
+                desc = ""
         except IndexError:
             desc = ""
         if link_string == "":

@@ -124,14 +124,22 @@ def caltechdata_edit(
     # Check if file links were provided in the metadata
     descriptions = []
     ex_file_links = []
+    ex_file_descriptions = []
     if "descriptions" in metadata:
         for d in metadata["descriptions"]:
             if d["description"].startswith("Files available via S3"):
                 file_text = d["description"]
                 file_list = file_text.split('href="')
+                # Check if we have file_descriptions
+                split_comma = file_list[0].split(", ")
+                if len(split_comma) == 3:
+                    ex_file_descriptions.append(split_comma[1])
                 # Loop over links in description, skip header text
                 for file in file_list[1:]:
                     ex_file_links.append(file.split('"\n')[0])
+                    split_comma = file.split(", ")
+                    if len(split_comma) == 3:
+                        ex_file_descriptions.append(split_comma[1])
             else:
                 descriptions.append(d)
         # We remove file link descriptions, and re-add below
@@ -145,7 +153,7 @@ def caltechdata_edit(
     # Otherwise we add file links found in the mtadata file
     elif ex_file_links:
         metadata = add_file_links(
-            metadata, ex_file_links, file_descriptions, s3_link=s3_link
+            metadata, ex_file_links, ex_file_descriptions, s3_link=s3_link
         )
 
     if authors == False:
