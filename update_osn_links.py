@@ -7,8 +7,8 @@ url = "https://data.caltech.edu/api/records"
 query = '?q=metadata.additional_descriptions.description:"renc.osn.xsede.org"&allversions=true'
 
 headers = {
-        "Authorization": "Bearer %s" % token,
-        "Content-type": "application/json",
+    "Authorization": "Bearer %s" % token,
+    "Content-type": "application/json",
 }
 
 url = url + query
@@ -24,8 +24,7 @@ for c in range(1, pages + 1):
         metadata = get_metadata(idv, token=token, validate=False)
         for desc in metadata["descriptions"]:
             desc["description"] = desc["description"].replace(
-            "renc.osn.xsede.org",
-            "sdsc.osn.xsede.org",
-        )
-        caltechdata_edit(idv, metadata, token=token, production=True,
-                         publish=True)
+                "renc.osn.xsede.org",
+                "sdsc.osn.xsede.org",
+            )
+        caltechdata_edit(idv, metadata, token=token, production=True, publish=True)
