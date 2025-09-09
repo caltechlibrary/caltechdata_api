@@ -44,6 +44,7 @@ def get_metadata(
         }
 
     if token:
+        base_headers["Authorization"] = "Bearer %s" % token
         headers["Authorization"] = "Bearer %s" % token
 
     response = requests.get(url + idv, headers=headers, verify=verify)
@@ -58,16 +59,25 @@ def get_metadata(
             else:
                 instance = response.json()
                 base_metadata = instance["metadata"]
-                metadata["descriptions"][0]["description"] = base_metadata.get(
-                    "description"
-                )
-                additional_descriptions = base_metadata.get(
-                    "additional_descriptions", []
-                )
-                count = 1
-                for desc in additional_descriptions:
-                    metadata["descriptions"][count]["description"] = desc["description"]
-                    count += 1
+                if "descriptions" in metadata:
+                    metadata["descriptions"][0]["description"] = base_metadata.get(
+                        "description"
+                    )
+                    additional_descriptions = base_metadata.get(
+                        "additional_descriptions", []
+                    )
+                    count = 1
+                    if (
+                        len(metadata["descriptions"])
+                        == len(additional_descriptions) + 1
+                    ):
+                        for desc in additional_descriptions:
+                            metadata["descriptions"][count]["description"] = desc[
+                                "description"
+                            ]
+                            count += 1
+                    else:
+                        print(f"Record {idv} does not have a description.")
             if "formats" in metadata:
                 metadata["formats"] = list(set(metadata["formats"]))
         if validate:
