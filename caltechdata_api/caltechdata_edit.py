@@ -109,6 +109,7 @@ def caltechdata_edit(
     authors=False,
     keepfiles=False,
     return_id=False,
+    local=False,
 ):
     # Make a copy of the metadata to make sure our local changes don't leak
     metadata = copy.deepcopy(metadata)
@@ -159,11 +160,15 @@ def caltechdata_edit(
     if authors == False:
         if production == True:
             url = "https://data.caltech.edu/"
+        elif local == True:
+            url = "https://127.0.0.1:5000/"
         else:
             url = "https://data.caltechlibrary.dev/"
     else:
         if production == True:
             url = "https://authors.library.caltech.edu/"
+        elif local == True:
+            url = "https://127.0.0.1:5000/"
         else:
             url = "https://authors.caltechlibrary.dev/"
 

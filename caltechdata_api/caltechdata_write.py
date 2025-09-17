@@ -161,6 +161,7 @@ def caltechdata_write(
     default_preview=None,
     review_message=None,
     verify=True,
+    local=False,
 ):
     """
     File links are links to files existing in external systems that will
@@ -233,14 +234,18 @@ def caltechdata_write(
         data = customize_schema.customize_schema(metadata, schema=schema)
         if production == True:
             url = "https://data.caltech.edu/"
+        elif local == True:
+            url = "https://127.0.0.1:5000/"
         else:
             url = "https://data.caltechlibrary.dev/"
     else:
         data = metadata
         if production == True:
             url = "https://authors.library.caltech.edu/"
-        else:
+        elif local == True:
             url = "https://127.0.0.1:5000/"
+        else:
+            url = "https://authors.caltechlibrary.dev/"
 
     headers = {
         "Authorization": "Bearer %s" % token,
