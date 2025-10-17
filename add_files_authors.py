@@ -1,8 +1,23 @@
-import requests, os
+import requests, os, argparse
 from caltechdata_api import write_files_rdm
 
-idv = "tv53y-rqh37"
-files = ["1-s2.0-S2590162125000620-main.pdf"]
+parser = argparse.ArgumentParser(
+    description="Add files to an existing CaltechAUTHORS record."
+)
+parser.add_argument(
+    "idv",
+    type=str,
+    help="The CaltechAUTHORS record idv to edit.",
+)
+parser.add_argument(
+    "files",
+    type=str,
+    nargs="+",
+    help="The files to upload to the record.",
+)
+args = parser.parse_args()
+idv = args.idv
+files = args.files
 token = os.environ["RDMTOK"]
 url = "https://authors.library.caltech.edu"
 
