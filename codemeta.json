@@ -6,13 +6,14 @@
     "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
     "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
     "license": "https://data.caltech.edu/license",
-    "version": "1.10.5",
+    "version": "1.10.6",
     "author": [
         {
             "@type": "Person",
             "givenName": "Thomas E",
             "familyName": "Morrell",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech Library"
             },
@@ -24,6 +25,7 @@
             "givenName": "Rohan",
             "familyName": "Bhattarai",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech"
             },
@@ -34,6 +36,7 @@
             "givenName": "Elizabeth",
             "familyName": "Won",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech"
             },
@@ -44,6 +47,7 @@
             "givenName": "Alexander A",
             "familyName": "Abakah",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech Library"
             },
@@ -55,6 +59,7 @@
             "givenName": "Kshemaahna",
             "familyName": "Nagi",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech"
             },
@@ -76,6 +81,7 @@
             "givenName": "Thomas E",
             "familyName": "Morrell",
             "affiliation": {
+                "@id": "https://ror.org/05dxps055",
                 "@type": "Organization",
                 "name": "Caltech Library"
             },
