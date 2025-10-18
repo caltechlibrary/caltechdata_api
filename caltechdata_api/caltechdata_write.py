@@ -132,16 +132,21 @@ def send_to_community(
     if result.status_code != 202:
         raise Exception(result.text)
     if publish:
-        accept_link = result.json()["links"]["actions"]["accept"]
-        data = comment = {
-            "payload": {
-                "content": "This record is accepted automatically with the CaltechDATA API",
-                "format": "html",
+        if "accept" in result.json()["links"]["actions"]:
+            accept_link = result.json()["links"]["actions"]["accept"]
+            data = comment = {
+                "payload": {
+                    "content": "This record is accepted automatically with the CaltechDATA API",
+                    "format": "html",
+                }
             }
-        }
-        result = requests.post(accept_link, json=data, headers=headers, verify=verify)
-        if result.status_code != 200:
-            raise Exception(result.text)
+            result = requests.post(
+                accept_link, json=data, headers=headers, verify=verify
+            )
+            if result.status_code != 200:
+                raise Exception(result.text)
+        # Otherwise we have direct publish permissions and don't need to acccept
+        # the request
     return result
 
 
