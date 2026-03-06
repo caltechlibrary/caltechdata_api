@@ -326,16 +326,9 @@ def caltechdata_edit(
             # We make a draft
             result = requests.post(
                 url + "/api/records/" + idv + "/draft",
-                json=data,
                 headers=headers,
             )
             if result.status_code != 201:
-                raise Exception(result.text)
-            result = requests.get(
-                url + "/api/records/" + idv,
-                headers=headers,
-            )
-            if result.status_code != 200:
                 raise Exception(result.text)
         # We want files to stay the same as the existing record
         data["files"] = existing["files"]
