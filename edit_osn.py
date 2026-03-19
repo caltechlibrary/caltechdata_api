@@ -3,7 +3,6 @@ import s3fs, requests
 from datacite import schema43
 from caltechdata_api import caltechdata_edit, get_metadata
 
-
 parser = argparse.ArgumentParser(
     description="Edits a CaltechDATA record by adding OSN-stored pilot files"
 )
