@@ -20,7 +20,7 @@ authors:
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
-doi: 10.22002/2g4c7-zva46
+doi: 10.22002/gnsr8-cpm13
 version: 1.11.0
 license-url: "https://data.caltech.edu/license"
 keywords:
