@@ -173,11 +173,9 @@ def get_funding_details():
     award_number = get_user_input("Enter the award number for funding: ")
     award_exists = check_award_number(award_number)
     if not award_exists:
-        print(
-            f"""Error: No award with number '{award_number}' found in
+        print(f"""Error: No award with number '{award_number}' found in
               CaltechDATA. You will need to provide more details about the
-              funding."""
-        )
+              funding.""")
     award_title = get_user_input("Enter the award title for funding: ")
     while True:
         funder_identifier = get_user_input("Enter the funder ROR (https://ror.org): ")
@@ -185,11 +183,9 @@ def get_funding_details():
         if name:
             break
         else:
-            print(
-                """This funder identifier is not a ROR. Please enter a valid
+            print("""This funder identifier is not a ROR. Please enter a valid
                   ROR identifier (without the url). For example the ROR for the
-                  NSF is 021nxhr62."""
-            )
+                  NSF is 021nxhr62.""")
     print("-" * 10)
     return {
         "awardNumber": award_number,
@@ -349,14 +345,12 @@ def write_s3cmd_config(endpoint):
         access_key = get_user_input("Enter the access key: ")
         secret_key = get_user_input("Enter the secret key: ")
         with open(configf, "w") as file:
-            file.write(
-                f"""[default]
+            file.write(f"""[default]
             access_key = {access_key}
             host_base = {endpoint}
             host_bucket = %(bucket).{endpoint}
             secret_key = {secret_key}
-            """
-            )
+            """)
 
 
 def upload_supporting_file(record_id=None):
@@ -431,11 +425,9 @@ def upload_supporting_file(record_id=None):
                 elif filename in files:
                     file_size = os.path.getsize(filename)
                     if file_size > 1024 * 1024 * 1024:
-                        print(
-                            """The file is greater than 1 GB. Please upload the
+                        print("""The file is greater than 1 GB. Please upload the
                         metadata to CaltechDATA, and you'll be provided
-                        instructions to upload the files to S3 directly."""
-                        )
+                        instructions to upload the files to S3 directly.""")
                     else:
                         filepath = os.path.abspath(filename)
                         filepaths.append(filepath)
@@ -643,12 +635,10 @@ def print_upload_message(rec_id, production):
         if production
         else "https://data.caltechlibrary.dev/uploads/"
     )
-    print(
-        f"""You can view and publish this record at
+    print(f"""You can view and publish this record at
         {base_url}{rec_id}
         If you need to upload large files to S3, you can type
-        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`"""
-    )
+        `s3cmd put DATA_FILE s3://ini230004-bucket01/{rec_id}/`""")
 
 
 def edit_record(production):

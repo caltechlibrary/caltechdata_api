@@ -1,4 +1,4 @@
-import copy, os, json
+import copy, os, json, time
 
 import requests
 from requests import session
@@ -193,7 +193,14 @@ def caltechdata_edit(
             headers=headers,
         )
         if existing.status_code != 200:
-            raise Exception(f"Record {idv} does not exist, cannot edit")
+            # Try back again to the record
+            existing = requests.get(
+                url + "/api/records/" + idv,
+                headers=headers,
+            )
+
+            if existing.status_code != 200:
+                raise Exception(f"Record {idv} does not exist, cannot edit")
 
     existing = existing.json()
     status = existing["status"]
@@ -329,7 +336,13 @@ def caltechdata_edit(
                 headers=headers,
             )
             if result.status_code != 201:
-                raise Exception(result.text)
+                time.sleep(3)
+                result = requests.post(
+                    url + "/api/records/" + idv + "/draft",
+                    headers=headers,
+                )
+                if result.status_code != 201:
+                    raise Exception(result.text)
         # We want files to stay the same as the existing record
         data["files"] = existing["files"]
         if default_preview:
@@ -341,13 +354,23 @@ def caltechdata_edit(
             json=data,
         )
         if result.status_code != 200:
-            raise Exception(result.text)
+            time.sleep(3)
+            result = requests.put(
+                url + "/api/records/" + idv + "/draft",
+                headers=headers,
+                json=data,
+            )
+            if result.status_code != 200:
+                raise Exception(result.text)
 
     if publish:
         publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
         result = requests.post(publish_link, headers=headers)
         if result.status_code != 202:
-            raise Exception(result.text)
+            time.sleep(3)
+            result = requests.post(publish_link, headers=headers)
+            if result.status_code != 202:
+                raise Exception(result.text)
         if return_id:
             return result.json()["id"]
         else:
