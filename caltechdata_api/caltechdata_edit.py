@@ -122,41 +122,6 @@ def caltechdata_edit(
     if isinstance(files, str) == True:
         files = [files]
 
-    # Check if file links were provided in the metadata
-    descriptions = []
-    ex_file_links = []
-    ex_file_descriptions = []
-    if "descriptions" in metadata:
-        for d in metadata["descriptions"]:
-            if d["description"].startswith("Files available via S3"):
-                file_text = d["description"]
-                file_list = file_text.split('href="')
-                # Check if we have file_descriptions
-                split_comma = file_list[0].split(", ")
-                if len(split_comma) == 3:
-                    ex_file_descriptions.append(split_comma[1])
-                # Loop over links in description, skip header text
-                for file in file_list[1:]:
-                    ex_file_links.append(file.split('"\n')[0])
-                    split_comma = file.split(", ")
-                    if len(split_comma) == 3:
-                        ex_file_descriptions.append(split_comma[1])
-            else:
-                descriptions.append(d)
-        # We remove file link descriptions, and re-add below
-        metadata["descriptions"] = descriptions
-
-    # If user has provided file links as a cli option, we add those
-    if file_links:
-        metadata = add_file_links(
-            metadata, file_links, file_descriptions, s3_link=s3_link
-        )
-    # Otherwise we add file links found in the mtadata file
-    elif ex_file_links:
-        metadata = add_file_links(
-            metadata, ex_file_links, ex_file_descriptions, s3_link=s3_link
-        )
-
     if authors == False:
         if production == True:
             url = "https://data.caltech.edu/"
@@ -307,7 +272,21 @@ def caltechdata_edit(
             }
             data = metadata
 
-    if files:
+    # Check for existing draft
+    result = requests.get(
+        url + "/api/records/" + idv + "/draft",
+        headers=headers,
+    )
+    if result.status_code != 200:
+        # We make a draft
+        result = requests.post(
+            url + "/api/records/" + idv + "/draft",
+            headers=headers,
+        )
+        if result.status_code != 201:
+            raise Exception(result.text)
+
+    if files or file_links:
         if default_preview:
             data["files"] = {"enabled": True, "default_preview": default_preview}
         else:
@@ -320,29 +299,15 @@ def caltechdata_edit(
         )
         if result.status_code != 200:
             raise Exception(result.text)
-        file_link = result.json()["links"]["files"]
-        write_files_rdm(files, file_link, headers, f_headers, keepfiles=keepfiles)
+        file_upload_link = result.json()["links"]["files"]
+        if files:
+            write_files_rdm(
+                files, file_upload_link, headers, f_headers, keepfiles=keepfiles
+            )
+        if file_links:
+            add_file_links(file_upload_link, file_links, headers)
 
     else:
-        # Check for existing draft
-        result = requests.get(
-            url + "/api/records/" + idv + "/draft",
-            headers=headers,
-        )
-        if result.status_code != 200:
-            # We make a draft
-            result = requests.post(
-                url + "/api/records/" + idv + "/draft",
-                headers=headers,
-            )
-            if result.status_code != 201:
-                time.sleep(3)
-                result = requests.post(
-                    url + "/api/records/" + idv + "/draft",
-                    headers=headers,
-                )
-                if result.status_code != 201:
-                    raise Exception(result.text)
         # We want files to stay the same as the existing record
         data["files"] = existing["files"]
         if default_preview:

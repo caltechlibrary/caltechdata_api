@@ -67,45 +67,24 @@ def write_files_rdm(
                     raise Exception(result.text)
 
 
-def add_file_links(
-    metadata, file_links, file_descriptions=[], additional_descriptions="", s3_link=None
-):
+def add_file_links(file_upload_link, file_links, headers):
     # Currently configured for S3 links, assuming all are at the same endpoint
     link_string = ""
     endpoint = "https://" + file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     index = 0
+    file_json = []
     for link in file_links:
         file = link.split("/")[-1]
         path = link.split(endpoint)[1]
         size = s3.info(path)["size"]
-        size = humanbytes(size)
-        try:
-            description = file_descriptions[index]
-            if description != " ":
-                desc = description + ","
-            else:
-                desc = ""
-        except IndexError:
-            desc = ""
-        if link_string == "":
-            if s3_link:
-                link_string = f"Files available via S3 at {s3_link}&lt;/p&gt;</p>"
-            else:
-                cleaned = link.strip(file)
-                link_string = f"Files available via S3 at {cleaned}&lt;/p&gt;</p>"
-        link_string += f"""{file}, {desc} {size}  
-        <p>&lt;a role="button" class="ui compact mini button" href="{link}"
-        &gt; &lt;i class="download icon"&gt;&lt;/i&gt; Download &lt;/a&gt;</p>&lt;/p&gt;</p>
-        """
-        index += 1
-    # Tack on any additional descriptions
-    if additional_descriptions != "":
-        link_string += additional_descriptions
 
-    description = {"description": link_string, "descriptionType": "files"}
-    metadata["descriptions"].append(description)
-    return metadata
+        file_json.append(
+            {"key": file, "size": size, "transfer": {"type": "R", "url": link}}
+        )
+    result = requests.post(file_upload_link, headers=headers, json=file_json)
+    if result.status_code != 201:
+        raise Exception(result.text)
 
 
 def send_to_community(
