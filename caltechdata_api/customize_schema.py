@@ -7,28 +7,6 @@ from pathlib import Path
 import requests
 
 
-def grid_to_ror(grid):
-    # Temporary until InvenioRDM stops spitting out GRIDS
-    # We manually handle some incorrect/redundant GRID Ids
-    if grid == "grid.451078.f":
-        ror = "00hm6j694"
-    elif grid == "grid.5805.8":
-        ror = "02en5vm52"
-    elif grid == "grid.465477.3":
-        ror = "00em52312"
-    else:
-        url = (
-            f"https://api.ror.org/organizations?query.advanced=external_ids.all:{grid}"
-        )
-        results = requests.get(url).json()
-        if len(results["items"]) == 0:
-            print(url + "doesn't have a valid ROR")
-            exit()
-        ror = results["items"][0]["id"]
-        ror = ror.split("ror.org/")[1]
-    return ror
-
-
 def get_vocabularies():
     """Returns dictionary of vocabularies"""
     path = Path(__file__).parent
@@ -335,11 +313,6 @@ def customize_schema_rdm(json_record):
                         ror = ror.split("ror.org/")[1]
                     funder["id"] = ror
                     fund.pop("funderIdentifierType")
-                elif fund["funderIdentifierType"] == "GRID":
-                    # We need this temporarily to round-trip data
-                    ror = grid_to_ror(fund.pop("funderIdentifier"))
-                    funder["id"] = ror
-                    fund.pop("funderIdentifierType")
                 else:
                     print(f'Unknown Type mapping {fund["funderIdentifierType"]}')
             if "awardTitle" in fund:
@@ -568,8 +541,6 @@ def validate_metadata(json_record):
         else:
 
             for geo_loc in json_record["geoLocations"]:
-                if not isinstance(geo_loc, dict) or "geoLocationPlace" not in geo_loc:
-                    errors.append("Each 'geoLocation' must have 'geoLocationPlace'.")
                 if "geoLocationPoint" in geo_loc:
                     point = geo_loc["geoLocationPoint"]
                     if (

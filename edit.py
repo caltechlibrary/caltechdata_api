@@ -14,7 +14,7 @@ parser.add_argument(
 parser.add_argument("-id", help="CaltechDATA IDs")
 parser.add_argument("-fnames", nargs="*", help="New Files")
 parser.add_argument("-flinks", nargs="*", help="New File Links")
-parser.add_argument("-schema", default="43", help="Metadata Schema")
+parser.add_argument("-schema", default=None, help="Metadata Schema")
 parser.add_argument("-authors", action="store_true", help="Edit CaltechAUTHORS")
 args = parser.parse_args()
 

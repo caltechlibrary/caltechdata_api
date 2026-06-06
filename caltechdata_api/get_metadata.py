@@ -12,11 +12,11 @@ def get_metadata(
     production=True,
     validate=True,
     emails=False,
-    schema="43",
+    schema=None,
     token=False,
     authors=False,
 ):
-    # Returns just DataCite metadata or DataCite metadata with emails
+    # Returns InvenioRDM metadata, or just DataCite metadata, or DataCite metadata with emails
 
     if production == True:
         if authors:
@@ -35,7 +35,7 @@ def get_metadata(
         "accept": "application/json",
     }
 
-    if authors:
+    if authors or schema == None:
         headers = base_headers
         validate = False
     else:
@@ -114,7 +114,7 @@ if __name__ == "__main__":
         action="store_true",
         help="skip validation of metadata",
     )
-    parser.add_argument("-schema", default="43", help="Schema Version")
+    parser.add_argument("-schema", default=None, help="Schema Version")
 
     args = parser.parse_args()
 

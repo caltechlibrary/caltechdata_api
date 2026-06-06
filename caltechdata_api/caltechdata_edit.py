@@ -7,7 +7,6 @@ from caltechdata_api import (
     customize_schema,
     write_files_rdm,
     add_file_links,
-    send_to_community,
 )
 
 
@@ -16,7 +15,8 @@ def caltechdata_unembargo(token, ids, production=False):
 
 
 def caltechdata_accept(ids, token=None, production=False):
-    # Accept a record into a community
+    # Accept a record into a community. Only accepts the first community
+    # request
 
     # If no token is provided, get from RDMTOK environment variable
     if not token:
@@ -36,8 +36,13 @@ def caltechdata_accept(ids, token=None, production=False):
         result = requests.get(
             url + "/api/records/" + idv + "/draft/review", headers=headers
         )
-
-        accept_link = result.json()["links"]["actions"]["accept"]
+        if result.status_code != 200:
+            result = requests.get(url+ "/api/records/" + idv + '/requests', headers=headers)
+            if result.status_code != 200:
+                raise Exception(result.text)
+            accept_link =  result.json()["hits"]["hits"][0]["links"]["actions"]["accept"]
+        else:
+            accept_link = result.json()["links"]["actions"]["accept"]
         data = comment = {
             "payload": {
                 "content": "This record is accepted automatically with the CaltechDATA API",
@@ -97,7 +102,7 @@ def caltechdata_edit(
     token=None,
     files={},
     production=False,
-    schema="43",
+    schema=None,
     publish=False,
     file_links=[],
     s3=None,
@@ -145,6 +150,18 @@ def caltechdata_edit(
         "Authorization": "Bearer %s" % token,
         "Content-type": "application/octet-stream",
     }
+
+    #Add to community if provided:
+    if community:
+        result = requests.post(
+            url + "/api/records/" + idv + "/communities",
+            headers=headers,
+            data=json.dumps({"communities":[{"id": community}]}),
+        )
+        if result.status_code != 200:
+            print(result.url)
+            raise Exception(result.text)
+        caltechdata_accept([idv], token, production)
 
     # Check status
     existing = requests.get(
@@ -259,10 +276,19 @@ def caltechdata_edit(
             # We want to have the system set new DOIs
             data["pids"] = {}
     else:
-        if authors == False:
+        if authors == False and schema == "43":
             metadata["pids"] = pids
             data = customize_schema.customize_schema(metadata, schema=schema)
-        else:
+        elif authors == False:
+            # Data using RDM schema, force oai PID
+            if "pids" not in metadata:
+                metadata["pids"] = {}
+            metadata["pids"]["oai"] = {
+                "identifier": f"oai:data.caltech.edu:{idv}",
+                "provider": "oai",
+            }
+            data = metadata
+        if authors == True:
             # Authors, force oai PID
             if "pids" not in metadata:
                 metadata["pids"] = {}
@@ -305,7 +331,12 @@ def caltechdata_edit(
                 files, file_upload_link, headers, f_headers, keepfiles=keepfiles
             )
         if file_links:
-            add_file_links(file_upload_link, file_links, headers)
+            ex_file = existing["files"]["entries"].keys()
+            #At the moment we don't replace existing links. This needs to change
+            for link in file_links:
+                file = link.split("/")[-1]
+                if file not in ex_file:
+                    add_file_links(file_upload_link, [link], headers)
 
     else:
         # We want files to stay the same as the existing record
