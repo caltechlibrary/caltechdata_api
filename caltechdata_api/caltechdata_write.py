@@ -164,9 +164,7 @@ def caltechdata_write(
         files = [files]
 
     if file_links:
-        metadata = add_file_links(
-            metadata, file_links, file_descriptions
-        )
+        metadata = add_file_links(metadata, file_links, file_descriptions)
 
     # Pull out pid information
     if production == True:
@@ -239,10 +237,11 @@ def caltechdata_write(
         "Content-type": "application/octet-stream",
     }
 
-    if not files:
-        data["files"] = {"enabled": False}
-    elif default_preview:
-        data["files"] = {"enabled": True, "default_preview": default_preview}
+    if files or file_links:
+        if default_preview:
+            data["files"] = {"enabled": True, "default_preview": default_preview}
+        else:
+            data["files"] = {"enabled": True}
 
     # Make draft and publish
     result = requests.post(
@@ -255,10 +254,13 @@ def caltechdata_write(
             raise Exception(result.text)
     idv = result.json()["id"]
     publish_link = result.json()["links"]["publish"]
+    file_link = result.json()["links"]["files"]
 
     if files:
-        file_link = result.json()["links"]["files"]
         write_files_rdm(files, file_link, headers, f_headers, s3, verify=verify)
+
+    if file_links:
+        add_file_links(file_link, file_links, headers)
 
     if community:
         review_link = result.json()["links"]["review"]
