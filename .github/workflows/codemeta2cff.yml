@@ -39,7 +39,7 @@ jobs:
             sed -i "s/^description = .*/description = $DESCRIPTION/" setup.cfg
             sed -i "s|^url = .*|url = $URL|" setup.cfg
       - name: Commit CFF
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v10
         with:
           message: 'Add updated CITATION.cff and setup.cfg from codemeta.json file'
           add: '["setup.cfg", "CITATION.cff"]'
