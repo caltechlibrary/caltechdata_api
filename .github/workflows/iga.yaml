@@ -52,7 +52,7 @@ jobs:
     outputs:
       record_doi: ${{steps.iga.outputs.record_doi}}
     steps:
-      - uses: caltechlibrary/iga@v1
+      - uses: caltechlibrary/iga@v18
         id: iga
         with:
           INVENIO_SERVER: ${{env.INVENIO_SERVER}}
