@@ -37,10 +37,12 @@ def caltechdata_accept(ids, token=None, production=False):
             url + "/api/records/" + idv + "/draft/review", headers=headers
         )
         if result.status_code != 200:
-            result = requests.get(url+ "/api/records/" + idv + '/requests', headers=headers)
+            result = requests.get(
+                url + "/api/records/" + idv + "/requests", headers=headers
+            )
             if result.status_code != 200:
                 raise Exception(result.text)
-            accept_link =  result.json()["hits"]["hits"][0]["links"]["actions"]["accept"]
+            accept_link = result.json()["hits"]["hits"][0]["links"]["actions"]["accept"]
         else:
             accept_link = result.json()["links"]["actions"]["accept"]
         data = comment = {
@@ -151,12 +153,12 @@ def caltechdata_edit(
         "Content-type": "application/octet-stream",
     }
 
-    #Add to community if provided:
+    # Add to community if provided:
     if community:
         result = requests.post(
             url + "/api/records/" + idv + "/communities",
             headers=headers,
-            data=json.dumps({"communities":[{"id": community}]}),
+            data=json.dumps({"communities": [{"id": community}]}),
         )
         if result.status_code != 200:
             print(result.url)
@@ -332,7 +334,7 @@ def caltechdata_edit(
             )
         if file_links:
             ex_file = existing["files"]["entries"].keys()
-            #At the moment we don't replace existing links. This needs to change
+            # At the moment we don't replace existing links. This needs to change
             for link in file_links:
                 file = link.split("/")[-1]
                 if file not in ex_file:
