@@ -163,9 +163,6 @@ def caltechdata_write(
     if isinstance(files, str) == True:
         files = [files]
 
-    if file_links:
-        metadata = add_file_links(metadata, file_links, file_descriptions)
-
     # Pull out pid information
     if production == True:
         repo_prefix = "10.22002"
