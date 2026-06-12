@@ -68,8 +68,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
 
     assert doi.startswith("10.33569")
 
-    # Validate is false until geolocation points are fixed/we move to 4.6
-    new_metadata = get_metadata(recid, production=False, validate=False)
+    new_metadata = get_metadata(recid, production=False, schema="43")
 
     assert new_metadata["publisher"] == "Edited"
 

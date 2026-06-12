@@ -110,8 +110,8 @@ def full_datacite43_record():
         "geoLocations": [
             {
                 "geoLocationPoint": {
-                    "pointLatitude": -32.94682,
-                    "pointLongitude": -60.63932,
+                    "pointLatitude": -60.63932,
+                    "pointLongitude": -32.94682,
                 },
                 "geoLocationPlace": "test location place",
             }
