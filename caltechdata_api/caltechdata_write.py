@@ -239,6 +239,8 @@ def caltechdata_write(
             data["files"] = {"enabled": True, "default_preview": default_preview}
         else:
             data["files"] = {"enabled": True}
+    else:
+        data["files"] = {"enabled": False}
 
     # Make draft and publish
     result = requests.post(
