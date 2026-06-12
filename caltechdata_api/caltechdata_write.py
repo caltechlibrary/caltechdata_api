@@ -141,7 +141,6 @@ def caltechdata_write(
     community=None,
     authors=False,
     file_descriptions=[],
-    s3_link=None,
     default_preview=None,
     review_message=None,
     verify=True,
@@ -166,7 +165,7 @@ def caltechdata_write(
 
     if file_links:
         metadata = add_file_links(
-            metadata, file_links, file_descriptions, s3_link=s3_link
+            metadata, file_links, file_descriptions
         )
 
     # Pull out pid information
