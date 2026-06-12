@@ -13,7 +13,7 @@ with open(infile, "r") as f:
 outfile = open(infile, "a")
 
 response = requests.get(
-        "https://data.caltech.edu/api/records?q=metadata.subjects.subject:thesis AND metadata.subjects.subject:gps&allversions=true&size=1000"
+    "https://data.caltech.edu/api/records?q=metadata.subjects.subject:thesis AND metadata.subjects.subject:gps&allversions=true&size=1000"
 )
 records = response.json()
 for record in records["hits"]["hits"]:
