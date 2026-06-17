@@ -333,12 +333,7 @@ def caltechdata_edit(
                 files, file_upload_link, headers, f_headers, keepfiles=keepfiles
             )
         if file_links:
-            ex_file = existing["files"]["entries"].keys()
-            # At the moment we don't replace existing links. This needs to change
-            for link in file_links:
-                file = link.split("/")[-1]
-                if file not in ex_file:
-                    add_file_links(file_upload_link, [link], headers)
+            add_file_links(file_upload_link, [link], headers, keepfiles=keepfiles)
 
     else:
         # We want files to stay the same as the existing record

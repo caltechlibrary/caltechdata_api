@@ -67,13 +67,14 @@ def write_files_rdm(
                     raise Exception(result.text)
 
 
-def add_file_links(file_upload_link, file_links, headers):
+def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
     # Currently configured for S3 links, assuming all are at the same endpoint
     link_string = ""
     endpoint = "https://" + file_links[0].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     index = 0
     file_json = []
+    f_list = []
     for link in file_links:
         file = link.split("/")[-1]
         path = link.split(endpoint)[1]
@@ -82,6 +83,15 @@ def add_file_links(file_upload_link, file_links, headers):
         file_json.append(
             {"key": file, "size": size, "transfer": {"type": "R", "url": link}}
         )
+    # See if any existing files need to be retained
+    if keepfiles == True:
+        result = requests.get(file_upload_link, headers=f_headers, verify=verify)
+        if result.status_code == 200:
+            ex_files = result.json()["entries"]
+            for ex in ex_files:
+                if ex["key"] not in f_list:
+                    file_json.append(ex)
+
     result = requests.post(file_upload_link, headers=headers, json=file_json)
     if result.status_code != 201:
         raise Exception(result.text)
