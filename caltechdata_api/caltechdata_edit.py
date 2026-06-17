@@ -333,7 +333,7 @@ def caltechdata_edit(
                 files, file_upload_link, headers, f_headers, keepfiles=keepfiles
             )
         if file_links:
-            add_file_links(file_upload_link, [link], headers, keepfiles=keepfiles)
+            add_file_links(file_upload_link, file_links, headers, keepfiles=keepfiles)
 
     else:
         # We want files to stay the same as the existing record
