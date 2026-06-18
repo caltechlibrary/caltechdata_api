@@ -85,7 +85,7 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
             {"key": file, "size": size, "transfer": {"type": "R", "url": link}}
         )
     # Now we see if any existing files need to be replaced
-    result = requests.get(file_link, headers=f_headers, verify=verify)
+    result = requests.get(file_upload_link, headers=f_headers, verify=verify)
     if result.status_code == 200:
         ex_files = result.json()["entries"]
         for ex in ex_files:
