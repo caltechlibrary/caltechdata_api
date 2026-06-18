@@ -77,19 +77,31 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
     f_list = []
     for link in file_links:
         file = link.split("/")[-1]
+        f_list.append(file)
         path = link.split(endpoint)[1]
         size = s3.info(path)["size"]
 
         file_json.append(
             {"key": file, "size": size, "transfer": {"type": "R", "url": link}}
         )
-    # See if any existing files need to be retained
-    if keepfiles == True:
-        result = requests.get(file_upload_link, headers=f_headers, verify=verify)
-        if result.status_code == 200:
-            ex_files = result.json()["entries"]
-            for ex in ex_files:
-                if ex["key"] not in f_list:
+    # Now we see if any existing files need to be replaced
+    result = requests.get(file_link, headers=f_headers, verify=verify)
+    if result.status_code == 200:
+        ex_files = result.json()["entries"]
+        for ex in ex_files:
+            if ex["key"] in f_list:
+                result = requests.delete(
+                    ex["links"]["self"], headers=f_headers, verify=verify
+                )
+                print(
+                    "Deleted existing file with same name as file link:",
+                    ex["key"],
+                    result.status_code,
+                )
+                if result.status_code != 204:
+                    raise Exception(result.text)
+            else:
+                if keepfiles == True:
                     file_json.append(ex)
 
     result = requests.post(file_upload_link, headers=headers, json=file_json)
