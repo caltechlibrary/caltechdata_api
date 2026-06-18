@@ -90,19 +90,16 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
         ex_files = result.json()["entries"]
         for ex in ex_files:
             if ex["key"] in f_list:
-                result = requests.delete(
-                    ex["links"]["self"], headers=headers
-                )
-                print(
-                    "Deleted existing file with same name as file link:",
-                    ex["key"],
-                    result.status_code,
-                )
+                result = requests.delete(ex["links"]["self"], headers=headers)
                 if result.status_code != 204:
                     raise Exception(result.text)
             else:
                 if keepfiles == True:
                     file_json.append(ex)
+                else:
+                    result = requests.delete(ex["links"]["self"], headers=headers)
+                    if result.status_code != 204:
+                        raise Exception(result.text)
 
     result = requests.post(file_upload_link, headers=headers, json=file_json)
     if result.status_code != 201:
