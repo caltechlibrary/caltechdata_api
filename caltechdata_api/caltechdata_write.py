@@ -94,13 +94,10 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
                 if result.status_code != 204:
                     raise Exception(result.text)
             else:
-                if keepfiles == True:
-                    file_json.append(ex)
-                else:
+                if keepfiles == False:
                     result = requests.delete(ex["links"]["self"], headers=headers)
                     if result.status_code != 204:
                         raise Exception(result.text)
-
     result = requests.post(file_upload_link, headers=headers, json=file_json)
     if result.status_code != 201:
         raise Exception(result.text)
