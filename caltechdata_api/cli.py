@@ -364,8 +364,8 @@ def upload_supporting_file(record_id=None):
             "Do you want to upload or link data files? (upload/link/n): "
         ).lower()
         if choice == "link":
-            endpoint = "sdsc.osn.xsede.org"
-            path = "ini230004-bucket01/"
+            endpoint = "caltech2.osn.mghpcc.org"
+            path = "caltechdata-public/"
             if not record_id:
                 write_s3cmd_config(endpoint)
                 print("""S3 connection configured.""")
