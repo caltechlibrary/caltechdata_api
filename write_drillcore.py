@@ -16,14 +16,16 @@ s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
 for hole in drill_holes:
     for method in methods:
-        metadata["metadata"]["title"] = (
-            f"Hole {hole} - {method} Imaging spectroscopy of the Oman Drilling Project mantle"
-        )
+        metadata["metadata"][
+            "title"
+        ] = f"Hole {hole} - {method} Imaging spectroscopy of the Oman Drilling Project mantle"
         if method == "VNIR":
             image = "visible and near-infrared (VNIR)"
         if method == "SWIR":
             image = "shortwave infrared (SWIR)"
-        metadata["metadata"]["description"] = f"""This record contains {image} data of the
+        metadata["metadata"][
+            "description"
+        ] = f"""This record contains {image} data of the
         archive halves of the borehole {hole} core recovered by the Integrated 
         International Continental Scientific Drilling Project  (ICDP) Oman Drilling Project (OmanDP; Kelemen et al., 2020).
 
