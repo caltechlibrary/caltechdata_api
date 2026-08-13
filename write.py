@@ -9,7 +9,7 @@ parser.add_argument(
     "json_file", nargs=1, help="file name for json DataCite metadata file"
 )
 parser.add_argument("-fnames", nargs="*", help="New Files")
-parser.add_argument("-schema", default="43", help="Metadata Schema")
+parser.add_argument("-schema", default=None, help="Metadata Schema")
 
 args = parser.parse_args()
 
