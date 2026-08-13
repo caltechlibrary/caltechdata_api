@@ -1,0 +1,272 @@
+{
+  "pids": {
+        "doi": {
+            "identifier": "10.5281/inveniordm.12345",
+            "provider": "external"
+        }
+    },
+  "metadata": {
+    "additional_descriptions": [
+      {
+        "description": "Bla bla bla",
+        "lang": {
+          "id": "eng",
+          "title": {
+            "en": "English"
+          }
+        },
+        "type": {
+          "id": "methods",
+          "title": {
+            "de": "Methoden",
+            "en": "Methods"
+          }
+        }
+      }
+    ],
+    "additional_titles": [
+      {
+        "lang": {
+          "id": "eng",
+          "title": {
+            "en": "English"
+          }
+        },
+        "title": "a research data management platform",
+        "type": {
+          "id": "subtitle",
+          "title": {
+            "cs": "Podtitul",
+            "de": "Untertitel",
+            "en": "Subtitle",
+            "sv": "Undertitel"
+          }
+        }
+      }
+    ],
+    "contributors": [
+      {
+        "affiliations": [
+          {
+            "id": "01ggx4157",
+            "identifiers": [
+              {
+                "identifier": "01ggx4157",
+                "scheme": "ror"
+              },
+              {
+                "identifier": "grid.9132.9",
+                "scheme": "grid"
+              },
+              {
+                "identifier": "0000 0001 2156 142X",
+                "scheme": "isni"
+              }
+            ],
+            "name": "European Organization for Nuclear Research"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Nielsen",
+          "given_name": "Lars Holm",
+          "identifiers": [
+            {
+              "identifier": "0000-0001-8135-3489",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Nielsen, Lars Holm",
+          "type": "personal"
+        },
+        "role": {
+          "id": "other",
+          "title": {
+            "cs": "Jin\u00e9",
+            "de": "Andere",
+            "en": "Other",
+            "sv": "\u00d6vriga"
+          }
+        }
+      }
+    ],
+    "creators": [
+      {
+        "affiliations": [
+          {
+            "name": "free-text"
+          },
+          {
+            "id": "01ggx4157",
+            "identifiers": [
+              {
+                "identifier": "01ggx4157",
+                "scheme": "ror"
+              },
+              {
+                "identifier": "grid.9132.9",
+                "scheme": "grid"
+              },
+              {
+                "identifier": "0000 0001 2156 142X",
+                "scheme": "isni"
+              }
+            ],
+            "name": "European Organization for Nuclear Research"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Nielsen",
+          "given_name": "Lars Holm",
+          "identifiers": [
+            {
+              "identifier": "0000-0001-8135-3489",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Nielsen, Lars Holm",
+          "type": "personal"
+        }
+      },
+      {
+        "person_or_org": {
+          "family_name": "Morrell",
+          "given_name": "Tom",
+          "name": "Morrell, Tom",
+          "type": "personal"
+        }
+      }
+    ],
+    "dates": [
+      {
+        "date": "1939/1945",
+        "description": "A date",
+        "type": {
+          "id": "other",
+          "title": {
+            "cs": "Jin\u00e9",
+            "de": "Sonstiges",
+            "en": "Other",
+            "sv": "\u00d6vrig"
+          }
+        }
+      }
+    ],
+    "description": "<h1>A description</h1> <p>with HTML tags</p>",
+    "formats": [
+      "application/pdf"
+    ],
+    "funding": [
+      {
+        "award": {
+          "number": "246686",
+          "title": {
+            "en": "OpenAIRE"
+          }
+        },
+        "funder": {
+          "id": "00k4n6c32",
+          "name": "European Commission"
+        }
+      }
+    ],
+    "identifiers": [
+      {
+        "identifier": "1924MNRAS..84..308E",
+        "scheme": "bibcode"
+      }
+    ],
+    "languages": [
+      {
+        "id": "dan",
+        "title": {
+          "en": "Danish"
+        }
+      }
+    ],
+    "locations": {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              -32.94682,
+              -60.63932
+            ],
+            "type": "Point"
+          },
+          "place": "test location place"
+        }
+      ]
+    },
+    "publication_date": "2018/2020-09",
+    "publisher": "Again!",
+    "related_identifiers": [
+      {
+        "identifier": "10.1234/foo.bar",
+        "relation_type": {
+          "id": "iscitedby",
+          "title": {
+            "cs": "Je citov\u00e1n (\u010d\u00edm)",
+            "de": "Wird zitiert von",
+            "en": "Is cited by",
+            "sv": "Citeras av"
+          }
+        },
+        "resource_type": {
+          "id": "dataset",
+          "title": {
+            "en": "Dataset"
+          }
+        },
+        "scheme": "doi"
+      }
+    ],
+    "resource_type": {
+      "id": "dataset",
+      "title": {
+        "en": "Dataset"
+      }
+    },
+    "rights": [
+      {
+        "link": "https://customlicense.org/licenses/by/4.0/",
+        "title": {
+          "en": "A custom license"
+        }
+      },
+      {
+        "title": {
+          "en": "No rightsUri license"
+        }
+      },
+      {
+        "description": {
+          "en": "The Creative Commons Attribution license allows re-distribution and re-use of a licensed work on the condition that the creator is appropriately credited."
+        },
+        "icon": "cc-by-icon",
+        "id": "cc-by-4.0",
+        "props": {
+          "scheme": "spdx",
+          "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+        },
+        "title": {
+          "en": "Creative Commons Attribution 4.0 International"
+        }
+      }
+    ],
+    "sizes": [
+      "11 pages"
+    ],
+    "subjects": [
+      {
+        "subject": "custom"
+      },
+      {
+        "id": "http://www.oecd.org/science/inno/38235147.pdf?1.4",
+        "scheme": "FOS",
+        "subject": "Chemical sciences"
+      }
+    ],
+    "title": "InvenioRDM",
+    "version": "v1.0"
+  }
+}

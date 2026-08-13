@@ -15,7 +15,7 @@ The `caltechdata_api` Python library provides a convenient interface for interac
 
 ## Requirements
 
-- Python 3.6+
+- Python 3.9+
 
 ## Installation
 
@@ -25,6 +25,18 @@ Install the library via pip:
 pip install caltechdata_api
 ```
 
+Or add it to a [uv](https://docs.astral.sh/uv/) project:
+
+```shell
+uv add caltechdata_api
+```
+
+You can also run a script using uv:
+
+```shell
+uv run write.py
+```
+
 ## Examples
 
 There are some example python scripts in the GitHub repository.
@@ -32,7 +44,7 @@ There are some example python scripts in the GitHub repository.
 ### Create a record:
 
 ```shell
-python write.py example.json -fnames logo.gif
+uv run write.py example.json -fnames logo.gif
 # Output: pbkn6-m9y63 (unique identifier)
 ```
 > The response will be the unique identifier for the record. You can put this at
@@ -42,7 +54,7 @@ https://data.caltechlibrary.dev/records/pbkn6-m9y63)
 ### Edit a record 
 Make changes to the example.json file to see a change)
 ```
-python edit.py example.json -id pbkn6-m9y63
+uv run edit.py example.json -id pbkn6-m9y63
 10.33569/pbkn6-m9y63
 ```
 > The response is the DOI for the record, which includes the unique identifier
@@ -53,13 +65,13 @@ Some groups have worked with the library to create custom DOIs. These can be
 passed in the metadata like:
 
 ```shell
-python write.py example_custom.json -fnames logo.gif
+uv run write.py example_custom.json -fnames logo.gif
 m6zxz-p4j22
 ```
 
 And then you can edit with
 ```
-python edit.py example_custom.json -id m6zxz-p4j22
+uv run edit.py example_custom.json -id m6zxz-p4j22
 10.5281/inveniordm.1234
 ```
 

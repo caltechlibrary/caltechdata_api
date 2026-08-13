@@ -1,6 +1,7 @@
 build/
 dist/
 data/
-caltechdata_api.egg-info/
-caltechdata_api/__pycache__/
-tests/__pycache__/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.venv/

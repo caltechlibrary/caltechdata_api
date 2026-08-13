@@ -1,3 +1,69 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "caltechdata_api"
+version = "2.0.0"
+description = "Python wrapper for CaltechDATA API."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Thomas E Morrell", email = "tmorrell@caltech.edu"},
+    {name = "Rohan Bhattarai"},
+    {name = "Elizabeth Won"},
+    {name = "Alexander A Abakah", email = "aabakah@caltech.edu"},
+    {name = "Kshemaahna Nagi", email = "knagi@caltech.edu"},
+]
+maintainers = [
+    {name = "Thomas E Morrell", email = "tmorrell@caltech.edu"},
+]
+keywords = ["metadata", "software", "InvenioRDM"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests",
+    "datacite>1.1.0",
+    "tqdm>=4.62.3",
+    "pyyaml",
+    "s3fs",
+    "cryptography",
+    "s3cmd",
+    "jsonschema-specifications",
+]
+
+[project.urls]
+Homepage = "https://github.com/caltechlibrary/caltechdata_api"
+Repository = "https://github.com/caltechlibrary/caltechdata_api"
+Issues = "https://github.com/caltechlibrary/caltechdata_api/issues"
+
+[project.scripts]
+caltechdata_api = "caltechdata_api.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+include = ["caltechdata_api*"]
+
+[tool.setuptools.package-data]
+caltechdata_api = ["vocabularies.yaml", "vocabularies/*"]
+
+[tool.pytest.ini_options]
+addopts = "--verbose"
+testpaths = ["tests"]
+pythonpath = ["tests"]
