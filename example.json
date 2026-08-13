@@ -1,131 +1,266 @@
 {
-    "identifiers": [
-            {"identifier": "1924MNRAS..84..308E", "identifierType": "bibcode"}
+  "metadata": {
+    "additional_descriptions": [
+      {
+        "description": "Bla bla bla",
+        "lang": {
+          "id": "eng",
+          "title": {
+            "en": "English"
+          }
+        },
+        "type": {
+          "id": "methods",
+          "title": {
+            "de": "Methoden",
+            "en": "Methods"
+          }
+        }
+      }
+    ],
+    "additional_titles": [
+      {
+        "lang": {
+          "id": "eng",
+          "title": {
+            "en": "English"
+          }
+        },
+        "title": "a research data management platform",
+        "type": {
+          "id": "subtitle",
+          "title": {
+            "cs": "Podtitul",
+            "de": "Untertitel",
+            "en": "Subtitle",
+            "sv": "Undertitel"
+          }
+        }
+      }
     ],
     "contributors": [
-        {
-          "nameType": "Personal",
-          "affiliation": [
+      {
+        "affiliations": [
+          {
+            "id": "01ggx4157",
+            "identifiers": [
               {
-                  "name": "DataCitea",
-                  "affiliationIdentifier": "https://ror.org/04wxnsj81",
-                  "affiliationIdentifierScheme": "ROR"
-                }
-              ],
-            "name": "Contributor Name",
-            "familyName": "Family Name",
-            "givenName": "Given Name",
-            "contributorType": "ContactPerson",
-            "nameIdentifiers": [
-                {
-                    "nameIdentifier": "0000-0002-1825-0097",
-                    "nameIdentifierScheme": "ORCID",
-                    "schemeUri": "https://orcid.org/"
-                }
-            ]
-        }
-    ],
-    "creators": [
-        {
-          "nameType": "Personal",
-          "affiliation": [
+                "identifier": "01ggx4157",
+                "scheme": "ror"
+              },
               {
-                "name": "DataCite",
-                "affiliationIdentifier": "https://ror.org/04wxnsj81",
-                "affiliationIdentifierScheme": "ROR"
+                "identifier": "grid.9132.9",
+                "scheme": "grid"
+              },
+              {
+                "identifier": "0000 0001 2156 142X",
+                "scheme": "isni"
               }
             ],
-            "name": "Name",
-            "familyName": "Family Name",
-            "givenName": "Given Name",
-            "nameIdentifiers": [
-                {
-                    "nameIdentifier": "0000-0002-1825-0097",
-                    "nameIdentifierScheme": "ORCID",
-                    "schemeUri": "https://orcid.org/"
-                }
-            ]
+            "name": "European Organization for Nuclear Research"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Nielsen",
+          "given_name": "Lars Holm",
+          "identifiers": [
+            {
+              "identifier": "0000-0001-8135-3489",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Nielsen, Lars Holm",
+          "type": "personal"
+        },
+        "role": {
+          "id": "other",
+          "title": {
+            "cs": "Jin\u00e9",
+            "de": "Andere",
+            "en": "Other",
+            "sv": "\u00d6vriga"
+          }
         }
+      }
+    ],
+    "creators": [
+      {
+        "affiliations": [
+          {
+            "name": "free-text"
+          },
+          {
+            "id": "01ggx4157",
+            "identifiers": [
+              {
+                "identifier": "01ggx4157",
+                "scheme": "ror"
+              },
+              {
+                "identifier": "grid.9132.9",
+                "scheme": "grid"
+              },
+              {
+                "identifier": "0000 0001 2156 142X",
+                "scheme": "isni"
+              }
+            ],
+            "name": "European Organization for Nuclear Research"
+          }
+        ],
+        "person_or_org": {
+          "family_name": "Nielsen",
+          "given_name": "Lars Holm",
+          "identifiers": [
+            {
+              "identifier": "0000-0001-8135-3489",
+              "scheme": "orcid"
+            }
+          ],
+          "name": "Nielsen, Lars Holm",
+          "type": "personal"
+        }
+      },
+      {
+        "person_or_org": {
+          "family_name": "Morrell",
+          "given_name": "Tom",
+          "name": "Morrell, Tom",
+          "type": "personal"
+        }
+      }
     ],
     "dates": [
-        {
-            "date": "2014-10-01",
-            "dateType": "Created"
-        },
-        {
-            "date": "2012-05-22/2016-12-21",
-            "dateType": "Collected"
-        }
-    ],
-    "descriptions": [
-        {
-            "description": "Description",
-            "descriptionType": "Abstract"
-        }
-    ],
-    "formats": [
-        "format"
-    ],
-    "fundingReferences": [
-          {
-            "awardTitle": "Measurement of Column-Averaged CO2",
-            "funderName": "National Aeronautics and Space Administration",
-            "funderIdentifierType": "GRID",
-            "funderIdentifier": "grid.238252.c",
-            "awardNumber": "NAG5-12247"
+      {
+        "date": "1939/1945",
+        "description": "A date",
+        "type": {
+          "id": "other",
+          "title": {
+            "cs": "Jin\u00e9",
+            "de": "Sonstiges",
+            "en": "Other",
+            "sv": "\u00d6vrig"
           }
-    ],
-    "geoLocations": [
-        {
-            "geoLocationPlace": "Place Name",
-            "geoLocationPoint": {
-                "pointLatitude": "34.138",
-                "pointLongitude": "-118.1258"
-            }
         }
+      }
     ],
-    "language": "eng",
-    "publicationYear": "2017",
-    "publisher": "Publisher",
-    "relatedIdentifiers": [
-        {
-            "relatedIdentifier": "http://www.url.org/",
-            "relatedIdentifierType": "URL",
-            "relationType": "IsPartOf"
+    "description": "<h1>A description</h1> <p>with HTML tags</p>",
+    "formats": [
+      "application/pdf"
+    ],
+    "funding": [
+      {
+        "award": {
+          "number": "246686",
+          "title": {
+            "en": "OpenAIRE"
+          }
         },
-        {
-            "relatedIdentifier": "10.5072/FK2",
-            "relatedIdentifierType": "DOI",
-            "relationType": "IsDocumentedBy"
+        "funder": {
+          "id": "00k4n6c32",
+          "name": "European Commission"
         }
+      }
     ],
-    "types": {
-        "resourceTypeGeneral": "Dataset",
-        "resourceType": "Dataset"
-    },
-    "rightsList": [
-        {
-            "rights": "Rights Name",
-            "rightsURI": "Rights List"
+    "identifiers": [
+      {
+        "identifier": "1924MNRAS..84..308E",
+        "scheme": "bibcode"
+      }
+    ],
+    "languages": [
+      {
+        "id": "dan",
+        "title": {
+          "en": "Danish"
         }
+      }
+    ],
+    "locations": {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              -32.94682,
+              -60.63932
+            ],
+            "type": "Point"
+          },
+          "place": "test location place"
+        }
+      ]
+    },
+    "publication_date": "2018/2020-09",
+    "publisher": "Again!",
+    "related_identifiers": [
+      {
+        "identifier": "10.1234/foo.bar",
+        "relation_type": {
+          "id": "iscitedby",
+          "title": {
+            "cs": "Je citov\u00e1n (\u010d\u00edm)",
+            "de": "Wird zitiert von",
+            "en": "Is cited by",
+            "sv": "Citeras av"
+          }
+        },
+        "resource_type": {
+          "id": "dataset",
+          "title": {
+            "en": "Dataset"
+          }
+        },
+        "scheme": "doi"
+      }
+    ],
+    "resource_type": {
+      "id": "dataset",
+      "title": {
+        "en": "Dataset"
+      }
+    },
+    "rights": [
+      {
+        "link": "https://customlicense.org/licenses/by/4.0/",
+        "title": {
+          "en": "A custom license"
+        }
+      },
+      {
+        "title": {
+          "en": "No rightsUri license"
+        }
+      },
+      {
+        "description": {
+          "en": "The Creative Commons Attribution license allows re-distribution and re-use of a licensed work on the condition that the creator is appropriately credited."
+        },
+        "icon": "cc-by-icon",
+        "id": "cc-by-4.0",
+        "props": {
+          "scheme": "spdx",
+          "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+        },
+        "title": {
+          "en": "Creative Commons Attribution 4.0 International"
+        }
+      }
+    ],
+    "sizes": [
+      "11 pages"
     ],
     "subjects": [
-        {
-            "subject": "subject1"
-        },
-        {
-            "subject": "subject2"
-        }
+      {
+        "subject": "custom"
+      },
+      {
+        "id": "http://www.oecd.org/science/inno/38235147.pdf?1.4",
+        "scheme": "FOS",
+        "subject": "Chemical sciences"
+      }
     ],
-    "titles": [
-        {
-            "title": "Title"
-        },
-        {
-            "title": "Alternative Title",
-            "titleType": "AlternativeTitle"
-        }
-    ],
-    "version": "0",
-    "schemaVersion": "http://datacite.org/schema/kernel-4"
+    "title": "InvenioRDM",
+    "version": "v1.0"
+  },
 }
