@@ -7,6 +7,10 @@ from caltechdata_api import (
 import json
 import os
 
+# Any file will do here, we just need something to attach to the test records
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FILE = os.path.join(BASE_DIR, "helpers.py")
+
 
 def test_datacite_rdm_conversion(full_datacite43_record, full_rdm_record):
 
@@ -48,7 +52,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
         full_datacite43_record,
         schema="43",
         production=False,
-        files=["helpers.py"],
+        files=[UPLOAD_FILE],
         publish=True,
         token=env_token,
     )
@@ -77,7 +81,7 @@ def test_datacite_rdm_create_edit(full_datacite43_record):
     new_doi = caltechdata_edit(
         recid,
         full_datacite43_record,
-        files=["helpers.py"],
+        files=[UPLOAD_FILE],
         schema="43",
         production=False,
         publish=True,
