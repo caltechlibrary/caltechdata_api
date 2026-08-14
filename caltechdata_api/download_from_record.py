@@ -4,7 +4,12 @@ A CaltechData record ID is the ten characters, separated into two groups
 of five by a dash, found at the end of a CaltechData URL or default DOI.
 For instance, in the URL ``https://data.caltech.edu/records/4rgh7-zss31``
 or DOI ``10.22002/4rgh7-zss31``, the record ID is ``4rgh7-zss31``.
+
+The same functions can download from CaltechAUTHORS by passing
+``authors=True``, and from the test (development) instances of either
+repository by passing ``production=False``.
 """
+import argparse
 import os
 import requests
 from tqdm.auto import tqdm
@@ -12,7 +17,36 @@ from tqdm.auto import tqdm
 from typing import Any, Dict, Optional, Sequence
 
 
-def get_files_from_record(record_id: str) -> Dict[str, Any]:
+def get_base_url(production: bool = True, authors: bool = False) -> str:
+    """Get the base URL of the repository to download from.
+
+    Parameters
+    ----------
+    production
+        Whether to use the production repository. If ``False``, the
+        test (development) instance is used instead.
+
+    authors
+        Whether to use CaltechAUTHORS instead of CaltechDATA.
+
+    Returns
+    -------
+    str
+        The base URL, without a trailing slash.
+    """
+    if production:
+        if authors:
+            return 'https://authors.library.caltech.edu'
+        return 'https://data.caltech.edu'
+    else:
+        if authors:
+            return 'https://authors.caltechlibrary.dev'
+        return 'https://data.caltechlibrary.dev'
+
+
+def get_files_from_record(
+    record_id: str, production: bool = True, authors: bool = False
+) -> Dict[str, Any]:
     """Get a dictionary of files associated with a record.
 
     Parameters
@@ -21,13 +55,21 @@ def get_files_from_record(record_id: str) -> Dict[str, Any]:
         The record ID for which to obtain the list of files. See
         the module documentation for how to find the record ID.
 
+    production
+        Whether to query the production repository. If ``False``, the
+        test (development) instance is used instead.
+
+    authors
+        Whether to query CaltechAUTHORS instead of CaltechDATA.
+
     Returns
     -------
     dict
         A dictionary with the file names as keys and the metadata
         associated with those files as values.
     """
-    with requests.get(f'https://data.caltech.edu/api/records/{record_id}/files') as r:
+    base_url = get_base_url(production=production, authors=authors)
+    with requests.get(f'{base_url}/api/records/{record_id}/files') as r:
         r.raise_for_status()
         files = dict()
         for entry in r.json().get('entries', []):
@@ -40,7 +82,9 @@ def get_files_from_record(record_id: str) -> Dict[str, Any]:
 def download_files_from_record(
     record_id: str, output_path: os.PathLike,
     filenames: Optional[Sequence[str]] = None,
-    max_redirects: int = 5
+    max_redirects: int = 5,
+    production: bool = True,
+    authors: bool = False
 ):
     """Download one or more files from a record.
 
@@ -71,11 +115,19 @@ def download_files_from_record(
         hops that the function can take. Usually, only a single
         redirection should be necessary (from the record to the file
         provider), but the default allows for a few extra hops.
+
+    production
+        Whether to download from the production repository. If ``False``,
+        the test (development) instance is used instead.
+
+    authors
+        Whether to download from CaltechAUTHORS instead of CaltechDATA.
     """
     if not os.path.isdir(output_path):
         raise IOError(f'{output_path} is not an extant directory')
 
-    files = get_files_from_record(record_id)
+    files = get_files_from_record(
+        record_id, production=production, authors=authors)
     if filenames is None:
         filenames = sorted(files.keys())
 
@@ -142,4 +194,43 @@ def download_content(content_url: str, fname: os.PathLike, max_redirects=5):
                     return
     raise RuntimeError(
         f'Exceeded maximum number of redirects ({max_redirects})'
+    )
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='download_from_record downloads the files attached to a '
+        'CaltechDATA or CaltechAUTHORS record'
+    )
+    parser.add_argument(
+        'record_id',
+        help='The record ID for the record to download files from'
+    )
+    parser.add_argument(
+        'filenames',
+        nargs='*',
+        default=None,
+        help='The names of the files to download. If omitted, all files in '
+        'the record are downloaded.'
+    )
+    parser.add_argument(
+        '-output_path', default='.',
+        help='Existing directory to download the files into'
+    )
+    parser.add_argument(
+        '-max_redirects', type=int, default=5,
+        help='Maximum number of redirects to follow per file'
+    )
+    parser.add_argument('-test', dest='production', action='store_false')
+    parser.add_argument('-authors', dest='authors', action='store_true')
+
+    args = parser.parse_args()
+
+    download_files_from_record(
+        args.record_id,
+        args.output_path,
+        filenames=args.filenames or None,
+        max_redirects=args.max_redirects,
+        production=args.production,
+        authors=args.authors,
     )
