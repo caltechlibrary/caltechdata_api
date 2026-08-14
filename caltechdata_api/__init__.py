@@ -13,5 +13,9 @@ from .caltechdata_edit import (
 from .customize_schema import customize_schema, validate_metadata
 from .get_metadata import get_metadata
 from .download_file import download_file, download_url
+from .download_from_record import (
+    get_files_from_record,
+    download_files_from_record,
+)
 from .utils import humanbytes
 from .md_to_json import parse_readme_to_json
