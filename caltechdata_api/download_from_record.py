@@ -14,6 +14,7 @@ import argparse
 import os
 import requests
 from tqdm.auto import tqdm
+from urllib.parse import urlsplit
 
 from typing import Any, Dict, Optional, Sequence
 
@@ -46,7 +47,10 @@ def get_base_url(production: bool = True, authors: bool = False) -> str:
 
 
 def get_files_from_record(
-    record_id: str, production: bool = True, authors: bool = False
+    record_id: str,
+    production: bool = True,
+    authors: bool = False,
+    token: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Get a dictionary of files associated with a record.
 
@@ -63,6 +67,11 @@ def get_files_from_record(
     authors
         Whether to query CaltechAUTHORS instead of CaltechDATA.
 
+    token
+        A personal access token for the repository, used to access
+        restricted records. If omitted, the request is made without
+        authentication and only public records are available.
+
     Returns
     -------
     dict
@@ -70,7 +79,13 @@ def get_files_from_record(
         associated with those files as values.
     """
     base_url = get_base_url(production=production, authors=authors)
-    with requests.get(f"{base_url}/api/records/{record_id}/files") as r:
+    headers = {}
+    if token is not None:
+        headers["Authorization"] = "Bearer %s" % token
+
+    with requests.get(
+        f"{base_url}/api/records/{record_id}/files", headers=headers
+    ) as r:
         r.raise_for_status()
         files = dict()
         for entry in r.json().get("entries", []):
@@ -87,6 +102,7 @@ def download_files_from_record(
     max_redirects: int = 5,
     production: bool = True,
     authors: bool = False,
+    token: Optional[str] = None,
 ):
     """Download one or more files from a record.
 
@@ -124,11 +140,19 @@ def download_files_from_record(
 
     authors
         Whether to download from CaltechAUTHORS instead of CaltechDATA.
+
+    token
+        A personal access token for the repository, used to download
+        files from restricted records. If omitted, the requests are
+        made without authentication and only public records are
+        available.
     """
     if not os.path.isdir(output_path):
         raise IOError(f"{output_path} is not an extant directory")
 
-    files = get_files_from_record(record_id, production=production, authors=authors)
+    files = get_files_from_record(
+        record_id, production=production, authors=authors, token=token
+    )
     if filenames is None:
         filenames = sorted(files.keys())
 
@@ -145,10 +169,17 @@ def download_files_from_record(
             )
 
         content_url = entry["links"]["content"]
-        download_content(content_url, output_file, max_redirects=max_redirects)
+        download_content(
+            content_url, output_file, max_redirects=max_redirects, token=token
+        )
 
 
-def download_content(content_url: str, fname: os.PathLike, max_redirects=5):
+def download_content(
+    content_url: str,
+    fname: os.PathLike,
+    max_redirects=5,
+    token: Optional[str] = None,
+):
     """Download the contents of a file.
 
     Parameters
@@ -168,14 +199,25 @@ def download_content(content_url: str, fname: os.PathLike, max_redirects=5):
         the maximum number of hops that the function can take. Usually,
         only a single redirection should be necessary (from the record to
         the file provider), but the default allows for a few extra hops.
+
+    token
+        A personal access token for the repository, used to download
+        content from restricted records. If omitted, the request is
+        made without authentication. The token is only sent to the
+        host of ``content_url``, not to hosts we are redirected to.
     """
     url = content_url
+    host = urlsplit(content_url).netloc
     # If max_redirects == 0, then this loop will never run. Since the
     # likely expected behavior for ``max_redirects = 0`` is to only
     # look at the link directly given back by the record, we add 1
     # for the loop to ensure it runs once in that case.
     for _ in range(max_redirects + 1):
-        with requests.get(url, stream=True) as r:
+        headers = {}
+        if token is not None and urlsplit(url).netloc == host:
+            headers["Authorization"] = "Bearer %s" % token
+
+        with requests.get(url, stream=True, headers=headers) as r:
             r.raise_for_status()
             if "Location" in r.headers:
                 # Redirection - follow to the next URL
@@ -223,6 +265,12 @@ if __name__ == "__main__":
     )
     parser.add_argument("-test", dest="production", action="store_false")
     parser.add_argument("-authors", dest="authors", action="store_true")
+    parser.add_argument(
+        "-token",
+        default=os.environ.get("RDMTOK"),
+        help="Personal access token, needed to download restricted records. "
+        "Defaults to the RDMTOK environment variable, if set.",
+    )
 
     args = parser.parse_args()
 
@@ -233,4 +281,5 @@ if __name__ == "__main__":
         max_redirects=args.max_redirects,
         production=args.production,
         authors=args.authors,
+        token=args.token,
     )
