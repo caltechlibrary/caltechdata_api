@@ -70,7 +70,9 @@ def get_files_from_record(
     token
         A personal access token for the repository, used to access
         restricted records. If omitted, the request is made without
-        authentication and only public records are available.
+        authentication and only public records are available. When a
+        token is given and the published record is not found, the
+        record's draft is tried as well.
 
     Returns
     -------
@@ -83,9 +85,16 @@ def get_files_from_record(
     if token is not None:
         headers["Authorization"] = "Bearer %s" % token
 
-    with requests.get(
-        f"{base_url}/api/records/{record_id}/files", headers=headers
-    ) as r:
+    r = requests.get(f"{base_url}/api/records/{record_id}/files", headers=headers)
+    try:
+        if r.status_code == 404 and token is not None:
+            # An unpublished record has no published version to return,
+            # so fall back to its draft, which requires authentication.
+            r.close()
+            r = requests.get(
+                f"{base_url}/api/records/{record_id}/draft/files", headers=headers
+            )
+
         r.raise_for_status()
         files = dict()
         for entry in r.json().get("entries", []):
@@ -93,6 +102,8 @@ def get_files_from_record(
             files[key] = entry
 
         return files
+    finally:
+        r.close()
 
 
 def download_files_from_record(
