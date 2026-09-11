@@ -177,18 +177,18 @@ def caltechdata_write(
 
     if authors == False:
         if production == True:
-            url = "https://data.caltech.edu/"
+            url = "https://data.caltech.edu"
         elif local == True:
-            url = "https://127.0.0.1:5000/"
+            url = "https://127.0.0.1:5000"
         else:
-            url = "https://data.caltechlibrary.dev/"
+            url = "https://data.caltechlibrary.dev"
     else:
         if production == True:
-            url = "https://authors.library.caltech.edu/"
+            url = "https://authors.library.caltech.edu"
         elif local == True:
-            url = "https://127.0.0.1:5000/"
+            url = "https://127.0.0.1:5000"
         else:
-            url = "https://authors.caltechlibrary.dev/"
+            url = "https://authors.caltechlibrary.dev"
 
     # If files is a string - change to single value array
     if isinstance(files, str) == True:
