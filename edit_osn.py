@@ -1,36 +1,38 @@
-import argparse, os, json
+import argparse, os
 import s3fs, requests
-from datacite import schema43
 from caltechdata_api import caltechdata_edit, get_metadata
 
 parser = argparse.ArgumentParser(
-    description="Edits a CaltechDATA record by adding OSN-stored pilot files"
+    description="Edits a CaltechDATA record by adding OSN-stored files"
 )
-parser.add_argument("folder", nargs=1, help="Folder")
+parser.add_argument("bucket", nargs=1, help="S3 bucket name")
 parser.add_argument("-id", nargs=1, help="")
+parser.add_argument("-test", action="store_true", help="Test mode")
+parser.add_argument("-pod", nargs=1, default=["caltech2"], help="Pod name")
 
 args = parser.parse_args()
 
 # Get access token as environment variable
 token = os.environ["RDMTOK"]
 
-endpoint = "https://sdsc.osn.xsede.org/"
+endpoint = f"https://{args.pod[0]}.osn.mghpcc.org/"
 
 # Get metadata and files from bucket
 s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
 
-folder = args.folder[0]
-
-path = "ini210004tommorrell/" + folder
+path = f"{args.bucket[0]}"
 
 idv = args.id[0]
 try:
-    metadata = get_metadata(idv, schema="43")
+    metadata = get_metadata(idv, production=not args.test)
 except:
-    url = "https://data.caltech.edu/api/records/"
+    if args.test:
+        url = "https://data.caltechlibrary.dev/api/records/"
+    else:
+        url = "https://data.caltech.edu/api/records/"
 
     headers = {
-        "accept": "application/vnd.datacite.datacite+json",
+        "accept": "application/json",
         "Authorization": "Bearer %s" % token,
     }
 
@@ -65,9 +67,14 @@ for link in files:
     else:
         file_links.append(endpoint + link)
 
-production = True
+# File names must be unique within a record, so the folders inside the bucket
+# are included in the name of each file
+prefix = endpoint + path + "/"
+file_links = [
+    (link.split(prefix)[1].replace("/", "_"), link) for link in file_links
+]
 
 response = caltechdata_edit(
-    idv, metadata, token, [], production, "43", publish=True, file_links=file_links
+    idv, metadata, token, [], production=not args.test, publish=False, file_links=file_links
 )
 print(response)

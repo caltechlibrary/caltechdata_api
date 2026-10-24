@@ -69,14 +69,19 @@ def write_files_rdm(
 
 def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
     # Currently configured for S3 links, assuming all are at the same endpoint
+    # Links are urls, or (file name, url) pairs when the url file names are not
+    # unique across the bucket
     link_string = ""
-    endpoint = "https://" + file_links[0].split("/")[2]
+    file_links = [
+        link if isinstance(link, (list, tuple)) else (link.split("/")[-1], link)
+        for link in file_links
+    ]
+    endpoint = "https://" + file_links[0][1].split("/")[2]
     s3 = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint})
     index = 0
     file_json = []
     f_list = []
-    for link in file_links:
-        file = link.split("/")[-1]
+    for file, link in file_links:
         f_list.append(file)
         path = link.split(endpoint)[1]
         size = s3.info(path)["size"]
@@ -98,6 +103,7 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
                     result = requests.delete(ex["links"]["self"], headers=headers)
                     if result.status_code != 204:
                         raise Exception(result.text)
+    
     result = requests.post(file_upload_link, headers=headers, json=file_json)
     if result.status_code != 201:
         raise Exception(result.text)
