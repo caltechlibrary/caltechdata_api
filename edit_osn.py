@@ -70,11 +70,15 @@ for link in files:
 # File names must be unique within a record, so the folders inside the bucket
 # are included in the name of each file
 prefix = endpoint + path + "/"
-file_links = [
-    (link.split(prefix)[1].replace("/", "_"), link) for link in file_links
-]
+file_links = [(link.split(prefix)[1].replace("/", "_"), link) for link in file_links]
 
 response = caltechdata_edit(
-    idv, metadata, token, [], production=not args.test, publish=False, file_links=file_links
+    idv,
+    metadata,
+    token,
+    [],
+    production=not args.test,
+    publish=False,
+    file_links=file_links,
 )
 print(response)
