@@ -67,7 +67,7 @@ def write_files_rdm(
                     raise Exception(result.text)
 
 
-def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
+def add_file_links(file_upload_link, file_links, headers, keepfiles=False, verify=True):
     # Currently configured for S3 links, assuming all are at the same endpoint
     # Links are urls, or (file name, url) pairs when the url file names are not
     # unique across the bucket
@@ -90,21 +90,27 @@ def add_file_links(file_upload_link, file_links, headers, keepfiles=False):
             {"key": file, "size": size, "transfer": {"type": "R", "url": link}}
         )
     # Now we see if any existing files need to be replaced
-    result = requests.get(file_upload_link, headers=headers)
+    result = requests.get(file_upload_link, headers=headers, verify=verify)
     if result.status_code == 200:
         ex_files = result.json()["entries"]
         for ex in ex_files:
             if ex["key"] in f_list:
-                result = requests.delete(ex["links"]["self"], headers=headers)
+                result = requests.delete(
+                    ex["links"]["self"], headers=headers, verify=verify
+                )
                 if result.status_code != 204:
                     raise Exception(result.text)
             else:
                 if keepfiles == False:
-                    result = requests.delete(ex["links"]["self"], headers=headers)
+                    result = requests.delete(
+                        ex["links"]["self"], headers=headers, verify=verify
+                    )
                     if result.status_code != 204:
                         raise Exception(result.text)
 
-    result = requests.post(file_upload_link, headers=headers, json=file_json)
+    result = requests.post(
+        file_upload_link, headers=headers, json=file_json, verify=verify
+    )
     if result.status_code != 201:
         raise Exception(result.text)
 
