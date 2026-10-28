@@ -14,7 +14,7 @@ def caltechdata_unembargo(token, ids, production=False):
     print("caltechdaua_unembargo is not yet re-implemented")
 
 
-def caltechdata_accept(ids, token=None, production=False):
+def caltechdata_accept(ids, token=None, production=False, verify=True):
     # Accept a record into a community. Only accepts the first community
     # request
 
@@ -34,11 +34,15 @@ def caltechdata_accept(ids, token=None, production=False):
 
     for idv in ids:
         result = requests.get(
-            url + "/api/records/" + idv + "/draft/review", headers=headers
+            url + "/api/records/" + idv + "/draft/review",
+            headers=headers,
+            verify=verify,
         )
         if result.status_code != 200:
             result = requests.get(
-                url + "/api/records/" + idv + "/requests", headers=headers
+                url + "/api/records/" + idv + "/requests",
+                headers=headers,
+                verify=verify,
             )
             if result.status_code != 200:
                 raise Exception(result.text)
@@ -51,7 +55,7 @@ def caltechdata_accept(ids, token=None, production=False):
                 "format": "html",
             }
         }
-        result = requests.post(accept_link, json=data, headers=headers)
+        result = requests.post(accept_link, json=data, headers=headers, verify=verify)
         if result.status_code != 200:
             raise Exception(result.text)
 
@@ -165,7 +169,7 @@ def caltechdata_edit(
         if result.status_code != 200:
             print(result.url)
             raise Exception(result.text)
-        caltechdata_accept([idv], token, production)
+        caltechdata_accept([idv], token, production, verify=verify)
 
     # Check status
     existing = requests.get(

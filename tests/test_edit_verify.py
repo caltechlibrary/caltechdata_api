@@ -24,12 +24,17 @@ def respond(method, url):
     """Return (status, payload) for the calls an edit makes."""
     path = urlsplit(url).path
     if method == "GET":
+        if path.endswith("/draft/review"):
+            accept = "https://data.caltechlibrary.dev/api/requests/r1/actions/accept"
+            return 200, {"links": {"actions": {"accept": accept}}}
         if path.endswith("/draft/files"):
             return 200, {"entries": []}
         if path.endswith("/draft"):
             return 200, {}
         return 200, {"status": "published", "files": {"enabled": False}}
     if method == "POST":
+        if path.endswith("/communities") or path.endswith("/actions/accept"):
+            return 200, {}
         if path.endswith("/versions"):
             return 201, {"id": NEW}
         if path.endswith("/draft/files"):
@@ -134,3 +139,11 @@ def test_verify_defaults_to_true(calls):
     edit()
     assert_all(calls, True)
     assert all(kwargs.get("verify", True) is True for _, _, kwargs in calls)
+
+
+@pytest.mark.parametrize("verify", [True, False])
+def test_community_accept(calls, verify):
+    # adding to a community accepts the request through caltechdata_accept
+    edit(community="c-1", verify=verify)
+    assert_all(calls, verify)
+    assert any(m == "POST" and u.endswith("/actions/accept") for m, u, _ in calls)
