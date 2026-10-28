@@ -117,6 +117,7 @@ def caltechdata_edit(
     keepfiles=False,
     return_id=False,
     local=False,
+    verify=True,
 ):
     # Make a copy of the metadata to make sure our local changes don't leak
     metadata = copy.deepcopy(metadata)
@@ -159,6 +160,7 @@ def caltechdata_edit(
             url + "/api/records/" + idv + "/communities",
             headers=headers,
             data=json.dumps({"communities": [{"id": community}]}),
+            verify=verify,
         )
         if result.status_code != 200:
             print(result.url)
@@ -169,18 +171,21 @@ def caltechdata_edit(
     existing = requests.get(
         url + "/api/records/" + idv,
         headers=headers,
+        verify=verify,
     )
     if existing.status_code != 200:
         # Might have a draft
         existing = requests.get(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
+            verify=verify,
         )
         if existing.status_code != 200:
             # Try back again to the record
             existing = requests.get(
                 url + "/api/records/" + idv,
                 headers=headers,
+                verify=verify,
             )
 
             if existing.status_code != 200:
@@ -202,6 +207,7 @@ def caltechdata_edit(
         result = requests.post(
             url + "/api/records/" + idv + "/versions",
             headers=headers,
+            verify=verify,
         )
         if result.status_code != 201:
             raise Exception(result.text)
@@ -304,12 +310,14 @@ def caltechdata_edit(
     result = requests.get(
         url + "/api/records/" + idv + "/draft",
         headers=headers,
+        verify=verify,
     )
     if result.status_code != 200:
         # We make a draft
         result = requests.post(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
+            verify=verify,
         )
         if result.status_code != 201:
             raise Exception(result.text)
@@ -324,16 +332,28 @@ def caltechdata_edit(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
             json=data,
+            verify=verify,
         )
         if result.status_code != 200:
             raise Exception(result.text)
         file_upload_link = result.json()["links"]["files"]
         if files:
             write_files_rdm(
-                files, file_upload_link, headers, f_headers, keepfiles=keepfiles
+                files,
+                file_upload_link,
+                headers,
+                f_headers,
+                keepfiles=keepfiles,
+                verify=verify,
             )
         if file_links:
-            add_file_links(file_upload_link, file_links, headers, keepfiles=keepfiles)
+            add_file_links(
+                file_upload_link,
+                file_links,
+                headers,
+                keepfiles=keepfiles,
+                verify=verify,
+            )
 
     else:
         # We want files to stay the same as the existing record
@@ -345,6 +365,7 @@ def caltechdata_edit(
             url + "/api/records/" + idv + "/draft",
             headers=headers,
             json=data,
+            verify=verify,
         )
         if result.status_code != 200:
             time.sleep(3)
@@ -352,16 +373,17 @@ def caltechdata_edit(
                 url + "/api/records/" + idv + "/draft",
                 headers=headers,
                 json=data,
+                verify=verify,
             )
             if result.status_code != 200:
                 raise Exception(result.text)
 
     if publish:
         publish_link = f"{url}/api/records/{idv}/draft/actions/publish"
-        result = requests.post(publish_link, headers=headers)
+        result = requests.post(publish_link, headers=headers, verify=verify)
         if result.status_code != 202:
             time.sleep(3)
-            result = requests.post(publish_link, headers=headers)
+            result = requests.post(publish_link, headers=headers, verify=verify)
             if result.status_code != 202:
                 raise Exception(result.text)
         if return_id:
