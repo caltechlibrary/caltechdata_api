@@ -19,7 +19,9 @@ from urllib.parse import urlsplit
 from typing import Any, Dict, Optional, Sequence
 
 
-def get_base_url(production: bool = True, authors: bool = False) -> str:
+def get_base_url(
+    production: bool = True, authors: bool = False, local: bool = False
+) -> str:
     """Get the base URL of the repository to download from.
 
     Parameters
@@ -31,6 +33,11 @@ def get_base_url(production: bool = True, authors: bool = False) -> str:
     authors
         Whether to use CaltechAUTHORS instead of CaltechDATA.
 
+    local
+        Whether to use a local instance, at ``https://127.0.0.1:5000``,
+        instead of the test (development) instance. Ignored when
+        ``production`` is ``True``, as in :func:`caltechdata_write`.
+
     Returns
     -------
     str
@@ -40,6 +47,8 @@ def get_base_url(production: bool = True, authors: bool = False) -> str:
         if authors:
             return "https://authors.library.caltech.edu"
         return "https://data.caltech.edu"
+    elif local:
+        return "https://127.0.0.1:5000"
     else:
         if authors:
             return "https://authors.caltechlibrary.dev"
@@ -51,6 +60,8 @@ def get_files_from_record(
     production: bool = True,
     authors: bool = False,
     token: Optional[str] = None,
+    local: bool = False,
+    verify: bool = True,
 ) -> Dict[str, Any]:
     """Get a dictionary of files associated with a record.
 
@@ -74,25 +85,37 @@ def get_files_from_record(
         token is given and the published record is not found, the
         record's draft is tried as well.
 
+    local
+        Whether to query a local instance, at ``https://127.0.0.1:5000``,
+        instead of the test (development) instance.
+
+    verify
+        Whether to verify the server's TLS certificate. Use ``False``
+        for a local instance with a self-signed certificate.
+
     Returns
     -------
     dict
         A dictionary with the file names as keys and the metadata
         associated with those files as values.
     """
-    base_url = get_base_url(production=production, authors=authors)
+    base_url = get_base_url(production=production, authors=authors, local=local)
     headers = {}
     if token is not None:
         headers["Authorization"] = "Bearer %s" % token
 
-    r = requests.get(f"{base_url}/api/records/{record_id}/files", headers=headers)
+    r = requests.get(
+        f"{base_url}/api/records/{record_id}/files", headers=headers, verify=verify
+    )
     try:
         if r.status_code == 404 and token is not None:
             # An unpublished record has no published version to return,
             # so fall back to its draft, which requires authentication.
             r.close()
             r = requests.get(
-                f"{base_url}/api/records/{record_id}/draft/files", headers=headers
+                f"{base_url}/api/records/{record_id}/draft/files",
+                headers=headers,
+                verify=verify,
             )
 
         r.raise_for_status()
@@ -114,6 +137,8 @@ def download_files_from_record(
     production: bool = True,
     authors: bool = False,
     token: Optional[str] = None,
+    local: bool = False,
+    verify: bool = True,
 ):
     """Download one or more files from a record.
 
@@ -157,12 +182,28 @@ def download_files_from_record(
         files from restricted records. If omitted, the requests are
         made without authentication and only public records are
         available.
+
+    local
+        Whether to download from a local instance, at
+        ``https://127.0.0.1:5000``, instead of the test (development)
+        instance.
+
+    verify
+        Whether to verify the server's TLS certificate, for requests to
+        the instance itself. Use ``False`` for a local instance with a
+        self-signed certificate. Redirects to other hosts are always
+        verified.
     """
     if not os.path.isdir(output_path):
         raise IOError(f"{output_path} is not an extant directory")
 
     files = get_files_from_record(
-        record_id, production=production, authors=authors, token=token
+        record_id,
+        production=production,
+        authors=authors,
+        token=token,
+        local=local,
+        verify=verify,
     )
     if filenames is None:
         filenames = sorted(files.keys())
@@ -181,7 +222,11 @@ def download_files_from_record(
 
         content_url = entry["links"]["content"]
         download_content(
-            content_url, output_file, max_redirects=max_redirects, token=token
+            content_url,
+            output_file,
+            max_redirects=max_redirects,
+            token=token,
+            verify=verify,
         )
 
 
@@ -190,6 +235,7 @@ def download_content(
     fname: os.PathLike,
     max_redirects=5,
     token: Optional[str] = None,
+    verify: bool = True,
 ):
     """Download the contents of a file.
 
@@ -216,6 +262,11 @@ def download_content(
         content from restricted records. If omitted, the request is
         made without authentication. The token is only sent to the
         host of ``content_url``, not to hosts we are redirected to.
+
+    verify
+        Whether to verify the server's TLS certificate. Like the token,
+        it applies only to the host of ``content_url``: a redirect to
+        another host is always verified.
     """
     url = content_url
     host = urlsplit(content_url).netloc
@@ -228,7 +279,9 @@ def download_content(
         if token is not None and urlsplit(url).netloc == host:
             headers["Authorization"] = "Bearer %s" % token
 
-        with requests.get(url, stream=True, headers=headers) as r:
+        # A redirect to another host (the file store) is always verified
+        verify_url = verify if urlsplit(url).netloc == host else True
+        with requests.get(url, stream=True, headers=headers, verify=verify_url) as r:
             r.raise_for_status()
             if "Location" in r.headers:
                 # Redirection - follow to the next URL
