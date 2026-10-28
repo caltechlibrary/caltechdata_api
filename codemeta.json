@@ -84,7 +84,8 @@
         "GitHub",
         "metadata",
         "software",
-        "InvenioRDM"
+        "InvenioRDM",
+        "API"
     ],
     "maintainer": [
         {
