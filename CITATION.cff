@@ -17,15 +17,18 @@ authors:
   - family-names: Nagi
     given-names: Kshemaahna
     orcid: https://orcid.org/0009-0002-8113-3763
+  - family-names: Doiel
+    given-names: Robert
+    orcid: https://orcid.org/0000-0003-0900-6903
 abstract: Python wrapper for CaltechDATA API.
 repository-code: "https://github.com/caltechlibrary/caltechdata_api"
 type: software
 doi: 10.22002/1k40v-bxz20
-version: 2.2.3
+version: 2.2.4
 license-url: "https://data.caltech.edu/license"
 keywords:
   - GitHub
   - metadata
   - software
   - InvenioRDM
-date-released: 2026-10-24
+date-released: 2026-10-28

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "caltechdata_api"
-version = "2.2.3"
+version = "2.2.4"
 description = "Python wrapper for CaltechDATA API."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -16,6 +16,7 @@ authors = [
     {name = "Elizabeth Won"},
     {name = "Alexander A Abakah", email = "aabakah@caltech.edu"},
     {name = "Kshemaahna Nagi", email = "knagi@caltech.edu"},
+    {name = "Robert Doiel", email = "rsdoiel@caltech.edu"},
 ]
 maintainers = [
     {name = "Thomas E Morrell", email = "tmorrell@caltech.edu"},
