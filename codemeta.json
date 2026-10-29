@@ -6,7 +6,7 @@
     "codeRepository": "https://github.com/caltechlibrary/caltechdata_api",
     "issueTracker": "https://github.com/caltechlibrary/caltechdata_api/issues",
     "license": "https://data.caltech.edu/license",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "author": [
         {
             "@type": "Person",
@@ -65,6 +65,17 @@
             },
             "email": "knagi@caltech.edu",
             "@id": "https://orcid.org/0009-0002-8113-3763"
+        },
+        {
+            "@type": "Person",
+            "givenName": "Robert",
+            "familyName": "Doiel",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Caltech Library"
+            },
+            "email": "rsdoiel@caltech.edu",
+            "@id": "https://orcid.org/0000-0003-0900-6903"
         }
     ],
     "developmentStatus": "active",
@@ -73,7 +84,8 @@
         "GitHub",
         "metadata",
         "software",
-        "InvenioRDM"
+        "InvenioRDM",
+        "API"
     ],
     "maintainer": [
         {
